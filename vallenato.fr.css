@@ -1,0 +1,44 @@
+body {
+  font-family: Ubuntu, sans-serif;
+}
+nav{
+  width: 110px;
+  float: left;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+nav ul{
+  padding: 0;
+  margin: 0;
+}
+nav li {
+  cursor: pointer;
+  list-style-type:none;
+  border: 1px black;
+}
+#previousButton, #nextButton, #versionCompleta span{
+  cursor: pointer;
+}
+#previousButton, #nextButton{
+  padding-left: 10px;
+  padding-right: 10px;
+}
+nav li:hover, #previousButton:hover, #nextButton:hover, #versionCompleta span:hover{
+  text-decoration: underline;
+  background-color: honeydew;
+}
+nav li.active{
+  font-weight: bold;
+}
+section#player{
+  margin-left: 120px;
+  height: 100%;
+  padding: 0;
+}
+#linkAndName{
+  float: right;
+}
+#progress{
+  width: 200px;
+}
