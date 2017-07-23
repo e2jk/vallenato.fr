@@ -168,6 +168,12 @@ function onYouTubePlayerAPIReady() {
   player = new YT.Player("videoPlayer", playerConfig);
 }
 
+// From https://stackoverflow.com/a/3733257/185053
+function str_pad_left(string,pad,length) {
+  "use strict";
+  return (new Array(length+1).join(pad)+string).slice(-length);
+}
+
 function populateProgressArray() {
   "use strict";
   // Construct the array used for the progress bar
@@ -176,6 +182,8 @@ function populateProgressArray() {
     progressArray.push(totalDuration);
     totalDuration += duration;
   });
+  // Use the following to output the total duration and number of parts, used to update the index.html when adding a new song.
+  //console.log("totalDuration: " + totalDuration + "s - " + str_pad_left(Math.floor(totalDuration / 60),'0',2) + 'm' + str_pad_left(totalDuration % 60,'0',2) + "s en " +  videos.length + " partes");
 }
 
 function previousVideo() {
