@@ -188,7 +188,8 @@ function populateProgressArray() {
 
 function previousVideo() {
   "use strict";
-  currentVideo = (currentVideo > 0) ? currentVideo - 1 : 0;
+  // The button can't go lower than 0 (by design), but with the "p" shortcut we want to be able to go to the Full Version
+  currentVideo = (currentVideo > -1) ? currentVideo - 1 : -1;
   changeVideo(true);
 }
 
