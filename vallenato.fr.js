@@ -1,8 +1,6 @@
 // Define [global] variables
-/*jslint browser: true*/
-/*global
-window, videoTitle, videos, fullVersion, YT
-*/
+/*jslint browser: true, white */
+/*global window, videoTitle, videos, fullVersion, YT */
 var currentVideo;
 var player;
 var playerConfig;
@@ -19,23 +17,31 @@ function getURLParameter(name) {
 // From https://stackoverflow.com/a/1830844/185053
 function isNumeric(n) {
   "use strict";
-  if (n) {n = n.replace(/,/,".");}
+  if (n) {
+    n = n.replace(/,/, ".");
+  }
   return !isNaN(parseFloat(n)) && isFinite(n);
 }
 
-function determineCurrentVideoParameter(){
+function determineCurrentVideoParameter() {
   "use strict";
   currentVideo = getURLParameter("p");
-  if (!isNumeric(currentVideo)) { window.location = "?p=1"; }
+  if (!isNumeric(currentVideo)) {
+    window.location = "?p=1";
+  }
   currentVideo -= 1; //URL Parameter/visible ID is 1-based, while array is 0-based
   // currentVideo == -1 means playing the complete video
-  if (currentVideo < -1) { window.location = "?p=1"; }
-  if (currentVideo > videos.length - 1) { window.location = "?p=" + videos.length; }
+  if (currentVideo < -1) {
+    window.location = "?p=1";
+  }
+  if (currentVideo > videos.length - 1) {
+    window.location = "?p=" + videos.length;
+  }
 }
 
 function updateUI(updateURL) {
   "use strict";
-  if(updateURL){
+  if (updateURL) {
     // Change the URL, so that if the user refreshes the page he gets back to this specific part
     window.history.pushState({}, document.title, "?p=" + (currentVideo + 1));
   }
@@ -50,7 +56,7 @@ function updateUI(updateURL) {
   var ul = document.getElementById("navigation");
   if (ul.hasChildNodes()) {
     // First node is a text node, start with 1 and use i-1 to compare to currentVideo
-    ul.childNodes.forEach(function(child, i) {
+    ul.childNodes.forEach(function (child, i) {
       child.className = (i - 1 === currentVideo) ? "active" : "";
     });
   }
@@ -95,9 +101,11 @@ function onStateChange(state) {
     videoJustChanged = true;
     // Reset videoJustChanged after one second to prevent this block being called twice in succession
     // (messes with the logic to advance video if selected)
-    setTimeout(function(){videoJustChanged = false;}, 1000);
+    setTimeout(function () {
+      videoJustChanged = false;
+    }, 1000);
     // Advance to next video if checkbox is not checked
-    if (!document.getElementById("repeatVideo").checked){
+    if (!document.getElementById("repeatVideo").checked) {
       currentVideo = (currentVideo < videos.length - 1) ? currentVideo + 1 : 0;
       changeVideo(true);
     } else {
@@ -107,7 +115,7 @@ function onStateChange(state) {
   }
 }
 
-function setUpVideoPlayer(){
+function setUpVideoPlayer() {
   "use strict";
   // Based on https://webapps.stackexchange.com/a/103450/161341
   var startSeconds;
@@ -149,10 +157,10 @@ function onYouTubePlayerAPIReady() {
   player = new YT.Player("videoPlayer", playerConfig);
 }
 
-function populateProgressArray(){
+function populateProgressArray() {
   "use strict";
   // Construct the array used for the progress bar
-  videos.forEach(function(video) {
+  videos.forEach(function (video) {
     var duration = video.end - video.start;
     progressArray.push(totalDuration);
     totalDuration += duration;
@@ -171,19 +179,21 @@ function nextVideo() {
   changeVideo(true);
 }
 
-function progressbarClicked(evt){
+function progressbarClicked(evt) {
   "use strict";
   var desiredDuration = Math.floor(evt.offsetX * totalDuration / evt.target.offsetWidth);
   var i = 0;
-  while (desiredDuration > progressArray[i]){
-    if (i > videos.length) { break; } // Safety check
+  while (desiredDuration > progressArray[i]) {
+    if (i > videos.length) {
+      break;
+    } // Safety check
     i += 1;
   }
   currentVideo = i - 1; // The video that contains the timestamp clicked on
   changeVideo(true);
 }
 
-function versionCompletaClicked(){
+function versionCompletaClicked() {
   "use strict";
   currentVideo = -1;
   changeVideo(true);
@@ -192,7 +202,7 @@ function versionCompletaClicked(){
 function createUI() {
   "use strict";
   var ul = document.getElementById("navigation");
-  videos.forEach(function(video, i) {
+  videos.forEach(function (video, i) {
     var li = document.createElement("li");
     li.appendChild(document.createTextNode("Parte " + (i + 1)));
     li.addEventListener("click", changeVideoEvent, false);
@@ -211,13 +221,13 @@ function createUI() {
 determineCurrentVideoParameter();
 setUpVideoPlayer();
 populateProgressArray();
-window.onload = function(){
+window.onload = function () {
   "use strict";
   createUI();
 };
 
 // Detect Back or Forward button
-window.onpopstate = function(){
+window.onpopstate = function () {
   "use strict";
   // Get the p parameter directly from the URL
   determineCurrentVideoParameter();
