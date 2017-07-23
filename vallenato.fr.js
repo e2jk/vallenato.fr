@@ -1,6 +1,7 @@
 // Define [global] variables
 /*jslint browser: true, white */
 /*global window, videoTitle, videos, fullVersion, YT */
+var localPlayer = false;
 var currentVideo;
 var player;
 var playerConfig;
@@ -54,7 +55,8 @@ function updateUI(updateURL) {
   "use strict";
   if (updateURL) {
     // Change the URL, so that if the user refreshes the page he gets back to this specific part
-    window.history.pushState({}, document.title, "?p=" + (currentVideo + 1));
+    var newURL = "?p=" + (currentVideo + 1) + (localPlayer ? "&local=1" : "");
+    window.history.pushState({}, document.title, newURL);
   }
 
   // Show the name of the current video
@@ -84,18 +86,70 @@ function updateUI(updateURL) {
   pBar.getElementsByTagName("span")[0].innerHTML = (currentVideo === -1) ? 0 : Math.floor((100 / totalDuration) * progressArray[currentVideo]);
 }
 
+function getVideoValues() {
+  "use strict";
+  var startSeconds;
+  var endSeconds;
+  var localVideoURL;
+  var videoId = (currentVideo === -1) ? fullVersion : videos[currentVideo].id;
+  if (currentVideo > -1) {
+    startSeconds = videos[currentVideo].start;
+    endSeconds = videos[currentVideo].end;
+  }
+
+  if (localPlayer) {
+    // The local videos are available at:
+    // videos/<folder with the same name as current file>/<YouTube ID>.mp4
+    // Get the name of the current file, i.e. after last / and before .html
+    var localVideoFolderName = window.location.href.split("/").slice(-1)[0].split(".")[0];
+    localVideoURL = "videos/" + localVideoFolderName + "/" + videoId + ".mp4";
+  }
+
+  return{"videoId": videoId, "localVideoURL": localVideoURL, "startSeconds": startSeconds, "endSeconds": endSeconds};
+}
+
+function isSameLocalVideo(currentVideo, newVideo) {
+  "use strict";
+  var shortURL = currentVideo.substring(currentVideo.length - newVideo.length, currentVideo.length);
+  return (shortURL === newVideo);
+}
+
 function changeVideo(updateURL) {
   "use strict";
   updateUI(updateURL);
 
+  var vidValues = getVideoValues();
   if (currentVideo === -1) {
-    player.loadVideoById({videoId: fullVersion});
+    if (!localPlayer) {
+      player.loadVideoById({videoId: fullVersion});
+    } else {
+      if (!isSameLocalVideo(player.src, vidValues.localVideoURL)) {
+        player.src = vidValues.localVideoURL;
+      }
+      player.startSeconds = null;
+      player.endSeconds = null;
+    }
   } else {
-    player.loadVideoById({
-      videoId: videos[currentVideo].id,
-      startSeconds: videos[currentVideo].start,
-      endSeconds: videos[currentVideo].end
-    });
+    if (!localPlayer) {
+      player.loadVideoById({
+        videoId: vidValues.videoId,
+        startSeconds: vidValues.startSeconds,
+        endSeconds: vidValues.endSeconds
+      });
+    } else {
+      if (!isSameLocalVideo(player.src, vidValues.localVideoURL)) {
+        player.src = vidValues.localVideoURL;
+      }
+      // Set the player at the timestamp we want to start on
+      player.currentTime = vidValues.startSeconds;
+      // Keep the start and end timestamps on the video object to check from the timeupdate event
+      player.startSeconds = vidValues.startSeconds;
+      player.endSeconds = vidValues.endSeconds;
+    }
+  }
+  if (localPlayer && player.paused) {
+    // The local player needs a little push when the full version played to the end and stopped.
+    player.play();
   }
 }
 
@@ -105,41 +159,88 @@ function changeVideoEvent(evt) {
   changeVideo(true);
 }
 
-// Reload the video when onStateChange=YT.PlayerState.ENDED)
-function onStateChange(state) {
+function playFollowing() {
   "use strict";
-  if (state.data === YT.PlayerState.ENDED && !videoJustChanged) {
-    videoJustChanged = true;
-    // Reset videoJustChanged after one second to prevent this block being called twice in succession
-    // (messes with the logic to advance video if selected)
-    setTimeout(function () {
-      videoJustChanged = false;
-    }, 1000);
-    // Advance to next video if checkbox is not checked
-    if (!document.getElementById("repeatVideo").checked) {
-      currentVideo = (currentVideo < videos.length - 1) ? currentVideo + 1 : 0;
-      changeVideo(true);
-    } else {
-      // Replay the same video
-      changeVideo(false);
-    }
+  // Replays the same video or advances to the next, depending on the checkbox
+  if (!document.getElementById("repeatVideo").checked) {
+    currentVideo = (currentVideo < videos.length - 1) ? currentVideo + 1 : 0;
+    changeVideo(true);
+  } else {
+    changeVideo(false);
   }
 }
 
-function setUpVideoPlayer() {
+// Reload the video when onStateChange=YT.PlayerState.ENDED)
+function onStateChange(state) {
   "use strict";
-  // Based on https://webapps.stackexchange.com/a/103450/161341
-  var startSeconds;
-  var endSeconds;
-  var videoId = (currentVideo === -1) ? fullVersion : videos[currentVideo].id;
-  if (currentVideo > -1) {
-    startSeconds = videos[currentVideo].start;  // set your own video start time when loop play
-    endSeconds = videos[currentVideo].end;   // set your own video end time when loop play
+  var doSomething = false;
+  if (!localPlayer) {
+    if (state.data === YT.PlayerState.ENDED && !videoJustChanged) {
+      videoJustChanged = true;
+      // Reset videoJustChanged after one second to prevent this block being called twice in succession (messes with the logic to advance video if selected)
+      setTimeout(function () {
+        videoJustChanged = false;
+      }, 1000);
+    }
+  } else {
+    if (player.endSeconds && (player.currentTime > player.endSeconds)) {
+      doSomething = true;
+    }
   }
+
+  if (doSomething) {
+    playFollowing();
+  }
+}
+
+function playPauseLocalVideo() {
+  "use strict";
+  if (!player.paused) {
+    player.pause();
+  } else {
+    player.play();
+  }
+}
+
+function setUpLocalVideoPlayer() {
+  "use strict";
+  // Playing the videos via local HTML5 video
+  var vidValues = getVideoValues();
+  player = document.createElement("video");
+  player.setAttribute("id", "localVideoPlayer");
+  player.setAttribute("height", "97%");
+  player.setAttribute("width", "100%");
+  player.controls = "controls";
+  player.autoplay = "autoplay";
+  player.src = vidValues.localVideoURL;
+  if (vidValues.startSeconds) {
+    // Set the player at the timestamp we want to start on
+    player.currentTime = vidValues.startSeconds;
+    // Keep that start timestamp on the video object to check from the timeupdate event
+    player.startSeconds = vidValues.startSeconds;
+  }
+  if (vidValues.endSeconds) {
+    // Keep that end timestamp on the video object to check from the timeupdate event
+    player.endSeconds = vidValues.endSeconds;
+  }
+  document.getElementById("videoPlayer").appendChild(player);
+
+  // Use the timeupdate event to determine when playing this part is over
+  player.addEventListener("timeupdate", onStateChange, false);
+  // Listen to ended to identify when playing the full version is done
+  player.addEventListener("ended", playFollowing, false);
+  // Clicking on the video will pause or play it
+  player.addEventListener("click", playPauseLocalVideo, false);
+}
+
+function setUpYouTubeVideoPlayer() {
+  "use strict";
+  var vidValues = getVideoValues();
+  // Based on https://webapps.stackexchange.com/a/103450/161341
   playerConfig = {
     height: "97%",
     width: "100%",
-    videoId: videoId,
+    videoId: vidValues.videoId,
     playerVars: {
       // https://developers.google.com/youtube/player_parameters
       autoplay: 1,            // Auto-play the video on load
@@ -150,8 +251,8 @@ function setUpVideoPlayer() {
       fs: 1,                  // Show the full screen button
       cc_load_policy: 0,      // Hide closed captions
       iv_load_policy: 3,      // Hide the Video Annotations
-      start: startSeconds,
-      end: endSeconds,
+      start: vidValues.startSeconds,
+      end: vidValues.endSeconds,
       autohide: 0            // Hide video controls when playing
       //enablejsapi: 1,
       //origin: "https://vallenato.fr"
@@ -162,10 +263,23 @@ function setUpVideoPlayer() {
   };
 }
 
+function determineLocalOrYouTubePlayer() {
+  "use strict";
+  localPlayer = (null !== getURLParameter("local"));
+
+  if (!localPlayer) {
+    setUpYouTubeVideoPlayer();
+  }/* else {
+    // Setting up the local video player is in setUpLocalVideoPlayer, called from the window.onload function
+  }*/
+}
+
 function onYouTubePlayerAPIReady() {
   "use strict";
-  // Play the first video in div
-  player = new YT.Player("videoPlayer", playerConfig);
+  if (!localPlayer) {
+    // Play the first video in div
+    player = new YT.Player("videoPlayer", playerConfig);
+  }
 }
 
 // From https://stackoverflow.com/a/3733257/185053
@@ -249,10 +363,14 @@ function keyPressed(evt) {
   // Support some default Youtube embed player shortcuts that are made available if the focus in not in the player
   // Pause/Play: <space> (code 32)
   if (32 === code) {
-    if (player.getPlayerState() === YT.PlayerState.PLAYING) {
-      player.pauseVideo();
+    if (!localPlayer) {
+      if (player.getPlayerState() === YT.PlayerState.PLAYING) {
+        player.pauseVideo();
+      } else {
+        player.playVideo();
+      }
     } else {
-      player.playVideo();
+      playPauseLocalVideo();
     }
     //Stop the event
     // If there are too many parts, pressing <Space> would also perform a Page Down
@@ -302,11 +420,14 @@ function createUI() {
 
 // Perform some initial setup/calculations
 determineCurrentVideoParameter();
-setUpVideoPlayer();
+determineLocalOrYouTubePlayer();
 populateProgressArray();
 window.onload = function () {
   "use strict";
   createUI();
+  if (localPlayer) {
+    setUpLocalVideoPlayer();
+  }
 };
 
 // Detect Back or Forward button
