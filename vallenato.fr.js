@@ -284,7 +284,7 @@ function keyPressed(evt) {
 function createUI() {
   "use strict";
   var ul = document.getElementById("navigation");
-  videos.forEach(function (video, i) {
+  videos.forEach(function (ignore, i) {
     var li = document.createElement("li");
     li.appendChild(document.createTextNode("Parte " + (i + 1)));
     li.addEventListener("click", changeVideoEvent, false);
