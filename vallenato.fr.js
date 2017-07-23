@@ -8,10 +8,21 @@ var videoJustChanged;
 var totalDuration = 0;
 var progressArray = [];
 
-// From https://stackoverflow.com/a/11582513/185053
+// Inspired from https://stackoverflow.com/a/11582513/185053 , modified for JSLint
 function getURLParameter(name) {
   "use strict";
-  return decodeURIComponent((new RegExp("[?|&]" + name + "=" + "([^&;]+?)(&|#|;|$)").exec(location.search) || [null, ""])[1].replace(/\+/g, "%20")) || null;
+  // This function will return null if this specific parameter is not found
+  var parameterValue = null;
+  // Perform a regex match to find the value of the parameter from the query string
+  var parameterRegex = new RegExp("[?|&]" + name + "=" + "([^&;]+?)(&|#|;|$)").exec(location.search);
+  if (parameterRegex) {
+    // If the regex found a match, replace any occurrence of + by %20
+    parameterValue = parameterRegex[1].replace(/\+/g, "%20");
+    // and perform proper decoding of the URI
+    parameterValue = decodeURIComponent(parameterValue);
+  }
+  // Returns either null or the value of that parameter
+  return parameterValue;
 }
 
 // From https://stackoverflow.com/a/1830844/185053
