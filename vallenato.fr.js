@@ -218,6 +218,68 @@ function versionCompletaClicked() {
   changeVideo(true);
 }
 
+function keyPressed(evt) {
+  "use strict";
+  var code;
+  //Find which key is pressed
+  if (evt.keyCode) {
+    code = evt.keyCode;
+  } else if (evt.which) {
+    code = evt.which;
+  }
+  var character = String.fromCharCode(code).toLowerCase();
+
+  // Previous video: "p"
+  if ("p" === character) {
+    previousVideo();
+  }
+
+  // Next video: "n" or "s" (siguiente)
+  if ("n" === character || "s" === character) {
+    nextVideo();
+  }
+
+  // Toggle Repeat: "r"
+  if ("r" === character) {
+    var repeatVideo = document.getElementById("repeatVideo");
+    repeatVideo.checked = !repeatVideo.checked;
+  }
+
+  // Support some default Youtube embed player shortcuts that are made available if the focus in not in the player
+  // Pause/Play: <space> (code 32)
+  if (32 === code) {
+    if (player.getPlayerState() === YT.PlayerState.PLAYING) {
+      player.pauseVideo();
+    } else {
+      player.playVideo();
+    }
+    //Stop the event
+    // If there are too many parts, pressing <Space> would also perform a Page Down
+    // IE
+    evt.cancelBubble = true;
+    evt.returnValue = false;
+    if (evt.stopPropagation) {
+      evt.stopPropagation();
+      evt.preventDefault();
+    }
+  }
+
+  // These shortcuts need enablejsapi and origin, disabled for now as it makes local testing more complex
+  /*
+  // Mute: "m"
+  if ("m" === character) {
+    console.log("Mute");
+    if (player.isMuted()) {
+      console.log("unmute");
+      player.unMute();
+    } else {
+      console.log("mute");
+      player.unMute();
+    }
+  }
+  */
+}
+
 function createUI() {
   "use strict";
   var ul = document.getElementById("navigation");
@@ -233,6 +295,7 @@ function createUI() {
   document.getElementById("nextButton").addEventListener("click", nextVideo, false);
   document.getElementById("progress").addEventListener("click", progressbarClicked, false);
   document.getElementById("versionCompleta").addEventListener("click", versionCompletaClicked, false);
+  document.addEventListener("keydown", keyPressed, false); // Keyboard shortcuts
   updateUI(false);
 }
 
