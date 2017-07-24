@@ -39,15 +39,15 @@ function determineCurrentVideoParameter() {
   "use strict";
   currentVideo = getURLParameter("p");
   if (!isNumeric(currentVideo)) {
-    window.location = "?p=1";
+    window.location = "?p=1" + (localPlayer ? "&local=1" : "");
   }
   currentVideo -= 1; //URL Parameter/visible ID is 1-based, while array is 0-based
   // currentVideo == -1 means playing the complete video
   if (currentVideo < -1) {
-    window.location = "?p=1";
+    window.location = "?p=1" + (localPlayer ? "&local=1" : "");
   }
   if (currentVideo > videos.length - 1) {
-    window.location = "?p=" + videos.length;
+    window.location = "?p=" + videos.length + (localPlayer ? "&local=1" : "");
   }
 }
 
@@ -235,43 +235,39 @@ function setUpLocalVideoPlayer() {
 
 function setUpYouTubeVideoPlayer() {
   "use strict";
-  var vidValues = getVideoValues();
-  // Based on https://webapps.stackexchange.com/a/103450/161341
-  playerConfig = {
-    height: "97%",
-    width: "100%",
-    videoId: vidValues.videoId,
-    playerVars: {
-      // https://developers.google.com/youtube/player_parameters
-      autoplay: 1,            // Auto-play the video on load
-      controls: 1,            // Show pause/play buttons in player
-      showinfo: 0,            // Hide the video title
-      rel: 0,                 // Hide related videos when pausing video
-      //modestbranding: 1,      // Hide the Youtube Logo
-      fs: 1,                  // Show the full screen button
-      cc_load_policy: 0,      // Hide closed captions
-      iv_load_policy: 3,      // Hide the Video Annotations
-      start: vidValues.startSeconds,
-      end: vidValues.endSeconds,
-      autohide: 0            // Hide video controls when playing
-      //enablejsapi: 1,
-      //origin: "https://vallenato.fr"
-    },
-    events: {
-      "onStateChange": onStateChange
-    }
-  };
+  if (!localPlayer) {
+    var vidValues = getVideoValues();
+    // Based on https://webapps.stackexchange.com/a/103450/161341
+    playerConfig = {
+      height: "97%",
+      width: "100%",
+      videoId: vidValues.videoId,
+      playerVars: {
+        // https://developers.google.com/youtube/player_parameters
+        autoplay: 1,            // Auto-play the video on load
+        controls: 1,            // Show pause/play buttons in player
+        showinfo: 0,            // Hide the video title
+        rel: 0,                 // Hide related videos when pausing video
+        //modestbranding: 1,      // Hide the Youtube Logo
+        fs: 1,                  // Show the full screen button
+        cc_load_policy: 0,      // Hide closed captions
+        iv_load_policy: 3,      // Hide the Video Annotations
+        start: vidValues.startSeconds,
+        end: vidValues.endSeconds,
+        autohide: 0            // Hide video controls when playing
+        //enablejsapi: 1,
+        //origin: "https://vallenato.fr"
+      },
+      events: {
+        "onStateChange": onStateChange
+      }
+    };
+  }
 }
 
 function determineLocalOrYouTubePlayer() {
   "use strict";
   localPlayer = (null !== getURLParameter("local"));
-
-  if (!localPlayer) {
-    setUpYouTubeVideoPlayer();
-  }/* else {
-    // Setting up the local video player is in setUpLocalVideoPlayer, called from the window.onload function
-  }*/
 }
 
 function onYouTubePlayerAPIReady() {
@@ -419,8 +415,9 @@ function createUI() {
 }
 
 // Perform some initial setup/calculations
-determineCurrentVideoParameter();
 determineLocalOrYouTubePlayer();
+determineCurrentVideoParameter();
+setUpYouTubeVideoPlayer(); // Setting up the local video player happens in setUpLocalVideoPlayer, called from the window.onload function
 populateProgressArray();
 window.onload = function () {
   "use strict";
