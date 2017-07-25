@@ -1,8 +1,9 @@
 // Define [global] variables
 /*jslint browser: true, white */
-/*global window, videoTitle, videos, fullVersion, YT */
+/*global window, videos, fullVersion, YT */
 var localPlayer = false;
 var currentVideo;
+var videoTitle;
 var player;
 var playerConfig;
 var videoJustChanged;
@@ -405,6 +406,9 @@ function createUI() {
     li.num = i;
     ul.appendChild(li);
   });
+
+  // Save the initial Title, as it contains the name of the current song
+  videoTitle = document.title;
 
   document.getElementById("previousButton").addEventListener("click", previousVideo, false);
   document.getElementById("nextButton").addEventListener("click", nextVideo, false);
