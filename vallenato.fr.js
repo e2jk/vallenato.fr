@@ -210,8 +210,8 @@ function setUpLocalVideoPlayer() {
   var vidValues = getVideoValues();
   player = document.createElement("video");
   player.setAttribute("id", "localVideoPlayer");
-  player.setAttribute("height", "97%");
-  player.setAttribute("width", "100%");
+  player.setAttribute("height", "96%");
+  player.setAttribute("width", "99%");
   player.controls = "controls";
   player.autoplay = "autoplay";
   player.src = vidValues.localVideoURL;
@@ -247,8 +247,8 @@ function setUpYouTubeVideoPlayer() {
   var vidValues = getVideoValues();
   // Based on https://webapps.stackexchange.com/a/103450/161341
   playerConfig = {
-    height: "97%",
-    width: "100%",
+    height: "96%",
+    width: "99%",
     videoId: vidValues.videoId,
     playerVars: {
       // https://developers.google.com/youtube/player_parameters
