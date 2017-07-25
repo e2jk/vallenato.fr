@@ -237,34 +237,39 @@ function setUpLocalVideoPlayer() {
 
 function setUpYouTubeVideoPlayer() {
   "use strict";
-  if (!localPlayer) {
-    var vidValues = getVideoValues();
-    // Based on https://webapps.stackexchange.com/a/103450/161341
-    playerConfig = {
-      height: "97%",
-      width: "100%",
-      videoId: vidValues.videoId,
-      playerVars: {
-        // https://developers.google.com/youtube/player_parameters
-        autoplay: 1,            // Auto-play the video on load
-        controls: 1,            // Show pause/play buttons in player
-        showinfo: 0,            // Hide the video title
-        rel: 0,                 // Hide related videos when pausing video
-        //modestbranding: 1,      // Hide the Youtube Logo
-        fs: 1,                  // Show the full screen button
-        cc_load_policy: 0,      // Hide closed captions
-        iv_load_policy: 3,      // Hide the Video Annotations
-        start: vidValues.startSeconds,
-        end: vidValues.endSeconds,
-        autohide: 0            // Hide video controls when playing
-        //enablejsapi: 1,
-        //origin: "https://vallenato.fr"
-      },
-      events: {
-        "onStateChange": onStateChange
-      }
-    };
-  }
+  // Load the YouTube JavaScript, per https://stackoverflow.com/a/3973468/185053
+  var script = document.createElement('script');
+  script.async = "async";
+  script.type = "text/javascript";
+  script.src = "https://www.youtube.com/iframe_api";
+  document.body.appendChild(script);
+
+  var vidValues = getVideoValues();
+  // Based on https://webapps.stackexchange.com/a/103450/161341
+  playerConfig = {
+    height: "97%",
+    width: "100%",
+    videoId: vidValues.videoId,
+    playerVars: {
+      // https://developers.google.com/youtube/player_parameters
+      autoplay: 1,            // Auto-play the video on load
+      controls: 1,            // Show pause/play buttons in player
+      showinfo: 0,            // Hide the video title
+      rel: 0,                 // Hide related videos when pausing video
+      //modestbranding: 1,      // Hide the Youtube Logo
+      fs: 1,                  // Show the full screen button
+      cc_load_policy: 0,      // Hide closed captions
+      iv_load_policy: 3,      // Hide the Video Annotations
+      start: vidValues.startSeconds,
+      end: vidValues.endSeconds,
+      autohide: 0            // Hide video controls when playing
+      //enablejsapi: 1,
+      //origin: "https://vallenato.fr"
+    },
+    events: {
+      "onStateChange": onStateChange
+    }
+  };
 }
 
 function determineLocalOrYouTubePlayer() {
@@ -422,12 +427,13 @@ function createUI() {
 // Perform some initial setup/calculations
 determineLocalOrYouTubePlayer();
 determineCurrentVideoParameter();
-setUpYouTubeVideoPlayer(); // Setting up the local video player happens in setUpLocalVideoPlayer, called from the window.onload function
 populateProgressArray();
 window.onload = function () {
   "use strict";
   createUI();
-  if (localPlayer) {
+  if (!localPlayer) {
+    setUpYouTubeVideoPlayer();
+  } else {
     setUpLocalVideoPlayer();
   }
 };
