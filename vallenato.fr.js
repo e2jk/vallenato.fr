@@ -178,6 +178,7 @@ function onStateChange(state) {
   if (!localPlayer) {
     if (state.data === YT.PlayerState.ENDED && !videoJustChanged) {
       videoJustChanged = true;
+      doSomething = true;
       // Reset videoJustChanged after one second to prevent this block being called twice in succession (messes with the logic to advance video if selected)
       setTimeout(function () {
         videoJustChanged = false;
