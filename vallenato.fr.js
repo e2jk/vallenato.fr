@@ -357,6 +357,11 @@ function keyPressed(evt) {
     nextVideo();
   }
 
+  // Restart this fragment: <home> (code 36)
+  if (36 === code) {
+    changeVideo(false); // No need to change the URL
+  }
+
   // Toggle Repeat: "r"
   if ("r" === character) {
     var repeatVideo = document.getElementById("repeatVideo");
