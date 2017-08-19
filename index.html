@@ -14,7 +14,7 @@
   <body>
     <h1>Aprender a tocar el Acordeón Vallenato</h1>
     <h2>Tutoriales</h2>
-    <ul>
+    <ul id="tutoriales">
       <li><a href="esa.html">Esa - Binomio de Oro</a> - 01m49s en 10 partes</li>
       <li><a href="la-creciente.html">La Creciente - Binomio de Oro</a> - 02m20s en 9 partes</li>
       <li><a href="lleno-de-ti.html">Lleno de Ti - Binomio de Oro</a> - 08m45s en 35 partes</li>
@@ -36,5 +36,35 @@
       <li>Tu Cumpleaños - Diomedes Diaz: <a href="https://www.youtube.com/watch?v=z7symEcInHM">Tutorial en YouTube</a> por <a href="https://www.youtube.com/channel/UCdy-emqwD6McrPt6CoDoBKQ">Hector Fabio Ñañez Diaz</a></li>
     </ul>
     <p><a href="https://vallenato.fr">El Vallenatero Francés</a> - <a href="https://vallenato.fr">Vallenato.fr</a></li></p>
+    <script>
+      // JavaScript by default at the bottom of the body, per https://developers.google.com/apps-script/guides/html/best-practices#load_javascript_last
+      /*jslint browser: true, white */
+
+      // Inspired from https://stackoverflow.com/a/11582513/185053 , modified for JSLint
+      function getURLParameter(name) {
+        "use strict";
+        // This function will return null if this specific parameter is not found
+        var parameterValue = null;
+        // Perform a regex match to find the value of the parameter from the query string
+        var parameterRegex = new RegExp("[?|&]" + name + "=" + "([^&;]+?)(&|#|;|$)").exec(location.search);
+        if (parameterRegex) {
+          // If the regex found a match, replace any occurrence of + by %20
+          parameterValue = parameterRegex[1].replace(/\+/g, "%20");
+          // and perform proper decoding of the URI
+          parameterValue = decodeURIComponent(parameterValue);
+        }
+        // Returns either null or the value of that parameter
+        return parameterValue;
+      }
+
+      if (null !== getURLParameter("local")) {
+        // Links to local tutorials
+        document.getElementById("tutoriales").childNodes.forEach(function (child, i) {
+          if (child.hasChildNodes()) {
+            child.childNodes[0].href += "?local=1";
+          }
+        });
+      }
+    </script>
   </body>
 </html>

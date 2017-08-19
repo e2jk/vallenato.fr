@@ -421,6 +421,11 @@ function createUI() {
   // Save the initial Title, as it contains the name of the current song
   videoTitle = document.title;
 
+  if (localPlayer) {
+    // Link to local index page instead of online version on vallenato.fr
+    document.getElementById("linkAndName").childNodes[1].href = "index.html?local=1";
+  }
+
   document.getElementById("previousButton").addEventListener("click", previousVideo, false);
   document.getElementById("nextButton").addEventListener("click", nextVideo, false);
   document.getElementById("progress").addEventListener("click", progressbarClicked, false);
