@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Villancico - Mi Burrito Sabanero</title>
+    <meta charset="utf-8"/>
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="vallenato.fr.css">
+  </head>
+
+  <body>
+    <nav>
+      <ul id="navigation">
+      </ul>
+      <label><input type="checkbox" id="repeatVideo" checked="checked"> Repetir</label>
+    </nav>
+    <section id="player">
+      <div id="topRow">
+        <span id="previousButton">Parte previa</span>
+        <progress id='progress'><span>0</span>% played</progress>
+        <span id="nextButton">Siguiente parte</span>
+        <span id="linkAndName">
+          <a href="https://vallenato.fr/aprender">Aprender Acordeón Vallenato</a>/<span id="nameCurrent">CURRENT NAME</span><span id="versionCompleta"> - <span>Versión completa</span></span>
+        </span>
+      </div>
+      <div id="videoPlayer"></div>
+    </section>
+    <script>
+      // JavaScript by default at the bottom of the body, per https://developers.google.com/apps-script/guides/html/best-practices#load_javascript_last
+      /*jslint browser: true, white */
+      var videos = [
+        {"id": "4oAIYNryjDA", "start": 98, "end": 105},
+        {"id": "4oAIYNryjDA", "start": 158, "end": 165},
+        {"id": "4oAIYNryjDA", "start": 250, "end": 256},
+        {"id": "4oAIYNryjDA", "start": 291, "end": 298},
+        {"id": "4oAIYNryjDA", "start": 323, "end": 357}
+      ];
+      var fullVersion = "Pa0PVkEfJio";
+    </script>
+    <script async type = "text/javascript" src="vallenato.fr.js"></script>
+  </body>
+</html>
