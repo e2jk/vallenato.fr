@@ -1,5 +1,5 @@
 // Define [global] variables
-/*jslint browser: true, white */
+/*jslint browser: true, white, devel: true */
 /*global window, videos, fullVersion, YT */
 var localPlayer = false;
 var currentVideo;
@@ -238,7 +238,7 @@ function setUpLocalVideoPlayer() {
 function setUpYouTubeVideoPlayer() {
   "use strict";
   // Load the YouTube JavaScript, per https://stackoverflow.com/a/3973468/185053
-  var script = document.createElement('script');
+  var script = document.createElement("script");
   script.async = "async";
   script.type = "text/javascript";
   script.src = "https://www.youtube.com/iframe_api";
@@ -302,7 +302,7 @@ function populateProgressArray() {
 
   // Use the following to output the total duration and number of parts, used to update the index.html when adding a new song.
   if (false) {
-    var totDur = "totalDuration: " + totalDuration + "s - " + str_pad_left(Math.floor(totalDuration / 60),'0',2) + 'm' + str_pad_left(totalDuration % 60,'0',2) + "s en " +  videos.length + " partes";
+    var totDur = "totalDuration: " + totalDuration + "s - " + str_pad_left(Math.floor(totalDuration / 60),"0",2) + "m" + str_pad_left(totalDuration % 60,"0",2) + "s en " +  videos.length + " partes";
     console.log(totDur);
     alert(totDur);
   }
