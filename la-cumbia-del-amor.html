@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>La Cumbia Del Amor - Lisandro Mesa</title>
+    <meta charset="utf-8"/>
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="vallenato.fr.css">
+  </head>
+
+  <body>
+    <nav>
+      <ul id="navigation">
+      </ul>
+      <label><input type="checkbox" id="repeatVideo" checked="checked"> Repetir</label>
+    </nav>
+    <section id="player">
+      <div id="topRow">
+        <span id="previousButton">Parte previa</span>
+        <progress id='progress'><span>0</span>% played</progress>
+        <span id="nextButton">Siguiente parte</span>
+        <span id="linkAndName">
+          <a href="https://vallenato.fr/aprender">Aprender Acordeón Vallenato</a>/<span id="nameCurrent">CURRENT NAME</span><span id="versionCompleta"> - <span>Versión completa</span></span>
+        </span>
+      </div>
+      <div id="videoPlayer"></div>
+    </section>
+    <script>
+      // JavaScript by default at the bottom of the body, per https://developers.google.com/apps-script/guides/html/best-practices#load_javascript_last
+      /*jslint browser: true, white */
+      var videos = [
+        {"id": "FQQStAz8RUQ", "start": 62, "end": 75},
+        {"id": "FQQStAz8RUQ", "start": 76, "end": 82},
+        {"id": "FQQStAz8RUQ", "start": 81, "end": 88},
+        {"id": "FQQStAz8RUQ", "start": 87, "end": 94},
+        {"id": "FQQStAz8RUQ", "start": 94, "end": 104},
+      ];
+      var fullVersion = "XBT2Va22fGQ";
+    </script>
+    <script async type = "text/javascript" src="vallenato.fr.js"></script>
+  </body>
+</html>
