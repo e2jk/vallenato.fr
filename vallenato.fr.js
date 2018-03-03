@@ -2,6 +2,7 @@
 /*jslint browser: true, white, devel: true */
 /*global window, videos, fullVersion, YT */
 var localPlayer = false;
+var showTutorialDuration = false;
 var currentVideo;
 var videoTitle;
 var player;
@@ -277,6 +278,11 @@ function determineLocalOrYouTubePlayer() {
   localPlayer = (null !== getURLParameter("local"));
 }
 
+function determineShowTutorialDuration() {
+  "use strict";
+  showTutorialDuration = (null !== getURLParameter("duration"));
+}
+
 function onYouTubePlayerAPIReady() {
   "use strict";
   if (!localPlayer) {
@@ -301,7 +307,7 @@ function populateProgressArray() {
   });
 
   // Use the following to output the total duration and number of parts, used to update the index.html when adding a new song.
-  if (false) {
+  if (showTutorialDuration) {
     var totDur = "totalDuration: " + totalDuration + "s - " + str_pad_left(Math.floor(totalDuration / 60),"0",2) + "m" + str_pad_left(totalDuration % 60,"0",2) + "s en " +  videos.length + " partes";
     console.log(totDur);
     alert(totDur);
@@ -441,6 +447,7 @@ function createUI() {
 
 // Perform some initial setup/calculations
 determineLocalOrYouTubePlayer();
+determineShowTutorialDuration();
 determineCurrentVideoParameter();
 populateProgressArray();
 window.onload = function () {
