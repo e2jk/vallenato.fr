@@ -3,6 +3,7 @@
 /*global window, videos, fullVersion, YT */
 var localPlayer = false;
 var showTutorialDuration = false;
+var editMode = false;
 var currentVideo;
 var videoTitle;
 var player;
@@ -41,15 +42,15 @@ function determineCurrentVideoParameter() {
   "use strict";
   currentVideo = getURLParameter("p");
   if (!isNumeric(currentVideo)) {
-    window.location = "?p=1" + (localPlayer ? "&local=1" : "");
+    window.location = "?p=1" + (localPlayer ? "&local=1" : "") + (editMode ? "&editar=1" : "");
   }
   currentVideo -= 1; //URL Parameter/visible ID is 1-based, while array is 0-based
   // currentVideo == -1 means playing the complete video
   if (currentVideo < -1) {
-    window.location = "?p=1" + (localPlayer ? "&local=1" : "");
+    window.location = "?p=1" + (localPlayer ? "&local=1" : "") + (editMode ? "&editar=1" : "");
   }
   if (currentVideo > videos.length - 1) {
-    window.location = "?p=" + videos.length + (localPlayer ? "&local=1" : "");
+    window.location = "?p=" + videos.length + (localPlayer ? "&local=1" : "") + (editMode ? "&editar=1" : "");
   }
 }
 
@@ -57,12 +58,17 @@ function updateUI(updateURL) {
   "use strict";
   if (updateURL) {
     // Change the URL, so that if the user refreshes the page he gets back to this specific part
-    var newURL = "?p=" + (currentVideo + 1) + (localPlayer ? "&local=1" : "");
+    var newURL = "?p=" + (currentVideo + 1) + (localPlayer ? "&local=1" : "") + (editMode ? "&editar=1" : "");
     window.history.pushState({}, document.title, newURL);
   }
 
   // Show the name of the current video
-  var updatedTitle = videoTitle + ((currentVideo === -1) ? ", versión completa" : ", Parte " + (currentVideo + 1));
+  var updatedTitle = videoTitle;
+  if (editMode) {
+    updatedTitle += " (edit mode)";
+  } else {
+    updatedTitle += ((currentVideo === -1) ? ", versión completa" : ", Parte " + (currentVideo + 1));
+  }
   document.title = updatedTitle;
   document.getElementById("nameCurrent").innerHTML = updatedTitle;
 
@@ -81,11 +87,13 @@ function updateUI(updateURL) {
   document.getElementById("nextButton").style.visibility = (currentVideo > videos.length - 2) ? "hidden" : "visible";
   document.getElementById("versionCompleta").style.display = (currentVideo === -1) ? "none" : "inline";
 
-  // Update the progress bar
-  var pBar = document.getElementById("progress");
-  pBar.max = totalDuration;
-  pBar.value = (currentVideo === -1) ? 0 : progressArray[currentVideo];
-  pBar.getElementsByTagName("span")[0].innerHTML = (currentVideo === -1) ? 0 : Math.floor((100 / totalDuration) * progressArray[currentVideo]);
+  // Update the progress bar (if not in Edit Mode)
+  if (!editMode) {
+    var pBar = document.getElementById("progress");
+    pBar.max = totalDuration;
+    pBar.value = (currentVideo === -1) ? 0 : progressArray[currentVideo];
+    pBar.getElementsByTagName("span")[0].innerHTML = (currentVideo === -1) ? 0 : Math.floor((100 / totalDuration) * progressArray[currentVideo]);
+  }
 }
 
 function getVideoValues() {
@@ -157,7 +165,18 @@ function changeVideo(updateURL) {
 
 function changeVideoEvent(evt) {
   "use strict";
-  currentVideo = evt.target.num;
+  if ("INPUT" === evt.target.nodeName) {
+    // Don't restart this part if we were already playing it
+    if (evt.target.parentNode.parentNode.num === currentVideo) {
+      return;
+    }
+    currentVideo = evt.target.parentNode.parentNode.num;
+  }
+  if ("DIV" === evt.target.nodeName) {
+    currentVideo = evt.target.parentNode.num;
+  } else if ("LI" === evt.target.nodeName) {
+    currentVideo = evt.target.num;
+  }
   changeVideo(true);
 }
 
@@ -283,6 +302,11 @@ function determineShowTutorialDuration() {
   showTutorialDuration = (null !== getURLParameter("duration"));
 }
 
+function determineEditMode() {
+  "use strict";
+  editMode = (null !== getURLParameter("editar"));
+}
+
 function onYouTubePlayerAPIReady() {
   "use strict";
   if (!localPlayer) {
@@ -406,24 +430,105 @@ function keyPressed(evt) {
   /*
   // Mute: "m"
   if ("m" === character) {
-    console.log("Mute");
-    if (player.isMuted()) {
-      console.log("unmute");
-      player.unMute();
-    } else {
-      console.log("mute");
-      player.unMute();
+  console.log("Mute");
+  if (player.isMuted()) {
+  console.log("unmute");
+  player.unMute();
+} else {
+console.log("mute");
+player.unMute();
+}
+}
+*/
+}
+
+function newPart() {
+  "use strict";
+  var ul = document.getElementById("navigation");
+  var li = document.createElement("li");
+  var i = videos.length;
+  li.appendChild(document.createTextNode("Parte " + (i + 1)));
+  var editDiv = document.createElement("div");
+  editDiv.innerHTML = "<input class='editInput' type='text' id='startVal" + i + "' value='" + videos[videos.length - 1].end + "'>-<input class='editInput' type='text' id='endVal" + i + "' value='" + parseInt(player.duration + 1) + "'>";
+  li.appendChild(editDiv);
+  li.addEventListener("click", changeVideoEvent, false);
+  li.num = i;
+  ul.appendChild(li);
+  // Add stub for this new part, using the last video's ID and its timestamp as start time, and video duration as end time
+  videos.push({"id": videos[videos.length - 1].id, "start": videos[videos.length - 1].end, "end": parseInt(player.duration + 1)});
+  //
+  currentVideo = videos.length - 1;
+  changeVideo(true);
+}
+
+function saveTimestamps() {
+  "use strict";
+  var outputJS = "      var videos = [\n";
+  videos.forEach(function (vid, i) {
+    var startTime = 0;
+    if (isNumeric(document.getElementById("startVal" + i).value)) {
+      startTime = parseInt(document.getElementById("startVal" + i).value);
     }
-  }
-  */
+    var endTime = parseInt(player.duration + 1);
+    if (isNumeric(document.getElementById("endVal" + i).value)) {
+      endTime = parseInt(document.getElementById("endVal" + i).value);
+    }
+    videos[i].start = startTime;
+    videos[i].end = endTime;
+    // To handle the cases where the input was empty, repopulate with same value or default start/end times
+    document.getElementById("startVal" + i).value = startTime;
+    document.getElementById("endVal" + i).value = endTime;
+    outputJS += '        {"id": "' + videos[i].id + '", "start": ' + startTime + ', "end": ' + endTime + '}' + (i < videos.length - 1 ? ",": "") + '   // ' + (i + 1) +'\n';
+  });
+  outputJS += "      ];";
+  document.getElementById("outputJS").value = outputJS;
+  // Temporarily change the color of the element containing the output JS
+  document.getElementById("outputJS").style.color = "red";
+  setTimeout(function () {
+    document.getElementById("outputJS").style.color = "black";
+  }, 1500);
+  // Restart playing the current part, to give sensory feedback to the user that something happened
+  changeVideo(false);
+}
+
+function startButton() {
+  "use strict";
+  document.getElementById("startVal" + currentVideo).value = parseInt(player.currentTime);
+}
+
+function endButton() {
+  "use strict";
+  document.getElementById("endVal" + currentVideo).value = parseInt(player.currentTime);
 }
 
 function createUI() {
   "use strict";
+  if (editMode) {
+    // Adapt UI for Edit Mode
+    document.getElementById("progress").style.display = "none";
+    // Add the Edit Box at the end of the navigation section
+    var editBoxContent =  '<div id="newPart">Añadir nueva parte</div>';
+    editBoxContent +=     '<div id="startButton">Define start time</div>';
+    editBoxContent +=     '<div id="endButton">Define end time</div>';
+    editBoxContent +=     '<div id="saveTimestamps">Guardar cambios</div>';
+    editBoxContent +=     '<textarea id="outputJS">';
+    var editBox = document.createElement("div");
+    editBox.innerHTML = editBoxContent;
+    document.getElementById("navigation").parentNode.appendChild(editBox);
+    document.getElementById("newPart").addEventListener("click", newPart, false);
+    document.getElementById("saveTimestamps").addEventListener("click", saveTimestamps, false);
+    document.getElementById("startButton").addEventListener("click", startButton, false);
+    document.getElementById("endButton").addEventListener("click", endButton, false);
+  }
   var ul = document.getElementById("navigation");
-  videos.forEach(function (ignore, i) {
+  videos.forEach(function (vid, i) {
     var li = document.createElement("li");
     li.appendChild(document.createTextNode("Parte " + (i + 1)));
+    if (editMode) {
+      var editDiv = document.createElement("div");
+      editDiv.innerHTML = "<input class='editInput' type='text' id='startVal" + i + "' value='" + vid.start + "'>-<input class='editInput' type='text' id='endVal" + i + "' value='" + vid.end + "'>";
+      li.appendChild(editDiv);
+    }
     li.addEventListener("click", changeVideoEvent, false);
     li.num = i;
     ul.appendChild(li);
@@ -448,6 +553,7 @@ function createUI() {
 // Perform some initial setup/calculations
 determineLocalOrYouTubePlayer();
 determineShowTutorialDuration();
+determineEditMode();
 determineCurrentVideoParameter();
 populateProgressArray();
 window.onload = function () {

@@ -23,14 +23,14 @@ nav li {
   list-style-type:none;
   border: 1px black;
 }
-#previousButton, #nextButton, #versionCompleta span{
+#previousButton, #nextButton, #versionCompleta span, #newPart, #startButton, #endButton, #saveTimestamps{
   cursor: pointer;
 }
 #previousButton, #nextButton{
   padding-left: 10px;
   padding-right: 10px;
 }
-nav li:hover, #previousButton:hover, #nextButton:hover, #versionCompleta span:hover{
+nav li:hover, #previousButton:hover, #nextButton:hover, #versionCompleta span:hover, #newPart:hover, #startButton:hover, #endButton:hover, #saveTimestamps:hover{
   text-decoration: underline;
   background-color: honeydew;
 }
@@ -47,4 +47,11 @@ section#player{
 }
 #progress{
   width: 200px;
+}
+.editInput{
+  width: 25px;
+}
+#outputJS {
+  width: 100%;
+  height: 60px;
 }
