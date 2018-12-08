@@ -230,8 +230,8 @@ function setUpLocalVideoPlayer() {
   var vidValues = getVideoValues();
   player = document.createElement("video");
   player.setAttribute("id", "localVideoPlayer");
-  player.setAttribute("height", "96%");
-  player.setAttribute("width", "99%");
+  player.setAttribute("height", "95%");
+  player.setAttribute("width", "98%");
   player.controls = "controls";
   player.autoplay = "autoplay";
   player.src = vidValues.localVideoURL;
