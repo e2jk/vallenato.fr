@@ -454,6 +454,9 @@ function newPart() {
   li.addEventListener("click", changeVideoEvent, false);
   li.num = i;
   ul.appendChild(li);
+  // Pressing Enter in one of the time input boxes saves the changes
+  document.getElementById("startVal" + i).addEventListener("keydown", function (e) { if (e.keyCode === 13) { saveTimestamps(); } }, false);
+  document.getElementById("endVal" + i).addEventListener("keydown", function (e) { if (e.keyCode === 13) { saveTimestamps(); } }, false);
   // Add stub for this new part, using the last video's ID and its timestamp as start time, and video duration as end time
   videos.push({"id": videos[videos.length - 1].id, "start": videos[videos.length - 1].end, "end": parseInt(player.duration + 1)});
   //
@@ -532,6 +535,11 @@ function createUI() {
     li.addEventListener("click", changeVideoEvent, false);
     li.num = i;
     ul.appendChild(li);
+    if (editMode) {
+      // Pressing Enter in one of the time input boxes saves the changes
+      document.getElementById("startVal" + i).addEventListener("keydown", function (e) { if (e.keyCode === 13) { saveTimestamps(); } }, false);
+      document.getElementById("endVal" + i).addEventListener("keydown", function (e) { if (e.keyCode === 13) { saveTimestamps(); } }, false);
+    }
   });
 
   // Save the initial Title, as it contains the name of the current song
