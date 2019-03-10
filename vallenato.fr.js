@@ -1,6 +1,6 @@
 // Define [global] variables
 /*jslint browser: true, white, devel: true */
-/*global window, videos, fullVersion, YT */
+/*global window, videos, videosFullTutorial, fullVersion, YT */
 var localPlayer = false;
 var showTutorialDuration = false;
 var editMode = false;
@@ -50,7 +50,10 @@ function determineCurrentVideoParameter() {
     window.location = "?p=1" + (localPlayer ? "&local=1" : "") + (editMode ? "&editar=1" : "");
   }
   if (currentVideo > videos.length - 1) {
-    window.location = "?p=" + videos.length + (localPlayer ? "&local=1" : "") + (editMode ? "&editar=1" : "");
+    // If this video has no full tutorial videos, go back to the latest individual part
+    if (typeof videosFullTutorial == 'undefined' || (videosFullTutorial && currentVideo > videos.length + videosFullTutorial.length - 1)) {
+      window.location = "?p=" + videos.length + (localPlayer ? "&local=1" : "") + (editMode ? "&editar=1" : "");
+    }
   }
 }
 
@@ -90,9 +93,15 @@ function updateUI(updateURL) {
   // Update the progress bar (if not in Edit Mode)
   if (!editMode) {
     var pBar = document.getElementById("progress");
-    pBar.max = totalDuration;
-    pBar.value = (currentVideo === -1) ? 0 : progressArray[currentVideo];
-    pBar.getElementsByTagName("span")[0].innerHTML = (currentVideo === -1) ? 0 : Math.floor((100 / totalDuration) * progressArray[currentVideo]);
+    if (currentVideo > -1 && currentVideo < videos.length) {
+      pBar.style.display = "inline";
+      pBar.max = totalDuration;
+      pBar.value = progressArray[currentVideo];
+      pBar.getElementsByTagName("span")[0].innerHTML = Math.floor((100 / totalDuration) * progressArray[currentVideo]);
+    } else {
+      // If full tutorial or complete video, hide the progress bar
+      pBar.style.display = "none";
+    }
   }
 }
 
@@ -101,10 +110,20 @@ function getVideoValues() {
   var startSeconds;
   var endSeconds;
   var localVideoURL;
-  var videoId = (currentVideo === -1) ? fullVersion : videos[currentVideo].id;
-  if (currentVideo > -1) {
+  var videoId;
+  if (currentVideo === -1) {
+    videoId = fullVersion;
+  } else if (currentVideo < videos.length) {
+    videoId = videos[currentVideo].id;
+  } else {
+    videoId = videosFullTutorial[currentVideo - videos.length].id;
+  }
+  if (currentVideo > -1 && currentVideo < videos.length) {
     startSeconds = videos[currentVideo].start;
     endSeconds = videos[currentVideo].end;
+  } else if (currentVideo > videos.length - 1) {
+    startSeconds = videosFullTutorial[currentVideo - videos.length].start;
+    endSeconds = videosFullTutorial[currentVideo - videos.length].end;
   }
 
   if (localPlayer) {
@@ -541,6 +560,15 @@ function createUI() {
       document.getElementById("endVal" + i).addEventListener("keydown", function (e) { if (e.keyCode === 13) { saveTimestamps(); } }, false);
     }
   });
+  if (typeof videosFullTutorial !== 'undefined') {
+    videosFullTutorial.forEach(function (vid, i) {
+      var li = document.createElement("li");
+      li.appendChild(document.createTextNode("Full " + (i + 1)));
+      li.addEventListener("click", changeVideoEvent, false);
+      li.num = (i + videos.length);
+      ul.appendChild(li);
+    });
+  }
 
   // Save the initial Title, as it contains the name of the current song
   videoTitle = document.title;
