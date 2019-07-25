@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Son Sureño</title>
+    <meta charset="utf-8"/>
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="vallenato.fr.css">
+  </head>
+
+  <body>
+    <nav>
+      <ul id="navigation">
+      </ul>
+      <label><input type="checkbox" id="repeatVideo" checked="checked"> Repetir</label>
+    </nav>
+    <section id="player">
+      <div id="topRow">
+        <span id="previousButton">Parte previa</span>
+        <progress id='progress'><span>0</span>% played</progress>
+        <span id="nextButton">Siguiente parte</span>
+        <span id="linkAndName">
+          <a href="https://vallenato.fr/aprender">Aprender Acordeón Vallenato</a>/<span id="nameCurrent">Son Sureño</span><span id="versionCompleta"> - <span>Versión completa</span></span>
+        </span>
+      </div>
+      <div id="videoPlayer"></div>
+    </section>
+    <script>
+      // JavaScript by default at the bottom of the body, per https://developers.google.com/apps-script/guides/html/best-practices#load_javascript_last
+      /*jslint browser: true, white */
+      var videos = [
+        {"id": "R_vXnpyTahE", "start": 28, "end": 43},   // 1
+        {"id": "R_vXnpyTahE", "start": 53, "end": 64},   // 2
+        {"id": "R_vXnpyTahE", "start": 75, "end": 87},   // 3
+        {"id": "R_vXnpyTahE", "start": 108, "end": 131}  // 4
+      ];
+      var fullVersion = "Gp_dlzykdKY";
+    </script>
+    <script async type = "text/javascript" src="vallenato.fr.js"></script>
+  </body>
+</html>
