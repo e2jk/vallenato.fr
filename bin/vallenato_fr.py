@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 import sys
 import re
+from urllib.request import urlopen
+import readline
 
 def get_tutorial_info():
     """Retrieve the information of the new tutorial"""
@@ -9,10 +11,8 @@ def get_tutorial_info():
     (tutorial_id, tutorial_url) = get_youtube_url("tutorial")
     # What is the YouTube full video?
     (full_video_id, full_video_url) = get_youtube_url("full")
-    # Song name
-        # Autodetect, correct if needed
-    # Author name
-        # Autodetect, correct if needed
+    # Song title  and author name
+    (song_title, song_author) = get_title_and_author(tutorial_url)
     # Tutorial's slug
         # Autodetect, correct if needed
         # Check if slug not already used
@@ -45,6 +45,39 @@ def youtube_url_validation(url):
     if youtube_regex_match:
         return youtube_regex_match.group(6)
     return youtube_regex_match
+
+def get_title_and_author(url):
+    # Download that page
+    f = urlopen(url)
+    # Read only the first 1000 characters, should contain the <title> tag
+    myfile = f.read(10000).decode("utf-8")
+    page_title = re.search("<title>(.*) - YouTube</title>", myfile).groups()[0]
+    # page_title = "Muere una Flor - Turorial de Acordeón | Binomio de Oro"
+    # print(page_title)
+
+    # Extract the title
+    song_title = rlinput("Song title ('q' to quit): ", page_title)
+    if song_title.lower() == "q":
+        print("Exiting...")
+        sys.exit(11)
+
+    # Extract the author's name
+    song_author = rlinput("Song author ('q' to quit): ", page_title)
+    if song_author.lower() == "q":
+        print("Exiting...")
+        sys.exit(12)
+
+    return (song_title, song_author)
+
+def rlinput(prompt, prefill=''):
+    """Provide an editable input string
+    Inspired from https://stackoverflow.com/a/36607077
+    """
+    readline.set_startup_hook(lambda: readline.insert_text(prefill))
+    try:
+        return input(prompt)
+    finally:
+        readline.set_startup_hook()
 
 # Download the videos
     # Tutorial video

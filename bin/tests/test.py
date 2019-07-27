@@ -24,6 +24,7 @@ def mock_raw_input(s):
     return mock_raw_input_values[mock_raw_input_counter - 1]
 target.input = mock_raw_input
 
+
 class TestGetYoutubeUrl(unittest.TestCase):
     def test_get_youtube_url_valid(self):
         # Pass it a valid YouTube URLs
@@ -34,7 +35,6 @@ class TestGetYoutubeUrl(unittest.TestCase):
         (video_id, video_url) = target.get_youtube_url("")
         self.assertEqual(video_id, "oPEirA4pXdg")
         self.assertEqual(video_url, "https://www.youtube.com/watch?v=oPEirA4pXdg")
-
 
     def test_get_youtube_url_invalid_then_valid(self):
         # Pass it a valid YouTube URLs
@@ -57,6 +57,7 @@ class TestGetYoutubeUrl(unittest.TestCase):
         the_exception = cm.exception
         self.assertEqual(the_exception.code, 10)
 
+
 class TestYoutubeUrlValidation(unittest.TestCase):
     def test_youtube_url_validation_true(self):
         valid_youtube_urls = [
@@ -78,6 +79,46 @@ class TestYoutubeUrlValidation(unittest.TestCase):
         for url in invalid_youtube_urls:
             self.assertFalse(target.youtube_url_validation(url))
 
+
+class TestGetTitleAndAuthor(unittest.TestCase):
+    def test_get_title_and_author_valid(self):
+        global mock_raw_input_counter
+        global mock_raw_input_values
+        mock_raw_input_counter = 0
+        mock_raw_input_values = ["ABC", "DEF"]
+        (song_title, song_author) = target.get_title_and_author("https://www.youtube.com/watch?v=v5xEaLCCNRc")
+        self.assertEqual(song_title, "ABC")
+        self.assertEqual(song_author, "DEF")
+
+    def test_get_title_and_author_quit_title(self):
+        global mock_raw_input_counter
+        global mock_raw_input_values
+        mock_raw_input_counter = 0
+        mock_raw_input_values = ["q"]
+        with self.assertRaises(SystemExit) as cm:
+            (song_title, song_author) = target.get_title_and_author("https://www.youtube.com/watch?v=v5xEaLCCNRc")
+        the_exception = cm.exception
+        self.assertEqual(the_exception.code, 11)
+
+    def test_get_title_and_author_quit_author(self):
+        global mock_raw_input_counter
+        global mock_raw_input_values
+        mock_raw_input_counter = 0
+        mock_raw_input_values = ["ABC", "q"]
+        with self.assertRaises(SystemExit) as cm:
+            (song_title, song_author) = target.get_title_and_author("https://www.youtube.com/watch?v=v5xEaLCCNRc")
+        the_exception = cm.exception
+        self.assertEqual(the_exception.code, 12)
+
+
+class TestRlinput(unittest.TestCase):
+    def test_rlinput(self):
+        # Since we're using a mock function to test input(), rlinput() can also
+        # not really be tested...
+        # It gets mock-tested through TestGetTitleAndAuthor.
+        pass
+
+
 class TestInitMain(unittest.TestCase):
     def test_init_main_no_arguments(self):
         """
@@ -91,7 +132,12 @@ class TestInitMain(unittest.TestCase):
         global mock_raw_input_counter
         global mock_raw_input_values
         mock_raw_input_counter = 0
-        mock_raw_input_values = ["http://www.youtube.com/watch?v=oPEirA4pXdg", "https://www.youtube.com/watch?v=q6cUzC6ESZ8"]
+        mock_raw_input_values = [
+            "http://www.youtube.com/watch?v=oPEirA4pXdg",
+            "https://www.youtube.com/watch?v=q6cUzC6ESZ8",
+            "",
+            ""
+        ]
         # Run the init(), nothing specific should happen, the program exits correctly
         target.init()
 
