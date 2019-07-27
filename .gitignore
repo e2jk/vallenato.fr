@@ -1,2 +1,5 @@
 temp/
 videos/
+__pycache__/
+bin/.coverage
+bin/htmlcov/
