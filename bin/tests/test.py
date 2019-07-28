@@ -46,11 +46,7 @@ class TestGetTutorialInfo(unittest.TestCase):
         self.assertEqual(song_author, "Super cantante")
         self.assertEqual(tutocreator, "El Vallenatero Francés")
         self.assertEqual(tutocreator_channel, "UC_8R235jg1ld6MCMOzz2khQ")
-        # Get the path of the folder two level `up tests` and `bin` (where all
-        # the tutorials are)
-        tutorials_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
-        expected_slug_path = os.path.abspath(os.path.join(tutorials_path, "%s.html" % mock_raw_input_values[4]))
-        self.assertEqual(tutorial_slug, expected_slug_path)
+        self.assertEqual(tutorial_slug, mock_raw_input_values[4])
 
 
 class TestGetYoutubeUrl(unittest.TestCase):
@@ -156,11 +152,7 @@ class TestGetTutorialSlug(unittest.TestCase):
         mock_raw_input_counter = 0
         mock_raw_input_values = ["blabla-bla"]
         tutorial_slug = target.get_tutorial_slug("NOT RELEVANT")
-        # Get the path of the folder two level `up tests` and `bin` (where all
-        # the tutorials are)
-        tutorials_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
-        expected_slug_path = os.path.abspath(os.path.join(tutorials_path, "%s.html" % mock_raw_input_values[0]))
-        self.assertEqual(tutorial_slug, expected_slug_path)
+        self.assertEqual(tutorial_slug, mock_raw_input_values[0])
 
     def test_get_tutorial_slug_existing(self):
         global mock_raw_input_counter
@@ -168,11 +160,7 @@ class TestGetTutorialSlug(unittest.TestCase):
         mock_raw_input_counter = 0
         mock_raw_input_values = ["muere-una-flor", "muere-una-flor-2"]
         tutorial_slug = target.get_tutorial_slug("NOT RELEVANT")
-        # Get the path of the folder two level `up tests` and `bin` (where all
-        # the tutorials are)
-        tutorials_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
-        expected_slug_path = os.path.abspath(os.path.join(tutorials_path, "%s.html" % mock_raw_input_values[1]))
-        self.assertEqual(tutorial_slug, expected_slug_path)
+        self.assertEqual(tutorial_slug, mock_raw_input_values[1])
 
     def test_get_tutorial_slug_existing_double(self):
         global mock_raw_input_counter
@@ -183,11 +171,7 @@ class TestGetTutorialSlug(unittest.TestCase):
         # the slug would already have detected there is no jaime-molina but
         # there is already a jaime-molina-1
         tutorial_slug = target.get_tutorial_slug("NOT RELEVANT")
-        # Get the path of the folder two level `up tests` and `bin` (where all
-        # the tutorials are)
-        tutorials_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
-        expected_slug_path = os.path.abspath(os.path.join(tutorials_path, "%s.html" % mock_raw_input_values[2]))
-        self.assertEqual(tutorial_slug, expected_slug_path)
+        self.assertEqual(tutorial_slug, mock_raw_input_values[2])
 
     def test_get_tutorial_slug_quit_direct(self):
         global mock_raw_input_counter
@@ -230,7 +214,7 @@ class TestGetSuggestedTutorialSlug(unittest.TestCase):
 
 class TestCreateNewTutorialPage(unittest.TestCase):
     def test_create_new_tutorial_page_ok(self):
-        tutorial_slug = "../blabla-bla.html"
+        tutorial_slug = "blabla-bla"
         song_title = "Bonita cancion"
         tutorial_id = "oPEirA4pXdg"
         full_video_id = "q6cUzC6ESZ8"
@@ -251,7 +235,11 @@ class TestCreateNewTutorialPage(unittest.TestCase):
         with self.assertRaises(TypeError) as cm:
             target.create_new_tutorial_page(None, None, None, None)
         the_exception = cm.exception
-        self.assertEqual(str(the_exception), "stat: path should be string, bytes, os.PathLike or integer, not NoneType")
+        self.assertEqual(str(the_exception), "replace() argument 2 must be str, not None")
+        # Confirm that a new tutorial page None.html has been created
+        self.assertTrue(os.path.exists("../None.html"))
+        # Delete that new tutorial page
+        os.remove("../None.html")
 
 
 class TestInitMain(unittest.TestCase):

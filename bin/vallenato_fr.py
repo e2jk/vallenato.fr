@@ -114,7 +114,7 @@ def get_tutorial_slug(song_title):
             print("Exiting...")
             sys.exit(14)
         slug_path = os.path.abspath(os.path.join(tutorials_path, "%s.html" % tutorial_slug))
-    return slug_path
+    return tutorial_slug
 
 
 def get_suggested_tutorial_slug(song_title):
@@ -146,9 +146,9 @@ def get_suggested_tutorial_slug(song_title):
 
 def create_new_tutorial_page(tutorial_slug, song_title, tutorial_id, full_video_id):
     # Copy the template to a new file
-    shutil.copy("template.html", tutorial_slug)
+    shutil.copy("template.html", "../%s.html" % tutorial_slug)
     # Read in the file
-    with open(tutorial_slug, 'r') as file :
+    with open("../%s.html" % tutorial_slug, 'r') as file :
         filedata = file.read()
 
     # Replace the target string
@@ -157,7 +157,7 @@ def create_new_tutorial_page(tutorial_slug, song_title, tutorial_id, full_video_
     filedata = filedata.replace("[[FULL VIDEO ID]]", full_video_id)
 
     # Save edited file
-    with open(tutorial_slug, 'w') as file:
+    with open("../%s.html" % tutorial_slug, 'w') as file:
         file.write(filedata)
 
 # Update the index page
