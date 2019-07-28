@@ -228,6 +228,32 @@ class TestGetSuggestedTutorialSlug(unittest.TestCase):
         self.assertEqual(tutorial_slug, "jaime-molina-3")
 
 
+class TestCreateNewTutorialPage(unittest.TestCase):
+    def test_create_new_tutorial_page_ok(self):
+        tutorial_slug = "../blabla-bla.html"
+        song_title = "Bonita cancion"
+        tutorial_id = "oPEirA4pXdg"
+        full_video_id = "q6cUzC6ESZ8"
+        target.create_new_tutorial_page(tutorial_slug, song_title, tutorial_id, full_video_id)
+        # Confirm that a new tutorial page has been created
+        self.assertTrue(os.path.exists("../blabla-bla.html"))
+        # Confirm that the content of the new template has been updated
+        with open("../blabla-bla.html", 'r') as file :
+            filedata = file.read()
+        self.assertTrue("<title>Bonita cancion</title>" in filedata)
+        self.assertTrue('<span id="nameCurrent">Bonita cancion</span>' in filedata)
+        self.assertTrue('{"id": "oPEirA4pXdg", "start": 0, "end": 999}' in filedata)
+        self.assertTrue('var fullVersion = "q6cUzC6ESZ8";' in filedata)
+        # Delete that new tutorial page
+        os.remove("../blabla-bla.html")
+
+    def test_create_new_tutorial_page_invalid_parameters(self):
+        with self.assertRaises(TypeError) as cm:
+            target.create_new_tutorial_page(None, None, None, None)
+        the_exception = cm.exception
+        self.assertEqual(str(the_exception), "stat: path should be string, bytes, os.PathLike or integer, not NoneType")
+
+
 class TestInitMain(unittest.TestCase):
     def test_init_main_no_arguments(self):
         """
@@ -248,8 +274,19 @@ class TestInitMain(unittest.TestCase):
             "Super cantante",
             "blabla-bla"
         ]
-        # Run the init(), nothing specific should happen, the program exits correctly
+        # Run the init(), the program exits correctly
         target.init()
+        # Confirm that a new tutorial page has been created
+        self.assertTrue(os.path.exists("../blabla-bla.html"))
+        # Confirm that the content of the new template has been updated
+        with open("../blabla-bla.html", 'r') as file :
+            filedata = file.read()
+        self.assertTrue("<title>Bonita cancion</title>" in filedata)
+        self.assertTrue('<span id="nameCurrent">Bonita cancion</span>' in filedata)
+        self.assertTrue('{"id": "oPEirA4pXdg", "start": 0, "end": 999}' in filedata)
+        self.assertTrue('var fullVersion = "q6cUzC6ESZ8";' in filedata)
+        # Delete that new tutorial page
+        os.remove("../blabla-bla.html")
 
 
 class TestLicense(unittest.TestCase):

@@ -22,6 +22,7 @@ from urllib.request import urlopen
 import readline
 from slugify import slugify
 import os
+import shutil
 
 def get_tutorial_info():
     """Retrieve the information of the new tutorial"""
@@ -143,11 +144,21 @@ def get_suggested_tutorial_slug(song_title):
 # Download a single video from YouTube
 # https://yagisanatode.com/2018/03/09/how-do-i-download-youtube-videos-with-python-3-using-pytube/
 
-# Create the new tutorial's page
+def create_new_tutorial_page(tutorial_slug, song_title, tutorial_id, full_video_id):
     # Copy the template to a new file
-    # Replace [[TITLE]]
-    # Replace [[TUTORIAL VIDEO URL]]
-    # Replace [[FULL VIDEO URL]]
+    shutil.copy("template.html", tutorial_slug)
+    # Read in the file
+    with open(tutorial_slug, 'r') as file :
+        filedata = file.read()
+
+    # Replace the target string
+    filedata = filedata.replace("[[TITLE]]", song_title)
+    filedata = filedata.replace("[[TUTORIAL VIDEO ID]]", tutorial_id)
+    filedata = filedata.replace("[[FULL VIDEO ID]]", full_video_id)
+
+    # Save edited file
+    with open(tutorial_slug, 'w') as file:
+        file.write(filedata)
 
 # Update the index page
     # Link to the new tutorial's page
@@ -159,7 +170,7 @@ def main():
     # Download the videos (both the tutorial and the full video)
     # TODO
     # Create the new tutorial's page
-    # TODO
+    create_new_tutorial_page(tutorial_slug, song_title, tutorial_id, full_video_id)
     # Update the index page
     # TODO
 
