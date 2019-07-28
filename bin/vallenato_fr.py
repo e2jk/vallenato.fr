@@ -82,7 +82,7 @@ def get_title_author_tutocreator_and_channel(url):
         sys.exit(12)
 
     # The name of the creator of the tutorial
-    tutocreator = re.search(',"author":"(.*?)","', myfile).groups()[0]
+    tutocreator = re.search(',"author":"(.*?)"}?,"', myfile).groups()[0]
 
     # The YouTube channel of the creator of the tutorial
     tutocreator_channel = re.search('<meta itemprop="channelId" content="(.*?)">', myfile).groups()[0]
