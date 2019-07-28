@@ -37,13 +37,15 @@ class TestGetTutorialInfo(unittest.TestCase):
             "Super cantante",
             "blabla-bla"
         ]
-        (tutorial_id, tutorial_url, full_video_id, full_video_url, song_title, song_author, tutorial_slug) = target.get_tutorial_info()
+        (tutorial_id, tutorial_url, full_video_id, full_video_url, song_title, song_author, tutocreator, tutocreator_channel, tutorial_slug) = target.get_tutorial_info()
         self.assertEqual(tutorial_id, "oPEirA4pXdg")
         self.assertEqual(tutorial_url, "https://www.youtube.com/watch?v=oPEirA4pXdg")
         self.assertEqual(full_video_id, "q6cUzC6ESZ8")
         self.assertEqual(full_video_url, "https://www.youtube.com/watch?v=q6cUzC6ESZ8")
         self.assertEqual(song_title, "Bonita cancion")
         self.assertEqual(song_author, "Super cantante")
+        self.assertEqual(tutocreator, "El Vallenatero Francés")
+        self.assertEqual(tutocreator_channel, "UC_8R235jg1ld6MCMOzz2khQ")
         # Get the path of the folder two level `up tests` and `bin` (where all
         # the tutorials are)
         tutorials_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
@@ -106,33 +108,35 @@ class TestYoutubeUrlValidation(unittest.TestCase):
             self.assertFalse(target.youtube_url_validation(url))
 
 
-class TestGetTitleAndAuthor(unittest.TestCase):
-    def test_get_title_and_author_valid(self):
+class TestGetTitleAuthorTutocreatorAndChannel(unittest.TestCase):
+    def test_get_title_author_tutocreator_and_channel_valid(self):
         global mock_raw_input_counter
         global mock_raw_input_values
         mock_raw_input_counter = 0
         mock_raw_input_values = ["ABC", "DEF"]
-        (song_title, song_author) = target.get_title_and_author("https://www.youtube.com/watch?v=v5xEaLCCNRc")
+        (song_title, song_author, tutocreator, tutocreator_channel) = target.get_title_author_tutocreator_and_channel("https://www.youtube.com/watch?v=v5xEaLCCNRc")
         self.assertEqual(song_title, "ABC")
         self.assertEqual(song_author, "DEF")
+        self.assertEqual(tutocreator, "FZ Academia Vallenato")
+        self.assertEqual(tutocreator_channel, "UCWVRD_dZ2wnm1Xf_R5G0D8w")
 
-    def test_get_title_and_author_quit_title(self):
+    def test_get_title_author_tutocreator_and_channel_quit_title(self):
         global mock_raw_input_counter
         global mock_raw_input_values
         mock_raw_input_counter = 0
         mock_raw_input_values = ["q"]
         with self.assertRaises(SystemExit) as cm:
-            (song_title, song_author) = target.get_title_and_author("https://www.youtube.com/watch?v=v5xEaLCCNRc")
+            (song_title, song_author, tutocreator, tutocreator_channel) = target.get_title_author_tutocreator_and_channel("https://www.youtube.com/watch?v=v5xEaLCCNRc")
         the_exception = cm.exception
         self.assertEqual(the_exception.code, 11)
 
-    def test_get_title_and_author_quit_author(self):
+    def test_get_title_author_tutocreator_and_channel_quit_author(self):
         global mock_raw_input_counter
         global mock_raw_input_values
         mock_raw_input_counter = 0
         mock_raw_input_values = ["ABC", "q"]
         with self.assertRaises(SystemExit) as cm:
-            (song_title, song_author) = target.get_title_and_author("https://www.youtube.com/watch?v=v5xEaLCCNRc")
+            (song_title, song_author, tutocreator, tutocreator_channel) = target.get_title_author_tutocreator_and_channel("https://www.youtube.com/watch?v=v5xEaLCCNRc")
         the_exception = cm.exception
         self.assertEqual(the_exception.code, 12)
 

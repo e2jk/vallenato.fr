@@ -29,11 +29,11 @@ def get_tutorial_info():
     (tutorial_id, tutorial_url) = get_youtube_url("tutorial")
     # What is the YouTube full video?
     (full_video_id, full_video_url) = get_youtube_url("full")
-    # Song title  and author name
-    (song_title, song_author) = get_title_and_author(tutorial_url)
+    # Song title, author name and the tutorial creator's name and YouTube channel
+    (song_title, song_author, tutocreator, tutocreator_channel) = get_title_author_tutocreator_and_channel(tutorial_url)
     # Tutorial's slug
     tutorial_slug = get_tutorial_slug(song_title)
-    return (tutorial_id, tutorial_url, full_video_id, full_video_url, song_title, song_author, tutorial_slug)
+    return (tutorial_id, tutorial_url, full_video_id, full_video_url, song_title, song_author, tutocreator, tutocreator_channel, tutorial_slug)
 
 def get_youtube_url(type):
     """Extract video ID and Normalize URL"""
@@ -48,7 +48,6 @@ def get_youtube_url(type):
         if not video_id:
             s = input("Invalid %s video URL, please try again ('q' to quit): " % type)
     video_url = "https://www.youtube.com/watch?v=%s" % video_id
-    # print(video_id, video_url)
     return (video_id, video_url)
 
 def youtube_url_validation(url):
@@ -64,14 +63,11 @@ def youtube_url_validation(url):
         return youtube_regex_match.group(6)
     return youtube_regex_match
 
-def get_title_and_author(url):
+def get_title_author_tutocreator_and_channel(url):
     # Download that page
     f = urlopen(url)
-    # Read only the first 1000 characters, should contain the <title> tag
-    myfile = f.read(10000).decode("utf-8")
+    myfile = f.read().decode("utf-8")
     page_title = re.search("<title>(.*) - YouTube</title>", myfile).groups()[0]
-    # page_title = "Muere una Flor - Turorial de Acordeón | Binomio de Oro"
-    # print(page_title)
 
     # Extract the title
     song_title = rlinput("Song title ('q' to quit): ", page_title)
@@ -85,7 +81,13 @@ def get_title_and_author(url):
         print("Exiting...")
         sys.exit(12)
 
-    return (song_title, song_author)
+    # The name of the creator of the tutorial
+    tutocreator = re.search(',"author":"(.*?)","', myfile).groups()[0]
+
+    # The YouTube channel of the creator of the tutorial
+    tutocreator_channel = re.search('<meta itemprop="channelId" content="(.*?)">', myfile).groups()[0]
+
+    return (song_title, song_author, tutocreator, tutocreator_channel)
 
 def rlinput(prompt, prefill=''):
     """Provide an editable input string
@@ -140,8 +142,6 @@ def get_suggested_tutorial_slug(song_title):
 
 # Download a single video from YouTube
 
-# Get the tutorial's author name and YouTube channel
-
 # Create the new tutorial's page
     # Copy the template to a new file
     # Replace [[TITLE]]
@@ -153,7 +153,14 @@ def get_suggested_tutorial_slug(song_title):
     # Link to the author's YouTube channel
 
 def main():
-    (tutorial_id, tutorial_url, full_video_id, full_video_url, song_title, song_author, tutorial_slug) = get_tutorial_info()
+    # Get the information about this new tutorial
+    (tutorial_id, tutorial_url, full_video_id, full_video_url, song_title, song_author, tutocreator, tutocreator_channel, tutorial_slug) = get_tutorial_info()
+    # Download the videos (both the tutorial and the full video)
+    # TODO
+    # Create the new tutorial's page
+    # TODO
+    # Update the index page
+    # TODO
 
 def init():
     if __name__ == "__main__":
