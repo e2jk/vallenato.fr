@@ -11,6 +11,7 @@
 import unittest
 import sys
 import os
+import shutil
 
 sys.path.append('.')
 target = __import__("vallenato_fr")
@@ -242,6 +243,27 @@ class TestCreateNewTutorialPage(unittest.TestCase):
         os.remove("../None.html")
 
 
+class TestUpdateIndexPage(unittest.TestCase):
+    def test_update_index_page_ok(self):
+        tutorial_slug = "blabla-bla"
+        song_title = "Bonita cancion"
+        song_author = "Super cantante"
+        tutorial_url = "https://www.youtube.com/watch?v=oPEirA4pXdg"
+        tutocreator_channel = "UC_8R235jg1ld6MCMOzz2khQ"
+        tutocreator = "El Vallenatero Francés"
+        # Create a copy of the index.html file that is going to be edited
+        shutil.copy("../index.html", "../index.html.bak")
+        target.update_index_page(tutorial_slug, song_title, song_author, tutorial_url, tutocreator_channel, tutocreator)
+        # Confirm that the index page has been updated
+        with open("../index.html", 'r') as file :
+            filedata = file.read()
+        self.assertTrue('</li>\n      <li><a href="blabla-bla.html">Bonita cancion - Super cantante</a> - NNmNNs en NN partes</li>\n    </ul>' in filedata)
+        self.assertTrue('</a></li>\n      <li>Bonita cancion - Super cantante: <a href="https://www.youtube.com/watch?v=oPEirA4pXdg">Tutorial en YouTube</a> por <a href="https://www.youtube.com/channel/UC_8R235jg1ld6MCMOzz2khQ">El Vallenatero Francés</a></li>\n    </ul>' in filedata)
+        # Restore the index page
+        os.remove("../index.html")
+        shutil.move("../index.html.bak", "../index.html")
+
+
 class TestInitMain(unittest.TestCase):
     def test_init_main_no_arguments(self):
         """
@@ -262,6 +284,8 @@ class TestInitMain(unittest.TestCase):
             "Super cantante",
             "blabla-bla"
         ]
+        # Create a copy of the index.html file that is going to be edited
+        shutil.copy("../index.html", "../index.html.bak")
         # Run the init(), the program exits correctly
         target.init()
         # Confirm that a new tutorial page has been created
@@ -273,8 +297,16 @@ class TestInitMain(unittest.TestCase):
         self.assertTrue('<span id="nameCurrent">Bonita cancion</span>' in filedata)
         self.assertTrue('{"id": "oPEirA4pXdg", "start": 0, "end": 999}' in filedata)
         self.assertTrue('var fullVersion = "q6cUzC6ESZ8";' in filedata)
+        # Confirm that the index page has been updated
+        with open("../index.html", 'r') as file :
+            filedata = file.read()
+        self.assertTrue('</li>\n      <li><a href="blabla-bla.html">Bonita cancion - Super cantante</a> - NNmNNs en NN partes</li>\n    </ul>' in filedata)
+        self.assertTrue('</a></li>\n      <li>Bonita cancion - Super cantante: <a href="https://www.youtube.com/watch?v=oPEirA4pXdg">Tutorial en YouTube</a> por <a href="https://www.youtube.com/channel/UC_8R235jg1ld6MCMOzz2khQ">El Vallenatero Francés</a></li>\n    </ul>' in filedata)
         # Delete that new tutorial page
         os.remove("../blabla-bla.html")
+        # Restore the index page
+        os.remove("../index.html")
+        shutil.move("../index.html.bak", "../index.html")
 
 
 class TestLicense(unittest.TestCase):

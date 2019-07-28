@@ -160,9 +160,24 @@ def create_new_tutorial_page(tutorial_slug, song_title, tutorial_id, full_video_
     with open("../%s.html" % tutorial_slug, 'w') as file:
         file.write(filedata)
 
-# Update the index page
-    # Link to the new tutorial's page
-    # Link to the author's YouTube channel
+def update_index_page(tutorial_slug, song_title, song_author, tutorial_url, tutocreator_channel, tutocreator):
+    # Read in the index page
+    with open("../index.html", 'r') as file :
+        filedata = file.read()
+
+    # Add a link to the new tutorial's page
+    end_section = '\n    </ul>\n    <h2>Otros recursos</h2>'
+    new_link = '\n      <li><a href="%s.html">%s - %s</a> - NNmNNs en NN partes</li>' % (tutorial_slug, song_title, song_author)
+    filedata = filedata.replace(end_section, "%s%s" %(new_link, end_section))
+
+    # Add links to the tutorial and the author's YouTube channel
+    end_section = '\n    </ul>\n    <p><a href="https://vallenato.fr">El Vallenatero Francés</a>'
+    new_link = '\n      <li>%s - %s: <a href="%s">Tutorial en YouTube</a> por <a href="https://www.youtube.com/channel/%s">%s</a></li>' % (song_title, song_author, tutorial_url, tutocreator_channel, tutocreator)
+    filedata = filedata.replace(end_section, "%s%s" %(new_link, end_section))
+
+    # Save edited file
+    with open("../index.html", 'w') as file:
+        file.write(filedata)
 
 def main():
     # Get the information about this new tutorial
@@ -172,7 +187,7 @@ def main():
     # Create the new tutorial's page
     create_new_tutorial_page(tutorial_slug, song_title, tutorial_id, full_video_id)
     # Update the index page
-    # TODO
+    update_index_page(tutorial_slug, song_title, song_author, tutorial_url, tutocreator_channel, tutocreator)
 
 def init():
     if __name__ == "__main__":
