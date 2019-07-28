@@ -38,7 +38,6 @@ class TestGetTutorialInfo(unittest.TestCase):
             "blabla-bla"
         ]
         (tutorial_id, tutorial_url, full_video_id, full_video_url, song_title, song_author, tutorial_slug) = target.get_tutorial_info()
-        print(tutorial_id, tutorial_url, full_video_id, full_video_url, song_title, song_author, tutorial_slug)
         self.assertEqual(tutorial_id, "oPEirA4pXdg")
         self.assertEqual(tutorial_url, "https://www.youtube.com/watch?v=oPEirA4pXdg")
         self.assertEqual(full_video_id, "q6cUzC6ESZ8")
@@ -224,6 +223,7 @@ class TestGetSuggestedTutorialSlug(unittest.TestCase):
         # There are already two tutorials jaime-molina-1 and jaime-molina-2
         self.assertEqual(tutorial_slug, "jaime-molina-3")
 
+
 class TestInitMain(unittest.TestCase):
     def test_init_main_no_arguments(self):
         """
@@ -246,6 +246,31 @@ class TestInitMain(unittest.TestCase):
         ]
         # Run the init(), nothing specific should happen, the program exits correctly
         target.init()
+
+
+class TestLicense(unittest.TestCase):
+    def test_license_file(self):
+        """Validate that the project has a LICENSE file, check part of its content"""
+        self.assertTrue(os.path.isfile("LICENSE"))
+        with open('LICENSE') as f:
+            s = f.read()
+            # Confirm it is the GNU Affero General Public License version 3
+            self.assertTrue("GNU AFFERO GENERAL PUBLIC LICENSE\n                       Version 3" in s)
+
+    def test_license_mention(self):
+        """Validate that the script file contain a mention of the license"""
+        with open('vallenato_fr.py') as f:
+            s = f.read()
+            # Confirm it is the GNU Affero General Public License version 3
+            self.assertTrue(
+                "#    This file is part of Vallenato.fr.\n"
+                "#\n"
+                "#    Vallenato.fr is free software: you can redistribute it and/or modify\n"
+                "#    it under the terms of the GNU Affero General Public License as published by\n"
+                "#    the Free Software Foundation, either version 3 of the License, or\n"
+                "#    (at your option) any later version.\n"
+                in s)
+
 
 if __name__ == '__main__':
     unittest.main()
