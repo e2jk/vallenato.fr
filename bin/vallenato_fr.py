@@ -180,12 +180,20 @@ def update_index_page(tutorial_slug, song_title, song_author, tutorial_url, tuto
         file.write(filedata)
 
 def main():
+    # TODO: accept arguments
+    # TODO: - arg to create the new tutorial in a temporary folder for later edition (not uploaded and not included in the index page)
+    # TODO: - arg to not download the YouTube videos
+
     # Get the information about this new tutorial
     (tutorial_id, tutorial_url, full_video_id, full_video_url, song_title, song_author, tutocreator, tutocreator_channel, tutorial_slug) = get_tutorial_info()
+
     # Download the videos (both the tutorial and the full video)
     # TODO
+
     # Create the new tutorial's page
     create_new_tutorial_page(tutorial_slug, song_title, tutorial_id, full_video_id)
+
+    # TODO: when creating the new tutorial in a temporary folder for later edition,  do not update the index page
     # Update the index page
     update_index_page(tutorial_slug, song_title, song_author, tutorial_url, tutocreator_channel, tutocreator)
 
