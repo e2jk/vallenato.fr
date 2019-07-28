@@ -10,6 +10,7 @@
 
 import unittest
 import sys
+import os
 
 sys.path.append('.')
 target = __import__("vallenato_fr")
@@ -23,6 +24,32 @@ def mock_raw_input(s):
     mock_raw_input_counter += 1
     return mock_raw_input_values[mock_raw_input_counter - 1]
 target.input = mock_raw_input
+
+class TestGetTutorialInfo(unittest.TestCase):
+    def test_get_tutorial_info(self):
+        global mock_raw_input_counter
+        global mock_raw_input_values
+        mock_raw_input_counter = 0
+        mock_raw_input_values = [
+            "http://www.youtube.com/watch?v=oPEirA4pXdg",
+            "https://www.youtube.com/watch?v=q6cUzC6ESZ8",
+            "Bonita cancion",
+            "Super cantante",
+            "blabla-bla"
+        ]
+        (tutorial_id, tutorial_url, full_video_id, full_video_url, song_title, song_author, tutorial_slug) = target.get_tutorial_info()
+        print(tutorial_id, tutorial_url, full_video_id, full_video_url, song_title, song_author, tutorial_slug)
+        self.assertEqual(tutorial_id, "oPEirA4pXdg")
+        self.assertEqual(tutorial_url, "https://www.youtube.com/watch?v=oPEirA4pXdg")
+        self.assertEqual(full_video_id, "q6cUzC6ESZ8")
+        self.assertEqual(full_video_url, "https://www.youtube.com/watch?v=q6cUzC6ESZ8")
+        self.assertEqual(song_title, "Bonita cancion")
+        self.assertEqual(song_author, "Super cantante")
+        # Get the path of the folder two level `up tests` and `bin` (where all
+        # the tutorials are)
+        tutorials_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+        expected_slug_path = os.path.abspath(os.path.join(tutorials_path, "%s.html" % mock_raw_input_values[4]))
+        self.assertEqual(tutorial_slug, expected_slug_path)
 
 
 class TestGetYoutubeUrl(unittest.TestCase):
@@ -119,6 +146,84 @@ class TestRlinput(unittest.TestCase):
         pass
 
 
+class TestGetTutorialSlug(unittest.TestCase):
+    def test_get_tutorial_slug_new(self):
+        global mock_raw_input_counter
+        global mock_raw_input_values
+        mock_raw_input_counter = 0
+        mock_raw_input_values = ["blabla-bla"]
+        tutorial_slug = target.get_tutorial_slug("NOT RELEVANT")
+        # Get the path of the folder two level `up tests` and `bin` (where all
+        # the tutorials are)
+        tutorials_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+        expected_slug_path = os.path.abspath(os.path.join(tutorials_path, "%s.html" % mock_raw_input_values[0]))
+        self.assertEqual(tutorial_slug, expected_slug_path)
+
+    def test_get_tutorial_slug_existing(self):
+        global mock_raw_input_counter
+        global mock_raw_input_values
+        mock_raw_input_counter = 0
+        mock_raw_input_values = ["muere-una-flor", "muere-una-flor-2"]
+        tutorial_slug = target.get_tutorial_slug("NOT RELEVANT")
+        # Get the path of the folder two level `up tests` and `bin` (where all
+        # the tutorials are)
+        tutorials_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+        expected_slug_path = os.path.abspath(os.path.join(tutorials_path, "%s.html" % mock_raw_input_values[1]))
+        self.assertEqual(tutorial_slug, expected_slug_path)
+
+    def test_get_tutorial_slug_existing_double(self):
+        global mock_raw_input_counter
+        global mock_raw_input_values
+        mock_raw_input_counter = 0
+        mock_raw_input_values = ["jaime-molina-1", "jaime-molina-2", "jaime-molina-3"]
+        # We start directly at jaime-molina-1, when not using the mock version
+        # the slug would already have detected there is no jaime-molina but
+        # there is already a jaime-molina-1
+        tutorial_slug = target.get_tutorial_slug("NOT RELEVANT")
+        # Get the path of the folder two level `up tests` and `bin` (where all
+        # the tutorials are)
+        tutorials_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+        expected_slug_path = os.path.abspath(os.path.join(tutorials_path, "%s.html" % mock_raw_input_values[2]))
+        self.assertEqual(tutorial_slug, expected_slug_path)
+
+    def test_get_tutorial_slug_quit_direct(self):
+        global mock_raw_input_counter
+        global mock_raw_input_values
+        mock_raw_input_counter = 0
+        mock_raw_input_values = ["q"]
+        with self.assertRaises(SystemExit) as cm:
+            tutorial_slug = target.get_tutorial_slug("NOT RELEVANT")
+        the_exception = cm.exception
+        self.assertEqual(the_exception.code, 13)
+
+
+    def test_get_tutorial_slug_quit_second_pass(self):
+        global mock_raw_input_counter
+        global mock_raw_input_values
+        mock_raw_input_counter = 0
+        mock_raw_input_values = ["muere-una-flor", "q"]
+        # We use a slug that already exists, then quit at the second prompt
+        with self.assertRaises(SystemExit) as cm:
+            tutorial_slug = target.get_tutorial_slug("NOT RELEVANT")
+        the_exception = cm.exception
+        self.assertEqual(the_exception.code, 14)
+
+
+class TestGetSuggestedTutorialSlug(unittest.TestCase):
+    def test_get_suggested_tutorial_slug_new(self):
+        (tutorials_path, tutorial_slug) = target.get_suggested_tutorial_slug("blabla bla")
+        self.assertEqual(tutorial_slug, "blabla-bla")
+
+    def test_get_suggested_tutorial_slug_existing(self):
+        (tutorials_path, tutorial_slug) = target.get_suggested_tutorial_slug("Muere una Flor")
+        # There is already a tutorial with slug muere-una-flor
+        self.assertEqual(tutorial_slug, "muere-una-flor-2")
+
+    def test_get_suggested_tutorial_slug_existing_double(self):
+        (tutorials_path, tutorial_slug) = target.get_suggested_tutorial_slug("Jaime Molina")
+        # There are already two tutorials jaime-molina-1 and jaime-molina-2
+        self.assertEqual(tutorial_slug, "jaime-molina-3")
+
 class TestInitMain(unittest.TestCase):
     def test_init_main_no_arguments(self):
         """
@@ -135,8 +240,9 @@ class TestInitMain(unittest.TestCase):
         mock_raw_input_values = [
             "http://www.youtube.com/watch?v=oPEirA4pXdg",
             "https://www.youtube.com/watch?v=q6cUzC6ESZ8",
-            "",
-            ""
+            "Bonita cancion",
+            "Super cantante",
+            "blabla-bla"
         ]
         # Run the init(), nothing specific should happen, the program exits correctly
         target.init()

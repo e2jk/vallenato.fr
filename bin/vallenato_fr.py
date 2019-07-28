@@ -4,6 +4,8 @@ import sys
 import re
 from urllib.request import urlopen
 import readline
+from slugify import slugify
+import os
 
 def get_tutorial_info():
     """Retrieve the information of the new tutorial"""
@@ -14,8 +16,8 @@ def get_tutorial_info():
     # Song title  and author name
     (song_title, song_author) = get_title_and_author(tutorial_url)
     # Tutorial's slug
-        # Autodetect, correct if needed
-        # Check if slug not already used
+    tutorial_slug = get_tutorial_slug(song_title)
+    return (tutorial_id, tutorial_url, full_video_id, full_video_url, song_title, song_author, tutorial_slug)
 
 def get_youtube_url(type):
     """Extract video ID and Normalize URL"""
@@ -79,6 +81,43 @@ def rlinput(prompt, prefill=''):
     finally:
         readline.set_startup_hook()
 
+def get_tutorial_slug(song_title):
+    (tutorials_path, tutorial_slug) = get_suggested_tutorial_slug(song_title)
+    # Propose the slug to the user
+    tutorial_slug = rlinput("Tutorial slug/nice URL ('q' to quit): ", tutorial_slug)
+    if tutorial_slug.lower() == "q":
+        print("Exiting...")
+        sys.exit(13)
+    slug_path = os.path.abspath(os.path.join(tutorials_path, "%s.html" % tutorial_slug))
+    while os.path.isfile(slug_path):
+        tutorial_slug = rlinput("Tutorial slug/nice URL ('q' to quit): ", tutorial_slug)
+        if tutorial_slug.lower() == "q":
+            print("Exiting...")
+            sys.exit(14)
+        slug_path = os.path.abspath(os.path.join(tutorials_path, "%s.html" % tutorial_slug))
+    return slug_path
+
+
+def get_suggested_tutorial_slug(song_title):
+    tutorial_slug_base = slugify(song_title)
+    tutorial_slug = tutorial_slug_base
+    # Get the path of the folder one level up (where all the tutorials are)
+    tutorials_path = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+    # Create the path with this slug name
+    slug_path = os.path.abspath(os.path.join(tutorials_path, "%s.html" % tutorial_slug))
+    # Check if there is already a file with the slug-1 (would otherwise not
+    # detect if there was already more than one tutorial for this song)
+    slug_path_dash_one = os.path.abspath(os.path.join(tutorials_path, "%s-1.html" % tutorial_slug))
+    if os.path.isfile(slug_path_dash_one):
+        slug_path = slug_path_dash_one
+    i = 2
+    while os.path.isfile(slug_path):
+        # Check if slug not already used, otherwise increment (starting at 2)
+        tutorial_slug = "%s-%d" % (tutorial_slug_base, i)
+        slug_path = os.path.abspath(os.path.join(tutorials_path, "%s.html" % tutorial_slug))
+        i += 1
+    return (tutorials_path, tutorial_slug)
+
 # Download the videos
     # Tutorial video
     # Full video
@@ -98,7 +137,7 @@ def rlinput(prompt, prefill=''):
     # Link to the author's YouTube channel
 
 def main():
-    get_tutorial_info()
+    (tutorial_id, tutorial_url, full_video_id, full_video_url, song_title, song_author, tutorial_slug) = get_tutorial_info()
 
 def init():
     if __name__ == "__main__":
