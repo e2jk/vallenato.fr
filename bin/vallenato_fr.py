@@ -141,6 +141,7 @@ def get_suggested_tutorial_slug(song_title):
     # Full video
 
 # Download a single video from YouTube
+# https://yagisanatode.com/2018/03/09/how-do-i-download-youtube-videos-with-python-3-using-pytube/
 
 # Create the new tutorial's page
     # Copy the template to a new file
