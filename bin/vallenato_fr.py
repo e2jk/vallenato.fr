@@ -18,11 +18,11 @@
 
 import sys
 import re
-from urllib.request import urlopen
 import readline
 from slugify import slugify
 import os
 import shutil
+from pytube import YouTube
 
 def get_tutorial_info():
     """Retrieve the information of the new tutorial"""
@@ -65,10 +65,10 @@ def youtube_url_validation(url):
     return youtube_regex_match
 
 def get_title_author_tutocreator_and_channel(url):
-    # Download that page
-    f = urlopen(url)
-    myfile = f.read().decode("utf-8")
-    page_title = re.search("<title>(.*) - YouTube</title>", myfile).groups()[0]
+    yt = YouTube(url)
+
+    # page_title = re.search("<title>(.*) - YouTube</title>", yt.watch_html).groups()[0]
+    page_title = yt.player_config_args["player_response"]["videoDetails"]["title"]
 
     # Extract the title
     song_title = rlinput("Song title ('q' to quit): ", page_title)
@@ -83,10 +83,11 @@ def get_title_author_tutocreator_and_channel(url):
         sys.exit(12)
 
     # The name of the creator of the tutorial
-    tutocreator = re.search(',"author":"(.*?)"}?,"', myfile).groups()[0]
+    tutocreator = yt.player_config_args["player_response"]["videoDetails"]["author"]
+
 
     # The YouTube channel of the creator of the tutorial
-    tutocreator_channel = re.search('<meta itemprop="channelId" content="(.*?)">', myfile).groups()[0]
+    tutocreator_channel = yt.player_config_args["player_response"]["videoDetails"]["channelId"]
 
     return (song_title, song_author, tutocreator, tutocreator_channel)
 
