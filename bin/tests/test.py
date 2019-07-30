@@ -12,6 +12,7 @@ import unittest
 import sys
 import os
 import shutil
+import logging
 
 sys.path.append('.')
 target = __import__("vallenato_fr")
@@ -262,6 +263,54 @@ class TestUpdateIndexPage(unittest.TestCase):
         # Restore the index page
         os.remove("../index.html")
         shutil.move("../index.html.bak", "../index.html")
+
+
+class TestParseArgs(unittest.TestCase):
+    def test_parse_args_no_download(self):
+        """
+        Test the --no-download argument
+        """
+        parser = target.parse_args(['--no-download'])
+        self.assertTrue(parser.no_download)
+
+    def test_parse_args_no_download_shorthand(self):
+        """
+        Test the -nd argument
+        """
+        parser = target.parse_args(['-nd'])
+        self.assertTrue(parser.no_download)
+
+    def test_parse_args_debug(self):
+        """
+        Test the --debug argument
+        """
+        parser = target.parse_args(['--debug'])
+        self.assertEqual(parser.loglevel, logging.DEBUG)
+        self.assertEqual(parser.logging_level, "DEBUG")
+
+    def test_parse_args_debug_shorthand(self):
+        """
+        Test the -d argument
+        """
+        parser = target.parse_args(['-d'])
+        self.assertEqual(parser.loglevel, logging.DEBUG)
+        self.assertEqual(parser.logging_level, "DEBUG")
+
+    def test_parse_args_verbose(self):
+        """
+        Test the --verbose argument
+        """
+        parser = target.parse_args(['--verbose'])
+        self.assertEqual(parser.loglevel, logging.INFO)
+        self.assertEqual(parser.logging_level, "INFO")
+
+    def test_parse_args_verbose_shorthand(self):
+        """
+        Test the -v argument
+        """
+        parser = target.parse_args(['-v'])
+        self.assertEqual(parser.loglevel, logging.INFO)
+        self.assertEqual(parser.logging_level, "INFO")
 
 
 class TestInitMain(unittest.TestCase):

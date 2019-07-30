@@ -23,6 +23,8 @@ from slugify import slugify
 import os
 import shutil
 from pytube import YouTube
+import argparse
+import logging
 
 def get_tutorial_info():
     """Retrieve the information of the new tutorial"""
@@ -180,16 +182,43 @@ def update_index_page(tutorial_slug, song_title, song_author, tutorial_url, tuto
     with open("../index.html", 'w') as file:
         file.write(filedata)
 
-def main():
-    # TODO: accept arguments
+def parse_args(arguments):
+    parser = argparse.ArgumentParser(description="Create new Vallenato.fr tutorial pages.")
     # TODO: - arg to create the new tutorial in a temporary folder for later edition (not uploaded and not included in the index page)
-    # TODO: - arg to not download the YouTube videos
+    parser.add_argument("-nd", "--no-download", action='store_true', required=False, help="Do not download the videos from YouTube.")
+    parser.add_argument(
+        '-d', '--debug',
+        help="Print lots of debugging statements",
+        action="store_const", dest="loglevel", const=logging.DEBUG,
+        default=logging.WARNING,
+    )
+    parser.add_argument(
+        '-v', '--verbose',
+        help="Be verbose",
+        action="store_const", dest="loglevel", const=logging.INFO,
+    )
+    args = parser.parse_args(arguments)
+
+    # Configure logging level
+    if args.loglevel:
+        logging.basicConfig(level=args.loglevel)
+        args.logging_level = logging.getLevelName(args.loglevel)
+
+    return args
+
+def main():
+    # Parse the provided command-line arguments
+    args = parse_args(sys.argv[1:])
 
     # Get the information about this new tutorial
     (tutorial_id, tutorial_url, full_video_id, full_video_url, song_title, song_author, tutocreator, tutocreator_channel, tutorial_slug) = get_tutorial_info()
 
     # Download the videos (both the tutorial and the full video)
-    # TODO
+    if args.no_download:
+        logging.info("Not downloading the videos from YouTube due to --no-download parameter.")
+    else:
+        # TODO
+        pass
 
     # Create the new tutorial's page
     create_new_tutorial_page(tutorial_slug, song_title, tutorial_id, full_video_id)
