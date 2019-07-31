@@ -220,7 +220,8 @@ class TestCreateNewTutorialPage(unittest.TestCase):
         song_title = "Bonita cancion"
         tutorial_id = "oPEirA4pXdg"
         full_video_id = "q6cUzC6ESZ8"
-        target.create_new_tutorial_page(tutorial_slug, song_title, tutorial_id, full_video_id)
+        output_folder = "../"
+        target.create_new_tutorial_page(tutorial_slug, song_title, tutorial_id, full_video_id, output_folder)
         # Confirm that a new tutorial page has been created
         self.assertTrue(os.path.exists("../blabla-bla.html"))
         # Confirm that the content of the new template has been updated
@@ -235,13 +236,13 @@ class TestCreateNewTutorialPage(unittest.TestCase):
 
     def test_create_new_tutorial_page_invalid_parameters(self):
         with self.assertRaises(TypeError) as cm:
-            target.create_new_tutorial_page(None, None, None, None)
+            target.create_new_tutorial_page(None, None, None, None, None)
         the_exception = cm.exception
         self.assertEqual(str(the_exception), "replace() argument 2 must be str, not None")
         # Confirm that a new tutorial page None.html has been created
-        self.assertTrue(os.path.exists("../None.html"))
+        self.assertTrue(os.path.exists("NoneNone.html"))
         # Delete that new tutorial page
-        os.remove("../None.html")
+        os.remove("NoneNone.html")
 
 
 class TestUpdateIndexPage(unittest.TestCase):
@@ -356,6 +357,44 @@ class TestInitMain(unittest.TestCase):
         # Restore the index page
         os.remove("../index.html")
         shutil.move("../index.html.bak", "../index.html")
+
+    def test_init_main_temp_folder(self):
+        """
+        Test the initialization code with the --temp-folder parameter
+        """
+        # Make the script believe we ran it directly
+        target.__name__ = "__main__"
+        # Pass it no arguments
+        target.sys.argv = ["scriptname.py", "--temp-folder"]
+        # Pass it two valid YouTube URLs
+        global mock_raw_input_counter
+        global mock_raw_input_values
+        mock_raw_input_counter = 0
+        mock_raw_input_values = [
+            "http://www.youtube.com/watch?v=oPEirA4pXdg",
+            "https://www.youtube.com/watch?v=q6cUzC6ESZ8",
+            "Bonita cancion",
+            "Super cantante",
+            "blabla-bla"
+        ]
+        # Run the init(), the program exits correctly
+        target.init()
+        # Confirm that a new tutorial page has been created in the temporary folder
+        self.assertTrue(os.path.exists("../temp/blabla-bla/blabla-bla.html"))
+        # Confirm that the content of the new template has been updated
+        with open("../temp/blabla-bla/blabla-bla.html", 'r') as file :
+            filedata = file.read()
+        self.assertTrue("<title>Bonita cancion</title>" in filedata)
+        self.assertTrue('<span id="nameCurrent">Bonita cancion</span>' in filedata)
+        self.assertTrue('{"id": "oPEirA4pXdg", "start": 0, "end": 999}' in filedata)
+        self.assertTrue('var fullVersion = "q6cUzC6ESZ8";' in filedata)
+        # Confirm that a temporary file with the content to be added to the index page has been created
+        with open("../temp/blabla-bla/index-dummy.html", 'r') as file :
+            filedata = file.read()
+        self.assertTrue('\n      <li><a href="blabla-bla.html">Bonita cancion - Super cantante</a> - NNmNNs en NN partes</li>' in filedata)
+        self.assertTrue('\n      <li>Bonita cancion - Super cantante: <a href="https://www.youtube.com/watch?v=oPEirA4pXdg">Tutorial en YouTube</a> por <a href="https://www.youtube.com/channel/UC_8R235jg1ld6MCMOzz2khQ">El Vallenatero Francés</a></li>' in filedata)
+        # Delete the temporary folder
+        shutil.rmtree("../temp/blabla-bla/")
 
 
 class TestLicense(unittest.TestCase):

@@ -147,11 +147,12 @@ def get_suggested_tutorial_slug(song_title):
 # Download a single video from YouTube
 # https://yagisanatode.com/2018/03/09/how-do-i-download-youtube-videos-with-python-3-using-pytube/
 
-def create_new_tutorial_page(tutorial_slug, song_title, tutorial_id, full_video_id):
+def create_new_tutorial_page(tutorial_slug, song_title, tutorial_id, full_video_id, output_folder):
+    output_file = "%s%s.html" % (output_folder, tutorial_slug)
     # Copy the template to a new file
-    shutil.copy("template.html", "../%s.html" % tutorial_slug)
+    shutil.copy("template.html", output_file)
     # Read in the file
-    with open("../%s.html" % tutorial_slug, 'r') as file :
+    with open(output_file, 'r') as file :
         filedata = file.read()
 
     # Replace the target string
@@ -160,8 +161,24 @@ def create_new_tutorial_page(tutorial_slug, song_title, tutorial_id, full_video_
     filedata = filedata.replace("[[FULL VIDEO ID]]", full_video_id)
 
     # Save edited file
-    with open("../%s.html" % tutorial_slug, 'w') as file:
+    with open(output_file, 'w') as file:
         file.write(filedata)
+
+def index_new_tutorial_link(tutorial_slug, song_title, song_author):
+    return '\n      <li><a href="%s.html">%s - %s</a> - NNmNNs en NN partes</li>' % (tutorial_slug, song_title, song_author)
+
+def index_new_youtube_links(song_title, song_author, tutorial_url, tutocreator_channel, tutocreator):
+    return '\n      <li>%s - %s: <a href="%s">Tutorial en YouTube</a> por <a href="https://www.youtube.com/channel/%s">%s</a></li>' % (song_title, song_author, tutorial_url, tutocreator_channel, tutocreator)
+
+def dummy_index_update(tutorial_slug, song_title, song_author, tutorial_url, tutocreator_channel, tutocreator, output_folder):
+    filedata = index_new_tutorial_link(tutorial_slug, song_title, song_author)
+    filedata += index_new_youtube_links(song_title, song_author, tutorial_url, tutocreator_channel, tutocreator)
+    with open("%sindex-dummy.html" % output_folder, 'w') as file :
+        file.write(filedata)
+
+def dummy_symlink_files(output_folder):
+    os.symlink("../../vallenato.fr.js", "%svallenato.fr.js" % output_folder)
+    os.symlink("../../vallenato.fr.css", "%svallenato.fr.css" % output_folder)
 
 def update_index_page(tutorial_slug, song_title, song_author, tutorial_url, tutocreator_channel, tutocreator):
     # Read in the index page
@@ -170,12 +187,12 @@ def update_index_page(tutorial_slug, song_title, song_author, tutorial_url, tuto
 
     # Add a link to the new tutorial's page
     end_section = '\n    </ul>\n    <h2>Otros recursos</h2>'
-    new_link = '\n      <li><a href="%s.html">%s - %s</a> - NNmNNs en NN partes</li>' % (tutorial_slug, song_title, song_author)
+    new_link = index_new_tutorial_link(tutorial_slug, song_title, song_author)
     filedata = filedata.replace(end_section, "%s%s" %(new_link, end_section))
 
     # Add links to the tutorial and the author's YouTube channel
     end_section = '\n    </ul>\n    <p><a href="https://vallenato.fr">El Vallenatero Francés</a>'
-    new_link = '\n      <li>%s - %s: <a href="%s">Tutorial en YouTube</a> por <a href="https://www.youtube.com/channel/%s">%s</a></li>' % (song_title, song_author, tutorial_url, tutocreator_channel, tutocreator)
+    new_link = index_new_youtube_links(song_title, song_author, tutorial_url, tutocreator_channel, tutocreator)
     filedata = filedata.replace(end_section, "%s%s" %(new_link, end_section))
 
     # Save edited file
@@ -185,6 +202,7 @@ def update_index_page(tutorial_slug, song_title, song_author, tutorial_url, tuto
 def parse_args(arguments):
     parser = argparse.ArgumentParser(description="Create new Vallenato.fr tutorial pages.")
     # TODO: - arg to create the new tutorial in a temporary folder for later edition (not uploaded and not included in the index page)
+    parser.add_argument("-tf", "--temp-folder", action='store_true', required=False, help="Create the new tutorial in the ./temp folder, do not update the index page with the new links.")
     parser.add_argument("-nd", "--no-download", action='store_true', required=False, help="Do not download the videos from YouTube.")
     parser.add_argument(
         '-d', '--debug',
@@ -220,12 +238,24 @@ def main():
         # TODO
         pass
 
-    # Create the new tutorial's page
-    create_new_tutorial_page(tutorial_slug, song_title, tutorial_id, full_video_id)
+    output_folder = "../"
+    if args.temp_folder:
+        # Create a new temporary folder for this new tutorial
+        output_folder += "temp/%s/" % tutorial_slug
+        if not os.path.exists(output_folder):
+            os.makedirs(output_folder)
 
-    # TODO: when creating the new tutorial in a temporary folder for later edition,  do not update the index page
-    # Update the index page
-    update_index_page(tutorial_slug, song_title, song_author, tutorial_url, tutocreator_channel, tutocreator)
+    # Create the new tutorial's page
+    create_new_tutorial_page(tutorial_slug, song_title, tutorial_id, full_video_id, output_folder)
+
+    if args.temp_folder:
+        # When creating the new tutorial in a temporary folder for later edition,  do not update the index page
+        dummy_index_update(tutorial_slug, song_title, song_author, tutorial_url, tutocreator_channel, tutocreator, output_folder)
+        # Symlink files so that the new template can be used from the temp folder
+        dummy_symlink_files(output_folder)
+    else:
+        # Update the index page with the links to the new tutorial and to the tuto's author page
+        update_index_page(tutorial_slug, song_title, song_author, tutorial_url, tutocreator_channel, tutocreator)
 
 def init():
     if __name__ == "__main__":
