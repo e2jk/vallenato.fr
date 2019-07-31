@@ -25,6 +25,7 @@ import shutil
 from pytube import YouTube
 import argparse
 import logging
+import webbrowser
 
 def get_tutorial_info():
     """Retrieve the information of the new tutorial"""
@@ -147,12 +148,11 @@ def get_suggested_tutorial_slug(song_title):
 # Download a single video from YouTube
 # https://yagisanatode.com/2018/03/09/how-do-i-download-youtube-videos-with-python-3-using-pytube/
 
-def create_new_tutorial_page(tutorial_slug, song_title, tutorial_id, full_video_id, output_folder):
-    output_file = "%s%s.html" % (output_folder, tutorial_slug)
+def create_new_tutorial_page(tutorial_slug, song_title, tutorial_id, full_video_id, new_tutorial_page):
     # Copy the template to a new file
-    shutil.copy("template.html", output_file)
+    shutil.copy("template.html", new_tutorial_page)
     # Read in the file
-    with open(output_file, 'r') as file :
+    with open(new_tutorial_page, 'r') as file :
         filedata = file.read()
 
     # Replace the target string
@@ -161,7 +161,7 @@ def create_new_tutorial_page(tutorial_slug, song_title, tutorial_id, full_video_
     filedata = filedata.replace("[[FULL VIDEO ID]]", full_video_id)
 
     # Save edited file
-    with open(output_file, 'w') as file:
+    with open(new_tutorial_page, 'w') as file:
         file.write(filedata)
 
 def index_new_tutorial_link(tutorial_slug, song_title, song_author):
@@ -245,8 +245,11 @@ def main():
         if not os.path.exists(output_folder):
             os.makedirs(output_folder)
 
+    # The file name for the new tutorial
+    new_tutorial_page = "%s%s.html" % (output_folder, tutorial_slug)
+
     # Create the new tutorial's page
-    create_new_tutorial_page(tutorial_slug, song_title, tutorial_id, full_video_id, output_folder)
+    create_new_tutorial_page(tutorial_slug, song_title, tutorial_id, full_video_id, new_tutorial_page)
 
     if args.temp_folder:
         # When creating the new tutorial in a temporary folder for later edition,  do not update the index page
@@ -256,6 +259,9 @@ def main():
     else:
         # Update the index page with the links to the new tutorial and to the tuto's author page
         update_index_page(tutorial_slug, song_title, song_author, tutorial_url, tutocreator_channel, tutocreator)
+
+    # Open the new tutorial page in the webbrowser (new tab) for edition
+    webbrowser.open(new_tutorial_page, new=2, autoraise=True)
 
 def init():
     if __name__ == "__main__":

@@ -221,7 +221,8 @@ class TestCreateNewTutorialPage(unittest.TestCase):
         tutorial_id = "oPEirA4pXdg"
         full_video_id = "q6cUzC6ESZ8"
         output_folder = "../"
-        target.create_new_tutorial_page(tutorial_slug, song_title, tutorial_id, full_video_id, output_folder)
+        new_tutorial_page = "%s%s.html" % (output_folder, tutorial_slug)
+        target.create_new_tutorial_page(tutorial_slug, song_title, tutorial_id, full_video_id, new_tutorial_page)
         # Confirm that a new tutorial page has been created
         self.assertTrue(os.path.exists("../blabla-bla.html"))
         # Confirm that the content of the new template has been updated
@@ -233,16 +234,6 @@ class TestCreateNewTutorialPage(unittest.TestCase):
         self.assertTrue('var fullVersion = "q6cUzC6ESZ8";' in filedata)
         # Delete that new tutorial page
         os.remove("../blabla-bla.html")
-
-    def test_create_new_tutorial_page_invalid_parameters(self):
-        with self.assertRaises(TypeError) as cm:
-            target.create_new_tutorial_page(None, None, None, None, None)
-        the_exception = cm.exception
-        self.assertEqual(str(the_exception), "replace() argument 2 must be str, not None")
-        # Confirm that a new tutorial page None.html has been created
-        self.assertTrue(os.path.exists("NoneNone.html"))
-        # Delete that new tutorial page
-        os.remove("NoneNone.html")
 
 
 class TestUpdateIndexPage(unittest.TestCase):
