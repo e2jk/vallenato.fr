@@ -68,6 +68,7 @@ def youtube_url_validation(url):
     return youtube_regex_match
 
 def get_title_author_tutocreator_and_channel(url):
+    logging.debug("Downloading information from '%s'." % url)
     yt = YouTube(url)
 
     # page_title = re.search("<title>(.*) - YouTube</title>", yt.watch_html).groups()[0]
@@ -113,13 +114,13 @@ def get_tutorial_slug(song_title):
         sys.exit(13)
     slug_path = os.path.abspath(os.path.join(tutorials_path, "%s.html" % tutorial_slug))
     while os.path.isfile(slug_path):
+        logging.debug("The path '%s' already exists." % slug_path)
         tutorial_slug = rlinput("Tutorial slug/nice URL ('q' to quit): ", tutorial_slug)
         if tutorial_slug.lower() == "q":
             print("Exiting...")
             sys.exit(14)
         slug_path = os.path.abspath(os.path.join(tutorials_path, "%s.html" % tutorial_slug))
     return tutorial_slug
-
 
 def get_suggested_tutorial_slug(song_title):
     tutorial_slug_base = slugify(song_title)
@@ -132,10 +133,12 @@ def get_suggested_tutorial_slug(song_title):
     # detect if there was already more than one tutorial for this song)
     slug_path_dash_one = os.path.abspath(os.path.join(tutorials_path, "%s-1.html" % tutorial_slug))
     if os.path.isfile(slug_path_dash_one):
+        logging.debug("The path '%s' doesn't exists, but '%s' does." % (slug_path, slug_path_dash_one))
         slug_path = slug_path_dash_one
     i = 2
+    # Check if slug not already used, otherwise increment (starting at 2)
     while os.path.isfile(slug_path):
-        # Check if slug not already used, otherwise increment (starting at 2)
+        logging.debug("The path '%s' already exists." % slug_path)
         tutorial_slug = "%s-%d" % (tutorial_slug_base, i)
         slug_path = os.path.abspath(os.path.join(tutorials_path, "%s.html" % tutorial_slug))
         i += 1
@@ -149,6 +152,7 @@ def get_suggested_tutorial_slug(song_title):
 # https://yagisanatode.com/2018/03/09/how-do-i-download-youtube-videos-with-python-3-using-pytube/
 
 def create_new_tutorial_page(tutorial_slug, song_title, tutorial_id, full_video_id, new_tutorial_page):
+    logging.info("Creating the new tutorial page '%s'." % new_tutorial_page)
     # Copy the template to a new file
     shutil.copy("template.html", new_tutorial_page)
     # Read in the file
@@ -171,16 +175,20 @@ def index_new_youtube_links(song_title, song_author, tutorial_url, tutocreator_c
     return '\n      <li>%s - %s: <a href="%s">Tutorial en YouTube</a> por <a href="https://www.youtube.com/channel/%s">%s</a></li>' % (song_title, song_author, tutorial_url, tutocreator_channel, tutocreator)
 
 def dummy_index_update(tutorial_slug, song_title, song_author, tutorial_url, tutocreator_channel, tutocreator, output_folder):
+    dummy_index_page = "%sindex-dummy.html" % output_folder
+    logging.info("Creating a new dummy index page '%s' with links to be included later in the main index page." % dummy_index_page)
     filedata = index_new_tutorial_link(tutorial_slug, song_title, song_author)
     filedata += index_new_youtube_links(song_title, song_author, tutorial_url, tutocreator_channel, tutocreator)
-    with open("%sindex-dummy.html" % output_folder, 'w') as file :
+    with open(dummy_index_page, 'w') as file :
         file.write(filedata)
 
 def dummy_symlink_files(output_folder):
+    logging.debug("Creating symlinks for the .js and .css files in the dummy folder '%s'." % output_folder)
     os.symlink("../../vallenato.fr.js", "%svallenato.fr.js" % output_folder)
     os.symlink("../../vallenato.fr.css", "%svallenato.fr.css" % output_folder)
 
 def update_index_page(tutorial_slug, song_title, song_author, tutorial_url, tutocreator_channel, tutocreator):
+    logging.info("Updating the index page with links to the new tutorial page.")
     # Read in the index page
     with open("../index.html", 'r') as file :
         filedata = file.read()
@@ -222,6 +230,7 @@ def parse_args(arguments):
         logging.basicConfig(level=args.loglevel)
         args.logging_level = logging.getLevelName(args.loglevel)
 
+    logging.debug("These are the parsed arguments:\n'%s'" % args)
     return args
 
 def main():
@@ -242,6 +251,7 @@ def main():
     if args.temp_folder:
         # Create a new temporary folder for this new tutorial
         output_folder += "temp/%s/" % tutorial_slug
+        logging.debug("This new tutorial will be created in '%s' due to --temp-folder parameter." % output_folder)
         if not os.path.exists(output_folder):
             os.makedirs(output_folder)
 
@@ -261,6 +271,7 @@ def main():
         update_index_page(tutorial_slug, song_title, song_author, tutorial_url, tutocreator_channel, tutocreator)
 
     # Open the new tutorial page in the webbrowser (new tab) for edition
+    logging.debug("Opening new tab in web browser to '%s'" % new_tutorial_page)
     webbrowser.open(new_tutorial_page, new=2, autoraise=True)
 
 def init():
