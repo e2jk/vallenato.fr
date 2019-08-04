@@ -34,10 +34,10 @@ def get_tutorial_info():
     # What is the YouTube full video?
     (full_video_id, full_video_url) = get_youtube_url("full")
     # Song title, author name and the tutorial creator's name and YouTube channel
-    (song_title, song_author, tutocreator, tutocreator_channel) = get_title_author_tutocreator_and_channel(tutorial_url)
+    (song_title, song_author, tutocreator, tutocreator_channel, yt_tutorial_video) = get_title_author_tutocreator_and_channel(tutorial_url)
     # Tutorial's slug
     tutorial_slug = get_tutorial_slug(song_title)
-    return (tutorial_id, tutorial_url, full_video_id, full_video_url, song_title, song_author, tutocreator, tutocreator_channel, tutorial_slug)
+    return (tutorial_id, tutorial_url, full_video_id, full_video_url, song_title, song_author, tutocreator, tutocreator_channel, yt_tutorial_video, tutorial_slug)
 
 def get_youtube_url(type):
     """Extract video ID and Normalize URL"""
@@ -68,10 +68,9 @@ def youtube_url_validation(url):
     return youtube_regex_match
 
 def get_title_author_tutocreator_and_channel(url):
-    logging.debug("Downloading information from '%s'." % url)
+    logging.debug("Downloading information from tutorial video '%s'." % url)
     yt = YouTube(url)
 
-    # page_title = re.search("<title>(.*) - YouTube</title>", yt.watch_html).groups()[0]
     page_title = yt.player_config_args["player_response"]["videoDetails"]["title"]
 
     # Extract the title
@@ -89,11 +88,10 @@ def get_title_author_tutocreator_and_channel(url):
     # The name of the creator of the tutorial
     tutocreator = yt.player_config_args["player_response"]["videoDetails"]["author"]
 
-
     # The YouTube channel of the creator of the tutorial
     tutocreator_channel = yt.player_config_args["player_response"]["videoDetails"]["channelId"]
 
-    return (song_title, song_author, tutocreator, tutocreator_channel)
+    return (song_title, song_author, tutocreator, tutocreator_channel, yt)
 
 def rlinput(prompt, prefill=''):
     """Provide an editable input string
@@ -144,12 +142,27 @@ def get_suggested_tutorial_slug(song_title):
         i += 1
     return (tutorials_path, tutorial_slug)
 
-# Download the videos
+def download_videos(yt_tutorial_video, tutorial_id, full_video_id, videos_output_folder):
     # Tutorial video
+    logging.info("Will now download the tutorial video %s..." % tutorial_id)
+    download_youtube_video(yt_tutorial_video, tutorial_id, videos_output_folder)
     # Full video
+    logging.info("Will now download the full video %s..." % full_video_id)
+    # For the tutorial video we already had a Youtube object, not yet for the full video
+    video_url = "https://www.youtube.com/watch?v=%s" % full_video_id
+    yt_full_video = YouTube(video_url)
+    download_youtube_video(yt_full_video, full_video_id, videos_output_folder)
 
-# Download a single video from YouTube
-# https://yagisanatode.com/2018/03/09/how-do-i-download-youtube-videos-with-python-3-using-pytube/
+def download_youtube_video(yt, video_id, videos_output_folder):
+    # Download stream with itag 18 by default:
+    # <Stream: itag="18" mime_type="video/mp4" res="360p" fps="30fps" vcodec="avc1.42001E" acodec="mp4a.40.2">
+    stream = yt.streams.get_by_itag(18)
+    if not stream:
+        logging.debug("No stream available with itag 18")
+        stream = yt.streams.filter(res = "360p", progressive=True, file_extension = "mp4").first()
+    logging.debug("Stream that will be downloaded: %s" % stream)
+    logging.debug("Download folder: %s" % videos_output_folder)
+    stream.download(videos_output_folder, video_id)
 
 def create_new_tutorial_page(tutorial_slug, song_title, tutorial_id, full_video_id, new_tutorial_page):
     logging.info("Creating the new tutorial page '%s'." % new_tutorial_page)
@@ -209,7 +222,6 @@ def update_index_page(tutorial_slug, song_title, song_author, tutorial_url, tuto
 
 def parse_args(arguments):
     parser = argparse.ArgumentParser(description="Create new Vallenato.fr tutorial pages.")
-    # TODO: - arg to create the new tutorial in a temporary folder for later edition (not uploaded and not included in the index page)
     parser.add_argument("-tf", "--temp-folder", action='store_true', required=False, help="Create the new tutorial in the ./temp folder, do not update the index page with the new links.")
     parser.add_argument("-nd", "--no-download", action='store_true', required=False, help="Do not download the videos from YouTube.")
     parser.add_argument(
@@ -238,15 +250,9 @@ def main():
     args = parse_args(sys.argv[1:])
 
     # Get the information about this new tutorial
-    (tutorial_id, tutorial_url, full_video_id, full_video_url, song_title, song_author, tutocreator, tutocreator_channel, tutorial_slug) = get_tutorial_info()
+    (tutorial_id, tutorial_url, full_video_id, full_video_url, song_title, song_author, tutocreator, tutocreator_channel, yt_tutorial_video, tutorial_slug) = get_tutorial_info()
 
-    # Download the videos (both the tutorial and the full video)
-    if args.no_download:
-        logging.info("Not downloading the videos from YouTube due to --no-download parameter.")
-    else:
-        # TODO
-        pass
-
+    # Determine the output folder (depends on the --temp-folder parameter)
     output_folder = "../"
     if args.temp_folder:
         # Create a new temporary folder for this new tutorial
@@ -269,6 +275,16 @@ def main():
     else:
         # Update the index page with the links to the new tutorial and to the tuto's author page
         update_index_page(tutorial_slug, song_title, song_author, tutorial_url, tutocreator_channel, tutocreator)
+
+    # Download the videos (both the tutorial and the full video)
+    if args.no_download:
+        logging.info("Not downloading the videos from YouTube due to --no-download parameter.")
+    else:
+        videos_output_folder = "%svideos/%s/" % (output_folder, tutorial_slug)
+        if not os.path.exists(videos_output_folder):
+            logging.debug("Creating folder '%s'." % videos_output_folder)
+            os.makedirs(videos_output_folder)
+        download_videos(yt_tutorial_video, tutorial_id, full_video_id, videos_output_folder)
 
     # Open the new tutorial page in the webbrowser (new tab) for edition
     logging.debug("Opening new tab in web browser to '%s'" % new_tutorial_page)
