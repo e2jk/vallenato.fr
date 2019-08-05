@@ -142,6 +142,31 @@ def get_suggested_tutorial_slug(song_title):
         i += 1
     return (tutorials_path, tutorial_slug)
 
+def determine_output_folder(temp_folder, tutorial_slug):
+    output_folder = "../"
+    if temp_folder:
+        # Create a new temporary folder for this new tutorial
+        output_folder += "temp/%s/" % tutorial_slug
+        logging.debug("This new tutorial will be created in '%s' due to --temp-folder parameter." % output_folder)
+        if os.path.exists(output_folder):
+            # Ask if the existing temporary folder should be deleted or the script ended
+            logging.debug("The temporary folder already exists")
+            s = input("The temporary folder already exists, enter 'Y' to delete the folder or 'N' to stop the program: ")
+            valid_entry = False
+            while not valid_entry:
+                if s.lower() == "y":
+                    shutil.rmtree(output_folder)
+                    valid_entry = True
+                elif s.lower() == "n":
+                    print("Exiting...")
+                    sys.exit(15)
+                else:
+                    s = input("Enter 'Y' to delete the folder or 'N' to stop the program: ")
+
+        if not os.path.exists(output_folder):
+            os.makedirs(output_folder)
+    return output_folder
+
 def download_videos(yt_tutorial_video, tutorial_id, full_video_id, videos_output_folder):
     # Tutorial video
     logging.info("Will now download the tutorial video %s..." % tutorial_id)
@@ -253,13 +278,7 @@ def main():
     (tutorial_id, tutorial_url, full_video_id, full_video_url, song_title, song_author, tutocreator, tutocreator_channel, yt_tutorial_video, tutorial_slug) = get_tutorial_info()
 
     # Determine the output folder (depends on the --temp-folder parameter)
-    output_folder = "../"
-    if args.temp_folder:
-        # Create a new temporary folder for this new tutorial
-        output_folder += "temp/%s/" % tutorial_slug
-        logging.debug("This new tutorial will be created in '%s' due to --temp-folder parameter." % output_folder)
-        if not os.path.exists(output_folder):
-            os.makedirs(output_folder)
+    output_folder = determine_output_folder(args.temp_folder, tutorial_slug)
 
     # The file name for the new tutorial
     new_tutorial_page = "%s%s.html" % (output_folder, tutorial_slug)

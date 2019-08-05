@@ -216,6 +216,81 @@ class TestGetSuggestedTutorialSlug(unittest.TestCase):
         self.assertEqual(tutorial_slug, "jaime-molina-3")
 
 
+class TestDetermineOutputFolder(unittest.TestCase):
+    def test_determine_output_folder_no_temp_folder(self):
+        temp_folder = False
+        tutorial_slug = None
+        output_folder = target.determine_output_folder(temp_folder, tutorial_slug)
+        self.assertEqual(output_folder, "../")
+
+    def test_determine_output_folder_temp_folder_doesnt_exist(self):
+        temp_folder = True
+        tutorial_slug = "blabla-bla"
+        # Make sure the new temporary folder doesn't exist
+        if os.path.exists("../temp/blabla-bla/"):
+            shutil.rmtree("../temp/blabla-bla/")
+        output_folder = target.determine_output_folder(temp_folder, tutorial_slug)
+        self.assertEqual(output_folder, "../temp/blabla-bla/")
+        self.assertTrue(os.path.exists("../temp/blabla-bla/"))
+        # Delete the temporary folder
+        shutil.rmtree("../temp/blabla-bla/")
+
+    def test_determine_output_folder_temp_folder_exists_exit(self):
+        temp_folder = True
+        tutorial_slug = "blabla-bla"
+        global mock_raw_input_counter
+        global mock_raw_input_values
+        mock_raw_input_counter = 0
+        mock_raw_input_values = ["N"]
+        # Make sure the new temporary folder *does* exist
+        os.makedirs("../temp/blabla-bla/")
+        with self.assertRaises(SystemExit) as cm:
+            output_folder = target.determine_output_folder(temp_folder, tutorial_slug)
+        the_exception = cm.exception
+        self.assertEqual(the_exception.code, 15)
+        self.assertTrue(os.path.exists("../temp/blabla-bla/"))
+        # Delete the temporary folder
+        shutil.rmtree("../temp/blabla-bla/")
+
+    def test_determine_output_folder_temp_folder_exists_invalid_entries(self):
+        temp_folder = True
+        tutorial_slug = "blabla-bla"
+        global mock_raw_input_counter
+        global mock_raw_input_values
+        mock_raw_input_counter = 0
+        # Make some invalid entries
+        mock_raw_input_values = ["Continue", "No", "42", "N"]
+        # Make sure the new temporary folder *does* exist
+        os.makedirs("../temp/blabla-bla/")
+        with self.assertRaises(SystemExit) as cm:
+            output_folder = target.determine_output_folder(temp_folder, tutorial_slug)
+        the_exception = cm.exception
+        self.assertEqual(the_exception.code, 15)
+        self.assertTrue(os.path.exists("../temp/blabla-bla/"))
+        # Delete the temporary folder
+        shutil.rmtree("../temp/blabla-bla/")
+
+    def test_determine_output_folder_temp_folder_exists_delete(self):
+        temp_folder = True
+        tutorial_slug = "blabla-bla"
+        global mock_raw_input_counter
+        global mock_raw_input_values
+        mock_raw_input_counter = 0
+        mock_raw_input_values = ["y"]
+        # Make sure the new temporary folder *does* exist
+        os.makedirs("../temp/blabla-bla/")
+        # Create a temporary file that should be deleted when the folder is deleted
+        (ignore, temp_file) = tempfile.mkstemp(dir="../temp/blabla-bla/")
+        self.assertTrue(os.path.exists(temp_file))
+        output_folder = target.determine_output_folder(temp_folder, tutorial_slug)
+        self.assertEqual(output_folder, "../temp/blabla-bla/")
+        # Confirm the temporary file created before deleting the directory was indeed deleted
+        self.assertFalse(os.path.exists(temp_file))
+        self.assertTrue(os.path.exists("../temp/blabla-bla/"))
+        # Delete the temporary folder
+        shutil.rmtree("../temp/blabla-bla/")
+
+
 class TestDownloadYoutubeVideo(unittest.TestCase):
     def test_download_youtube_video(self):
         video_id = "oPEirA4pXdg"
