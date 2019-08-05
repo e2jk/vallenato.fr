@@ -164,7 +164,7 @@ def download_youtube_video(yt, video_id, videos_output_folder):
     logging.debug("Download folder: %s" % videos_output_folder)
     stream.download(videos_output_folder, video_id)
 
-def create_new_tutorial_page(tutorial_slug, song_title, tutorial_id, full_video_id, new_tutorial_page):
+def create_new_tutorial_page(tutorial_slug, song_title, song_author, tutorial_id, full_video_id, new_tutorial_page):
     logging.info("Creating the new tutorial page '%s'." % new_tutorial_page)
     # Copy the template to a new file
     shutil.copy("template.html", new_tutorial_page)
@@ -173,7 +173,7 @@ def create_new_tutorial_page(tutorial_slug, song_title, tutorial_id, full_video_
         filedata = file.read()
 
     # Replace the target string
-    filedata = filedata.replace("[[TITLE]]", song_title)
+    filedata = filedata.replace("[[TITLE]]", "%s - %s" % (song_title, song_author))
     filedata = filedata.replace("[[TUTORIAL VIDEO ID]]", tutorial_id)
     filedata = filedata.replace("[[FULL VIDEO ID]]", full_video_id)
 
@@ -265,7 +265,7 @@ def main():
     new_tutorial_page = "%s%s.html" % (output_folder, tutorial_slug)
 
     # Create the new tutorial's page
-    create_new_tutorial_page(tutorial_slug, song_title, tutorial_id, full_video_id, new_tutorial_page)
+    create_new_tutorial_page(tutorial_slug, song_title, song_author, tutorial_id, full_video_id, new_tutorial_page)
 
     if args.temp_folder:
         # When creating the new tutorial in a temporary folder for later edition,  do not update the index page

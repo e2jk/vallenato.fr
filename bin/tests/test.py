@@ -232,18 +232,19 @@ class TestCreateNewTutorialPage(unittest.TestCase):
     def test_create_new_tutorial_page_ok(self):
         tutorial_slug = "blabla-bla"
         song_title = "Bonita cancion"
+        song_author = "Super cantante"
         tutorial_id = "oPEirA4pXdg"
         full_video_id = "q6cUzC6ESZ8"
         output_folder = "../"
         new_tutorial_page = "%s%s.html" % (output_folder, tutorial_slug)
-        target.create_new_tutorial_page(tutorial_slug, song_title, tutorial_id, full_video_id, new_tutorial_page)
+        target.create_new_tutorial_page(tutorial_slug, song_title, song_author, tutorial_id, full_video_id, new_tutorial_page)
         # Confirm that a new tutorial page has been created
         self.assertTrue(os.path.exists("../blabla-bla.html"))
         # Confirm that the content of the new template has been updated
         with open("../blabla-bla.html", 'r') as file :
             filedata = file.read()
-        self.assertTrue("<title>Bonita cancion</title>" in filedata)
-        self.assertTrue('<span id="nameCurrent">Bonita cancion</span>' in filedata)
+        self.assertTrue("<title>Bonita cancion - Super cantante</title>" in filedata)
+        self.assertTrue('<span id="nameCurrent">Bonita cancion - Super cantante</span>' in filedata)
         self.assertTrue('{"id": "oPEirA4pXdg", "start": 0, "end": 999}' in filedata)
         self.assertTrue('var fullVersion = "q6cUzC6ESZ8";' in filedata)
         # Delete that new tutorial page
@@ -389,8 +390,8 @@ class TestInitMain(unittest.TestCase):
         # Confirm that the content of the new template has been updated
         with open("../temp/blabla-bla/blabla-bla.html", 'r') as file :
             filedata = file.read()
-        self.assertTrue("<title>Bonita cancion</title>" in filedata)
-        self.assertTrue('<span id="nameCurrent">Bonita cancion</span>' in filedata)
+        self.assertTrue("<title>Bonita cancion - Super cantante</title>" in filedata)
+        self.assertTrue('<span id="nameCurrent">Bonita cancion - Super cantante</span>' in filedata)
         self.assertTrue('{"id": "oPEirA4pXdg", "start": 0, "end": 999}' in filedata)
         self.assertTrue('var fullVersion = "q6cUzC6ESZ8";' in filedata)
         # Confirm that a temporary file with the content to be added to the index page has been created
