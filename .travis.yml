@@ -1,0 +1,10 @@
+language: python
+python: 3.6
+# Ubuntu 18.04
+dist: bionic
+# Command to install Python dependencies
+install:
+  - pip install -r bin/requirements.txt
+# Command to run tests
+script:
+  - cd bin/ && coverage run --include=./*.py --omit=tests/* tests/test.py && coverage html
