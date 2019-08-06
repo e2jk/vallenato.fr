@@ -124,7 +124,7 @@ def get_suggested_tutorial_slug(song_title):
     tutorial_slug_base = slugify(song_title)
     tutorial_slug = tutorial_slug_base
     # Get the path of the folder one level up (where all the tutorials are)
-    tutorials_path = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+    tutorials_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../aprender"))
     # Create the path with this slug name
     slug_path = os.path.abspath(os.path.join(tutorials_path, "%s.html" % tutorial_slug))
     # Check if there is already a file with the slug-1 (would otherwise not
@@ -143,7 +143,7 @@ def get_suggested_tutorial_slug(song_title):
     return (tutorials_path, tutorial_slug)
 
 def determine_output_folder(temp_folder, tutorial_slug):
-    output_folder = "../"
+    output_folder = "../aprender/"
     if temp_folder:
         # Create a new temporary folder for this new tutorial
         output_folder += "temp/%s/" % tutorial_slug
@@ -228,7 +228,7 @@ def dummy_symlink_files(output_folder):
 def update_index_page(tutorial_slug, song_title, song_author, tutorial_url, tutocreator_channel, tutocreator):
     logging.info("Updating the index page with links to the new tutorial page.")
     # Read in the index page
-    with open("../index.html", 'r') as file :
+    with open("../aprender/index.html", 'r') as file :
         filedata = file.read()
 
     # Add a link to the new tutorial's page
@@ -242,7 +242,7 @@ def update_index_page(tutorial_slug, song_title, song_author, tutorial_url, tuto
     filedata = filedata.replace(end_section, "%s%s" %(new_link, end_section))
 
     # Save edited file
-    with open("../index.html", 'w') as file:
+    with open("../aprender/index.html", 'w') as file:
         file.write(filedata)
 
 def parse_args(arguments):

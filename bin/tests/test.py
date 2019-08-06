@@ -257,19 +257,19 @@ class TestDetermineOutputFolder(unittest.TestCase):
         temp_folder = False
         tutorial_slug = None
         output_folder = target.determine_output_folder(temp_folder, tutorial_slug)
-        self.assertEqual(output_folder, "../")
+        self.assertEqual(output_folder, "../aprender/")
 
     def test_determine_output_folder_temp_folder_doesnt_exist(self):
         temp_folder = True
         tutorial_slug = "blabla-bla"
         # Make sure the new temporary folder doesn't exist
-        if os.path.exists("../temp/blabla-bla/"):
-            shutil.rmtree("../temp/blabla-bla/")
+        if os.path.exists("../aprender/temp/blabla-bla/"):
+            shutil.rmtree("../aprender/temp/blabla-bla/")
         output_folder = target.determine_output_folder(temp_folder, tutorial_slug)
-        self.assertEqual(output_folder, "../temp/blabla-bla/")
-        self.assertTrue(os.path.exists("../temp/blabla-bla/"))
+        self.assertEqual(output_folder, "../aprender/temp/blabla-bla/")
+        self.assertTrue(os.path.exists("../aprender/temp/blabla-bla/"))
         # Delete the temporary folder
-        shutil.rmtree("../temp/blabla-bla/")
+        shutil.rmtree("../aprender/temp/blabla-bla/")
 
     def test_determine_output_folder_temp_folder_exists_exit(self):
         temp_folder = True
@@ -279,14 +279,14 @@ class TestDetermineOutputFolder(unittest.TestCase):
         mock_raw_input_counter = 0
         mock_raw_input_values = ["N"]
         # Make sure the new temporary folder *does* exist
-        os.makedirs("../temp/blabla-bla/")
+        os.makedirs("../aprender/temp/blabla-bla/")
         with self.assertRaises(SystemExit) as cm:
             output_folder = target.determine_output_folder(temp_folder, tutorial_slug)
         the_exception = cm.exception
         self.assertEqual(the_exception.code, 15)
-        self.assertTrue(os.path.exists("../temp/blabla-bla/"))
+        self.assertTrue(os.path.exists("../aprender/temp/blabla-bla/"))
         # Delete the temporary folder
-        shutil.rmtree("../temp/blabla-bla/")
+        shutil.rmtree("../aprender/temp/blabla-bla/")
 
     def test_determine_output_folder_temp_folder_exists_invalid_entries(self):
         temp_folder = True
@@ -297,14 +297,14 @@ class TestDetermineOutputFolder(unittest.TestCase):
         # Make some invalid entries
         mock_raw_input_values = ["Continue", "No", "42", "N"]
         # Make sure the new temporary folder *does* exist
-        os.makedirs("../temp/blabla-bla/")
+        os.makedirs("../aprender/temp/blabla-bla/")
         with self.assertRaises(SystemExit) as cm:
             output_folder = target.determine_output_folder(temp_folder, tutorial_slug)
         the_exception = cm.exception
         self.assertEqual(the_exception.code, 15)
-        self.assertTrue(os.path.exists("../temp/blabla-bla/"))
+        self.assertTrue(os.path.exists("../aprender/temp/blabla-bla/"))
         # Delete the temporary folder
-        shutil.rmtree("../temp/blabla-bla/")
+        shutil.rmtree("../aprender/temp/blabla-bla/")
 
     def test_determine_output_folder_temp_folder_exists_delete(self):
         temp_folder = True
@@ -314,17 +314,17 @@ class TestDetermineOutputFolder(unittest.TestCase):
         mock_raw_input_counter = 0
         mock_raw_input_values = ["y"]
         # Make sure the new temporary folder *does* exist
-        os.makedirs("../temp/blabla-bla/")
+        os.makedirs("../aprender/temp/blabla-bla/")
         # Create a temporary file that should be deleted when the folder is deleted
-        (ignore, temp_file) = tempfile.mkstemp(dir="../temp/blabla-bla/")
+        (ignore, temp_file) = tempfile.mkstemp(dir="../aprender/temp/blabla-bla/")
         self.assertTrue(os.path.exists(temp_file))
         output_folder = target.determine_output_folder(temp_folder, tutorial_slug)
-        self.assertEqual(output_folder, "../temp/blabla-bla/")
+        self.assertEqual(output_folder, "../aprender/temp/blabla-bla/")
         # Confirm the temporary file created before deleting the directory was indeed deleted
         self.assertFalse(os.path.exists(temp_file))
-        self.assertTrue(os.path.exists("../temp/blabla-bla/"))
+        self.assertTrue(os.path.exists("../aprender/temp/blabla-bla/"))
         # Delete the temporary folder
-        shutil.rmtree("../temp/blabla-bla/")
+        shutil.rmtree("../aprender/temp/blabla-bla/")
 
 
 class TestDownloadYoutubeVideo(unittest.TestCase):
@@ -351,20 +351,20 @@ class TestCreateNewTutorialPage(unittest.TestCase):
         song_author = "Super cantante"
         tutorial_id = "oPEirA4pXdg"
         full_video_id = "q6cUzC6ESZ8"
-        output_folder = "../"
+        output_folder = "../aprender/"
         new_tutorial_page = "%s%s.html" % (output_folder, tutorial_slug)
         target.create_new_tutorial_page(tutorial_slug, song_title, song_author, tutorial_id, full_video_id, new_tutorial_page)
         # Confirm that a new tutorial page has been created
-        self.assertTrue(os.path.exists("../blabla-bla.html"))
+        self.assertTrue(os.path.exists("../aprender/blabla-bla.html"))
         # Confirm that the content of the new template has been updated
-        with open("../blabla-bla.html", 'r') as file :
+        with open("../aprender/blabla-bla.html", 'r') as file :
             filedata = file.read()
         self.assertTrue("<title>Bonita cancion - Super cantante</title>" in filedata)
         self.assertTrue('<span id="nameCurrent">Bonita cancion - Super cantante</span>' in filedata)
         self.assertTrue('{"id": "oPEirA4pXdg", "start": 0, "end": 999}' in filedata)
         self.assertTrue('var fullVersion = "q6cUzC6ESZ8";' in filedata)
         # Delete that new tutorial page
-        os.remove("../blabla-bla.html")
+        os.remove("../aprender/blabla-bla.html")
 
 
 class TestUpdateIndexPage(unittest.TestCase):
@@ -376,16 +376,16 @@ class TestUpdateIndexPage(unittest.TestCase):
         tutocreator_channel = "UC_8R235jg1ld6MCMOzz2khQ"
         tutocreator = "El Vallenatero Francés"
         # Create a copy of the index.html file that is going to be edited
-        shutil.copy("../index.html", "../index.html.bak")
+        shutil.copy("../aprender/index.html", "../aprender/index.html.bak")
         target.update_index_page(tutorial_slug, song_title, song_author, tutorial_url, tutocreator_channel, tutocreator)
         # Confirm that the index page has been updated
-        with open("../index.html", 'r') as file :
+        with open("../aprender/index.html", 'r') as file :
             filedata = file.read()
         self.assertTrue('</li>\n      <li><a href="blabla-bla.html">Bonita cancion - Super cantante</a> - NNmNNs en NN partes</li>\n    </ul>' in filedata)
         self.assertTrue('</a></li>\n      <li>Bonita cancion - Super cantante: <a href="https://www.youtube.com/watch?v=oPEirA4pXdg">Tutorial en YouTube</a> por <a href="https://www.youtube.com/channel/UC_8R235jg1ld6MCMOzz2khQ">El Vallenatero Francés</a></li>\n    </ul>' in filedata)
         # Restore the index page
-        os.remove("../index.html")
-        shutil.move("../index.html.bak", "../index.html")
+        os.remove("../aprender/index.html")
+        shutil.move("../aprender/index.html.bak", "../aprender/index.html")
 
 
 class TestParseArgs(unittest.TestCase):
@@ -457,28 +457,28 @@ class TestInitMain(unittest.TestCase):
     #         "blabla-bla"
     #     ]
     #     # Create a copy of the index.html file that is going to be edited
-    #     shutil.copy("../index.html", "../index.html.bak")
+    #     shutil.copy("../aprender/index.html", "../aprender/index.html.bak")
     #     # Run the init(), the program exits correctly
     #     target.init()
     #     # Confirm that a new tutorial page has been created
-    #     self.assertTrue(os.path.exists("../blabla-bla.html"))
+    #     self.assertTrue(os.path.exists("../aprender/blabla-bla.html"))
     #     # Confirm that the content of the new template has been updated
-    #     with open("../blabla-bla.html", 'r') as file :
+    #     with open("../aprender/blabla-bla.html", 'r') as file :
     #         filedata = file.read()
     #     self.assertTrue("<title>Bonita cancion</title>" in filedata)
     #     self.assertTrue('<span id="nameCurrent">Bonita cancion</span>' in filedata)
     #     self.assertTrue('{"id": "oPEirA4pXdg", "start": 0, "end": 999}' in filedata)
     #     self.assertTrue('var fullVersion = "q6cUzC6ESZ8";' in filedata)
     #     # Confirm that the index page has been updated
-    #     with open("../index.html", 'r') as file :
+    #     with open("../aprender/index.html", 'r') as file :
     #         filedata = file.read()
     #     self.assertTrue('</li>\n      <li><a href="blabla-bla.html">Bonita cancion - Super cantante</a> - NNmNNs en NN partes</li>\n    </ul>' in filedata)
     #     self.assertTrue('</a></li>\n      <li>Bonita cancion - Super cantante: <a href="https://www.youtube.com/watch?v=oPEirA4pXdg">Tutorial en YouTube</a> por <a href="https://www.youtube.com/channel/UC_8R235jg1ld6MCMOzz2khQ">El Vallenatero Francés</a></li>\n    </ul>' in filedata)
     #     # Delete that new tutorial page
-    #     os.remove("../blabla-bla.html")
+    #     os.remove("../aprender/blabla-bla.html")
     #     # Restore the index page
-    #     os.remove("../index.html")
-    #     shutil.move("../index.html.bak", "../index.html")
+    #     os.remove("../aprender/index.html")
+    #     shutil.move("../aprender/index.html.bak", "../aprender/index.html")
 
     @patch("webbrowser.open")
     def test_init_main_temp_folder_no_download(self, mockwbopen):
@@ -504,23 +504,23 @@ class TestInitMain(unittest.TestCase):
         if is_connected():
             target.init()
             # Confirm that a new tutorial page has been created in the temporary folder
-            self.assertTrue(os.path.exists("../temp/blabla-bla/blabla-bla.html"))
+            self.assertTrue(os.path.exists("../aprender/temp/blabla-bla/blabla-bla.html"))
             # Confirm that the content of the new template has been updated
-            with open("../temp/blabla-bla/blabla-bla.html", 'r') as file :
+            with open("../aprender/temp/blabla-bla/blabla-bla.html", 'r') as file :
                 filedata = file.read()
                 self.assertTrue("<title>Bonita cancion - Super cantante</title>" in filedata)
                 self.assertTrue('<span id="nameCurrent">Bonita cancion - Super cantante</span>' in filedata)
                 self.assertTrue('{"id": "oPEirA4pXdg", "start": 0, "end": 999}' in filedata)
                 self.assertTrue('var fullVersion = "q6cUzC6ESZ8";' in filedata)
             # Confirm that a temporary file with the content to be added to the index page has been created
-            with open("../temp/blabla-bla/index-dummy.html", 'r') as file :
+            with open("../aprender/temp/blabla-bla/index-dummy.html", 'r') as file :
                 filedata = file.read()
                 self.assertTrue('\n      <li><a href="blabla-bla.html">Bonita cancion - Super cantante</a> - NNmNNs en NN partes</li>' in filedata)
                 self.assertTrue('\n      <li>Bonita cancion - Super cantante: <a href="https://www.youtube.com/watch?v=oPEirA4pXdg">Tutorial en YouTube</a> por <a href="https://www.youtube.com/channel/UC_8R235jg1ld6MCMOzz2khQ">El Vallenatero Francés</a></li>' in filedata)
                 # Delete the temporary folder
-                shutil.rmtree("../temp/blabla-bla/")
+                shutil.rmtree("../aprender/temp/blabla-bla/")
             # Confirm the webbrowser is called to be opened to the new template's page
-            mockwbopen.assert_called_once_with("../temp/blabla-bla/blabla-bla.html", autoraise=True, new=2)
+            mockwbopen.assert_called_once_with("../aprender/temp/blabla-bla/blabla-bla.html", autoraise=True, new=2)
         else:
             with self.assertRaises(URLError) as cm:
                 target.init()
