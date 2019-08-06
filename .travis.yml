@@ -8,3 +8,12 @@ install:
 # Command to run tests
 script:
   - cd bin/ && coverage run --include=./*.py --omit=tests/* tests/test.py && coverage html --directory=../html_dev/coverage --title="Code test coverage for vallenato.fr"
+# Deploy the development information website to Github Pages
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN  # Set as a secure variable in the Travis settings page of the repository
+  keep_history: true
+  local_dir: html_dev
+  target_branch: gh-pages
+  verbose: true
