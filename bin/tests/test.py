@@ -17,6 +17,7 @@ import tempfile
 from pytube import YouTube
 import socket
 from urllib.error import URLError
+from unittest.mock import patch
 
 sys.path.append('.')
 target = __import__("vallenato_fr")
@@ -479,7 +480,8 @@ class TestInitMain(unittest.TestCase):
     #     os.remove("../index.html")
     #     shutil.move("../index.html.bak", "../index.html")
 
-    def test_init_main_temp_folder_no_download(self):
+    @patch("webbrowser.open")
+    def test_init_main_temp_folder_no_download(self, mockwbopen):
         """
         Test the initialization code with the --temp-folder and --no-download parameters
         """
@@ -517,6 +519,8 @@ class TestInitMain(unittest.TestCase):
                     self.assertTrue('\n      <li>Bonita cancion - Super cantante: <a href="https://www.youtube.com/watch?v=oPEirA4pXdg">Tutorial en YouTube</a> por <a href="https://www.youtube.com/channel/UC_8R235jg1ld6MCMOzz2khQ">El Vallenatero Francés</a></li>' in filedata)
                     # Delete the temporary folder
                     shutil.rmtree("../temp/blabla-bla/")
+            # Confirm the webbrowser is called to be opened to the new template's page
+            mockwbopen.assert_called_once_with("../temp/blabla-bla/blabla-bla.html", autoraise=True, new=2)
         else:
             with self.assertRaises(URLError) as cm:
                 target.init()
