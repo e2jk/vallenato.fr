@@ -7,4 +7,4 @@ install:
   - pip install -r bin/requirements.txt
 # Command to run tests
 script:
-  - cd bin/ && coverage run --include=./*.py --omit=tests/* tests/test.py && coverage html
+  - cd bin/ && coverage run --include=./*.py --omit=tests/* tests/test.py && coverage html --directory=../html_dev/coverage --title="Code test coverage for vallenato.fr"
