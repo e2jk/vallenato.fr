@@ -512,13 +512,13 @@ class TestInitMain(unittest.TestCase):
                 self.assertTrue('<span id="nameCurrent">Bonita cancion - Super cantante</span>' in filedata)
                 self.assertTrue('{"id": "oPEirA4pXdg", "start": 0, "end": 999}' in filedata)
                 self.assertTrue('var fullVersion = "q6cUzC6ESZ8";' in filedata)
-                # Confirm that a temporary file with the content to be added to the index page has been created
-                with open("../temp/blabla-bla/index-dummy.html", 'r') as file :
-                    filedata = file.read()
-                    self.assertTrue('\n      <li><a href="blabla-bla.html">Bonita cancion - Super cantante</a> - NNmNNs en NN partes</li>' in filedata)
-                    self.assertTrue('\n      <li>Bonita cancion - Super cantante: <a href="https://www.youtube.com/watch?v=oPEirA4pXdg">Tutorial en YouTube</a> por <a href="https://www.youtube.com/channel/UC_8R235jg1ld6MCMOzz2khQ">El Vallenatero Francés</a></li>' in filedata)
-                    # Delete the temporary folder
-                    shutil.rmtree("../temp/blabla-bla/")
+            # Confirm that a temporary file with the content to be added to the index page has been created
+            with open("../temp/blabla-bla/index-dummy.html", 'r') as file :
+                filedata = file.read()
+                self.assertTrue('\n      <li><a href="blabla-bla.html">Bonita cancion - Super cantante</a> - NNmNNs en NN partes</li>' in filedata)
+                self.assertTrue('\n      <li>Bonita cancion - Super cantante: <a href="https://www.youtube.com/watch?v=oPEirA4pXdg">Tutorial en YouTube</a> por <a href="https://www.youtube.com/channel/UC_8R235jg1ld6MCMOzz2khQ">El Vallenatero Francés</a></li>' in filedata)
+                # Delete the temporary folder
+                shutil.rmtree("../temp/blabla-bla/")
             # Confirm the webbrowser is called to be opened to the new template's page
             mockwbopen.assert_called_once_with("../temp/blabla-bla/blabla-bla.html", autoraise=True, new=2)
         else:
