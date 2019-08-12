@@ -21,6 +21,7 @@ from unittest.mock import patch
 
 sys.path.append('.')
 target = __import__("vallenato_fr")
+aprender = __import__("aprender")
 
 # Check if we're connected to the Internet
 def is_connected():
@@ -43,7 +44,7 @@ def mock_raw_input(s):
     global mock_raw_input_values
     mock_raw_input_counter += 1
     return mock_raw_input_values[mock_raw_input_counter - 1]
-target.input = mock_raw_input
+aprender.input = mock_raw_input
 
 class TestGetTutorialInfo(unittest.TestCase):
     def test_get_tutorial_info(self):
@@ -58,7 +59,7 @@ class TestGetTutorialInfo(unittest.TestCase):
             "blabla-bla"
         ]
         if is_connected():
-            (tutorial_id, tutorial_url, full_video_id, full_video_url, song_title, song_author, tutocreator, tutocreator_channel, yt_tutorial_video, tutorial_slug) = target.get_tutorial_info()
+            (tutorial_id, tutorial_url, full_video_id, full_video_url, song_title, song_author, tutocreator, tutocreator_channel, yt_tutorial_video, tutorial_slug) = aprender.get_tutorial_info()
             self.assertEqual(tutorial_id, "oPEirA4pXdg")
             self.assertEqual(tutorial_url, "https://www.youtube.com/watch?v=oPEirA4pXdg")
             self.assertEqual(full_video_id, "q6cUzC6ESZ8")
@@ -70,7 +71,7 @@ class TestGetTutorialInfo(unittest.TestCase):
             self.assertEqual(tutorial_slug, mock_raw_input_values[4])
         else:
             with self.assertRaises(URLError) as cm:
-                (tutorial_id, tutorial_url, full_video_id, full_video_url, song_title, song_author, tutocreator, tutocreator_channel, yt_tutorial_video, tutorial_slug) = target.get_tutorial_info()
+                (tutorial_id, tutorial_url, full_video_id, full_video_url, song_title, song_author, tutocreator, tutocreator_channel, yt_tutorial_video, tutorial_slug) = aprender.get_tutorial_info()
             self.assertEqual(str(cm.exception), "<urlopen error [Errno -2] Name or service not known>")
 
 
@@ -81,7 +82,7 @@ class TestGetYoutubeUrl(unittest.TestCase):
         global mock_raw_input_values
         mock_raw_input_counter = 0
         mock_raw_input_values = ["https://youtu.be/oPEirA4pXdg"]
-        (video_id, video_url) = target.get_youtube_url("")
+        (video_id, video_url) = aprender.get_youtube_url("")
         self.assertEqual(video_id, "oPEirA4pXdg")
         self.assertEqual(video_url, "https://www.youtube.com/watch?v=oPEirA4pXdg")
 
@@ -91,7 +92,7 @@ class TestGetYoutubeUrl(unittest.TestCase):
         global mock_raw_input_values
         mock_raw_input_counter = 0
         mock_raw_input_values = ["ZZZ", "abc", "https://youtu.be/oPEirA4pXdg"]
-        (video_id, video_url) = target.get_youtube_url("")
+        (video_id, video_url) = aprender.get_youtube_url("")
         self.assertEqual(video_id, "oPEirA4pXdg")
         self.assertEqual(video_url, "https://www.youtube.com/watch?v=oPEirA4pXdg")
 
@@ -102,7 +103,7 @@ class TestGetYoutubeUrl(unittest.TestCase):
         mock_raw_input_counter = 0
         mock_raw_input_values = ["q"]
         with self.assertRaises(SystemExit) as cm:
-            (video_id, video_url) = target.get_youtube_url("")
+            (video_id, video_url) = aprender.get_youtube_url("")
         the_exception = cm.exception
         self.assertEqual(the_exception.code, 10)
 
@@ -117,7 +118,7 @@ class TestYoutubeUrlValidation(unittest.TestCase):
             "https://www.youtube.com/watch?v=oPEirA4pXdg&list=PLZiwcAOEEWBqhsycvvZnBrz5Sw3yXCyRB&index=2&t=0s"
         ]
         for url in valid_youtube_urls:
-            self.assertTrue(target.youtube_url_validation(url))
+            self.assertTrue(aprender.youtube_url_validation(url))
 
     def test_youtube_url_validation_false(self):
         invalid_youtube_urls = [
@@ -126,7 +127,7 @@ class TestYoutubeUrlValidation(unittest.TestCase):
             "https://www.youtube.com/channel/UC_8R235jg1ld6MCMOzz2khQ"
         ]
         for url in invalid_youtube_urls:
-            self.assertFalse(target.youtube_url_validation(url))
+            self.assertFalse(aprender.youtube_url_validation(url))
 
 
 class TestGetTitleAuthorTutocreatorAndChannel(unittest.TestCase):
@@ -136,14 +137,14 @@ class TestGetTitleAuthorTutocreatorAndChannel(unittest.TestCase):
         mock_raw_input_counter = 0
         mock_raw_input_values = ["ABC", "DEF"]
         if is_connected():
-            (song_title, song_author, tutocreator, tutocreator_channel, yt_tutorial_video) = target.get_title_author_tutocreator_and_channel("https://www.youtube.com/watch?v=v5xEaLCCNRc")
+            (song_title, song_author, tutocreator, tutocreator_channel, yt_tutorial_video) = aprender.get_title_author_tutocreator_and_channel("https://www.youtube.com/watch?v=v5xEaLCCNRc")
             self.assertEqual(song_title, "ABC")
             self.assertEqual(song_author, "DEF")
             self.assertEqual(tutocreator, "FZ Academia Vallenato")
             self.assertEqual(tutocreator_channel, "UCWVRD_dZ2wnm1Xf_R5G0D8w")
         else:
             with self.assertRaises(URLError) as cm:
-                (song_title, song_author, tutocreator, tutocreator_channel, yt_tutorial_video) = target.get_title_author_tutocreator_and_channel("https://www.youtube.com/watch?v=v5xEaLCCNRc")
+                (song_title, song_author, tutocreator, tutocreator_channel, yt_tutorial_video) = aprender.get_title_author_tutocreator_and_channel("https://www.youtube.com/watch?v=v5xEaLCCNRc")
             self.assertEqual(str(cm.exception), "<urlopen error [Errno -2] Name or service not known>")
 
     def test_get_title_author_tutocreator_and_channel_quit_title(self):
@@ -153,12 +154,12 @@ class TestGetTitleAuthorTutocreatorAndChannel(unittest.TestCase):
         mock_raw_input_values = ["q"]
         if is_connected():
             with self.assertRaises(SystemExit) as cm:
-                (song_title, song_author, tutocreator, tutocreator_channel, yt_tutorial_video) = target.get_title_author_tutocreator_and_channel("https://www.youtube.com/watch?v=v5xEaLCCNRc")
+                (song_title, song_author, tutocreator, tutocreator_channel, yt_tutorial_video) = aprender.get_title_author_tutocreator_and_channel("https://www.youtube.com/watch?v=v5xEaLCCNRc")
             the_exception = cm.exception
             self.assertEqual(the_exception.code, 11)
         else:
             with self.assertRaises(URLError) as cm:
-                (song_title, song_author, tutocreator, tutocreator_channel, yt_tutorial_video) = target.get_title_author_tutocreator_and_channel("https://www.youtube.com/watch?v=v5xEaLCCNRc")
+                (song_title, song_author, tutocreator, tutocreator_channel, yt_tutorial_video) = aprender.get_title_author_tutocreator_and_channel("https://www.youtube.com/watch?v=v5xEaLCCNRc")
             self.assertEqual(str(cm.exception), "<urlopen error [Errno -2] Name or service not known>")
 
     def test_get_title_author_tutocreator_and_channel_quit_author(self):
@@ -168,12 +169,12 @@ class TestGetTitleAuthorTutocreatorAndChannel(unittest.TestCase):
         mock_raw_input_values = ["ABC", "q"]
         if is_connected():
             with self.assertRaises(SystemExit) as cm:
-                (song_title, song_author, tutocreator, tutocreator_channel, yt_tutorial_video) = target.get_title_author_tutocreator_and_channel("https://www.youtube.com/watch?v=v5xEaLCCNRc")
+                (song_title, song_author, tutocreator, tutocreator_channel, yt_tutorial_video) = aprender.get_title_author_tutocreator_and_channel("https://www.youtube.com/watch?v=v5xEaLCCNRc")
             the_exception = cm.exception
             self.assertEqual(the_exception.code, 12)
         else:
             with self.assertRaises(URLError) as cm:
-                (song_title, song_author, tutocreator, tutocreator_channel, yt_tutorial_video) = target.get_title_author_tutocreator_and_channel("https://www.youtube.com/watch?v=v5xEaLCCNRc")
+                (song_title, song_author, tutocreator, tutocreator_channel, yt_tutorial_video) = aprender.get_title_author_tutocreator_and_channel("https://www.youtube.com/watch?v=v5xEaLCCNRc")
             self.assertEqual(str(cm.exception), "<urlopen error [Errno -2] Name or service not known>")
 
 
@@ -191,7 +192,7 @@ class TestGetTutorialSlug(unittest.TestCase):
         global mock_raw_input_values
         mock_raw_input_counter = 0
         mock_raw_input_values = ["blabla-bla"]
-        tutorial_slug = target.get_tutorial_slug("NOT RELEVANT")
+        tutorial_slug = aprender.get_tutorial_slug("NOT RELEVANT")
         self.assertEqual(tutorial_slug, mock_raw_input_values[0])
 
     def test_get_tutorial_slug_existing(self):
@@ -199,7 +200,7 @@ class TestGetTutorialSlug(unittest.TestCase):
         global mock_raw_input_values
         mock_raw_input_counter = 0
         mock_raw_input_values = ["muere-una-flor", "muere-una-flor-2"]
-        tutorial_slug = target.get_tutorial_slug("NOT RELEVANT")
+        tutorial_slug = aprender.get_tutorial_slug("NOT RELEVANT")
         self.assertEqual(tutorial_slug, mock_raw_input_values[1])
 
     def test_get_tutorial_slug_existing_double(self):
@@ -210,7 +211,7 @@ class TestGetTutorialSlug(unittest.TestCase):
         # We start directly at jaime-molina-1, when not using the mock version
         # the slug would already have detected there is no jaime-molina but
         # there is already a jaime-molina-1
-        tutorial_slug = target.get_tutorial_slug("NOT RELEVANT")
+        tutorial_slug = aprender.get_tutorial_slug("NOT RELEVANT")
         self.assertEqual(tutorial_slug, mock_raw_input_values[2])
 
     def test_get_tutorial_slug_quit_direct(self):
@@ -219,7 +220,7 @@ class TestGetTutorialSlug(unittest.TestCase):
         mock_raw_input_counter = 0
         mock_raw_input_values = ["q"]
         with self.assertRaises(SystemExit) as cm:
-            tutorial_slug = target.get_tutorial_slug("NOT RELEVANT")
+            tutorial_slug = aprender.get_tutorial_slug("NOT RELEVANT")
         the_exception = cm.exception
         self.assertEqual(the_exception.code, 13)
 
@@ -231,23 +232,23 @@ class TestGetTutorialSlug(unittest.TestCase):
         mock_raw_input_values = ["muere-una-flor", "q"]
         # We use a slug that already exists, then quit at the second prompt
         with self.assertRaises(SystemExit) as cm:
-            tutorial_slug = target.get_tutorial_slug("NOT RELEVANT")
+            tutorial_slug = aprender.get_tutorial_slug("NOT RELEVANT")
         the_exception = cm.exception
         self.assertEqual(the_exception.code, 14)
 
 
 class TestGetSuggestedTutorialSlug(unittest.TestCase):
     def test_get_suggested_tutorial_slug_new(self):
-        (tutorials_path, tutorial_slug) = target.get_suggested_tutorial_slug("blabla bla")
+        (tutorials_path, tutorial_slug) = aprender.get_suggested_tutorial_slug("blabla bla")
         self.assertEqual(tutorial_slug, "blabla-bla")
 
     def test_get_suggested_tutorial_slug_existing(self):
-        (tutorials_path, tutorial_slug) = target.get_suggested_tutorial_slug("Muere una Flor")
+        (tutorials_path, tutorial_slug) = aprender.get_suggested_tutorial_slug("Muere una Flor")
         # There is already a tutorial with slug muere-una-flor
         self.assertEqual(tutorial_slug, "muere-una-flor-2")
 
     def test_get_suggested_tutorial_slug_existing_double(self):
-        (tutorials_path, tutorial_slug) = target.get_suggested_tutorial_slug("Jaime Molina")
+        (tutorials_path, tutorial_slug) = aprender.get_suggested_tutorial_slug("Jaime Molina")
         # There are already two tutorials jaime-molina-1 and jaime-molina-2
         self.assertEqual(tutorial_slug, "jaime-molina-3")
 
@@ -256,7 +257,7 @@ class TestDetermineOutputFolder(unittest.TestCase):
     def test_determine_output_folder_no_temp_folder(self):
         temp_folder = False
         tutorial_slug = None
-        output_folder = target.determine_output_folder(temp_folder, tutorial_slug)
+        output_folder = aprender.determine_output_folder(temp_folder, tutorial_slug)
         self.assertEqual(output_folder, "../aprender/")
 
     def test_determine_output_folder_temp_folder_doesnt_exist(self):
@@ -265,7 +266,7 @@ class TestDetermineOutputFolder(unittest.TestCase):
         # Make sure the new temporary folder doesn't exist
         if os.path.exists("../aprender/temp/blabla-bla/"):
             shutil.rmtree("../aprender/temp/blabla-bla/")
-        output_folder = target.determine_output_folder(temp_folder, tutorial_slug)
+        output_folder = aprender.determine_output_folder(temp_folder, tutorial_slug)
         self.assertEqual(output_folder, "../aprender/temp/blabla-bla/")
         self.assertTrue(os.path.exists("../aprender/temp/blabla-bla/"))
         # Delete the temporary folder
@@ -281,7 +282,7 @@ class TestDetermineOutputFolder(unittest.TestCase):
         # Make sure the new temporary folder *does* exist
         os.makedirs("../aprender/temp/blabla-bla/")
         with self.assertRaises(SystemExit) as cm:
-            output_folder = target.determine_output_folder(temp_folder, tutorial_slug)
+            output_folder = aprender.determine_output_folder(temp_folder, tutorial_slug)
         the_exception = cm.exception
         self.assertEqual(the_exception.code, 15)
         self.assertTrue(os.path.exists("../aprender/temp/blabla-bla/"))
@@ -299,7 +300,7 @@ class TestDetermineOutputFolder(unittest.TestCase):
         # Make sure the new temporary folder *does* exist
         os.makedirs("../aprender/temp/blabla-bla/")
         with self.assertRaises(SystemExit) as cm:
-            output_folder = target.determine_output_folder(temp_folder, tutorial_slug)
+            output_folder = aprender.determine_output_folder(temp_folder, tutorial_slug)
         the_exception = cm.exception
         self.assertEqual(the_exception.code, 15)
         self.assertTrue(os.path.exists("../aprender/temp/blabla-bla/"))
@@ -318,7 +319,7 @@ class TestDetermineOutputFolder(unittest.TestCase):
         # Create a temporary file that should be deleted when the folder is deleted
         (ignore, temp_file) = tempfile.mkstemp(dir="../aprender/temp/blabla-bla/")
         self.assertTrue(os.path.exists(temp_file))
-        output_folder = target.determine_output_folder(temp_folder, tutorial_slug)
+        output_folder = aprender.determine_output_folder(temp_folder, tutorial_slug)
         self.assertEqual(output_folder, "../aprender/temp/blabla-bla/")
         # Confirm the temporary file created before deleting the directory was indeed deleted
         self.assertFalse(os.path.exists(temp_file))
@@ -334,7 +335,7 @@ class TestDownloadYoutubeVideo(unittest.TestCase):
             yt = YouTube("https://www.youtube.com/watch?v=%s" % video_id)
             videos_output_folder = tempfile.mkdtemp()
             parser = target.parse_args(['--debug', '--aprender'])
-            target.download_youtube_video(yt, video_id, videos_output_folder)
+            aprender.download_youtube_video(yt, video_id, videos_output_folder)
             self.assertTrue(os.path.exists("%s/%s.mp4" % (videos_output_folder, video_id)))
             # Delete the temporary folder
             shutil.rmtree(videos_output_folder)
@@ -353,7 +354,7 @@ class TestCreateNewTutorialPage(unittest.TestCase):
         full_video_id = "q6cUzC6ESZ8"
         output_folder = "../aprender/"
         new_tutorial_page = "%s%s.html" % (output_folder, tutorial_slug)
-        target.create_new_tutorial_page(tutorial_slug, song_title, song_author, tutorial_id, full_video_id, new_tutorial_page)
+        aprender.create_new_tutorial_page(tutorial_slug, song_title, song_author, tutorial_id, full_video_id, new_tutorial_page)
         # Confirm that a new tutorial page has been created
         self.assertTrue(os.path.exists("../aprender/blabla-bla.html"))
         # Confirm that the content of the new template has been updated
@@ -377,7 +378,7 @@ class TestUpdateIndexPage(unittest.TestCase):
         tutocreator = "El Vallenatero Francés"
         # Create a copy of the index.html file that is going to be edited
         shutil.copy("../aprender/index.html", "../aprender/index.html.bak")
-        target.update_index_page(tutorial_slug, song_title, song_author, tutorial_url, tutocreator_channel, tutocreator)
+        aprender.update_index_page(tutorial_slug, song_title, song_author, tutorial_url, tutocreator_channel, tutocreator)
         # Confirm that the index page has been updated
         with open("../aprender/index.html", 'r') as file :
             filedata = file.read()
