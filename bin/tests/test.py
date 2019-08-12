@@ -333,7 +333,7 @@ class TestDownloadYoutubeVideo(unittest.TestCase):
         if is_connected():
             yt = YouTube("https://www.youtube.com/watch?v=%s" % video_id)
             videos_output_folder = tempfile.mkdtemp()
-            parser = target.parse_args(['--debug'])
+            parser = target.parse_args(['--debug', '--aprender'])
             target.download_youtube_video(yt, video_id, videos_output_folder)
             self.assertTrue(os.path.exists("%s/%s.mp4" % (videos_output_folder, video_id)))
             # Delete the temporary folder
@@ -393,21 +393,21 @@ class TestParseArgs(unittest.TestCase):
         """
         Test the --no-download argument
         """
-        parser = target.parse_args(['--no-download'])
+        parser = target.parse_args(['--no-download', '--aprender'])
         self.assertTrue(parser.no_download)
 
     def test_parse_args_no_download_shorthand(self):
         """
         Test the -nd argument
         """
-        parser = target.parse_args(['-nd'])
+        parser = target.parse_args(['-nd', '--aprender'])
         self.assertTrue(parser.no_download)
 
     def test_parse_args_debug(self):
         """
         Test the --debug argument
         """
-        parser = target.parse_args(['--debug'])
+        parser = target.parse_args(['--debug', '--aprender'])
         self.assertEqual(parser.loglevel, logging.DEBUG)
         self.assertEqual(parser.logging_level, "DEBUG")
 
@@ -415,7 +415,7 @@ class TestParseArgs(unittest.TestCase):
         """
         Test the -d argument
         """
-        parser = target.parse_args(['-d'])
+        parser = target.parse_args(['-d', '--aprender'])
         self.assertEqual(parser.loglevel, logging.DEBUG)
         self.assertEqual(parser.logging_level, "DEBUG")
 
@@ -423,7 +423,7 @@ class TestParseArgs(unittest.TestCase):
         """
         Test the --verbose argument
         """
-        parser = target.parse_args(['--verbose'])
+        parser = target.parse_args(['--verbose', '--aprender'])
         self.assertEqual(parser.loglevel, logging.INFO)
         self.assertEqual(parser.logging_level, "INFO")
 
@@ -431,7 +431,7 @@ class TestParseArgs(unittest.TestCase):
         """
         Test the -v argument
         """
-        parser = target.parse_args(['-v'])
+        parser = target.parse_args(['-v', '--aprender'])
         self.assertEqual(parser.loglevel, logging.INFO)
         self.assertEqual(parser.logging_level, "INFO")
 
@@ -488,7 +488,7 @@ class TestInitMain(unittest.TestCase):
         # Make the script believe we ran it directly
         target.__name__ = "__main__"
         # Pass it no arguments
-        target.sys.argv = ["scriptname.py", "--debug", "--temp-folder", "--no-download"]
+        target.sys.argv = ["scriptname.py", "--aprender", "--debug", "--temp-folder", "--no-download"]
         # Pass it two valid YouTube URLs
         global mock_raw_input_counter
         global mock_raw_input_values

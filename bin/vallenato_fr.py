@@ -245,35 +245,7 @@ def update_index_page(tutorial_slug, song_title, song_author, tutorial_url, tuto
     with open("../aprender/index.html", 'w') as file:
         file.write(filedata)
 
-def parse_args(arguments):
-    parser = argparse.ArgumentParser(description="Create new Vallenato.fr tutorial pages.")
-    parser.add_argument("-tf", "--temp-folder", action='store_true', required=False, help="Create the new tutorial in the ./temp folder, do not update the index page with the new links.")
-    parser.add_argument("-nd", "--no-download", action='store_true', required=False, help="Do not download the videos from YouTube.")
-    parser.add_argument(
-        '-d', '--debug',
-        help="Print lots of debugging statements",
-        action="store_const", dest="loglevel", const=logging.DEBUG,
-        default=logging.WARNING,
-    )
-    parser.add_argument(
-        '-v', '--verbose',
-        help="Be verbose",
-        action="store_const", dest="loglevel", const=logging.INFO,
-    )
-    args = parser.parse_args(arguments)
-
-    # Configure logging level
-    if args.loglevel:
-        logging.basicConfig(level=args.loglevel)
-        args.logging_level = logging.getLevelName(args.loglevel)
-
-    logging.debug("These are the parsed arguments:\n'%s'" % args)
-    return args
-
-def main():
-    # Parse the provided command-line arguments
-    args = parse_args(sys.argv[1:])
-
+def aprender(args):
     # Get the information about this new tutorial
     (tutorial_id, tutorial_url, full_video_id, full_video_url, song_title, song_author, tutocreator, tutocreator_channel, yt_tutorial_video, tutorial_slug) = get_tutorial_info()
 
@@ -308,6 +280,40 @@ def main():
     # Open the new tutorial page in the webbrowser (new tab) for edition
     logging.debug("Opening new tab in web browser to '%s'" % new_tutorial_page)
     webbrowser.open(new_tutorial_page, new=2, autoraise=True)
+
+def parse_args(arguments):
+    parser = argparse.ArgumentParser(description="Create new Vallenato.fr tutorial pages.")
+    parser.add_argument("-a", "--aprender", action='store_true', required=True, help="Create a new tutorial.")
+    parser.add_argument("-tf", "--temp-folder", action='store_true', required=False, help="Create the new tutorial in the ./temp folder, do not update the index page with the new links.")
+    parser.add_argument("-nd", "--no-download", action='store_true', required=False, help="Do not download the videos from YouTube.")
+    parser.add_argument(
+    '-d', '--debug',
+    help="Print lots of debugging statements",
+    action="store_const", dest="loglevel", const=logging.DEBUG,
+    default=logging.WARNING,
+    )
+    parser.add_argument(
+    '-v', '--verbose',
+    help="Be verbose",
+    action="store_const", dest="loglevel", const=logging.INFO,
+    )
+    args = parser.parse_args(arguments)
+
+    # Configure logging level
+    if args.loglevel:
+        logging.basicConfig(level=args.loglevel)
+        args.logging_level = logging.getLevelName(args.loglevel)
+
+        logging.debug("These are the parsed arguments:\n'%s'" % args)
+        return args
+
+def main():
+    # Parse the provided command-line arguments
+    args = parse_args(sys.argv[1:])
+
+    # --aprender
+    if args.aprender:
+        aprender(args)
 
 def init():
     if __name__ == "__main__":
