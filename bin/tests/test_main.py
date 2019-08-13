@@ -43,6 +43,24 @@ def setUpModule():
 
 
 class TestParseArgs(unittest.TestCase):
+    def test_parse_args_no_arguments(self):
+        """
+        Test running the script without one of the required arguments --aprender or --website
+        """
+        with self.assertRaises(SystemExit) as cm:
+            parser = target.parse_args([])
+        the_exception = cm.exception
+        self.assertEqual(the_exception.code, 2)
+
+    def test_parse_args_aprender_website(self):
+        """
+        Test running the script without both mutually exclusive arguments --aprender and --website
+        """
+        with self.assertRaises(SystemExit) as cm:
+            parser = target.parse_args(['--aprender', '--website'])
+        the_exception = cm.exception
+        self.assertEqual(the_exception.code, 2)
+
     def test_parse_args_no_download(self):
         """
         Test the --no-download argument
@@ -88,6 +106,26 @@ class TestParseArgs(unittest.TestCase):
         parser = target.parse_args(['-v', '--aprender'])
         self.assertEqual(parser.loglevel, logging.INFO)
         self.assertEqual(parser.logging_level, "INFO")
+
+    def test_parse_args_temp_folder_website(self):
+        """
+        Test running the script with invalid arguments combination:
+        --temp-folder with --website instead of --aprender
+        """
+        with self.assertRaises(SystemExit) as cm:
+            parser = target.parse_args(['--temp-folder', '--website'])
+        the_exception = cm.exception
+        self.assertEqual(the_exception.code, 16)
+
+    def test_parse_args_no_download_website(self):
+        """
+        Test running the script with invalid arguments combination:
+        --no-download with --website instead of --aprender
+        """
+        with self.assertRaises(SystemExit) as cm:
+            parser = target.parse_args(['--no-download', '--website'])
+        the_exception = cm.exception
+        self.assertEqual(the_exception.code, 17)
 
 
 class TestInitMain(unittest.TestCase):

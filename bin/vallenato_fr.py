@@ -22,10 +22,19 @@ import sys
 from aprender import aprender
 
 def parse_args(arguments):
-    parser = argparse.ArgumentParser(description="Create new Vallenato.fr tutorial pages.")
-    parser.add_argument("-a", "--aprender", action='store_true', required=True, help="Create a new tutorial.")
-    parser.add_argument("-tf", "--temp-folder", action='store_true', required=False, help="Create the new tutorial in the ./temp folder, do not update the index page with the new links.")
-    parser.add_argument("-nd", "--no-download", action='store_true', required=False, help="Do not download the videos from YouTube.")
+    parser = argparse.ArgumentParser(description="Update the Vallenato.fr website")
+    group = parser.add_mutually_exclusive_group(required=True)
+    group.add_argument("-a", "--aprender", action='store_true', required=False, help="Create a new tutorial for vallenato.fr/aprender")
+    group.add_argument("-w", "--website", action='store_true', required=False, help="Regenerate the Vallenato.fr website (but not the /aprender section)")
+
+    # These arguments are only to be used in conjunction with --aprender
+    parser.add_argument("-tf", "--temp-folder", action='store_true', required=False, help="Create the new tutorial in the ./temp folder, do not update the index page with the new links")
+    parser.add_argument("-nd", "--no-download", action='store_true', required=False, help="Do not download the videos from YouTube")
+
+    # These arguments are only to be used in conjunction with --website
+    #TODO
+
+    # General arguments (can be used both with --aprender and --website)
     parser.add_argument(
     '-d', '--debug',
     help="Print lots of debugging statements",
@@ -39,13 +48,21 @@ def parse_args(arguments):
     )
     args = parser.parse_args(arguments)
 
+    # Validate if the arguments are used correctly
+    if args.temp_folder and not args.aprender:
+        logging.critical("The --temp-folder argument can only be used in conjunction with --aprender. Exiting...")
+        sys.exit(16)
+    if args.no_download and not args.aprender:
+        logging.critical("The --no-download argument can only be used in conjunction with --aprender. Exiting...")
+        sys.exit(17)
+
     # Configure logging level
     if args.loglevel:
         logging.basicConfig(level=args.loglevel)
         args.logging_level = logging.getLevelName(args.loglevel)
 
-        logging.debug("These are the parsed arguments:\n'%s'" % args)
-        return args
+    logging.debug("These are the parsed arguments:\n'%s'" % args)
+    return args
 
 def main():
     # Parse the provided command-line arguments
