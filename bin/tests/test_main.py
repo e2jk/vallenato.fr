@@ -19,19 +19,6 @@ sys.path.append('.')
 target = __import__("vallenato_fr")
 aprender = __import__("aprender")
 
-# Check if we're connected to the Internet
-def is_connected():
-    try:
-        # See if we can resolve the host name -- tells us if there is a DNS listening
-        host = socket.gethostbyname("duckduckgo.com")
-        # Connect to the host -- tells us if the host is actually reachable
-        s = socket.create_connection((host, 80), 2)
-        s.close()
-        return True
-    except socket.gaierror:
-        pass
-    return False
-
 # Used to test manual entry
 def setUpModule():
     def mock_raw_input(s):
@@ -192,33 +179,28 @@ class TestInitMain(unittest.TestCase):
             "blabla-bla"
         ]
         # Run the init(), the program exits correctly
-        if is_connected():
-            # Define the expected return value for aprender.get_title_author_tutocreator_and_channel
-            # This prevents lengthy network operations
-            a_gtatac.return_value = ("Bonita cancion", "Super cantante", "El Vallenatero Francés", "UC_8R235jg1ld6MCMOzz2khQ", None)
-            target.init()
-            # Confirm that a new tutorial page has been created in the temporary folder
-            self.assertTrue(os.path.exists("../aprender/temp/blabla-bla/blabla-bla.html"))
-            # Confirm that the content of the new template has been updated
-            with open("../aprender/temp/blabla-bla/blabla-bla.html", 'r') as file :
-                filedata = file.read()
-                self.assertTrue("<title>Bonita cancion - Super cantante</title>" in filedata)
-                self.assertTrue('<span id="nameCurrent">Bonita cancion - Super cantante</span>' in filedata)
-                self.assertTrue('{"id": "oPEirA4pXdg", "start": 0, "end": 999}' in filedata)
-                self.assertTrue('var fullVersion = "q6cUzC6ESZ8";' in filedata)
-            # Confirm that a temporary file with the content to be added to the index page has been created
-            with open("../aprender/temp/blabla-bla/index-dummy.html", 'r') as file :
-                filedata = file.read()
-                self.assertTrue('\n      <li><a href="blabla-bla.html">Bonita cancion - Super cantante</a> - NNmNNs en NN partes</li>' in filedata)
-                self.assertTrue('\n      <li>Bonita cancion - Super cantante: <a href="https://www.youtube.com/watch?v=oPEirA4pXdg">Tutorial en YouTube</a> por <a href="https://www.youtube.com/channel/UC_8R235jg1ld6MCMOzz2khQ">El Vallenatero Francés</a></li>' in filedata)
-                # Delete the temporary folder
-                shutil.rmtree("../aprender/temp/blabla-bla/")
-            # Confirm the webbrowser is called to be opened to the new template's page
-            mockwbopen.assert_called_once_with("../aprender/temp/blabla-bla/blabla-bla.html", autoraise=True, new=2)
-        else:
-            with self.assertRaises(URLError) as cm:
-                target.init()
-            self.assertEqual(str(cm.exception), "<urlopen error [Errno -2] Name or service not known>")
+        # Define the expected return value for aprender.get_title_author_tutocreator_and_channel
+        # This prevents lengthy network operations
+        a_gtatac.return_value = ("Bonita cancion", "Super cantante", "El Vallenatero Francés", "UC_8R235jg1ld6MCMOzz2khQ", None)
+        target.init()
+        # Confirm that a new tutorial page has been created in the temporary folder
+        self.assertTrue(os.path.exists("../aprender/temp/blabla-bla/blabla-bla.html"))
+        # Confirm that the content of the new template has been updated
+        with open("../aprender/temp/blabla-bla/blabla-bla.html", 'r') as file :
+            filedata = file.read()
+            self.assertTrue("<title>Bonita cancion - Super cantante</title>" in filedata)
+            self.assertTrue('<span id="nameCurrent">Bonita cancion - Super cantante</span>' in filedata)
+            self.assertTrue('{"id": "oPEirA4pXdg", "start": 0, "end": 999}' in filedata)
+            self.assertTrue('var fullVersion = "q6cUzC6ESZ8";' in filedata)
+        # Confirm that a temporary file with the content to be added to the index page has been created
+        with open("../aprender/temp/blabla-bla/index-dummy.html", 'r') as file :
+            filedata = file.read()
+            self.assertTrue('\n      <li><a href="blabla-bla.html">Bonita cancion - Super cantante</a> - NNmNNs en NN partes</li>' in filedata)
+            self.assertTrue('\n      <li>Bonita cancion - Super cantante: <a href="https://www.youtube.com/watch?v=oPEirA4pXdg">Tutorial en YouTube</a> por <a href="https://www.youtube.com/channel/UC_8R235jg1ld6MCMOzz2khQ">El Vallenatero Francés</a></li>' in filedata)
+            # Delete the temporary folder
+            shutil.rmtree("../aprender/temp/blabla-bla/")
+        # Confirm the webbrowser is called to be opened to the new template's page
+        mockwbopen.assert_called_once_with("../aprender/temp/blabla-bla/blabla-bla.html", autoraise=True, new=2)
 
 
 class TestLicense(unittest.TestCase):
