@@ -323,6 +323,18 @@ class TestDownloadYoutubeVideo(unittest.TestCase):
         # Delete the temporary folder
         shutil.rmtree(videos_output_folder)
 
+    def test_download_youtube_video_no_itag_18(self):
+        yt = MagicMock()
+        # Mock that there is no stream available with itag 18
+        yt.streams.get_by_itag.return_value = None
+        video_id = "oPEirA4pXdg"
+        videos_output_folder = tempfile.mkdtemp()
+        aprender.download_youtube_video(yt, video_id, videos_output_folder)
+        self.assertTrue(yt.method_calls == [call.streams.get_by_itag(18), call.streams.filter(file_extension='mp4', progressive=True, res='360p')])
+        self.assertTrue(call.streams.filter().first().download(videos_output_folder, 'oPEirA4pXdg') in yt.mock_calls)
+        # Delete the temporary folder
+        shutil.rmtree(videos_output_folder)
+
 
 class TestCreateNewTutorialPage(unittest.TestCase):
     def test_create_new_tutorial_page_ok(self):
