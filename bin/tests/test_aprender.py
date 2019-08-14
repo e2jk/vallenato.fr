@@ -19,6 +19,7 @@ from unittest.mock import MagicMock
 from unittest.mock import call
 
 sys.path.append('.')
+target = __import__("vallenato_fr")
 aprender = __import__("aprender")
 
 # Used to test manual entry
@@ -378,6 +379,49 @@ class TestUpdateIndexPage(unittest.TestCase):
         # Restore the index page
         os.remove("../aprender/index.html")
         shutil.move("../aprender/index.html.bak", "../aprender/index.html")
+
+
+class TestAprender(unittest.TestCase):
+    @patch("aprender.get_title_author_tutocreator_and_channel")
+    @patch("webbrowser.open")
+    def test_init_main_aprender_temp_folder_no_download(self, mockwbopen, a_gtatac):
+        """
+        Test the full --aprender branch, with the --temp-folder and --no-download parameters
+        """
+        # Pass it two valid YouTube URLs
+        global mock_raw_input_counter
+        global mock_raw_input_values
+        mock_raw_input_counter = 0
+        mock_raw_input_values = [
+            "http://www.youtube.com/watch?v=oPEirA4pXdg",
+            "https://www.youtube.com/watch?v=q6cUzC6ESZ8",
+            "blabla-bla"
+        ]
+        # Define the expected return value for aprender.get_title_author_tutocreator_and_channel
+        # This prevents lengthy network operations
+        yt_tutorial_video = MagicMock()
+        a_gtatac.return_value = ("Bonita cancion", "Super cantante", "El Vallenatero Francés", "UC_8R235jg1ld6MCMOzz2khQ", yt_tutorial_video)
+        # Run the main --aprender code branch
+        args = target.parse_args(['--aprender', "--temp-folder", "--no-download"])
+        aprender.aprender(args)
+        # Confirm that a new tutorial page has been created in the temporary folder
+        self.assertTrue(os.path.exists("../aprender/temp/blabla-bla/blabla-bla.html"))
+        # Confirm that the content of the new template has been updated
+        with open("../aprender/temp/blabla-bla/blabla-bla.html", 'r') as file :
+            filedata = file.read()
+            self.assertTrue("<title>Bonita cancion - Super cantante</title>" in filedata)
+            self.assertTrue('<span id="nameCurrent">Bonita cancion - Super cantante</span>' in filedata)
+            self.assertTrue('{"id": "oPEirA4pXdg", "start": 0, "end": 999}' in filedata)
+            self.assertTrue('var fullVersion = "q6cUzC6ESZ8";' in filedata)
+        # Confirm that a temporary file with the content to be added to the index page has been created
+        with open("../aprender/temp/blabla-bla/index-dummy.html", 'r') as file :
+            filedata = file.read()
+            self.assertTrue('\n      <li><a href="blabla-bla.html">Bonita cancion - Super cantante</a> - NNmNNs en NN partes</li>' in filedata)
+            self.assertTrue('\n      <li>Bonita cancion - Super cantante: <a href="https://www.youtube.com/watch?v=oPEirA4pXdg">Tutorial en YouTube</a> por <a href="https://www.youtube.com/channel/UC_8R235jg1ld6MCMOzz2khQ">El Vallenatero Francés</a></li>' in filedata)
+        # Delete the temporary folder
+        shutil.rmtree("../aprender/temp/blabla-bla/")
+        # Confirm the webbrowser is called to be opened to the new template's page
+        mockwbopen.assert_called_once_with("../aprender/temp/blabla-bla/blabla-bla.html", autoraise=True, new=2)
 
 
 if __name__ == '__main__':
