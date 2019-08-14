@@ -297,6 +297,21 @@ class TestDetermineOutputFolder(unittest.TestCase):
         shutil.rmtree("../aprender/temp/blabla-bla/")
 
 
+class TestDownloadVideos(unittest.TestCase):
+    @patch("aprender.download_youtube_video")
+    @patch("aprender.YouTube")
+    def test_download_videos(self, a_yt, a_dyv):
+        yt_tutorial_video = MagicMock()
+        tutorial_id = "KtN7MCg6hlI"
+        full_video_id = "eT2Q_Go2BAs"
+        videos_output_folder = "/tmp/abc"
+        aprender.download_videos(yt_tutorial_video, tutorial_id, full_video_id, videos_output_folder)
+        self.assertTrue(a_yt.mock_calls == [call('https://www.youtube.com/watch?v=eT2Q_Go2BAs')])
+        expected = [call(yt_tutorial_video, 'KtN7MCg6hlI', '/tmp/abc'),
+                    call(a_yt(), 'eT2Q_Go2BAs', '/tmp/abc')]
+        self.assertTrue(a_dyv.mock_calls == expected)
+
+
 class TestDownloadYoutubeVideo(unittest.TestCase):
     def test_download_youtube_video(self):
         yt = MagicMock()
