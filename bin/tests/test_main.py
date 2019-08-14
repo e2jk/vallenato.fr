@@ -172,8 +172,9 @@ class TestInitMain(unittest.TestCase):
     #     os.remove("../aprender/index.html")
     #     shutil.move("../aprender/index.html.bak", "../aprender/index.html")
 
+    @patch("aprender.get_title_author_tutocreator_and_channel")
     @patch("webbrowser.open")
-    def test_init_main_aprender_temp_folder_no_download(self, mockwbopen):
+    def test_init_main_aprender_temp_folder_no_download(self, mockwbopen, a_gtatac):
         """
         Test the initialization code with the --temp-folder and --no-download parameters
         """
@@ -188,12 +189,13 @@ class TestInitMain(unittest.TestCase):
         mock_raw_input_values = [
             "http://www.youtube.com/watch?v=oPEirA4pXdg",
             "https://www.youtube.com/watch?v=q6cUzC6ESZ8",
-            "Bonita cancion",
-            "Super cantante",
             "blabla-bla"
         ]
         # Run the init(), the program exits correctly
         if is_connected():
+            # Define the expected return value for aprender.get_title_author_tutocreator_and_channel
+            # This prevents lengthy network operations
+            a_gtatac.return_value = ("Bonita cancion", "Super cantante", "El Vallenatero Francés", "UC_8R235jg1ld6MCMOzz2khQ", None)
             target.init()
             # Confirm that a new tutorial page has been created in the temporary folder
             self.assertTrue(os.path.exists("../aprender/temp/blabla-bla/blabla-bla.html"))
