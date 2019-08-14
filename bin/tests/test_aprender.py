@@ -423,6 +423,38 @@ class TestAprender(unittest.TestCase):
         # Confirm the webbrowser is called to be opened to the new template's page
         mockwbopen.assert_called_once_with("../aprender/temp/blabla-bla/blabla-bla.html", autoraise=True, new=2)
 
+    @patch("aprender.get_title_author_tutocreator_and_channel")
+    @patch("aprender.YouTube")
+    @patch("webbrowser.open")
+    def test_init_main_aprender_temp_videos_output_folder_doesnt_exist(self, mockwbopen, a_yt, a_gtatac):
+        """
+        Test the full --aprender branch, with --temp-folder when the temporary folder to host the downloaded videos doesn't exist yet
+        """
+        # Pass it two valid YouTube URLs
+        global mock_raw_input_counter
+        global mock_raw_input_values
+        mock_raw_input_counter = 0
+        mock_raw_input_values = [
+            "http://www.youtube.com/watch?v=oPEirA4pXdg",
+            "https://www.youtube.com/watch?v=q6cUzC6ESZ8",
+            "blabla-bla"
+        ]
+        # Define the expected return value for aprender.get_title_author_tutocreator_and_channel
+        # This prevents lengthy network operations
+        yt_tutorial_video = MagicMock()
+        a_gtatac.return_value = ("Bonita cancion", "Super cantante", "El Vallenatero Francés", "UC_8R235jg1ld6MCMOzz2khQ", yt_tutorial_video)
+        # Make sure the temporary folder to host the downloaded videos doesn't exist
+        videos_output_folder = "../aprender/temp/blabla-bla/videos/blabla-bla"
+        if os.path.exists(videos_output_folder):
+            shutil.rmtree(videos_output_folder)
+        # Run the main --aprender code branch
+        args = target.parse_args(['--aprender', "--temp-folder"])
+        aprender.aprender(args)
+        # Confirm that the new temporary folder has been created to host the downloaded videos
+        self.assertTrue(os.path.exists(videos_output_folder))
+        # Delete the temporary folder
+        shutil.rmtree("../aprender/temp/blabla-bla/")
+
 
 if __name__ == '__main__':
     unittest.main()
