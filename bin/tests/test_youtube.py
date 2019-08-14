@@ -8,6 +8,7 @@
 
 import unittest
 import sys
+import os
 from unittest.mock import patch
 from unittest.mock import MagicMock
 from unittest.mock import call
@@ -25,7 +26,9 @@ class TestYtGetAuthenticatedService(unittest.TestCase):
     def test_yt_get_authenticated_service(self, yt_ffc, yt_S, yt_rf, yt_b):
         args = target.parse_args(['--website'])
         yt = youtube.yt_get_authenticated_service(args)
-        expected_yt_ffc = [call('client_secret.json', message='\nWARNING: Please configure OAuth 2.0\n\nTo make this sample run you will need to populate the client_secrets.json file\nfound at:\n   /home/emilien/devel/vallenato.fr/bin/client_secret.json\nwith information from the APIs Console\nhttps://console.developers.google.com\n\nFor more information about the client_secrets.json file format, please visit:\nhttps://developers.google.com/api-client-library/python/guide/aaa_client_secrets\n', scope=['https://www.googleapis.com/auth/youtube.readonly'])]
+        # local_file_path = "/home/emilien/devel/vallenato.fr/bin"
+        local_file_path = os.getcwd()
+        expected_yt_ffc = [call('client_secret.json', message='\nWARNING: Please configure OAuth 2.0\n\nTo make this sample run you will need to populate the client_secrets.json file\nfound at:\n   %s/client_secret.json\nwith information from the APIs Console\nhttps://console.developers.google.com\n\nFor more information about the client_secrets.json file format, please visit:\nhttps://developers.google.com/api-client-library/python/guide/aaa_client_secrets\n' % local_file_path, scope=['https://www.googleapis.com/auth/youtube.readonly'])]
         self.assertTrue(expected_yt_ffc in yt_ffc.mock_calls)
         self.assertTrue(call('vallenato.fr-oauth2.json') in yt_S.mock_calls)
         self.assertEqual([call(yt_ffc(), yt_S(), args)], yt_rf.mock_calls)
