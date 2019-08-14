@@ -14,22 +14,12 @@ import tempfile
 from pytube import YouTube
 import socket
 from urllib.error import URLError
+from unittest.mock import patch
+from unittest.mock import MagicMock
+from unittest.mock import call
 
 sys.path.append('.')
 aprender = __import__("aprender")
-
-# Check if we're connected to the Internet
-def is_connected():
-    try:
-        # See if we can resolve the host name -- tells us if there is a DNS listening
-        host = socket.gethostbyname("duckduckgo.com")
-        # Connect to the host -- tells us if the host is actually reachable
-        s = socket.create_connection((host, 80), 2)
-        s.close()
-        return True
-    except socket.gaierror:
-        pass
-    return False
 
 # Used to test manual entry
 def setUpModule():
@@ -41,32 +31,27 @@ def setUpModule():
     aprender.input = mock_raw_input
 
 class TestGetTutorialInfo(unittest.TestCase):
-    def test_get_tutorial_info(self):
+    @patch("aprender.get_title_author_tutocreator_and_channel")
+    def test_get_tutorial_info(self, a_gtatac):
         global mock_raw_input_counter
         global mock_raw_input_values
         mock_raw_input_counter = 0
         mock_raw_input_values = [
             "http://www.youtube.com/watch?v=oPEirA4pXdg",
             "https://www.youtube.com/watch?v=q6cUzC6ESZ8",
-            "Bonita cancion",
-            "Super cantante",
             "blabla-bla"
         ]
-        if is_connected():
-            (tutorial_id, tutorial_url, full_video_id, full_video_url, song_title, song_author, tutocreator, tutocreator_channel, yt_tutorial_video, tutorial_slug) = aprender.get_tutorial_info()
-            self.assertEqual(tutorial_id, "oPEirA4pXdg")
-            self.assertEqual(tutorial_url, "https://www.youtube.com/watch?v=oPEirA4pXdg")
-            self.assertEqual(full_video_id, "q6cUzC6ESZ8")
-            self.assertEqual(full_video_url, "https://www.youtube.com/watch?v=q6cUzC6ESZ8")
-            self.assertEqual(song_title, "Bonita cancion")
-            self.assertEqual(song_author, "Super cantante")
-            self.assertEqual(tutocreator, "El Vallenatero Francés")
-            self.assertEqual(tutocreator_channel, "UC_8R235jg1ld6MCMOzz2khQ")
-            self.assertEqual(tutorial_slug, mock_raw_input_values[4])
-        else:
-            with self.assertRaises(URLError) as cm:
-                (tutorial_id, tutorial_url, full_video_id, full_video_url, song_title, song_author, tutocreator, tutocreator_channel, yt_tutorial_video, tutorial_slug) = aprender.get_tutorial_info()
-            self.assertEqual(str(cm.exception), "<urlopen error [Errno -2] Name or service not known>")
+        a_gtatac.return_value = ("Bonita cancion", "Super cantante", "El Vallenatero Francés", "UC_8R235jg1ld6MCMOzz2khQ", None)
+        (tutorial_id, tutorial_url, full_video_id, full_video_url, song_title, song_author, tutocreator, tutocreator_channel, yt_tutorial_video, tutorial_slug) = aprender.get_tutorial_info()
+        self.assertEqual(tutorial_id, "oPEirA4pXdg")
+        self.assertEqual(tutorial_url, "https://www.youtube.com/watch?v=oPEirA4pXdg")
+        self.assertEqual(full_video_id, "q6cUzC6ESZ8")
+        self.assertEqual(full_video_url, "https://www.youtube.com/watch?v=q6cUzC6ESZ8")
+        self.assertEqual(song_title, "Bonita cancion")
+        self.assertEqual(song_author, "Super cantante")
+        self.assertEqual(tutocreator, "El Vallenatero Francés")
+        self.assertEqual(tutocreator_channel, "UC_8R235jg1ld6MCMOzz2khQ")
+        self.assertEqual(tutorial_slug, mock_raw_input_values[2])
 
 
 class TestGetYoutubeUrl(unittest.TestCase):
@@ -125,51 +110,41 @@ class TestYoutubeUrlValidation(unittest.TestCase):
 
 
 class TestGetTitleAuthorTutocreatorAndChannel(unittest.TestCase):
-    def test_get_title_author_tutocreator_and_channel_valid(self):
+    @patch("aprender.YouTube")
+    def test_get_title_author_tutocreator_and_channel_valid(self, a_yt):
         global mock_raw_input_counter
         global mock_raw_input_values
         mock_raw_input_counter = 0
         mock_raw_input_values = ["ABC", "DEF"]
-        if is_connected():
-            (song_title, song_author, tutocreator, tutocreator_channel, yt_tutorial_video) = aprender.get_title_author_tutocreator_and_channel("https://www.youtube.com/watch?v=v5xEaLCCNRc")
-            self.assertEqual(song_title, "ABC")
-            self.assertEqual(song_author, "DEF")
-            self.assertEqual(tutocreator, "FZ Academia Vallenato")
-            self.assertEqual(tutocreator_channel, "UCWVRD_dZ2wnm1Xf_R5G0D8w")
-        else:
-            with self.assertRaises(URLError) as cm:
-                (song_title, song_author, tutocreator, tutocreator_channel, yt_tutorial_video) = aprender.get_title_author_tutocreator_and_channel("https://www.youtube.com/watch?v=v5xEaLCCNRc")
-            self.assertEqual(str(cm.exception), "<urlopen error [Errno -2] Name or service not known>")
+        # Mock the return value of calling YouTube, to prevent lengthy network operations
+        a_yt().player_config_args = {"player_response": {"videoDetails": {"title": "AAA", "author": "FZ Academia Vallenato", "channelId": "UCWVRD_dZ2wnm1Xf_R5G0D8w"}}}
+        (song_title, song_author, tutocreator, tutocreator_channel, yt_tutorial_video) = aprender.get_title_author_tutocreator_and_channel("https://www.youtube.com/watch?v=v5xEaLCCNRc")
+        self.assertEqual(song_title, "ABC")
+        self.assertEqual(song_author, "DEF")
+        self.assertEqual(tutocreator, "FZ Academia Vallenato")
+        self.assertEqual(tutocreator_channel, "UCWVRD_dZ2wnm1Xf_R5G0D8w")
 
-    def test_get_title_author_tutocreator_and_channel_quit_title(self):
+    @patch("aprender.YouTube")
+    def test_get_title_author_tutocreator_and_channel_quit_title(self, a_yt):
         global mock_raw_input_counter
         global mock_raw_input_values
         mock_raw_input_counter = 0
         mock_raw_input_values = ["q"]
-        if is_connected():
-            with self.assertRaises(SystemExit) as cm:
-                (song_title, song_author, tutocreator, tutocreator_channel, yt_tutorial_video) = aprender.get_title_author_tutocreator_and_channel("https://www.youtube.com/watch?v=v5xEaLCCNRc")
-            the_exception = cm.exception
-            self.assertEqual(the_exception.code, 11)
-        else:
-            with self.assertRaises(URLError) as cm:
-                (song_title, song_author, tutocreator, tutocreator_channel, yt_tutorial_video) = aprender.get_title_author_tutocreator_and_channel("https://www.youtube.com/watch?v=v5xEaLCCNRc")
-            self.assertEqual(str(cm.exception), "<urlopen error [Errno -2] Name or service not known>")
+        with self.assertRaises(SystemExit) as cm:
+            (song_title, song_author, tutocreator, tutocreator_channel, yt_tutorial_video) = aprender.get_title_author_tutocreator_and_channel("https://www.youtube.com/watch?v=v5xEaLCCNRc")
+        the_exception = cm.exception
+        self.assertEqual(the_exception.code, 11)
 
-    def test_get_title_author_tutocreator_and_channel_quit_author(self):
+    @patch("aprender.YouTube")
+    def test_get_title_author_tutocreator_and_channel_quit_author(self, a_yt):
         global mock_raw_input_counter
         global mock_raw_input_values
         mock_raw_input_counter = 0
         mock_raw_input_values = ["ABC", "q"]
-        if is_connected():
-            with self.assertRaises(SystemExit) as cm:
-                (song_title, song_author, tutocreator, tutocreator_channel, yt_tutorial_video) = aprender.get_title_author_tutocreator_and_channel("https://www.youtube.com/watch?v=v5xEaLCCNRc")
-            the_exception = cm.exception
-            self.assertEqual(the_exception.code, 12)
-        else:
-            with self.assertRaises(URLError) as cm:
-                (song_title, song_author, tutocreator, tutocreator_channel, yt_tutorial_video) = aprender.get_title_author_tutocreator_and_channel("https://www.youtube.com/watch?v=v5xEaLCCNRc")
-            self.assertEqual(str(cm.exception), "<urlopen error [Errno -2] Name or service not known>")
+        with self.assertRaises(SystemExit) as cm:
+            (song_title, song_author, tutocreator, tutocreator_channel, yt_tutorial_video) = aprender.get_title_author_tutocreator_and_channel("https://www.youtube.com/watch?v=v5xEaLCCNRc")
+        the_exception = cm.exception
+        self.assertEqual(the_exception.code, 12)
 
 
 class TestRlinput(unittest.TestCase):
@@ -324,18 +299,14 @@ class TestDetermineOutputFolder(unittest.TestCase):
 
 class TestDownloadYoutubeVideo(unittest.TestCase):
     def test_download_youtube_video(self):
+        yt = MagicMock()
         video_id = "oPEirA4pXdg"
-        if is_connected():
-            yt = YouTube("https://www.youtube.com/watch?v=%s" % video_id)
-            videos_output_folder = tempfile.mkdtemp()
-            aprender.download_youtube_video(yt, video_id, videos_output_folder)
-            self.assertTrue(os.path.exists("%s/%s.mp4" % (videos_output_folder, video_id)))
-            # Delete the temporary folder
-            shutil.rmtree(videos_output_folder)
-        else:
-            with self.assertRaises(URLError) as cm:
-                yt = YouTube("https://www.youtube.com/watch?v=%s" % video_id)
-            self.assertEqual(str(cm.exception), "<urlopen error [Errno -2] Name or service not known>")
+        videos_output_folder = tempfile.mkdtemp()
+        aprender.download_youtube_video(yt, video_id, videos_output_folder)
+        self.assertTrue(yt.method_calls == [call.streams.get_by_itag(18)])
+        self.assertTrue(call.streams.get_by_itag().download(videos_output_folder, 'oPEirA4pXdg') in yt.mock_calls)
+        # Delete the temporary folder
+        shutil.rmtree(videos_output_folder)
 
 
 class TestCreateNewTutorialPage(unittest.TestCase):
