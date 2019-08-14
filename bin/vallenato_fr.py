@@ -20,6 +20,7 @@ import argparse
 import logging
 import sys
 from aprender import aprender
+from website import website
 
 def parse_args(arguments):
     parser = argparse.ArgumentParser(description="Update the Vallenato.fr website")
@@ -33,6 +34,7 @@ def parse_args(arguments):
 
     # These arguments are only to be used in conjunction with --website
     #TODO
+    parser.add_argument("-duv", "--dump-uploaded-videos", action='store_true', required=False, help="Dump the list of uploaded videos from YouTube, so as not to have to download it again")
 
     # General arguments (can be used both with --aprender and --website)
     parser.add_argument(
@@ -55,11 +57,17 @@ def parse_args(arguments):
     if args.no_download and not args.aprender:
         logging.critical("The --no-download argument can only be used in conjunction with --aprender. Exiting...")
         sys.exit(17)
+    if args.dump_uploaded_videos and not args.website:
+        logging.critical("The --dump-uploaded-videos argument can only be used in conjunction with --website. Exiting...")
+        sys.exit(18)
 
     # Configure logging level
     if args.loglevel:
         logging.basicConfig(level=args.loglevel)
         args.logging_level = logging.getLevelName(args.loglevel)
+
+    # Needed for the Youtube integration
+    args.noauth_local_webserver = True
 
     logging.debug("These are the parsed arguments:\n'%s'" % args)
     return args
@@ -71,6 +79,8 @@ def main():
     # --aprender
     if args.aprender:
         aprender(args)
+    elif args.website:
+        website(args)
 
 def init():
     if __name__ == "__main__":

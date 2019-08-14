@@ -12,6 +12,7 @@ import os
 import shutil
 import logging
 import socket
+import json
 from urllib.error import URLError
 from unittest.mock import patch
 from unittest.mock import MagicMock
@@ -116,6 +117,16 @@ class TestParseArgs(unittest.TestCase):
         the_exception = cm.exception
         self.assertEqual(the_exception.code, 17)
 
+    def test_parse_args_dump_uploaded_videos_aprender(self):
+        """
+        Test running the script with invalid arguments combination:
+        --dump-uploaded-videos with --aprender instead of --website
+        """
+        with self.assertRaises(SystemExit) as cm:
+            parser = target.parse_args(['--dump-uploaded-videos', '--aprender'])
+        the_exception = cm.exception
+        self.assertEqual(the_exception.code, 18)
+
 
 class TestInitMain(unittest.TestCase):
     @patch("aprender.get_title_author_tutocreator_and_channel")
@@ -167,6 +178,20 @@ class TestInitMain(unittest.TestCase):
         command = ["git", "checkout", "--", "../aprender/index.html"]
         pipe = sp.Popen(command, stdout=sp.PIPE, stderr=sp.STDOUT)
         out, err = pipe.communicate()
+
+    @patch("website.get_uploaded_videos")
+    def test_website(self, w_guv):
+        # Make the script believe we ran it directly
+        target.__name__ = "__main__"
+        # Pass it just the --aprender argument
+        target.sys.argv = ["scriptname.py", "--website"]
+        # Mock valid list of videos
+        with open("tests/sample_uploaded_videos_dump.txt") as in_file:
+            sample_uploaded_videos = json.load(in_file)
+        w_guv.return_value = sample_uploaded_videos
+        # Run the init(), will run the full --website branch
+        target.init()
+        #TODO Assert final script result
 
 
 class TestLicense(unittest.TestCase):

@@ -32,6 +32,7 @@ def setUpModule():
         return mock_raw_input_values[mock_raw_input_counter - 1]
     aprender.input = mock_raw_input
 
+
 class TestGetTutorialInfo(unittest.TestCase):
     @patch("aprender.get_title_author_tutocreator_and_channel")
     def test_get_tutorial_info(self, a_gtatac):

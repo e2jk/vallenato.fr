@@ -3,4 +3,7 @@ aprender/videos/
 bin/__pycache__/
 bin/tests/__pycache__/
 bin/.coverage
+bin/client_secret.json
+bin/vallenato.fr-oauth2.json
+bin/uploaded_videos_dump.txt
 html_dev/coverage/
