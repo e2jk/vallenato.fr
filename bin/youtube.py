@@ -99,15 +99,10 @@ def yt_list_my_uploaded_videos(uploads_playlist_id, youtube):
     )
 
     logging.debug('Videos in list %s' % uploads_playlist_id)
-    add_missing_videos = True
     while playlistitems_list_request:
         playlistitems_list_response = playlistitems_list_request.execute()
 
         videoIds = ",".join(playlist_item['contentDetails']['videoId'] for playlist_item in playlistitems_list_response['items'])
-        if add_missing_videos:
-            # There are 3 videos that for some reason aren't being included in the playlist of uploaded videos, add them
-            videoIds = "%s,KASEblFElVM,UnR6G2Pg2ao,SJ02fqu_BVQ" % videoIds
-            add_missing_videos = False
 
         # To get the videos' tags, we need to do an extra query
         videos_list_request = youtube.videos().list(
