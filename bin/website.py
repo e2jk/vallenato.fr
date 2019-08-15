@@ -66,11 +66,14 @@ def get_uploaded_videos(args, dump_file):
 def identify_locations_names(uploaded_videos, location_special_cases_file, dump_file):
     with open(location_special_cases_file) as in_file:
         special_cases = json.load(in_file)
+    locations = {}
     incomplete_locations = False
     for vid in uploaded_videos:
         vid["location"] = identify_single_location_name(vid, special_cases)
         if not vid["location"]:
             incomplete_locations = True
+        elif vid["location"] not in locations:
+            locations[vid["location"]] = None
     if incomplete_locations:
         # The script is going to exit, to prevent unnecessary downloading from
         # YouTube again, save the downloaded information regardless of the
@@ -79,7 +82,7 @@ def identify_locations_names(uploaded_videos, location_special_cases_file, dump_
         logging.warning("Dumping the list of uploaded videos from YouTube to the '%s' file, so as not to have to download it again after you have edited the '%s' file." % (dump_file, location_special_cases_file))
         logging.critical("Please add the new/missing location to the file '%s'. Exiting..." % location_special_cases_file)
         sys.exit(20)
-    return uploaded_videos
+    return (uploaded_videos, locations)
 
 def identify_single_location_name(vid, special_cases):
     location = None
@@ -102,7 +105,7 @@ def website(args):
     logging.info("There are %d uploaded videos." % len(uploaded_videos))
 
     # Identify each video's location
-    uploaded_videos = identify_locations_names(uploaded_videos, LOCATION_SPECIAL_CASES_FILE, UPLOADED_VIDEOS_DUMP_FILE)
+    (uploaded_videos, locations) = identify_locations_names(uploaded_videos, LOCATION_SPECIAL_CASES_FILE, UPLOADED_VIDEOS_DUMP_FILE)
 
     # Determine the geolocation of each location
     #TODO

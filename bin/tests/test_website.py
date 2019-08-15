@@ -105,10 +105,16 @@ class TestGetUploadedVideos(unittest.TestCase):
 class TestIdentifyLocationsNames(unittest.TestCase):
     def test_identify_locations_names(self):
         uploaded_videos = [{ "id": "KASEblFElVM",
-                    "title": "Oye Bonita, desde Buesaco, Nariño, Colombia"}]
-        uploaded_videos = website.identify_locations_names(uploaded_videos, "tests/data/sample_location_special_cases.json", "")
+             "title": "Oye Bonita, desde Buesaco, Nariño, Colombia"},
+            {"id": "eEmtEtFgu94",
+             "title": "Muere una Flor, desde La Cristalina, Nari\u00f1o, Colombia"}]
+        (uploaded_videos, locations) = website.identify_locations_names(uploaded_videos, "tests/data/sample_location_special_cases.json", "")
         # Validate that "location" has been added, with the right value
         self.assertEqual(uploaded_videos[0]["location"], "Buesaco, Nariño, Colombia")
+        # Validate that the list of identified locations is as expected
+        expected_locations = {'Buesaco, Nariño, Colombia': None,
+                              'La Cristalina, Nariño, Colombia': None}
+        self.assertEqual(locations, expected_locations)
 
     def test_identify_locations_names_incomplete_locations(self):
         with open("tests/data/sample_uploaded_videos_dump.txt") as in_file:
