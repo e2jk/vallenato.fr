@@ -17,7 +17,6 @@ from urllib.error import URLError
 from unittest.mock import patch
 from unittest.mock import MagicMock
 from unittest.mock import call
-import subprocess as sp
 
 sys.path.append('.')
 target = __import__("vallenato_fr")
@@ -370,6 +369,8 @@ class TestUpdateIndexPage(unittest.TestCase):
         tutorial_url = "https://www.youtube.com/watch?v=oPEirA4pXdg"
         tutocreator_channel = "UC_8R235jg1ld6MCMOzz2khQ"
         tutocreator = "El Vallenatero Francés"
+        # Create a copy of the index.html file that is going to be edited
+        shutil.copy("../aprender/index.html", "../aprender/index.html.bak")
         aprender.update_index_page(tutorial_slug, song_title, song_author, tutorial_url, tutocreator_channel, tutocreator)
         # Confirm that the index page has been updated
         with open("../aprender/index.html", 'r') as file :
@@ -377,10 +378,8 @@ class TestUpdateIndexPage(unittest.TestCase):
         self.assertTrue('</li>\n      <li><a href="blabla-bla.html">Bonita cancion - Super cantante</a> - NNmNNs en NN partes</li>\n    </ul>' in filedata)
         self.assertTrue('</a></li>\n      <li>Bonita cancion - Super cantante: <a href="https://www.youtube.com/watch?v=oPEirA4pXdg">Tutorial en YouTube</a> por <a href="https://www.youtube.com/channel/UC_8R235jg1ld6MCMOzz2khQ">El Vallenatero Francés</a></li>\n    </ul>' in filedata)
         # Restore the index page
-        # git checkout -- ../aprender/index.html
-        command = ["git", "checkout", "--", "../aprender/index.html"]
-        pipe = sp.Popen(command, stdout=sp.PIPE, stderr=sp.STDOUT)
-        out, err = pipe.communicate()
+        os.remove("../aprender/index.html")
+        shutil.move("../aprender/index.html.bak", "../aprender/index.html")
 
 
 class TestAprender(unittest.TestCase):

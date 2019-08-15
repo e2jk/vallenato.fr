@@ -16,7 +16,6 @@ import json
 from urllib.error import URLError
 from unittest.mock import patch
 from unittest.mock import MagicMock
-import subprocess as sp
 
 sys.path.append('.')
 target = __import__("vallenato_fr")
@@ -153,6 +152,8 @@ class TestInitMain(unittest.TestCase):
         # This prevents lengthy network operations
         yt_tutorial_video = MagicMock()
         a_gtatac.return_value = ("Bonita cancion", "Super cantante", "El Vallenatero Francés", "UC_8R235jg1ld6MCMOzz2khQ", yt_tutorial_video)
+        # Create a copy of the index.html file that is going to be edited
+        shutil.copy("../aprender/index.html", "../aprender/index.html.bak")
         # Run the init(), will run the full --aprender branch
         target.init()
         # Confirm that a new tutorial page has been created in the temporary folder
@@ -174,10 +175,8 @@ class TestInitMain(unittest.TestCase):
         # Delete that new tutorial page
         os.remove("../aprender/blabla-bla.html")
         # Restore the index page
-        # git checkout -- ../aprender/index.html
-        command = ["git", "checkout", "--", "../aprender/index.html"]
-        pipe = sp.Popen(command, stdout=sp.PIPE, stderr=sp.STDOUT)
-        out, err = pipe.communicate()
+        os.remove("../aprender/index.html")
+        shutil.move("../aprender/index.html.bak", "../aprender/index.html")
 
     @patch("website.get_uploaded_videos")
     def test_website(self, w_guv):
