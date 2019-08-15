@@ -107,13 +107,18 @@ def yt_list_my_uploaded_videos(uploads_playlist_id, youtube):
         # To get the videos' tags, we need to do an extra query
         videos_list_request = youtube.videos().list(
             id=videoIds,
-            part='snippet'
+            part='snippet,status'
         )
 
         while videos_list_request:
             videos_list_response = videos_list_request.execute()
 
             for video in videos_list_response['items']:
+                # Only keep Public videos not tagged as "no-website" or "Tutorial"
+                if (video['status']['privacyStatus'] != "public" or
+                   "no-website" in video['snippet']['tags'] or
+                   "Tutorial" in video['snippet']['tags']):
+                    continue
                 vid = {}
                 vid["id"] = video['id']
                 vid["title"] = video['snippet']['title']
@@ -124,6 +129,7 @@ def yt_list_my_uploaded_videos(uploads_playlist_id, youtube):
                     vid["tags"] = []
                 vid["publishedAt"] = video['snippet']['publishedAt']
                 vid["thumbnail"] = video['snippet']['thumbnails']['default']
+
                 uploaded_videos.append(vid)
                 logging.debug(vid)
             videos_list_request = youtube.videos().list_next(videos_list_request, videos_list_response)

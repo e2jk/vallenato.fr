@@ -101,66 +101,6 @@
     "title": "Los Caminos De La Vida, desde La Cristalina, Nari\u00f1o, Colombia"
   },
   {
-    "description": "Mi primer video, 2 semanas despu\u00e9s de haber recibido mi primer acorde\u00f3n Vallenato ;)\nBuesaco, Nari\u00f1o, Colombia, 09/01/2017\nOye Bonita - Diomedes D\u00edaz",
-    "id": "KASEblFElVM",
-    "publishedAt": "2017-01-12T15:16:40.000Z",
-    "tags": [
-      "Oye Bonita",
-      "Buesaco",
-      "Colombia",
-      "Vallenato",
-      "Diomedes D\u00edaz",
-      "Acorde\u00f3n"
-    ],
-    "thumbnail": {
-      "height": 90,
-      "url": "https://i.ytimg.com/vi/KASEblFElVM/default.jpg",
-      "width": 120
-    },
-    "title": "Oye Bonita, desde Buesaco, Nari\u00f1o, Colombia"
-  },
-  {
-    "description": "Koh Phangan, Tailandia, 22/02/2017\nOye Bonita - Diomedes D\u00edaz",
-    "id": "UnR6G2Pg2ao",
-    "publishedAt": "2017-02-22T08:43:34.000Z",
-    "tags": [
-      "Oye Bonita",
-      "Ko Pha Ngan",
-      "Tailandia",
-      "Vallenato",
-      "Diomedes D\u00edaz",
-      "Acorde\u00f3n",
-      "Koh Phangan"
-    ],
-    "thumbnail": {
-      "height": 90,
-      "url": "https://i.ytimg.com/vi/UnR6G2Pg2ao/default.jpg",
-      "width": 120
-    },
-    "title": "Oye Bonita, desde Koh Phangan, Tailandia"
-  },
-  {
-    "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/tu-cumpleanos.html\nKo Pha Ngan, Tailandia, 23/02/2017\nTu Cumplea\u00f1os - Diomedes D\u00edaz",
-    "id": "SJ02fqu_BVQ",
-    "publishedAt": "2017-02-23T15:54:20.000Z",
-    "tags": [
-      "Ko Pha Ngan",
-      "Tailandia",
-      "Tu Cumplea\u00f1os",
-      "Diomedes D\u00edaz",
-      "Acorde\u00f3n",
-      "Feliz Cumplea\u00f1os",
-      "Vallenato",
-      "Koh Phangan"
-    ],
-    "thumbnail": {
-      "height": 90,
-      "url": "https://i.ytimg.com/vi/SJ02fqu_BVQ/default.jpg",
-      "width": 120
-    },
-    "title": "Feliz Cumplea\u00f1os de Diomedes D\u00edaz, desde Koh Phangan, Tailandia"
-  },
-  {
     "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/esa.html\nCimarrones, Nari\u00f1o, Colombia, 08/08/2019\nEsa - Binomio de Oro",
     "id": "iVO40yK3mdo",
     "publishedAt": "2019-08-09T15:31:51.000Z",
@@ -239,37 +179,6 @@
       "width": 120
     },
     "title": "Oye Bonita, desde Cimarrones, Nari\u00f1o, Colombia"
-  },
-  {
-    "description": "Hoy recibi mi nuevo acorde\u00f3n, un Hohner Corona III en tonalidad 5 letras!",
-    "id": "rMqE6om_6eg",
-    "publishedAt": "2019-08-06T19:27:49.000Z",
-    "tags": [
-      "Acorde\u00f3n",
-      "Vallenato",
-      "Corona III"
-    ],
-    "thumbnail": {
-      "height": 90,
-      "url": "https://i.ytimg.com/vi/rMqE6om_6eg/default.jpg",
-      "width": 120
-    },
-    "title": "Mi nuevo acorde\u00f3n!"
-  },
-  {
-    "description": "En el aeropuerto de Bogota con Yoann \"El Frances Vallenato\" Montebrun ;)\nhttps://www.instagram.com/elfrancesvallenato/",
-    "id": "qskGeEmUuo8",
-    "publishedAt": "2019-08-06T19:26:58.000Z",
-    "tags": [
-      "Acorde\u00f3n",
-      "Vallenato"
-    ],
-    "thumbnail": {
-      "height": 90,
-      "url": "https://i.ytimg.com/vi/qskGeEmUuo8/default.jpg",
-      "width": 120
-    },
-    "title": "Los dos Vallenateros Franceses"
   },
   {
     "description": "Atlanta, Georgia, USA, 04/05/2019\nOye Bonita - Diomedes D\u00edaz",
@@ -478,40 +387,6 @@
     "title": "Oye Bonita, desde Winterberg, Alemania"
   },
   {
-    "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/son-sureno.html\nTutorial con un acorde\u00f3n cinco letras del Son Sure\u00f1o, musica tradicional del departamento de Nari\u00f1o, Colombia.",
-    "id": "R_vXnpyTahE",
-    "publishedAt": "2019-02-02T21:51:38.000Z",
-    "tags": [
-      "Acorde\u00f3n",
-      "Vallenato",
-      "Son Sure\u00f1o",
-      "Tutorial"
-    ],
-    "thumbnail": {
-      "height": 90,
-      "url": "https://i.ytimg.com/vi/R_vXnpyTahE/default.jpg",
-      "width": 120
-    },
-    "title": "Son Sure\u00f1o - Tutorial acorde\u00f3n"
-  },
-  {
-    "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/la-guanena.html\nTutorial con un acorde\u00f3n cinco letras de La Guane\u00f1a, musica tradicional del departamento de Nari\u00f1o, Colombia.",
-    "id": "a8JQEwaWbjY",
-    "publishedAt": "2018-12-08T14:37:13.000Z",
-    "tags": [
-      "Acorde\u00f3n",
-      "Vallenato",
-      "La Guane\u00f1a",
-      "Tutorial"
-    ],
-    "thumbnail": {
-      "height": 90,
-      "url": "https://i.ytimg.com/vi/a8JQEwaWbjY/default.jpg",
-      "width": 120
-    },
-    "title": "La Guane\u00f1a - Tutorial acorde\u00f3n"
-  },
-  {
     "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/la-guanena.html\nBruselas, Belgica, 08/12/2018\nLa Guane\u00f1a y el Son Sure\u00f1o, m\u00fasica Nari\u00f1ense",
     "id": "XQ4TpG4gGrQ",
     "publishedAt": "2018-12-08T11:08:56.000Z",
@@ -559,7 +434,8 @@
       "Oye Bonita",
       "Diomedes D\u00edaz",
       "Providencia",
-      "Colombia"
+      "Colombia",
+      "Aeropuerto"
     ],
     "thumbnail": {
       "height": 90,
@@ -578,7 +454,8 @@
       "Oye Bonita",
       "Diomedes D\u00edaz",
       "Providencia",
-      "Colombia"
+      "Colombia",
+      "Aeropuerto"
     ],
     "thumbnail": {
       "height": 90,
@@ -1344,18 +1221,6 @@
     "title": "Oye Bonita, desde El Remolino, Nari\u00f1o, Colombia"
   },
   {
-    "description": "",
-    "id": "F8-4CHV5pEo",
-    "publishedAt": "2017-05-30T20:56:02.000Z",
-    "tags": [],
-    "thumbnail": {
-      "height": 90,
-      "url": "https://i.ytimg.com/vi/F8-4CHV5pEo/default.jpg",
-      "width": 120
-    },
-    "title": "Santi empezando"
-  },
-  {
     "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/tu-cumpleanos.html\nPar\u00eds, Francia, 28/05/2017\nTu Cumplea\u00f1os - Diomedes D\u00edaz",
     "id": "q6cUzC6ESZ8",
     "publishedAt": "2017-05-30T20:05:18.000Z",
@@ -1386,7 +1251,8 @@
       "Francia",
       "Vallenato",
       "Diomedes D\u00edaz",
-      "Acord\u00e9on"
+      "Acord\u00e9on",
+      "Tour Eiffel"
     ],
     "thumbnail": {
       "height": 90,
@@ -1414,5 +1280,65 @@
       "width": 120
     },
     "title": "Los Caminos De La Vida, desde Koh Phangan, Tailandia"
+  },
+  {
+    "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/tu-cumpleanos.html\nKo Pha Ngan, Tailandia, 23/02/2017\nTu Cumplea\u00f1os - Diomedes D\u00edaz",
+    "id": "SJ02fqu_BVQ",
+    "publishedAt": "2017-02-23T15:54:20.000Z",
+    "tags": [
+      "Ko Pha Ngan",
+      "Tailandia",
+      "Tu Cumplea\u00f1os",
+      "Diomedes D\u00edaz",
+      "Acorde\u00f3n",
+      "Feliz Cumplea\u00f1os",
+      "Vallenato",
+      "Koh Phangan"
+    ],
+    "thumbnail": {
+      "height": 90,
+      "url": "https://i.ytimg.com/vi/SJ02fqu_BVQ/default.jpg",
+      "width": 120
+    },
+    "title": "Feliz Cumplea\u00f1os de Diomedes D\u00edaz, desde Koh Phangan, Tailandia"
+  },
+  {
+    "description": "Koh Phangan, Tailandia, 22/02/2017\nOye Bonita - Diomedes D\u00edaz",
+    "id": "UnR6G2Pg2ao",
+    "publishedAt": "2017-02-22T08:43:34.000Z",
+    "tags": [
+      "Oye Bonita",
+      "Ko Pha Ngan",
+      "Tailandia",
+      "Vallenato",
+      "Diomedes D\u00edaz",
+      "Acorde\u00f3n",
+      "Koh Phangan"
+    ],
+    "thumbnail": {
+      "height": 90,
+      "url": "https://i.ytimg.com/vi/UnR6G2Pg2ao/default.jpg",
+      "width": 120
+    },
+    "title": "Oye Bonita, desde Koh Phangan, Tailandia"
+  },
+  {
+    "description": "Mi primer video, 2 semanas despu\u00e9s de haber recibido mi primer acorde\u00f3n Vallenato ;)\nBuesaco, Nari\u00f1o, Colombia, 09/01/2017\nOye Bonita - Diomedes D\u00edaz",
+    "id": "KASEblFElVM",
+    "publishedAt": "2017-01-12T15:16:40.000Z",
+    "tags": [
+      "Oye Bonita",
+      "Buesaco",
+      "Colombia",
+      "Vallenato",
+      "Diomedes D\u00edaz",
+      "Acorde\u00f3n"
+    ],
+    "thumbnail": {
+      "height": 90,
+      "url": "https://i.ytimg.com/vi/KASEblFElVM/default.jpg",
+      "width": 120
+    },
+    "title": "Oye Bonita, desde Buesaco, Nari\u00f1o, Colombia"
   }
 ]
