@@ -39,6 +39,10 @@ def get_dumped_uploaded_videos(dump_file):
             uploaded_videos = json.load(in_file)
     return uploaded_videos
 
+def save_uploaded_videos(uploaded_videos, dump_file):
+    with open(dump_file, 'w') as out_file:
+        json.dump(uploaded_videos, out_file, sort_keys=True, indent=2)
+
 def get_uploaded_videos(args, dump_file):
     uploaded_videos = get_dumped_uploaded_videos(dump_file)
     if not uploaded_videos:
@@ -56,11 +60,10 @@ def get_uploaded_videos(args, dump_file):
             logging.critical("Exiting...")
             sys.exit(19)
         if args.dump_uploaded_videos:
-            with open(dump_file, 'w') as out_file:
-                json.dump(uploaded_videos, out_file, sort_keys=True, indent=2)
+            save_uploaded_videos(uploaded_videos, dump_file)
     return uploaded_videos
 
-def identify_locations_names(uploaded_videos, location_special_cases_file):
+def identify_locations_names(uploaded_videos, location_special_cases_file, dump_file):
     with open(location_special_cases_file) as in_file:
         special_cases = json.load(in_file)
     incomplete_locations = False
@@ -69,6 +72,11 @@ def identify_locations_names(uploaded_videos, location_special_cases_file):
         if not vid["location"]:
             incomplete_locations = True
     if incomplete_locations:
+        # The script is going to exit, to prevent unnecessary downloading from
+        # YouTube again, save the downloaded information regardless of the
+        # --dump_uploaded_videos parameter
+        save_uploaded_videos(uploaded_videos, dump_file)
+        logging.warning("Dumping the list of uploaded videos from YouTube to the '%s' file, so as not to have to download it again after you have edited the '%s' file." % (dump_file, location_special_cases_file))
         logging.critical("Please add the new/missing location to the file '%s'. Exiting..." % location_special_cases_file)
         sys.exit(20)
     return uploaded_videos
@@ -94,7 +102,7 @@ def website(args):
     logging.info("There are %d uploaded videos." % len(uploaded_videos))
 
     # Identify each video's location
-    uploaded_videos = identify_locations_names(uploaded_videos, LOCATION_SPECIAL_CASES_FILE)
+    uploaded_videos = identify_locations_names(uploaded_videos, LOCATION_SPECIAL_CASES_FILE, UPLOADED_VIDEOS_DUMP_FILE)
 
     # Determine the geolocation of each location
     #TODO

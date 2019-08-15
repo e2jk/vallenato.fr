@@ -98,7 +98,7 @@ class TestGetUploadedVideos(unittest.TestCase):
         self.assertTrue(os.path.exists(temp_uploaded_videos_dump_file))
         self.assertEqual(uploaded_videos, sample_uploaded_videos)
 
-        # Delete the file created by the test
+        # Delete the temporary file created by the test
         os.remove(temp_uploaded_videos_dump_file)
 
 
@@ -106,17 +106,23 @@ class TestIdentifyLocationsNames(unittest.TestCase):
     def test_identify_locations_names(self):
         uploaded_videos = [{ "id": "KASEblFElVM",
                     "title": "Oye Bonita, desde Buesaco, Nariño, Colombia"}]
-        uploaded_videos = website.identify_locations_names(uploaded_videos, "tests/data/sample_location_special_cases.json")
+        uploaded_videos = website.identify_locations_names(uploaded_videos, "tests/data/sample_location_special_cases.json", "")
         # Validate that "location" has been added, with the right value
         self.assertEqual(uploaded_videos[0]["location"], "Buesaco, Nariño, Colombia")
 
     def test_identify_locations_names_incomplete_locations(self):
         with open("tests/data/sample_uploaded_videos_dump.txt") as in_file:
             sample_uploaded_videos = json.load(in_file)
+        temp_uploaded_videos_dump_file = "tests/data/temp_uploaded_videos_dump.txt"
+        self.assertFalse(os.path.exists(temp_uploaded_videos_dump_file))
         with self.assertRaises(SystemExit) as cm:
-            uploaded_videos = website.identify_locations_names(sample_uploaded_videos, "tests/data/sample_location_special_cases.json")
+            uploaded_videos = website.identify_locations_names(sample_uploaded_videos, "tests/data/sample_location_special_cases.json", temp_uploaded_videos_dump_file)
         the_exception = cm.exception
         self.assertEqual(the_exception.code, 20)
+        self.assertTrue(os.path.exists(temp_uploaded_videos_dump_file))
+
+        # Delete the temporary file created by the test
+        os.remove(temp_uploaded_videos_dump_file)
 
 
 class TestIdentifySingleLocationName(unittest.TestCase):
