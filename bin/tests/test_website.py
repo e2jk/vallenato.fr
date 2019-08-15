@@ -108,7 +108,7 @@ class TestIdentifyLocationsNames(unittest.TestCase):
              "title": "Oye Bonita, desde Buesaco, Nariño, Colombia"},
             {"id": "eEmtEtFgu94",
              "title": "Muere una Flor, desde La Cristalina, Nari\u00f1o, Colombia"}]
-        (uploaded_videos, locations) = website.identify_locations_names(uploaded_videos, "tests/data/sample_location_special_cases.json", "")
+        (uploaded_videos, locations) = website.identify_locations_names(uploaded_videos, "tests/data/sample_location_special_cases_partial.json", "")
         # Validate that "location" has been added, with the right value
         self.assertEqual(uploaded_videos[0]["location"], "Buesaco, Nariño, Colombia")
         # Validate that the list of identified locations is as expected
@@ -122,7 +122,7 @@ class TestIdentifyLocationsNames(unittest.TestCase):
         temp_uploaded_videos_dump_file = "tests/data/temp_uploaded_videos_dump.txt"
         self.assertFalse(os.path.exists(temp_uploaded_videos_dump_file))
         with self.assertRaises(SystemExit) as cm:
-            uploaded_videos = website.identify_locations_names(sample_uploaded_videos, "tests/data/sample_location_special_cases.json", temp_uploaded_videos_dump_file)
+            (uploaded_videos, locations) = website.identify_locations_names(sample_uploaded_videos, "tests/data/sample_location_special_cases_partial.json", temp_uploaded_videos_dump_file)
         the_exception = cm.exception
         self.assertEqual(the_exception.code, 20)
         self.assertTrue(os.path.exists(temp_uploaded_videos_dump_file))
@@ -142,7 +142,7 @@ class TestIdentifySingleLocationName(unittest.TestCase):
     def test_identify_single_location_name_special_case(self):
         vid = { "id": "oPEirA4pXdg",
                 "title": "La Guaneña y el Son Sureño, ¡en vivo!"}
-        location_special_cases_file = "tests/data/sample_location_special_cases.json"
+        location_special_cases_file = "tests/data/sample_location_special_cases_partial.json"
         with open(location_special_cases_file) as in_file:
             special_cases = json.load(in_file)
         self.assertFalse(", desde " in vid["title"])
@@ -153,7 +153,7 @@ class TestIdentifySingleLocationName(unittest.TestCase):
     def test_identify_single_location_name_new_special_case(self):
         vid = { "id": "uK4t2nNiySw",
                 "title": "Vallenato at Epic, Verona, Wisconsin, USA"}
-        location_special_cases_file = "tests/data/sample_location_special_cases.json"
+        location_special_cases_file = "tests/data/sample_location_special_cases_partial.json"
         with open(location_special_cases_file) as in_file:
             special_cases = json.load(in_file)
         self.assertFalse(", desde " in vid["title"])
