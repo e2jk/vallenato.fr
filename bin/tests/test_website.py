@@ -24,7 +24,7 @@ youtube = __import__("youtube")
 
 class TestGetDumpedUploadedVideos(unittest.TestCase):
     def test_get_dumped_uploaded_videos_valid_file(self):
-        sample_uploaded_videos_dump_file = "tests/sample_uploaded_videos_dump.txt"
+        sample_uploaded_videos_dump_file = "tests/data/sample_uploaded_videos_dump.txt"
         uploaded_videos = website.get_dumped_uploaded_videos(sample_uploaded_videos_dump_file)
         with open(sample_uploaded_videos_dump_file) as in_file:
             expected_uploaded_videos = json.load(in_file)
@@ -87,7 +87,7 @@ class TestGetUploadedVideos(unittest.TestCase):
         # Ensure website.get_dumped_uploaded_videos returns []
         w_gduv.return_value = []
         # Ensure website.get_dumped_uploaded_videos returns valid content
-        with open("tests/sample_uploaded_videos_dump.txt") as in_file:
+        with open("tests/data/sample_uploaded_videos_dump.txt") as in_file:
             sample_uploaded_videos = json.load(in_file)
         yt_lmuv.return_value = sample_uploaded_videos
         args = target.parse_args(['--website', '--dump-uploaded-videos'])
@@ -119,7 +119,7 @@ class TestIdentifyLocationsNames(unittest.TestCase):
         self.assertEqual(uploaded_videos[0]["location"], "Buesaco, Nariño, Colombia")
 
     def test_identify_locations_names_incomplete_locations(self):
-        with open("tests/sample_uploaded_videos_dump.txt") as in_file:
+        with open("tests/data/sample_uploaded_videos_dump.txt") as in_file:
             sample_uploaded_videos = json.load(in_file)
         with self.assertRaises(SystemExit) as cm:
             uploaded_videos = website.identify_locations_names(sample_uploaded_videos, "tests/data/sample_location_special_cases.json")
@@ -162,7 +162,7 @@ class TestWebsite(unittest.TestCase):
     @patch("website.get_uploaded_videos")
     def test_website(self, w_guv):
         # Mock valid list of videos
-        with open("tests/sample_uploaded_videos_dump.txt") as in_file:
+        with open("tests/data/sample_uploaded_videos_dump.txt") as in_file:
             sample_uploaded_videos = json.load(in_file)
         w_guv.return_value = sample_uploaded_videos
         website.website(None)
