@@ -110,6 +110,54 @@ class TestGetUploadedVideos(unittest.TestCase):
             shutil.move("uploaded_videos_dump.txt.bak", "uploaded_videos_dump.txt")
 
 
+class TestIdentifyLocationsNames(unittest.TestCase):
+    def test_identify_locations_names(self):
+        uploaded_videos = [{ "id": "KASEblFElVM",
+                    "title": "Oye Bonita, desde Buesaco, Nariño, Colombia"}]
+        uploaded_videos = website.identify_locations_names(uploaded_videos, "tests/data/sample_location_special_cases.json")
+        # Validate that "location" has been added, with the right value
+        self.assertEqual(uploaded_videos[0]["location"], "Buesaco, Nariño, Colombia")
+
+    def test_identify_locations_names_incomplete_locations(self):
+        with open("tests/sample_uploaded_videos_dump.txt") as in_file:
+            sample_uploaded_videos = json.load(in_file)
+        with self.assertRaises(SystemExit) as cm:
+            uploaded_videos = website.identify_locations_names(sample_uploaded_videos, "tests/data/sample_location_special_cases.json")
+        the_exception = cm.exception
+        self.assertEqual(the_exception.code, 20)
+
+
+class TestIdentifySingleLocationName(unittest.TestCase):
+    def test_identify_single_location_name_simple(self):
+        vid = { "id": "KASEblFElVM",
+                "title": "Oye Bonita, desde Buesaco, Nariño, Colombia"}
+        self.assertTrue(", desde " in vid["title"])
+        location = website.identify_single_location_name(vid, {})
+        self.assertEqual(location, "Buesaco, Nariño, Colombia")
+
+    def test_identify_single_location_name_special_case(self):
+        vid = { "id": "oPEirA4pXdg",
+                "title": "La Guaneña y el Son Sureño, ¡en vivo!"}
+        location_special_cases_file = "tests/data/sample_location_special_cases.json"
+        with open(location_special_cases_file) as in_file:
+            special_cases = json.load(in_file)
+        self.assertFalse(", desde " in vid["title"])
+        self.assertFalse(", cerca de " in vid["title"])
+        location = website.identify_single_location_name(vid, special_cases)
+        self.assertEqual(location, "Pasto, Nariño, Colombia")
+
+    def test_identify_single_location_name_new_special_case(self):
+        vid = { "id": "uK4t2nNiySw",
+                "title": "Vallenato at Epic, Verona, Wisconsin, USA"}
+        location_special_cases_file = "tests/data/sample_location_special_cases.json"
+        with open(location_special_cases_file) as in_file:
+            special_cases = json.load(in_file)
+        self.assertFalse(", desde " in vid["title"])
+        self.assertFalse(", cerca de " in vid["title"])
+        location = website.identify_single_location_name(vid, special_cases)
+        self.assertEqual(location, None)
+
+
 class TestWebsite(unittest.TestCase):
     @patch("website.get_uploaded_videos")
     def test_website(self, w_guv):

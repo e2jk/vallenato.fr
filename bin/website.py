@@ -26,6 +26,9 @@ from youtube import yt_get_authenticated_service
 from youtube import yt_get_my_uploads_list
 from youtube import yt_list_my_uploaded_videos
 
+# File containing the list of videos that have hardcoded locations
+LOCATION_SPECIAL_CASES_FILE = "data/location_special_cases.json"
+
 def get_dumped_uploaded_videos(dump_file):
     uploaded_videos = []
     # Used a previously dumped file if it exists, to bypass the network transactions
@@ -56,13 +59,41 @@ def get_uploaded_videos(args):
                 json.dump(uploaded_videos, out_file, sort_keys=True, indent=2)
     return uploaded_videos
 
+def identify_locations_names(uploaded_videos, location_special_cases_file):
+    with open(location_special_cases_file) as in_file:
+        special_cases = json.load(in_file)
+    incomplete_locations = False
+    for vid in uploaded_videos:
+        vid["location"] = identify_single_location_name(vid, special_cases)
+        if not vid["location"]:
+            incomplete_locations = True
+    if incomplete_locations:
+        logging.critical("Please add the new/missing location to the file '%s'. Exiting..." % location_special_cases_file)
+        sys.exit(20)
+    return uploaded_videos
+
+def identify_single_location_name(vid, special_cases):
+    location = None
+    if vid["id"] in special_cases:
+        location = special_cases[vid["id"]]
+    else:
+        for search_string in (", desde ", ", cerca de "):
+            loc_index = vid["title"].find(search_string)
+            if loc_index > 0:
+                location = vid["title"][loc_index + len(search_string):]
+                break
+    # Each video should now have a location identified. If not, this will end the script.
+    if not location:
+        logging.critical("No Location found for %s, '%s'" % (vid["id"], vid["title"]))
+    return location
+
 def website(args):
     # Retrieve the list of uploaded videos
     uploaded_videos = get_uploaded_videos(args)
     logging.info("There are %d uploaded videos." % len(uploaded_videos))
 
     # Identify each video's location
-    #TODO
+    uploaded_videos = identify_locations_names(uploaded_videos, LOCATION_SPECIAL_CASES_FILE)
 
     # Determine the geolocation of each location
     #TODO
