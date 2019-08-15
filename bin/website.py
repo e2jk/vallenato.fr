@@ -26,6 +26,8 @@ from youtube import yt_get_authenticated_service
 from youtube import yt_get_my_uploads_list
 from youtube import yt_list_my_uploaded_videos
 
+# File that can contain the data downloaded from YouTube
+UPLOADED_VIDEOS_DUMP_FILE = "data/uploaded_videos_dump.txt"
 # File containing the list of videos that have hardcoded locations
 LOCATION_SPECIAL_CASES_FILE = "data/location_special_cases.json"
 
@@ -37,8 +39,7 @@ def get_dumped_uploaded_videos(dump_file):
             uploaded_videos = json.load(in_file)
     return uploaded_videos
 
-def get_uploaded_videos(args):
-    dump_file = "data/uploaded_videos_dump.txt"
+def get_uploaded_videos(args, dump_file):
     uploaded_videos = get_dumped_uploaded_videos(dump_file)
     if not uploaded_videos:
         youtube = yt_get_authenticated_service(args)
@@ -89,7 +90,7 @@ def identify_single_location_name(vid, special_cases):
 
 def website(args):
     # Retrieve the list of uploaded videos
-    uploaded_videos = get_uploaded_videos(args)
+    uploaded_videos = get_uploaded_videos(args, UPLOADED_VIDEOS_DUMP_FILE)
     logging.info("There are %d uploaded videos." % len(uploaded_videos))
 
     # Identify each video's location

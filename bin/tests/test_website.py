@@ -49,7 +49,7 @@ class TestGetUploadedVideos(unittest.TestCase):
         # Ensure website.get_dumped_uploaded_videos returns []
         w_gduv.return_value = []
         args = target.parse_args(['--website'])
-        uploaded_videos = website.get_uploaded_videos(args)
+        uploaded_videos = website.get_uploaded_videos(args, "tests/data/sample_uploaded_videos_dump.txt")
         self.assertTrue(call('UU_8R235jg1ld6MCMOzz2khQ', yt_gas()) in yt_lmuv.mock_calls)
 
     @patch("website.yt_get_my_uploads_list")
@@ -61,7 +61,7 @@ class TestGetUploadedVideos(unittest.TestCase):
         # Ensure no uploads playlist was identified
         yt_gmul.return_value = None
         args = target.parse_args(['--website'])
-        uploaded_videos = website.get_uploaded_videos(args)
+        uploaded_videos = website.get_uploaded_videos(args, "tests/data/sample_uploaded_videos_dump.txt")
         self.assertEqual(uploaded_videos, [])
 
     @patch("website.yt_get_my_uploads_list")
@@ -75,7 +75,7 @@ class TestGetUploadedVideos(unittest.TestCase):
         yt_gmul.side_effect = HttpError(resp, b'')
         args = target.parse_args(['--website'])
         with self.assertRaises(SystemExit) as cm:
-            uploaded_videos = website.get_uploaded_videos(args)
+            uploaded_videos = website.get_uploaded_videos(args, "tests/data/sample_uploaded_videos_dump.txt")
         the_exception = cm.exception
         self.assertEqual(the_exception.code, 19)
 
@@ -92,22 +92,14 @@ class TestGetUploadedVideos(unittest.TestCase):
         yt_lmuv.return_value = sample_uploaded_videos
         args = target.parse_args(['--website', '--dump-uploaded-videos'])
 
-        # Move the uploaded_videos_dump.txt file as a backup copy, if it exists
-        backup_created = False
-        if os.path.exists("data/uploaded_videos_dump.txt"):
-            backup_created = True
-            shutil.move("data/uploaded_videos_dump.txt", "data/uploaded_videos_dump.txt.bak")
-
-        self.assertFalse(os.path.exists("data/uploaded_videos_dump.txt"))
-        uploaded_videos = website.get_uploaded_videos(args)
-        self.assertTrue(os.path.exists("data/uploaded_videos_dump.txt"))
+        temp_uploaded_videos_dump_file = "tests/data/temp_uploaded_videos_dump.txt"
+        self.assertFalse(os.path.exists(temp_uploaded_videos_dump_file))
+        uploaded_videos = website.get_uploaded_videos(args, temp_uploaded_videos_dump_file)
+        self.assertTrue(os.path.exists(temp_uploaded_videos_dump_file))
         self.assertEqual(uploaded_videos, sample_uploaded_videos)
 
         # Delete the file created by the test
-        os.remove("data/uploaded_videos_dump.txt")
-        if backup_created:
-            # Restore the backup, if made
-            shutil.move("data/uploaded_videos_dump.txt.bak", "data/uploaded_videos_dump.txt")
+        os.remove(temp_uploaded_videos_dump_file)
 
 
 class TestIdentifyLocationsNames(unittest.TestCase):
