@@ -38,7 +38,7 @@ def get_dumped_uploaded_videos(dump_file):
     return uploaded_videos
 
 def get_uploaded_videos(args):
-    dump_file = "uploaded_videos_dump.txt"
+    dump_file = "data/uploaded_videos_dump.txt"
     uploaded_videos = get_dumped_uploaded_videos(dump_file)
     if not uploaded_videos:
         youtube = yt_get_authenticated_service(args)

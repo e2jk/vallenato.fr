@@ -94,20 +94,20 @@ class TestGetUploadedVideos(unittest.TestCase):
 
         # Move the uploaded_videos_dump.txt file as a backup copy, if it exists
         backup_created = False
-        if os.path.exists("uploaded_videos_dump.txt"):
+        if os.path.exists("data/uploaded_videos_dump.txt"):
             backup_created = True
-            shutil.move("uploaded_videos_dump.txt", "uploaded_videos_dump.txt.bak")
+            shutil.move("data/uploaded_videos_dump.txt", "data/uploaded_videos_dump.txt.bak")
 
-        self.assertFalse(os.path.exists("uploaded_videos_dump.txt"))
+        self.assertFalse(os.path.exists("data/uploaded_videos_dump.txt"))
         uploaded_videos = website.get_uploaded_videos(args)
-        self.assertTrue(os.path.exists("uploaded_videos_dump.txt"))
+        self.assertTrue(os.path.exists("data/uploaded_videos_dump.txt"))
         self.assertEqual(uploaded_videos, sample_uploaded_videos)
 
         # Delete the file created by the test
-        os.remove("uploaded_videos_dump.txt")
+        os.remove("data/uploaded_videos_dump.txt")
         if backup_created:
             # Restore the backup, if made
-            shutil.move("uploaded_videos_dump.txt.bak", "uploaded_videos_dump.txt")
+            shutil.move("data/uploaded_videos_dump.txt.bak", "data/uploaded_videos_dump.txt")
 
 
 class TestIdentifyLocationsNames(unittest.TestCase):
