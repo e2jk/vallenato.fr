@@ -30,6 +30,8 @@ from youtube import yt_list_my_uploaded_videos
 UPLOADED_VIDEOS_DUMP_FILE = "data/uploaded_videos_dump.txt"
 # File containing the list of videos that have hardcoded locations
 LOCATION_SPECIAL_CASES_FILE = "data/location_special_cases.json"
+# File containing the already-identified latitude/longitude
+GEOLOCATIONS_FILE = "data/geolocations.json"
 
 def get_dumped_uploaded_videos(dump_file):
     uploaded_videos = []
@@ -73,7 +75,7 @@ def identify_locations_names(uploaded_videos, location_special_cases_file, dump_
         if not vid["location"]:
             incomplete_locations = True
         elif vid["location"] not in locations:
-            locations[vid["location"]] = None
+            locations[vid["location"]] = {"latitude": None, "longitude": None}
     if incomplete_locations:
         # The script is going to exit, to prevent unnecessary downloading from
         # YouTube again, save the downloaded information regardless of the
@@ -99,6 +101,33 @@ def identify_single_location_name(vid, special_cases):
         logging.critical("No Location found for %s, '%s'" % (vid["id"], vid["title"]))
     return location
 
+def determine_geolocation(locations, geolocations_file):
+    logging.debug("Searching geolocation for %d locations..." % len(locations))
+    # Load the list of saved geolocations
+    with open(geolocations_file) as in_file:
+        geolocations = json.load(in_file)
+    incomplete_geolocations = 0
+    for l in locations:
+        if l in geolocations and geolocations[l]["latitude"] and geolocations[l]["longitude"]:
+            logging.debug("Geolocation found for %s: lat %f, lon %f" % (l, geolocations[l]["latitude"], geolocations[l]["longitude"]))
+            locations[l]["latitude"] = geolocations[l]["latitude"]
+            locations[l]["longitude"] = geolocations[l]["longitude"]
+        else:
+            logging.critical("No geolocation found for %s." % l)
+            #TODO: Search and suggest a geolocation
+            geolocations[l] = {"latitude": None, "longitude": None}
+            incomplete_geolocations += 1
+
+    if incomplete_geolocations > 0:
+        #Save the geolocations_file file with the placeholders for the unknown latitude and longitude
+        with open(geolocations_file, 'w') as out_file:
+            json.dump(geolocations, out_file, sort_keys=True, indent=2)
+        logging.critical("Please add the %d new/missing unknown latitude and longitude to the file '%s'. Exiting..." % (incomplete_geolocations, geolocations_file))
+        sys.exit(21)
+
+    return locations
+
+
 def website(args):
     # Retrieve the list of uploaded videos
     uploaded_videos = get_uploaded_videos(args, UPLOADED_VIDEOS_DUMP_FILE)
@@ -108,7 +137,7 @@ def website(args):
     (uploaded_videos, locations) = identify_locations_names(uploaded_videos, LOCATION_SPECIAL_CASES_FILE, UPLOADED_VIDEOS_DUMP_FILE)
 
     # Determine the geolocation of each location
-    #TODO
+    # locations = determine_geolocation(locations, GEOLOCATIONS_FILE)
 
     # Create arrays per location
     #TODO

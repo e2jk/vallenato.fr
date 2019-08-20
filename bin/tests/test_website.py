@@ -112,8 +112,8 @@ class TestIdentifyLocationsNames(unittest.TestCase):
         # Validate that "location" has been added, with the right value
         self.assertEqual(uploaded_videos[0]["location"], "Buesaco, Nariño, Colombia")
         # Validate that the list of identified locations is as expected
-        expected_locations = {'Buesaco, Nariño, Colombia': None,
-                              'La Cristalina, Nariño, Colombia': None}
+        expected_locations = {'Buesaco, Nariño, Colombia': {'latitude': None, 'longitude': None},
+                              'La Cristalina, Nariño, Colombia': {'latitude': None, 'longitude': None}}
         self.assertEqual(locations, expected_locations)
 
     def test_identify_locations_names_incomplete_locations(self):
@@ -160,6 +160,23 @@ class TestIdentifySingleLocationName(unittest.TestCase):
         self.assertFalse(", cerca de " in vid["title"])
         location = website.identify_single_location_name(vid, special_cases)
         self.assertEqual(location, None)
+
+
+class TestDetermineGeolocation(unittest.TestCase):
+    def test_determine_geolocation(self):
+        with open("tests/data/sample_uploaded_videos_dump.txt") as in_file:
+            sample_uploaded_videos = json.load(in_file)
+        temp_uploaded_videos_dump_file = "tests/data/sample_uploaded_videos_dump.txt"
+        (uploaded_videos, locations) = website.identify_locations_names(sample_uploaded_videos, "tests/data/sample_location_special_cases_full.json", temp_uploaded_videos_dump_file)
+        # Create a copy of the file that is going to be edited
+        shutil.copy("tests/data/sample_geolocations_partial.json", "tests/data/sample_geolocations_partial.json.bak")
+        with self.assertRaises(SystemExit) as cm:
+            locations = website.determine_geolocation(locations, "tests/data/sample_geolocations_partial.json")
+        the_exception = cm.exception
+        self.assertEqual(the_exception.code, 21)
+        # Restore the file
+        os.remove("tests/data/sample_geolocations_partial.json")
+        shutil.move("tests/data/sample_geolocations_partial.json.bak", "tests/data/sample_geolocations_partial.json")
 
 
 class TestWebsite(unittest.TestCase):
