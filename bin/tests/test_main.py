@@ -185,7 +185,7 @@ class TestInitMain(unittest.TestCase):
         # Pass it just the --aprender argument
         target.sys.argv = ["scriptname.py", "--website"]
         # Mock valid list of videos
-        with open("tests/data/sample_uploaded_videos_dump.txt") as in_file:
+        with open("tests/data/sample_uploaded_videos_dump.json") as in_file:
             sample_uploaded_videos = json.load(in_file)
         w_guv.return_value = sample_uploaded_videos
         # Run the init(), will run the full --website branch

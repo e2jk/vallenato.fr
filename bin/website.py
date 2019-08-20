@@ -27,7 +27,7 @@ from youtube import yt_get_my_uploads_list
 from youtube import yt_list_my_uploaded_videos
 
 # File that can contain the data downloaded from YouTube
-UPLOADED_VIDEOS_DUMP_FILE = "data/uploaded_videos_dump.txt"
+UPLOADED_VIDEOS_DUMP_FILE = "data/uploaded_videos_dump.json"
 # File containing the list of videos that have hardcoded locations
 LOCATION_SPECIAL_CASES_FILE = "data/location_special_cases.json"
 # File containing the already-identified latitude/longitude

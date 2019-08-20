@@ -24,7 +24,7 @@ youtube = __import__("youtube")
 
 class TestGetDumpedUploadedVideos(unittest.TestCase):
     def test_get_dumped_uploaded_videos_valid_file(self):
-        sample_uploaded_videos_dump_file = "tests/data/sample_uploaded_videos_dump.txt"
+        sample_uploaded_videos_dump_file = "tests/data/sample_uploaded_videos_dump.json"
         uploaded_videos = website.get_dumped_uploaded_videos(sample_uploaded_videos_dump_file)
         with open(sample_uploaded_videos_dump_file) as in_file:
             expected_uploaded_videos = json.load(in_file)
@@ -49,7 +49,7 @@ class TestGetUploadedVideos(unittest.TestCase):
         # Ensure website.get_dumped_uploaded_videos returns []
         w_gduv.return_value = []
         args = target.parse_args(['--website'])
-        uploaded_videos = website.get_uploaded_videos(args, "tests/data/sample_uploaded_videos_dump.txt")
+        uploaded_videos = website.get_uploaded_videos(args, "tests/data/sample_uploaded_videos_dump.json")
         self.assertTrue(call('UU_8R235jg1ld6MCMOzz2khQ', yt_gas()) in yt_lmuv.mock_calls)
 
     @patch("website.yt_get_my_uploads_list")
@@ -61,7 +61,7 @@ class TestGetUploadedVideos(unittest.TestCase):
         # Ensure no uploads playlist was identified
         yt_gmul.return_value = None
         args = target.parse_args(['--website'])
-        uploaded_videos = website.get_uploaded_videos(args, "tests/data/sample_uploaded_videos_dump.txt")
+        uploaded_videos = website.get_uploaded_videos(args, "tests/data/sample_uploaded_videos_dump.json")
         self.assertEqual(uploaded_videos, [])
 
     @patch("website.yt_get_my_uploads_list")
@@ -75,7 +75,7 @@ class TestGetUploadedVideos(unittest.TestCase):
         yt_gmul.side_effect = HttpError(resp, b'')
         args = target.parse_args(['--website'])
         with self.assertRaises(SystemExit) as cm:
-            uploaded_videos = website.get_uploaded_videos(args, "tests/data/sample_uploaded_videos_dump.txt")
+            uploaded_videos = website.get_uploaded_videos(args, "tests/data/sample_uploaded_videos_dump.json")
         the_exception = cm.exception
         self.assertEqual(the_exception.code, 19)
 
@@ -87,12 +87,12 @@ class TestGetUploadedVideos(unittest.TestCase):
         # Ensure website.get_dumped_uploaded_videos returns []
         w_gduv.return_value = []
         # Ensure website.get_dumped_uploaded_videos returns valid content
-        with open("tests/data/sample_uploaded_videos_dump.txt") as in_file:
+        with open("tests/data/sample_uploaded_videos_dump.json") as in_file:
             sample_uploaded_videos = json.load(in_file)
         yt_lmuv.return_value = sample_uploaded_videos
         args = target.parse_args(['--website', '--dump-uploaded-videos'])
 
-        temp_uploaded_videos_dump_file = "tests/data/temp_uploaded_videos_dump.txt"
+        temp_uploaded_videos_dump_file = "tests/data/temp_uploaded_videos_dump.json"
         self.assertFalse(os.path.exists(temp_uploaded_videos_dump_file))
         uploaded_videos = website.get_uploaded_videos(args, temp_uploaded_videos_dump_file)
         self.assertTrue(os.path.exists(temp_uploaded_videos_dump_file))
@@ -117,9 +117,9 @@ class TestIdentifyLocationsNames(unittest.TestCase):
         self.assertEqual(locations, expected_locations)
 
     def test_identify_locations_names_incomplete_locations(self):
-        with open("tests/data/sample_uploaded_videos_dump.txt") as in_file:
+        with open("tests/data/sample_uploaded_videos_dump.json") as in_file:
             sample_uploaded_videos = json.load(in_file)
-        temp_uploaded_videos_dump_file = "tests/data/temp_uploaded_videos_dump.txt"
+        temp_uploaded_videos_dump_file = "tests/data/temp_uploaded_videos_dump.json"
         self.assertFalse(os.path.exists(temp_uploaded_videos_dump_file))
         with self.assertRaises(SystemExit) as cm:
             (uploaded_videos, locations) = website.identify_locations_names(sample_uploaded_videos, "tests/data/sample_location_special_cases_partial.json", temp_uploaded_videos_dump_file)
@@ -164,9 +164,9 @@ class TestIdentifySingleLocationName(unittest.TestCase):
 
 class TestDetermineGeolocation(unittest.TestCase):
     def test_determine_geolocation(self):
-        with open("tests/data/sample_uploaded_videos_dump.txt") as in_file:
+        with open("tests/data/sample_uploaded_videos_dump.json") as in_file:
             sample_uploaded_videos = json.load(in_file)
-        temp_uploaded_videos_dump_file = "tests/data/sample_uploaded_videos_dump.txt"
+        temp_uploaded_videos_dump_file = "tests/data/sample_uploaded_videos_dump.json"
         (uploaded_videos, locations) = website.identify_locations_names(sample_uploaded_videos, "tests/data/sample_location_special_cases_full.json", temp_uploaded_videos_dump_file)
         # Create a copy of the file that is going to be edited
         shutil.copy("tests/data/sample_geolocations_partial.json", "tests/data/sample_geolocations_partial.json.bak")
@@ -183,7 +183,7 @@ class TestWebsite(unittest.TestCase):
     @patch("website.get_uploaded_videos")
     def test_website(self, w_guv):
         # Mock valid list of videos
-        with open("tests/data/sample_uploaded_videos_dump.txt") as in_file:
+        with open("tests/data/sample_uploaded_videos_dump.json") as in_file:
             sample_uploaded_videos = json.load(in_file)
         w_guv.return_value = sample_uploaded_videos
         website.website(None)
