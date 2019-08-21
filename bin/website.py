@@ -137,7 +137,7 @@ def website(args):
     (uploaded_videos, locations) = identify_locations_names(uploaded_videos, LOCATION_SPECIAL_CASES_FILE, UPLOADED_VIDEOS_DUMP_FILE)
 
     # Determine the geolocation of each location
-    # locations = determine_geolocation(locations, GEOLOCATIONS_FILE)
+    locations = determine_geolocation(locations, GEOLOCATIONS_FILE)
 
     # Create arrays per location
     #TODO
