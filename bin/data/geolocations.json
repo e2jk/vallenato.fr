@@ -1,6 +1,82 @@
 {
+  "Aroeira, Portugal": {
+    "latitude": 38.591438,
+    "longitude": -9.18457
+  },
+  "Atlanta, Georgia, USA": {
+    "latitude": 33.748997,
+    "longitude": -84.387985
+  },
+  "Bruselas, Belgica": {
+    "latitude": 50.84554,
+    "longitude": 4.35571
+  },
   "Buesaco, Nari\u00f1o, Colombia": {
     "latitude": 1.3829,
     "longitude": -77.1556
+  },
+  "Cali, Valle del Cauca, Colombia": {
+    "latitude": 3.45298,
+    "longitude": -76.518784
+  },
+  "Cimarrones, Nari\u00f1o, Colombia": {
+    "latitude": 1.450006,
+    "longitude": -77.263896
+  },
+  "El Remolino, Nari\u00f1o, Colombia": {
+    "latitude": 1.675202,
+    "longitude": -77.330858
+  },
+  "Epic, Verona, Wisconsin, USA": {
+    "latitude": null,
+    "longitude": null
+  },
+  "Koh Phangan, Tailandia": {
+    "latitude": 9.73495,
+    "longitude": 100.030571
+  },
+  "La Cristalina, Nari\u00f1o, Colombia": {
+    "latitude": 1.140297,
+    "longitude": -77.233292
+  },
+  "Lisboa, Portugal": {
+    "latitude": 38.722252,
+    "longitude": -9.139337
+  },
+  "Niagara Falls, Ontario, Canada": {
+    "latitude": 43.084329,
+    "longitude": -79.073737
+  },
+  "Par\u00eds, Francia": {
+    "latitude": 48.858372,
+    "longitude": 2.294481
+  },
+  "Pasisara, Nari\u00f1o, Colombia": {
+    "latitude": 1.391745,
+    "longitude": -77.25566
+  },
+  "Pasto, Nari\u00f1o, Colombia": {
+    "latitude": 1.214591,
+    "longitude": -77.278265
+  },
+  "Providencia, Colombia": {
+    "latitude": 13.349404,
+    "longitude": -81.375615
+  },
+  "San Andr\u00e9s, Colombia": {
+    "latitude": 12.544912,
+    "longitude": -81.716716
+  },
+  "Solbach, Francia": {
+    "latitude": 48.4307953,
+    "longitude": 7.1815304
+  },
+  "Verona, Wisconsin, USA": {
+    "latitude": 42.999274,
+    "longitude": -89.569005
+  },
+  "Winterberg, Alemania": {
+    "latitude": 51.19335,
+    "longitude": 8.53342
   }
 }
