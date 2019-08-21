@@ -84,18 +84,22 @@ def identify_locations_names(uploaded_videos, location_special_cases_file, dump_
         logging.warning("Dumping the list of uploaded videos from YouTube to the '%s' file, so as not to have to download it again after you have edited the '%s' file." % (dump_file, location_special_cases_file))
         logging.critical("Please add the new/missing location to the file '%s'. Exiting..." % location_special_cases_file)
         sys.exit(20)
+    logging.info("Found %d different location name." % len(locations))
     return (uploaded_videos, locations)
 
 def identify_single_location_name(vid, special_cases):
     location = None
     if vid["id"] in special_cases:
         location = special_cases[vid["id"]]
+        logging.debug("Video %s, location '%s'" % (vid["id"], location))
     else:
         for search_string in (", desde ", ", cerca de "):
             loc_index = vid["title"].find(search_string)
             if loc_index > 0:
                 location = vid["title"][loc_index + len(search_string):]
+                logging.debug("Video %s, location '%s'" % (vid["id"], location))
                 break
+
     # Each video should now have a location identified. If not, this will end the script.
     if not location:
         logging.critical("No Location found for %s, '%s'" % (vid["id"], vid["title"]))
@@ -125,6 +129,7 @@ def determine_geolocation(locations, geolocations_file):
         logging.critical("Please add the %d new/missing unknown latitude and longitude to the file '%s'. Exiting..." % (incomplete_geolocations, geolocations_file))
         sys.exit(21)
 
+    logging.info("Found geolocation information for the %d locations." % len(locations))
     return locations
 
 
