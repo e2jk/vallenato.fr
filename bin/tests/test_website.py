@@ -179,6 +179,20 @@ class TestDetermineGeolocation(unittest.TestCase):
         shutil.move("tests/data/sample_geolocations_partial.json.bak", "tests/data/sample_geolocations_partial.json")
 
 
+class TestAddVideosToLocationsArray(unittest.TestCase):
+    def test_add_videos_to_locations_array(self):
+        with open("tests/data/sample_uploaded_videos_dump_full.json") as in_file:
+            sample_uploaded_videos = json.load(in_file)
+        (uploaded_videos, ignore) = website.identify_locations_names(sample_uploaded_videos, "tests/data/sample_location_special_cases_full.json", None)
+        with open("tests/data/sample_geolocations_full.json") as in_file:
+            locations = json.load(in_file)
+        locations = website.add_videos_to_locations_array(uploaded_videos, locations)
+        self.assertEqual(len(locations["Winterberg, Alemania"]["videos"]), 1)
+        self.assertEqual(len(locations["Aroeira, Portugal"]["videos"]), 3)
+        self.assertEqual(len(locations["Niagara Falls, Ontario, Canada"]["videos"]), 1)
+        self.assertEqual(len(locations["Providencia, Colombia"]["videos"]), 13)
+
+
 class TestWebsite(unittest.TestCase):
     @patch("website.get_uploaded_videos")
     def test_website(self, w_guv):

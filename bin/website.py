@@ -132,6 +132,14 @@ def determine_geolocation(locations, geolocations_file):
     logging.info("Found geolocation information for the %d locations." % len(locations))
     return locations
 
+def add_videos_to_locations_array(uploaded_videos, locations):
+    logging.debug("Adding videos in each location array...")
+    for vid in uploaded_videos:
+        if not "videos" in locations[vid["location"]]:
+            locations[vid["location"]]["videos"] = []
+        locations[vid["location"]]["videos"].append(vid)
+
+    return locations
 
 def website(args):
     # Retrieve the list of uploaded videos
@@ -144,8 +152,8 @@ def website(args):
     # Determine the geolocation of each location
     locations = determine_geolocation(locations, GEOLOCATIONS_FILE)
 
-    # Create arrays per location
-    #TODO
+    # Add the videos in each location array
+    locations = add_videos_to_locations_array(uploaded_videos, locations)
 
     # Generate the JavaScript files to be used by the website
     #TODO
