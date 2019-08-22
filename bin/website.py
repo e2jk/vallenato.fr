@@ -32,6 +32,9 @@ UPLOADED_VIDEOS_DUMP_FILE = "data/uploaded_videos_dump.json"
 LOCATION_SPECIAL_CASES_FILE = "data/location_special_cases.json"
 # File containing the already-identified latitude/longitude
 GEOLOCATIONS_FILE = "data/geolocations.json"
+# Output file used for the website
+WEBSITE_DATA_FILE = "../website/data.js"
+
 
 def get_dumped_uploaded_videos(dump_file):
     uploaded_videos = []
@@ -141,6 +144,13 @@ def add_videos_to_locations_array(uploaded_videos, locations):
 
     return locations
 
+def save_website_data(locations, website_data_file):
+    json_content = json.dumps(locations, sort_keys=True, indent=2)
+    # Make it JS (and not just JSON) for direct use in the HTML document
+    js_content = "var locations = %s;" % json_content
+    with open(website_data_file, 'w') as out_file:
+        out_file.write(js_content)
+
 def website(args):
     # Retrieve the list of uploaded videos
     uploaded_videos = get_uploaded_videos(args, UPLOADED_VIDEOS_DUMP_FILE)
@@ -155,5 +165,5 @@ def website(args):
     # Add the videos in each location array
     locations = add_videos_to_locations_array(uploaded_videos, locations)
 
-    # Generate the JavaScript files to be used by the website
-    #TODO
+    # Generate the JavaScript data file to be used by the website
+    save_website_data(locations, WEBSITE_DATA_FILE)

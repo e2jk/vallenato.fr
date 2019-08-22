@@ -11,6 +11,7 @@ import sys
 import os
 import shutil
 import json
+import tempfile
 from youtube import HttpError
 from unittest.mock import patch
 from unittest.mock import MagicMock
@@ -191,6 +192,26 @@ class TestAddVideosToLocationsArray(unittest.TestCase):
         self.assertEqual(len(locations["Aroeira, Portugal"]["videos"]), 3)
         self.assertEqual(len(locations["Niagara Falls, Ontario, Canada"]["videos"]), 1)
         self.assertEqual(len(locations["Providencia, Colombia"]["videos"]), 13)
+
+
+class TestSaveWebsiteData(unittest.TestCase):
+    def test_save_website_data(self):
+        (ignore, temp_file) = tempfile.mkstemp()
+        with open("tests/data/sample_locations_final_full.json") as in_file:
+            locations = json.load(in_file)
+        website.save_website_data(locations, temp_file)
+
+        with open(temp_file) as in_file:
+            content = in_file.readlines()
+        # Check that it starts with the JS bits (and not JSON)
+        self.assertEqual(content[0], "var locations = {\n")
+        self.assertEqual(content[-1], "};")
+        # Check some random lines
+        self.assertEqual(content[10], "        \"tags\": [\n")
+        self.assertEqual(content[63], "        \"title\": \"Esa, desde Aroeira, Portugal\"\n")
+        self.assertEqual(content[309], "        \"description\": \"Para aprender a tocar esta canci\\u00f3n: https://vallenato.fr/aprender/la-creciente.html\\nCimarrones, Nari\\u00f1o, Colombia, 08/08/2019\\nLa Creciente - Binomio de Oro\",\n")
+        # Delete the temporary file created by the test
+        os.remove(temp_file)
 
 
 class TestWebsite(unittest.TestCase):
