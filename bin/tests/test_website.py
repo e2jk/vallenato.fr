@@ -221,7 +221,13 @@ class TestWebsite(unittest.TestCase):
         with open("tests/data/sample_uploaded_videos_dump_partial.json") as in_file:
             sample_uploaded_videos = json.load(in_file)
         w_guv.return_value = sample_uploaded_videos
+        # Redirect the output to a temporary file
+        (ignore, temp_file) = tempfile.mkstemp()
+        website.WEBSITE_DATA_FILE = temp_file
         website.website(None)
+        #TODO Assert final script result
+        # Delete the temporary file created by the test
+        os.remove(temp_file)
 
 
 if __name__ == '__main__':

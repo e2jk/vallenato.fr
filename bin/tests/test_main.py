@@ -13,6 +13,7 @@ import shutil
 import logging
 import socket
 import json
+import tempfile
 from urllib.error import URLError
 from unittest.mock import patch
 from unittest.mock import MagicMock
@@ -20,6 +21,7 @@ from unittest.mock import MagicMock
 sys.path.append('.')
 target = __import__("vallenato_fr")
 aprender = __import__("aprender")
+website = __import__("website")
 
 # Used to test manual entry
 def setUpModule():
@@ -188,9 +190,14 @@ class TestInitMain(unittest.TestCase):
         with open("tests/data/sample_uploaded_videos_dump_partial.json") as in_file:
             sample_uploaded_videos = json.load(in_file)
         w_guv.return_value = sample_uploaded_videos
+        # Redirect the output to a temporary file
+        (ignore, temp_file) = tempfile.mkstemp()
+        website.WEBSITE_DATA_FILE = temp_file
         # Run the init(), will run the full --website branch
         target.init()
         #TODO Assert final script result
+        # Delete the temporary file created by the test
+        os.remove(temp_file)
 
 
 class TestLicense(unittest.TestCase):
