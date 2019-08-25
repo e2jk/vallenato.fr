@@ -1,0 +1,13 @@
+body {
+  font-family: Ubuntu, sans-serif;
+}
+#list, #map {
+  height: 500px;
+  float: left;
+}
+#map {
+  width: 75%;
+}
+#list {
+  width: 24%;
+}
