@@ -21,34 +21,8 @@
       <div id="list"></div>
     </section>
     <p><a href="https://vallenato.fr">El Vallenatero Francés</a> - <a href="https://vallenato.fr">Vallenato.fr</a> - <a href="https://www.youtube.com/channel/UC_8R235jg1ld6MCMOzz2khQ">Canal de YouTube</a></li></p>
+    <!-- JavaScript by default at the bottom of the body, per https://developers.google.com/apps-script/guides/html/best-practices#load_javascript_last -->
     <script type = "text/javascript" src="data.js"></script>
-    <script>
-      // JavaScript by default at the bottom of the body, per https://developers.google.com/apps-script/guides/html/best-practices#load_javascript_last
-      /*jslint browser: true, white */
-      var mymap = L.map('map').setView([20,10], 2);
-      L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-        minZoom: 2,
-        maxZoom: 15,
-        id: 'mapbox.light',
-        accessToken: 'pk.eyJ1IjoidmFsbGVuYXRvLWZyIiwiYSI6ImNqejNncnM2bTAzYzgzY3A2ZWpvNHZodjkifQ.YDKDLobdK27Gr7RKvinyLw'
-      }).addTo(mymap);
-
-      var ul = document.createElement('ul');
-      document.getElementById('list').appendChild(ul);
-
-      for (var loc in locations) {
-          if (locations.hasOwnProperty(loc)) {
-              // Add marker on the map
-              var marker = L.marker([locations[loc].latitude, locations[loc].longitude]).addTo(mymap);
-              marker.bindPopup(loc);
-              // Update list on the right side
-
-              var li = document.createElement('li');
-              ul.appendChild(li);
-              li.innerHTML = loc;
-          }
-      }
-    </script>
+    <script type = "text/javascript" src="script.js"></script>
   </body>
 </html>
