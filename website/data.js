@@ -307,7 +307,7 @@ var locations = {
         "title": "Esa, desde Cimarrones, Nari\u00f1o, Colombia"
       },
       {
-        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/la-creciente.html\nCimarrones, Nari\u00f1o, Colombia, 08/08/2019\nLa Creciente - Binomio de Oro",
+        "description": "Para la comadre Meave!\nPara aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/la-creciente.html\nCimarrones, Nari\u00f1o, Colombia, 08/08/2019\nLa Creciente - Binomio de Oro",
         "id": "r7Dds5KX3w8",
         "location": "Cimarrones, Nari\u00f1o, Colombia",
         "publishedAt": "2019-08-09T15:31:51.000Z",
@@ -368,6 +368,52 @@ var locations = {
           "width": 120
         },
         "title": "Oye Bonita, desde Cimarrones, Nari\u00f1o, Colombia"
+      }
+    ]
+  },
+  "Ciudad de Panam\u00e1, Panam\u00e1": {
+    "latitude": 8.969049,
+    "longitude": -79.535716,
+    "videos": [
+      {
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/los-caminos-de-la-vida.html\nDesde el aeropuerto de Panam\u00e1, 22/08/2019\nLos Caminos De La Vida - Los Diablitos",
+        "id": "U-N7MtQ7HV0",
+        "location": "Ciudad de Panam\u00e1, Panam\u00e1",
+        "publishedAt": "2019-08-24T19:55:40.000Z",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "Aeropuerto",
+          "Panam\u00e1",
+          "Los Caminos De La Vida",
+          "Los Diablitos"
+        ],
+        "thumbnail": {
+          "height": 90,
+          "url": "https://i.ytimg.com/vi/U-N7MtQ7HV0/default.jpg",
+          "width": 120
+        },
+        "title": "Los Caminos De La Vida, desde el aeropuerto de Panam\u00e1"
+      },
+      {
+        "description": "Desde el aeropuerto de Panam\u00e1, 22/08/2019\nOye Bonita - Diomedes D\u00edaz",
+        "id": "CyXCWPMDhgY",
+        "location": "Ciudad de Panam\u00e1, Panam\u00e1",
+        "publishedAt": "2019-08-24T19:55:41.000Z",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "Oye Bonita",
+          "Diomedes D\u00edaz",
+          "Aeropuerto",
+          "Panam\u00e1"
+        ],
+        "thumbnail": {
+          "height": 90,
+          "url": "https://i.ytimg.com/vi/CyXCWPMDhgY/default.jpg",
+          "width": 120
+        },
+        "title": "Oye Bonita, desde el aeropuerto de Panam\u00e1"
       }
     ]
   },
@@ -598,6 +644,48 @@ var locations = {
     "latitude": 1.140297,
     "longitude": -77.233292,
     "videos": [
+      {
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/esa.html\nLa Cristalina, Nari\u00f1o, Colombia, 16/08/2019\nEsa - Binomio de Oro",
+        "id": "98ptD9Xw4Sw",
+        "location": "La Cristalina, Nari\u00f1o, Colombia",
+        "publishedAt": "2019-08-17T14:20:05.000Z",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "Esa",
+          "Binomio de Oro",
+          "La Cristalina",
+          "Nari\u00f1o",
+          "Colombia"
+        ],
+        "thumbnail": {
+          "height": 90,
+          "url": "https://i.ytimg.com/vi/98ptD9Xw4Sw/default.jpg",
+          "width": 120
+        },
+        "title": "Esa, desde La Cristalina, Nari\u00f1o, Colombia"
+      },
+      {
+        "description": "La Cristalina, Nari\u00f1o, Colombia, 16/08/2019\nEn Carne Propia - Silvio Brito",
+        "id": "FUHLr2gnYgw",
+        "location": "La Cristalina, Nari\u00f1o, Colombia",
+        "publishedAt": "2019-08-17T14:19:21.000Z",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "En Carne Propia",
+          "Silvio Brito",
+          "La Cristalina",
+          "Nari\u00f1o",
+          "Colombia"
+        ],
+        "thumbnail": {
+          "height": 90,
+          "url": "https://i.ytimg.com/vi/FUHLr2gnYgw/default.jpg",
+          "width": 120
+        },
+        "title": "En Carne Propia, desde La Cristalina, Nari\u00f1o, Colombia"
+      },
       {
         "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/muere-una-flor.html\nLa Cristalina, Nari\u00f1o, Colombia, 10/08/2019\nMuere una Flor - Binomio de Oro",
         "id": "eEmtEtFgu94",
@@ -1308,6 +1396,118 @@ var locations = {
           "width": 120
         },
         "title": "Esa, desde San Andr\u00e9s, Colombia"
+      }
+    ]
+  },
+  "Santa Marta, Magdalena, Colombia": {
+    "latitude": 11.243938,
+    "longitude": -74.21492,
+    "videos": [
+      {
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/la-cumbia-del-amor.html\nSanta Marta, Magdalena, Colombia, 21/08/2019\nLa Cumbia del Amor - Lisandro Mesa",
+        "id": "s05RpOPL22U",
+        "location": "Santa Marta, Magdalena, Colombia",
+        "publishedAt": "2019-08-24T19:55:41.000Z",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "La Cumbia del Amor",
+          "Lisandro Mesa",
+          "Santa Marta",
+          "Magdalena",
+          "Colombia"
+        ],
+        "thumbnail": {
+          "height": 90,
+          "url": "https://i.ytimg.com/vi/s05RpOPL22U/default.jpg",
+          "width": 120
+        },
+        "title": "La Cumbia del Amor, desde Santa Marta, Magdalena, Colombia"
+      },
+      {
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/jaime-molina-1.html y https://vallenato.fr/aprender/jaime-molina-2.html\nSanta Marta, Magdalena, Colombia, 21/08/2019\nJaime Molina - Carlos Vives",
+        "id": "oxY864QMbyg",
+        "location": "Santa Marta, Magdalena, Colombia",
+        "publishedAt": "2019-08-24T19:55:41.000Z",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "Santa Marta",
+          "Magdalena",
+          "Colombia",
+          "Jaime Molina",
+          "Carlos Vives"
+        ],
+        "thumbnail": {
+          "height": 90,
+          "url": "https://i.ytimg.com/vi/oxY864QMbyg/default.jpg",
+          "width": 120
+        },
+        "title": "Jaime Molina, desde Santa Marta, Magdalena, Colombia"
+      },
+      {
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/los-caminos-de-la-vida.html\nSanta Marta, Magdalena, Colombia, 21/08/2019\nLos Caminos De La Vida - Los Diablitos",
+        "id": "oJXULyP_12c",
+        "location": "Santa Marta, Magdalena, Colombia",
+        "publishedAt": "2019-08-24T19:55:41.000Z",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "Santa Marta",
+          "Magdalena",
+          "Colombia",
+          "Los Caminos De La Vida",
+          "Los Diablitos"
+        ],
+        "thumbnail": {
+          "height": 90,
+          "url": "https://i.ytimg.com/vi/oJXULyP_12c/default.jpg",
+          "width": 120
+        },
+        "title": "Los Caminos De La Vida, desde Santa Marta, Magdalena, Colombia"
+      },
+      {
+        "description": "Santa Marta, Magdalena, Colombia, 21/08/2019\nEn Carne Propia - Silvio Brito",
+        "id": "c-JA8JsBT_M",
+        "location": "Santa Marta, Magdalena, Colombia",
+        "publishedAt": "2019-08-24T19:55:41.000Z",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "Santa Marta",
+          "Magdalena",
+          "Colombia",
+          "En Carne Propia",
+          "Silvio Brito"
+        ],
+        "thumbnail": {
+          "height": 90,
+          "url": "https://i.ytimg.com/vi/c-JA8JsBT_M/default.jpg",
+          "width": 120
+        },
+        "title": "En Carne Propia, desde Santa Marta, Magdalena, Colombia"
+      },
+      {
+        "description": "Santa Marta, Magdalena, Colombia, 21/08/2019\nOye Bonita - Diomedes D\u00edaz",
+        "id": "hBoZG1S7nPM",
+        "location": "Santa Marta, Magdalena, Colombia",
+        "publishedAt": "2019-08-24T19:55:41.000Z",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "Oye Bonita",
+          "Diomedes D\u00edaz",
+          "Aeropuerto",
+          "Santa Marta",
+          "Magdalena",
+          "Colombia"
+        ],
+        "thumbnail": {
+          "height": 90,
+          "url": "https://i.ytimg.com/vi/hBoZG1S7nPM/default.jpg",
+          "width": 120
+        },
+        "title": "Oye Bonita, desde Santa Marta, Magdalena, Colombia"
       }
     ]
   },

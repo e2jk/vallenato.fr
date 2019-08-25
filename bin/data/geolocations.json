@@ -23,13 +23,13 @@
     "latitude": 1.450006,
     "longitude": -77.263896
   },
+  "Ciudad de Panam\u00e1, Panam\u00e1": {
+    "latitude": 8.969049,
+    "longitude": -79.535716
+  },
   "El Remolino, Nari\u00f1o, Colombia": {
     "latitude": 1.675202,
     "longitude": -77.330858
-  },
-  "Epic, Verona, Wisconsin, USA": {
-    "latitude": null,
-    "longitude": null
   },
   "Koh Phangan, Tailandia": {
     "latitude": 9.73495,
@@ -66,6 +66,10 @@
   "San Andr\u00e9s, Colombia": {
     "latitude": 12.544912,
     "longitude": -81.716716
+  },
+  "Santa Marta, Magdalena, Colombia": {
+    "latitude": 11.243938,
+    "longitude": -74.21492
   },
   "Solbach, Francia": {
     "latitude": 48.4307953,
