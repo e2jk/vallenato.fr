@@ -191,7 +191,7 @@ def download_youtube_video(yt, video_id, videos_output_folder):
 def create_new_tutorial_page(tutorial_slug, song_title, song_author, tutorial_id, full_video_id, new_tutorial_page):
     logging.info("Creating the new tutorial page '%s'." % new_tutorial_page)
     # Copy the template to a new file
-    shutil.copy("template.html", new_tutorial_page)
+    shutil.copy("templates/aprender/tutorial.html", new_tutorial_page)
     # Read in the file
     with open(new_tutorial_page, 'r') as file :
         filedata = file.read()

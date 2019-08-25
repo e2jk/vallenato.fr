@@ -37,7 +37,7 @@ class TestGetDumpedUploadedVideos(unittest.TestCase):
 
     def test_get_dumped_uploaded_videos_nonjson_file(self):
         with self.assertRaises(json.decoder.JSONDecodeError) as cm:
-            uploaded_videos = website.get_dumped_uploaded_videos("template.html")
+            uploaded_videos = website.get_dumped_uploaded_videos("templates/aprender/tutorial.html")
         the_exception = cm.exception
         self.assertEqual(str(the_exception), "Expecting value: line 1 column 1 (char 0)")
 
