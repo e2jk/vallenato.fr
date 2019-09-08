@@ -2,7 +2,6 @@
 /*jslint browser: true, white, devel: true */
 /*global window, videos, videosFullTutorial, fullVersion, YT */
 var localPlayer = false;
-var showTutorialDuration = false;
 var editMode = false;
 var currentVideo;
 var videoTitle;
@@ -316,11 +315,6 @@ function determineLocalOrYouTubePlayer() {
   localPlayer = (null !== getURLParameter("local"));
 }
 
-function determineShowTutorialDuration() {
-  "use strict";
-  showTutorialDuration = (null !== getURLParameter("duration"));
-}
-
 function determineEditMode() {
   "use strict";
   editMode = (null !== getURLParameter("editar"));
@@ -342,19 +336,12 @@ function str_pad_left(string,pad,length) {
 
 function populateProgressArray() {
   "use strict";
-  // Construct the array used for the progress bar
+  // Construct the array used for the progress bar and calculate the total duration of the tutorial
   videos.forEach(function (video) {
     var duration = video.end - video.start;
     progressArray.push(totalDuration);
     totalDuration += duration;
   });
-
-  // Use the following to output the total duration and number of parts, used to update the index.html when adding a new song.
-  if (showTutorialDuration) {
-    var totDur = "totalDuration: " + totalDuration + "s - " + str_pad_left(Math.floor(totalDuration / 60),"0",2) + "m" + str_pad_left(totalDuration % 60,"0",2) + "s en " +  videos.length + " partes";
-    console.log(totDur);
-    alert(totDur);
-  }
 }
 
 function previousVideo() {
@@ -509,6 +496,11 @@ function saveTimestamps() {
   setTimeout(function () {
     document.getElementById("outputJS").style.color = "black";
   }, 1500);
+  // Update the duration information and print that out to the console
+  totalDuration = 0;
+  populateProgressArray();
+  var totDur = "totalDuration: " + totalDuration + "s - " + str_pad_left(Math.floor(totalDuration / 60),"0",2) + "m" + str_pad_left(totalDuration % 60,"0",2) + "s en " +  videos.length + " partes";
+  console.log(totDur);
   // Restart playing the current part, to give sensory feedback to the user that something happened
   changeVideo(false);
 }
@@ -588,7 +580,6 @@ function createUI() {
 
 // Perform some initial setup/calculations
 determineLocalOrYouTubePlayer();
-determineShowTutorialDuration();
 determineEditMode();
 determineCurrentVideoParameter();
 populateProgressArray();
