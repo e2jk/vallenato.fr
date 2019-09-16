@@ -20,6 +20,7 @@ import logging
 import os
 import sys
 import json
+import shutil
 
 from youtube import HttpError
 from youtube import yt_get_authenticated_service
@@ -33,7 +34,9 @@ LOCATION_SPECIAL_CASES_FILE = "data/location_special_cases.json"
 # File containing the already-identified latitude/longitude
 GEOLOCATIONS_FILE = "data/geolocations.json"
 # Output file used for the website
-WEBSITE_DATA_FILE = "../website/data.js"
+WEBSITE_DATA_FILE = "../website/src/data.js"
+# Version of the Leaflet library
+LEAFLET_VERSION = "1.5.1"
 
 
 def get_dumped_uploaded_videos(dump_file):
@@ -151,6 +154,51 @@ def save_website_data(locations, website_data_file):
     with open(website_data_file, 'w') as out_file:
         out_file.write(js_content)
 
+def update_output_folder(index_file, link_leaflet_css, link_leaflet_js):
+    # Read the output index file
+    with open(index_file, 'r') as file :
+        filedata = file.read()
+    # Replace the target strings
+    filedata = filedata.replace("[[LINK_LEAFLET_CSS]]", link_leaflet_css)
+    filedata = filedata.replace("[[LINK_LEAFLET_JS]]", link_leaflet_js)
+    # Save edited file
+    with open(index_file, 'w') as file:
+        file.write(filedata)
+
+def generate_website():
+    input_src_folder = "../website/src"
+    output_dev_folder = "../website/dev"
+    output_prod_folder = "../website/prod"
+
+    # Delete the previous output folders (if existing)
+    if os.path.exists(output_dev_folder):
+        shutil.rmtree(output_dev_folder)
+    if os.path.exists(output_prod_folder):
+        shutil.rmtree(output_prod_folder)
+
+    # Copy src to dev and prod folders
+    shutil.copytree(input_src_folder, output_dev_folder)
+    shutil.copytree(input_src_folder, output_prod_folder)
+
+    # Update the values accordingly for dev and prod
+    # Main difference between development and production websites:
+    # Dev contains a full copy of the leaflet library, prod uses a CDN
+
+    # Dev
+    # Update links to leaflet (local copy)
+    update_output_folder("%s/index.html" % output_dev_folder,
+        '<link rel="stylesheet" href="leaflet/%s/leaflet.css">' % LEAFLET_VERSION,
+        '    <script type = "text/javascript" src="leaflet/%s/leaflet.js"></script>' % LEAFLET_VERSION)
+
+
+    # Prod
+    # Delete the local leaflet.js folder
+    shutil.rmtree("%s/leaflet" % output_prod_folder)
+    # Update links to leaflet (CDN)
+    update_output_folder("%s/index.html" % output_prod_folder,
+        '<link rel="stylesheet" href="https://unpkg.com/leaflet@%s/dist/leaflet.css"\n        integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="\n        crossorigin=""/>' % LEAFLET_VERSION,
+        '<script src="https://unpkg.com/leaflet@%s/dist/leaflet.js"\n        integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="\n        crossorigin="">' % LEAFLET_VERSION)
+
 def website(args):
     # Retrieve the list of uploaded videos
     uploaded_videos = get_uploaded_videos(args, UPLOADED_VIDEOS_DUMP_FILE)
@@ -167,3 +215,6 @@ def website(args):
 
     # Generate the JavaScript data file to be used by the website
     save_website_data(locations, WEBSITE_DATA_FILE)
+
+    # Generate the development and production website files
+    generate_website()

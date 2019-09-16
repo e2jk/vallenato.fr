@@ -7,3 +7,6 @@ bin/client_secret.json
 bin/vallenato.fr-oauth2.json
 bin/data/uploaded_videos_dump.json
 html_dev/coverage/
+website/dev/
+website/prod/
+website/src/leaflet

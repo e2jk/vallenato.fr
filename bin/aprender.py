@@ -196,7 +196,7 @@ def create_new_tutorial_page(tutorial_slug, song_title, song_author, tutorial_id
     with open(new_tutorial_page, 'r') as file :
         filedata = file.read()
 
-    # Replace the target string
+    # Replace the target strings
     filedata = filedata.replace("[[TITLE]]", "%s - %s" % (song_title, song_author))
     filedata = filedata.replace("[[TUTORIAL VIDEO ID]]", tutorial_id)
     filedata = filedata.replace("[[FULL VIDEO ID]]", full_video_id)
