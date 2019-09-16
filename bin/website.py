@@ -193,7 +193,8 @@ def generate_website():
 
     # Prod
     # Delete the local leaflet.js folder
-    shutil.rmtree("%s/leaflet" % output_prod_folder)
+    if os.path.exists("%s/leaflet" % output_prod_folder):
+        shutil.rmtree("%s/leaflet" % output_prod_folder)
     # Update links to leaflet (CDN)
     update_output_folder("%s/index.html" % output_prod_folder,
         '<link rel="stylesheet" href="https://unpkg.com/leaflet@%s/dist/leaflet.css"\n        integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="\n        crossorigin=""/>' % LEAFLET_VERSION,
