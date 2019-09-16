@@ -175,6 +175,7 @@ function changeVideo(updateURL) {
       player.endSeconds = vidValues.endSeconds;
     }
   }
+  updatePlaybackSpeed();
   if (localPlayer && player.paused) {
     // The local player needs a little push when the full version played to the end and stopped.
     player.play();
@@ -271,6 +272,8 @@ function setUpLocalVideoPlayer() {
   player.addEventListener("ended", playFollowing, false);
   // Clicking on the video will pause or play it
   player.addEventListener("click", playPauseLocalVideo, false);
+  // Take into account the playback speed checkbox (in case a refresh keeps it checked)
+  updatePlaybackSpeed();
 }
 
 function setUpYouTubeVideoPlayer() {
@@ -325,6 +328,9 @@ function onYouTubePlayerAPIReady() {
   if (!localPlayer) {
     // Play the first video in div
     player = new YT.Player("videoPlayer", playerConfig);
+    // Take into account the playback speed checkbox (in case a refresh keeps it checked)
+    // (wait 2 seconds, since the player might take some time to load - there's probably a cleaner way to do this)
+    setTimeout(updatePlaybackSpeed, 2000);
   }
 }
 
@@ -377,6 +383,16 @@ function versionCompletaClicked() {
   changeVideo(true);
 }
 
+function updatePlaybackSpeed() {
+  "use strict";
+  var playbackSpeed = (document.getElementById("slowPlayback").checked ? 0.70 : 1);
+  if (!localPlayer) {
+    player.setPlaybackRate(playbackSpeed);
+  } else {
+    player.playbackRate = (playbackSpeed);
+  }
+}
+
 function keyPressed(evt) {
   "use strict";
   var code;
@@ -401,6 +417,13 @@ function keyPressed(evt) {
   // Restart this fragment: <home> (code 36)
   if (36 === code) {
     changeVideo(false); // No need to change the URL
+  }
+
+  // Toggle Lento: "v" (velocidad)
+  if ("v" === character) {
+    var slowPlayback = document.getElementById("slowPlayback");
+    slowPlayback.checked = !slowPlayback.checked;
+    updatePlaybackSpeed();
   }
 
   // Toggle Repeat: "r"
@@ -574,7 +597,9 @@ function createUI() {
   document.getElementById("nextButton").addEventListener("click", nextVideo, false);
   document.getElementById("progress").addEventListener("click", progressbarClicked, false);
   document.getElementById("versionCompleta").addEventListener("click", versionCompletaClicked, false);
+  document.getElementById("slowPlayback").addEventListener("CheckboxStateChange", updatePlaybackSpeed, false);
   document.addEventListener("keydown", keyPressed, false); // Keyboard shortcuts
+
   updateUI(false);
 }
 
