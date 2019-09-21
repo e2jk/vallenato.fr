@@ -25,6 +25,7 @@ import shutil
 from pytube import YouTube
 import logging
 import webbrowser
+from urllib.error import HTTPError
 
 def get_tutorial_info():
     """Retrieve the information of the new tutorial"""
@@ -189,6 +190,16 @@ def download_youtube_video(yt, video_id, videos_output_folder):
         stream = yt.streams.filter(res = "360p", progressive=True, file_extension = "mp4").first()
     logging.debug("Stream that will be downloaded: %s" % stream)
     logging.debug("Download folder: %s" % videos_output_folder)
+    try:
+        download_stream(stream, videos_output_folder, video_id)
+    except HTTPError as e:
+        logging.error('An HTTP error %d occurred with reason: %s' % (e.code, e.reason))
+        # Propose to download that video manually from the browser
+        webbrowser.open("https://y2mate.com/youtube/%s" % video_id, new=2, autoraise=True)
+        return False
+    return True
+
+def download_stream(stream, videos_output_folder, video_id):
     stream.download(videos_output_folder, video_id)
 
 def create_new_tutorial_page(tutorial_slug, song_title, song_author, tutorial_id, full_video_id, new_tutorial_page):

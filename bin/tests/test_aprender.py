@@ -14,6 +14,7 @@ import tempfile
 from pytube import YouTube
 import socket
 from urllib.error import URLError
+from urllib.error import HTTPError
 from unittest.mock import patch
 from unittest.mock import MagicMock
 from unittest.mock import call
@@ -323,7 +324,8 @@ class TestDownloadYoutubeVideo(unittest.TestCase):
         yt = MagicMock()
         video_id = "oPEirA4pXdg"
         videos_output_folder = tempfile.mkdtemp()
-        aprender.download_youtube_video(yt, video_id, videos_output_folder)
+        rv = aprender.download_youtube_video(yt, video_id, videos_output_folder)
+        self.assertTrue(rv)
         self.assertTrue(yt.method_calls == [call.streams.get_by_itag(18)])
         self.assertTrue(call.streams.get_by_itag().download(videos_output_folder, 'oPEirA4pXdg') in yt.mock_calls)
         # Delete the temporary folder
@@ -335,11 +337,31 @@ class TestDownloadYoutubeVideo(unittest.TestCase):
         yt.streams.get_by_itag.return_value = None
         video_id = "oPEirA4pXdg"
         videos_output_folder = tempfile.mkdtemp()
-        aprender.download_youtube_video(yt, video_id, videos_output_folder)
+        rv = aprender.download_youtube_video(yt, video_id, videos_output_folder)
+        self.assertTrue(rv)
         self.assertTrue(yt.method_calls == [call.streams.get_by_itag(18), call.streams.filter(file_extension='mp4', progressive=True, res='360p')])
         self.assertTrue(call.streams.filter().first().download(videos_output_folder, 'oPEirA4pXdg') in yt.mock_calls)
         # Delete the temporary folder
         shutil.rmtree(videos_output_folder)
+
+    @patch("aprender.download_stream")
+    @patch("webbrowser.open")
+    def test_download_youtube_video_HTTPError(self, mockwbopen, a_ds):
+        a_ds.side_effect = HTTPError(None, 403, "Forbidden", None, None)
+        yt = MagicMock()
+        video_id = "NzpNsbX3uC4"
+        videos_output_folder = tempfile.mkdtemp()
+        rv = aprender.download_youtube_video(yt, video_id, videos_output_folder)
+        # Confirm that an HTTPError was raised
+        self.assertFalse(rv)
+        # Delete the temporary folder
+        shutil.rmtree(videos_output_folder)
+
+
+class TestDownloadStream(unittest.TestCase):
+    def test_download_stream(self):
+        # It gets mock-tested through TestDownloadYoutubeVideo.test_download_youtube_video_HTTPError
+        pass
 
 
 class TestCreateNewTutorialPage(unittest.TestCase):
