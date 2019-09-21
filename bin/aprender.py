@@ -57,6 +57,9 @@ def youtube_url_validation(url):
     """Check that it is a valid YouTube URL.
     Inspired from https://stackoverflow.com/a/19161373
     """
+    # Accept just the YouTube ID
+    if re.match("^[a-zA-Z0-9_-]{11}$", url):
+        return url
     youtube_regex = (
         r'(https?://)?(www\.)?'
         '(youtube|youtu|youtube-nocookie)\.(com|be)/'

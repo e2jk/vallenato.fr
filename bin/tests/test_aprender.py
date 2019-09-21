@@ -101,11 +101,15 @@ class TestYoutubeUrlValidation(unittest.TestCase):
         for url in valid_youtube_urls:
             self.assertTrue(aprender.youtube_url_validation(url))
 
+    def test_youtube_url_validation_short_id_valid(self):
+        self.assertEqual(aprender.youtube_url_validation("oPEirA4pXdg"), "oPEirA4pXdg")
+
     def test_youtube_url_validation_false(self):
         invalid_youtube_urls = [
             "http://www.youtube.com/",
             "http://www.youtube.com/?feature=ytca",
-            "https://www.youtube.com/channel/UC_8R235jg1ld6MCMOzz2khQ"
+            "https://www.youtube.com/channel/UC_8R235jg1ld6MCMOzz2khQ",
+            "oPEirA4pXdgINVALID"
         ]
         for url in invalid_youtube_urls:
             self.assertFalse(aprender.youtube_url_validation(url))
