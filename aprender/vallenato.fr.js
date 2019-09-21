@@ -473,12 +473,21 @@ player.unMute();
 
 function newPart() {
   "use strict";
+  var i = videos.length;
+  // The start time of this new part is the end time of the previous part
+  if (isNumeric(document.getElementById("endVal" + (i - 1)).value)) {
+    var startTime = parseInt(document.getElementById("endVal" + (i - 1)).value);
+  } else {
+    var startTime = videos[videos.length - 1].end;
+  }
+  // The end time is the end of the video
+  var endTime = parseInt(player.duration + 1);
+  // Add new UI elements
   var ul = document.getElementById("navigation");
   var li = document.createElement("li");
-  var i = videos.length;
   li.appendChild(document.createTextNode("Parte " + (i + 1)));
   var editDiv = document.createElement("div");
-  editDiv.innerHTML = "<input class='editInput' type='text' id='startVal" + i + "' value='" + videos[videos.length - 1].end + "'>-<input class='editInput' type='text' id='endVal" + i + "' value='" + parseInt(player.duration + 1) + "'>";
+  editDiv.innerHTML = "<input class='editInput' type='text' id='startVal" + i + "' value='" + startTime + "'>-<input class='editInput' type='text' id='endVal" + i + "' value='" + endTime + "'>";
   li.appendChild(editDiv);
   li.addEventListener("click", changeVideoEvent, false);
   li.num = i;
@@ -486,9 +495,9 @@ function newPart() {
   // Pressing Enter in one of the time input boxes saves the changes
   document.getElementById("startVal" + i).addEventListener("keydown", function (e) { if (e.keyCode === 13) { saveTimestamps(); } }, false);
   document.getElementById("endVal" + i).addEventListener("keydown", function (e) { if (e.keyCode === 13) { saveTimestamps(); } }, false);
-  // Add stub for this new part, using the last video's ID and its timestamp as start time, and video duration as end time
-  videos.push({"id": videos[videos.length - 1].id, "start": videos[videos.length - 1].end, "end": parseInt(player.duration + 1)});
-  //
+  // Add stub for this new part in the videos array
+  videos.push({"id": videos[videos.length - 1].id, "start": startTime, "end": endTime});
+  // Start playing this new part
   currentVideo = videos.length - 1;
   changeVideo(true);
 }
