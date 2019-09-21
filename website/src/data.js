@@ -1,4 +1,73 @@
 var locations = {
+  "'s-Hertogenbosch, Pa\u00edses Bajos": {
+    "latitude": 51.688649,
+    "longitude": 5.341865,
+    "videos": [
+      {
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/en-carne-propia.html\nOosterplas, 's-Hertogenbosch, Pa\u00edses Bajos, 31/08/2019\nEn Carne Propia - Silvio Brito",
+        "id": "Qa_z4L0ZXqo",
+        "location": "'s-Hertogenbosch, Pa\u00edses Bajos",
+        "publishedAt": "2019-09-21T15:21:06.000Z",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "En Carne Propia",
+          "Silvio Brito",
+          "'s-Hertogenbosch",
+          "Pa\u00edses Bajos",
+          "Oosterplas"
+        ],
+        "thumbnail": {
+          "height": 90,
+          "url": "https://i.ytimg.com/vi/Qa_z4L0ZXqo/default.jpg",
+          "width": 120
+        },
+        "title": "En Carne Propia, desde el Oosterplas, 's-Hertogenbosch, Pa\u00edses Bajos"
+      },
+      {
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/los-caminos-de-la-vida.html\nOosterplas, 's-Hertogenbosch, Pa\u00edses Bajos, 31/08/2019\nLos Caminos De La Vida - Los Diablitos",
+        "id": "BqFlTbrWDYk",
+        "location": "'s-Hertogenbosch, Pa\u00edses Bajos",
+        "publishedAt": "2019-09-21T15:30:55.000Z",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "'s-Hertogenbosch",
+          "Pa\u00edses Bajos",
+          "Los Caminos De La Vida",
+          "Los Diablitos",
+          "Oosterplas"
+        ],
+        "thumbnail": {
+          "height": 90,
+          "url": "https://i.ytimg.com/vi/BqFlTbrWDYk/default.jpg",
+          "width": 120
+        },
+        "title": "Los Caminos De La Vida, desde el Oosterplas, 's-Hertogenbosch, Pa\u00edses Bajos"
+      },
+      {
+        "description": "Oosterplas, 's-Hertogenbosch, Pa\u00edses Bajos, 31/08/2019\nOye Bonita - Diomedes D\u00edaz",
+        "id": "7sEKBccnvnI",
+        "location": "'s-Hertogenbosch, Pa\u00edses Bajos",
+        "publishedAt": "2019-09-21T15:24:41.000Z",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "'s-Hertogenbosch",
+          "Pa\u00edses Bajos",
+          "Oye Bonita",
+          "Diomedes D\u00edaz",
+          "Oosterplas"
+        ],
+        "thumbnail": {
+          "height": 90,
+          "url": "https://i.ytimg.com/vi/7sEKBccnvnI/default.jpg",
+          "width": 120
+        },
+        "title": "Oye Bonita, desde el Oosterplas, 's-Hertogenbosch, Pa\u00edses Bajos"
+      }
+    ]
+  },
   "Aroeira, Portugal": {
     "latitude": 38.591438,
     "longitude": -9.18457,
@@ -666,7 +735,7 @@ var locations = {
         "title": "Esa, desde La Cristalina, Nari\u00f1o, Colombia"
       },
       {
-        "description": "La Cristalina, Nari\u00f1o, Colombia, 16/08/2019\nEn Carne Propia - Silvio Brito",
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/en-carne-propia.html\nLa Cristalina, Nari\u00f1o, Colombia, 16/08/2019\nEn Carne Propia - Silvio Brito",
         "id": "FUHLr2gnYgw",
         "location": "La Cristalina, Nari\u00f1o, Colombia",
         "publishedAt": "2019-08-17T14:19:21.000Z",
@@ -1467,7 +1536,7 @@ var locations = {
         "title": "Los Caminos De La Vida, desde Santa Marta, Magdalena, Colombia"
       },
       {
-        "description": "Santa Marta, Magdalena, Colombia, 21/08/2019\nEn Carne Propia - Silvio Brito",
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/en-carne-propia.html\nSanta Marta, Magdalena, Colombia, 21/08/2019\nEn Carne Propia - Silvio Brito",
         "id": "c-JA8JsBT_M",
         "location": "Santa Marta, Magdalena, Colombia",
         "publishedAt": "2019-08-24T19:55:41.000Z",
