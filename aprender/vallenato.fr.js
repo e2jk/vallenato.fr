@@ -49,9 +49,9 @@ function determineCurrentVideoParameter() {
     window.location = "?p=1" + (localPlayer ? "&local=1" : "") + (editMode ? "&editar=1" : "");
   }
   if (currentVideo > videos.length - 1) {
-    // If this video has no full tutorial videos, go back to the latest individual part
+    // If this video has no full tutorial videos, go back to the latest regular part
     if (typeof videosFullTutorial == 'undefined' || (videosFullTutorial && currentVideo > videos.length + videosFullTutorial.length - 1)) {
-      window.location = "?p=" + videos.length + (localPlayer ? "&local=1" : "") + (editMode ? "&editar=1" : "");
+      window.location = "?p=1" + (localPlayer ? "&local=1" : "") + (editMode ? "&editar=1" : "");
     }
   }
 }
