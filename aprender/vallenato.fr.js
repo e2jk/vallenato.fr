@@ -203,7 +203,20 @@ function playFollowing() {
   "use strict";
   // Replays the same video or advances to the next, depending on the checkbox
   if (!document.getElementById("repeatVideo").checked) {
-    currentVideo = (currentVideo < videos.length - 1) ? currentVideo + 1 : 0;
+    if (videos.length - 1 === currentVideo) {
+      // If we're at the last of the regular tutorial parts, start again at the first regular tutorial part
+      currentVideo = 0;
+    } else if (videos.length + videosFullTutorial.length - 1 === currentVideo) {
+      // If we're at the last of the full tutorial parts, start again at the first full tutorial part
+      currentVideo = videos.length;
+    } else if (currentVideo > videos.length + videosFullTutorial.length - 1) {
+      // If we're at an invalid part ID, start again at the first regular tutorial part
+      currentVideo = 0;
+    } else {
+      // Otherwise just continue with the next video
+      currentVideo = currentVideo + 1;
+    }
+    // Go to the next video
     changeVideo(true);
   } else {
     changeVideo(false);
