@@ -217,16 +217,8 @@ class TestSaveWebsiteData(unittest.TestCase):
 class TestGenerateWebsite(unittest.TestCase):
     def test_generate_website(self):
         website.generate_website()
-        # Check dev and prod folders exist
-        self.assertTrue(os.path.exists("../website/dev"))
+        # Check prod folder exist
         self.assertTrue(os.path.exists("../website/prod"))
-
-        # Check the expected values are in the dev index file
-        with open("../website/dev/index.html", 'r') as file :
-            filedata = file.read()
-        # The dev file points to the local copy of the leaflet library
-        self.assertTrue('<link rel="stylesheet" href="leaflet/%s/leaflet.css">' % website.LEAFLET_VERSION in filedata)
-        self.assertTrue('    <script type = "text/javascript" src="leaflet/%s/leaflet.js"></script>' % website.LEAFLET_VERSION in filedata)
 
         # Check the expected values are in the prod index file
         with open("../website/prod/index.html", 'r') as file :
