@@ -11,11 +11,17 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
 var ul = document.createElement('ul');
 document.getElementById('list').appendChild(ul);
 
+
 for (let loc in locations) {
     if (locations.hasOwnProperty(loc)) {
         // Add marker on the map
-        var marker = L.marker([locations[loc].latitude, locations[loc].longitude]).addTo(mymap);
-        marker.bindPopup(loc);
+        var markerOptions = {
+          title: loc, // location name for the browser tooltip that appear on marker hover
+          riseOnHover: true, // the marker will get on top of others when you hover the mouse over it.
+          keyboard: true // marker can be tabbed to with a keyboard and clicked by pressing enter
+        };
+        var marker = L.marker([locations[loc].latitude, locations[loc].longitude], markerOptions).addTo(mymap);
+        marker.addEventListener("click", function(){ overlay_on("list_overlay", loc); });
 
         // Update list on the right side
         var li = document.createElement('li');
