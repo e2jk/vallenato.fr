@@ -11,6 +11,12 @@ body {
 #list {
   width: 24%;
 }
+#list li {
+  cursor: pointer;
+}
+#list li:hover {
+  text-decoration: underline;
+}
 #list_overlay {
   position: fixed; /* Sit on top of the page content */
   display: none; /* Hidden by default */
