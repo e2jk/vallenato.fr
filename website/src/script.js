@@ -30,6 +30,8 @@ function populateMapAndList(mymap){
       var marker = L.marker([locations[loc].latitude, locations[loc].longitude], markerOptions).addTo(mymap);
       marker._icon.id = "location_marker_" + i;
       marker.addEventListener("click", function(){ overlay_on("list_overlay", loc); });
+      marker.addEventListener("mouseover", function(evt){ marker_hover(evt.target._icon.id, "highlighted"); });
+      marker.addEventListener("mouseout", function(evt){ marker_hover(evt.target._icon.id, ""); });
 
       // Update list on the right side
       var li = document.createElement('li');
@@ -65,6 +67,11 @@ function overlay_on(id, loc) {
 function overlay_off(id) {
   // Hide the overlay
   document.getElementById(id).style.display = "none";
+}
+
+function marker_hover(marker_id, highlight) {
+  var location_list_id = marker_id.replace("location_marker_", "location_list_");
+  document.getElementById(location_list_id).className = highlight;
 }
 
 document.onkeydown = function(evt) {
