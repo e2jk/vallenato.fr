@@ -1,32 +1,40 @@
 /*jslint browser: true, white */
-var mymap = L.map('map').setView([20,10], 2);
-L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-  attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-  minZoom: 2,
-  maxZoom: 15,
-  id: 'mapbox.light',
-  accessToken: 'pk.eyJ1IjoidmFsbGVuYXRvLWZyIiwiYSI6ImNqejNncnM2bTAzYzgzY3A2ZWpvNHZodjkifQ.YDKDLobdK27Gr7RKvinyLw'
-}).addTo(mymap);
+function main(){
+  // Create and initialize the map
+  var mymap = L.map('map').setView([20,10], 2);
+  L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+    minZoom: 2,
+    maxZoom: 15,
+    id: 'mapbox.light',
+    accessToken: 'pk.eyJ1IjoidmFsbGVuYXRvLWZyIiwiYSI6ImNqejNncnM2bTAzYzgzY3A2ZWpvNHZodjkifQ.YDKDLobdK27Gr7RKvinyLw'
+  }).addTo(mymap);
 
-var ul = document.createElement('ul');
-document.getElementById('list').appendChild(ul);
+  // Populate the map and the list on the right side
+  populateMapAndList(mymap);
+}
 
-for (let loc in locations) {
-  if (locations.hasOwnProperty(loc)) {
-    // Add marker on the map
-    var markerOptions = {
-      title: loc, // location name for the browser tooltip that appear on marker hover
-      riseOnHover: true, // the marker will get on top of others when you hover the mouse over it.
-      keyboard: true // marker can be tabbed to with a keyboard and clicked by pressing enter
-    };
-    var marker = L.marker([locations[loc].latitude, locations[loc].longitude], markerOptions).addTo(mymap);
-    marker.addEventListener("click", function(){ overlay_on("list_overlay", loc); });
+function populateMapAndList(mymap){
+  var ul = document.createElement('ul');
+  document.getElementById('list').appendChild(ul);
 
-    // Update list on the right side
-    var li = document.createElement('li');
-    li.addEventListener("click", function(){ overlay_on("list_overlay", loc); });
-    ul.appendChild(li);
-    li.innerHTML = loc;
+  for (let loc in locations) {
+    if (locations.hasOwnProperty(loc)) {
+      // Add marker on the map
+      var markerOptions = {
+        title: loc, // location name for the browser tooltip that appear on marker hover
+        riseOnHover: true, // the marker will get on top of others when you hover the mouse over it.
+        keyboard: true // marker can be tabbed to with a keyboard and clicked by pressing enter
+      };
+      var marker = L.marker([locations[loc].latitude, locations[loc].longitude], markerOptions).addTo(mymap);
+      marker.addEventListener("click", function(){ overlay_on("list_overlay", loc); });
+
+      // Update list on the right side
+      var li = document.createElement('li');
+      li.addEventListener("click", function(){ overlay_on("list_overlay", loc); });
+      ul.appendChild(li);
+      li.innerHTML = loc;
+    }
   }
 }
 
@@ -65,3 +73,5 @@ document.onkeydown = function(evt) {
     overlay_off("list_overlay");
   }
 };
+
+main();
