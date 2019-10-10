@@ -46,7 +46,6 @@ function overlay_on(id, loc) {
       vid_title = locations[loc]["videos"][vid].title;
       vid_thumbnail_url = locations[loc]["videos"][vid].thumbnail.url;
       li.innerHTML = "<p>" + vid_title + "</p><img src='" + vid_thumbnail_url + "'/>"
-      console.log(locations[loc]["videos"][vid]);
     }
 }
 
