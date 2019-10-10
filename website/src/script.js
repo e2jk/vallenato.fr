@@ -11,7 +11,6 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
 var ul = document.createElement('ul');
 document.getElementById('list').appendChild(ul);
 
-
 for (let loc in locations) {
     if (locations.hasOwnProperty(loc)) {
         // Add marker on the map
@@ -40,6 +39,7 @@ function overlay_on(id, loc) {
     ul.innerHTML = "";
 
     for (let vid in locations[loc]["videos"]) {
+      // Show all the videos taken at that location
       var li = document.createElement('li');
       ul.appendChild(li);
       vid_title = locations[loc]["videos"][vid].title;
@@ -49,6 +49,7 @@ function overlay_on(id, loc) {
 }
 
 function overlay_off(id) {
+    // Hide the overlay
     document.getElementById(id).style.display = "none";
 }
 
