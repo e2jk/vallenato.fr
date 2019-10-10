@@ -41,7 +41,6 @@ function overlay_on(id, loc) {
 
     for (let vid in locations[loc]["videos"]) {
       var li = document.createElement('li');
-      //li.addEventListener("click", function(){ overlay_on("list_overlay", loc); });
       ul.appendChild(li);
       vid_title = locations[loc]["videos"][vid].title;
       vid_thumbnail_url = locations[loc]["videos"][vid].thumbnail.url;
