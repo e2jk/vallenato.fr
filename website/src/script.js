@@ -18,6 +18,7 @@ function populateMapAndList(mymap){
   var ul = document.createElement('ul');
   document.getElementById('list').appendChild(ul);
 
+  var i = 0;
   for (let loc in locations) {
     if (locations.hasOwnProperty(loc)) {
       // Add marker on the map
@@ -27,13 +28,18 @@ function populateMapAndList(mymap){
         keyboard: true // marker can be tabbed to with a keyboard and clicked by pressing enter
       };
       var marker = L.marker([locations[loc].latitude, locations[loc].longitude], markerOptions).addTo(mymap);
+      marker._icon.id = "location_marker_" + i;
       marker.addEventListener("click", function(){ overlay_on("list_overlay", loc); });
 
       // Update list on the right side
       var li = document.createElement('li');
+      li.id = "location_list_" + i;
       li.addEventListener("click", function(){ overlay_on("list_overlay", loc); });
       ul.appendChild(li);
       li.innerHTML = loc;
+
+      // Increment marker ID
+      i++;
     }
   }
 }
