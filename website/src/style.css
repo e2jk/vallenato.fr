@@ -17,7 +17,7 @@ body {
 #list li:hover {
   text-decoration: underline;
 }
-#list_overlay {
+#list_overlay, #video_overlay {
   position: fixed; /* Sit on top of the page content */
   display: none; /* Hidden by default */
   width: 100%; /* Full width (cover the whole page) */
@@ -28,7 +28,15 @@ body {
   bottom: 0;
   overflow-y: scroll; /* Vertical scrolling */
   background-color: rgba(255,255,255,0.9); /* White background with opacity */
+}
+#list_overlay {
   z-index: 1001; /* Specify a stack order in case you're using a different order for other elements */
+}
+#video_overlay {
+  z-index: 1002; /* Specify a stack order in case you're using a different order for other elements */
+}
+#list_videos li p, #list_videos li img {
+  cursor: pointer;
 }
 .highlighted{
   background-color: lightblue;

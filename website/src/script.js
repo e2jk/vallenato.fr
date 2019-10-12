@@ -47,7 +47,7 @@ function populateMapAndList(mymap){
 }
 
 function overlay_on(id, loc) {
-  document.getElementById(id).style.display = "block";
+  overlay_show(id);
   document.getElementById("list_location").innerHTML = loc;
 
   var ul = document.getElementById("list_videos");
@@ -58,13 +58,22 @@ function overlay_on(id, loc) {
     // Show all the videos taken at that location
     var li = document.createElement('li');
     ul.appendChild(li);
+    let vid_id = locations[loc]["videos"][vid].id;
     vid_title = locations[loc]["videos"][vid].title;
     vid_thumbnail_url = locations[loc]["videos"][vid].thumbnail.url;
-    li.innerHTML = "<p>" + vid_title + "</p><img src='" + vid_thumbnail_url + "'/>"
+    li.innerHTML = "<p id='vid_title_" + vid_id + "'>" + vid_title + "</p><img id='vid_img_" + vid_id + "' src='" + vid_thumbnail_url + "'/>"
+    // Handle clicks on the title or the image to play the video
+    document.getElementById("vid_title_" + vid_id).addEventListener("click", function(){ play_video(vid_id); });
+    document.getElementById("vid_img_" + vid_id).addEventListener("click", function(){ play_video(vid_id); });
   }
 }
 
-function overlay_off(id) {
+function overlay_show(id) {
+  // Hide the overlay
+  document.getElementById(id).style.display = "block";
+}
+
+function overlay_hide(id) {
   // Hide the overlay
   document.getElementById(id).style.display = "none";
 }
@@ -72,6 +81,29 @@ function overlay_off(id) {
 function marker_hover(marker_id, highlight) {
   var location_list_id = marker_id.replace("location_marker_", "location_list_");
   document.getElementById(location_list_id).className = highlight;
+}
+
+function play_video(id) {
+  // Update the video overlay with the url for this video
+  document.getElementById("video_overlay").innerHTML = `<iframe id="video_overlay_iframe" width="560" height="315" src="https://www.youtube.com/embed/` + id + `?autoplay=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
+  // Show the overlay containing the YouTube Embed iframe
+  overlay_show("video_overlay");
+  // Hide the overlay containing the list of videos at that location
+  overlay_hide("list_overlay");
+}
+
+function close_current_overlay() {
+  if ("block" === document.getElementById("list_overlay").style.display) {
+    // If the Location List overlay is shown, just hide that one
+    overlay_hide("list_overlay");
+    overlay_hide("video_overlay"); // Just to be sure ;)
+  } else if("block" === document.getElementById("video_overlay").style.display) {
+    // If the Video overlay is shown, hide it and show the Location List overlay
+    overlay_show("list_overlay");
+    overlay_hide("video_overlay");
+    // Also remove the iframe (in case the YouTube video is playing)
+    document.getElementById("video_overlay").innerHTML = "";
+  }
 }
 
 document.onkeydown = function(evt) {
@@ -83,7 +115,7 @@ document.onkeydown = function(evt) {
     isEscape = (evt.keyCode === 27);
   }
   if (isEscape) {
-    overlay_off("list_overlay");
+    close_current_overlay();
   }
 };
 
