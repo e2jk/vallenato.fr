@@ -44,3 +44,9 @@ body {
 #list_overlay_close, #video_overlay_close {
   float: right;
 }
+#video_overlay_iframe{
+  position: absolute;
+  margin: 30px;
+  width: 95%;
+  height: 90%;
+}
