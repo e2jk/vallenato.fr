@@ -12,6 +12,10 @@ function main(){
 
   // Populate the map and the list on the right side
   populateMapAndList(mymap);
+
+  // Handle overlay closing via cross icon
+  document.getElementById('list_overlay_close').addEventListener("click", close_current_overlay);
+  document.getElementById('video_overlay_close').addEventListener("click", close_current_overlay);
 }
 
 function populateMapAndList(mymap){
@@ -85,7 +89,7 @@ function marker_hover(marker_id, highlight) {
 
 function play_video(id) {
   // Update the video overlay with the url for this video
-  document.getElementById("video_overlay").innerHTML = `<iframe id="video_overlay_iframe" width="560" height="315" src="https://www.youtube.com/embed/` + id + `?autoplay=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
+  document.getElementById("video_overlay_iframe_placeholder").innerHTML = `<iframe id="video_overlay_iframe" width="560" height="315" src="https://www.youtube.com/embed/` + id + `?autoplay=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
   // Show the overlay containing the YouTube Embed iframe
   overlay_show("video_overlay");
   // Hide the overlay containing the list of videos at that location
@@ -102,7 +106,7 @@ function close_current_overlay() {
     overlay_show("list_overlay");
     overlay_hide("video_overlay");
     // Also remove the iframe (in case the YouTube video is playing)
-    document.getElementById("video_overlay").innerHTML = "";
+    document.getElementById("video_overlay_iframe_placeholder").innerHTML = "";
   }
 }
 

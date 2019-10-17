@@ -11,7 +11,7 @@ body {
 #list {
   width: 24%;
 }
-#list li {
+#list li, #list_overlay_close, #video_overlay_close {
   cursor: pointer;
 }
 #list li:hover {
@@ -40,4 +40,7 @@ body {
 }
 .highlighted{
   background-color: lightblue;
+}
+#list_overlay_close, #video_overlay_close {
+  float: right;
 }
