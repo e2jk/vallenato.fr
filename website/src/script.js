@@ -212,7 +212,7 @@ function close_current_overlay() {
   }
 }
 
-document.onkeydown = function(evt) {
+function key_down(evt) {
   evt = evt || window.event;
   var isEscape = false;
   if ("key" in evt) {
@@ -247,6 +247,7 @@ function URL_changed() {
   }
 };
 
+document.onkeydown = key_down;
 window.onhashchange = URL_changed;
 
 main();
