@@ -100,8 +100,8 @@ function check_initial_page() {
     }
 
     if (!slug_found) {
-      console.log("Invalid slug, redirecting to home page!");
-      // TODO: redirect to the root page
+      // Invalid slug, redirecting to home page
+      window.location = "/";
     }
   }
 }
@@ -123,6 +123,11 @@ function update_history_for_location(loc) {
 
 function show_location_overlay(loc) {
   overlay_show("list_overlay");
+  // In case a video was shown
+  overlay_hide("video_overlay");
+  // Also remove the iframe (in case the YouTube video is playing)
+  document.getElementById("video_overlay_iframe_placeholder").innerHTML = "";
+
   document.getElementById("list_location").innerHTML = loc;
 
   var ul = document.getElementById("list_videos");
@@ -182,11 +187,18 @@ function show_video_overlay(id, title_slug) {
   overlay_hide("list_overlay");
 }
 
+function show_home_page() {
+  // Hide both location and video overlays
+  overlay_hide("list_overlay");
+  overlay_hide("video_overlay");
+  // Also remove the iframe (in case the YouTube video is playing)
+  document.getElementById("video_overlay_iframe_placeholder").innerHTML = "";
+}
+
 function close_current_overlay() {
   if ("block" === document.getElementById("list_overlay").style.display) {
-    // If the Location List overlay is shown, just hide that one
-    overlay_hide("list_overlay");
-    overlay_hide("video_overlay"); // Just to be sure ;)
+    // If the Location List overlay is shown, go to the home page
+    show_home_page();
     // Add an entry to the history, back to home
     update_history_for_home();
   } else if("block" === document.getElementById("video_overlay").style.display) {
@@ -212,5 +224,29 @@ document.onkeydown = function(evt) {
     close_current_overlay();
   }
 };
+
+function URL_changed() {
+  if(!window.location.hash) {
+    // No hash, go to the home page
+    show_home_page();
+  } else {
+    if (history.state && history.state.hasOwnProperty("type")) {
+      // Use back and forward buttons
+      if("location" === history.state.type) {
+        show_location_overlay(history.state.loc);
+      } else if ("video" === history.state.type) {
+        show_video_overlay(history.state.id, history.state.title_slug);
+      } else {
+        // Fallback to the home page (should never happen)
+        show_home_page();
+      }
+    } else {
+      // Probably a hand-typed hash URL
+      check_initial_page();
+    }
+  }
+};
+
+window.onhashchange = URL_changed;
 
 main();
