@@ -21,6 +21,7 @@ import os
 import sys
 import json
 import shutil
+from slugify import slugify
 
 from youtube import HttpError
 from youtube import yt_get_authenticated_service
@@ -51,6 +52,12 @@ def save_uploaded_videos(uploaded_videos, dump_file):
     with open(dump_file, 'w') as out_file:
         json.dump(uploaded_videos, out_file, sort_keys=True, indent=2)
 
+def determine_videos_slug(uploaded_videos):
+    logging.debug("Determining each video's slug...")
+    for vid in uploaded_videos:
+        vid["slug"] = slugify(vid["title"]).replace("-desde-", "-")
+    return uploaded_videos
+
 def get_uploaded_videos(args, dump_file):
     uploaded_videos = get_dumped_uploaded_videos(dump_file)
     if not uploaded_videos:
@@ -67,6 +74,8 @@ def get_uploaded_videos(args, dump_file):
             logging.debug('An HTTP error %d occurred:\n%s' % (e.resp.status, e.content))
             logging.critical("Exiting...")
             sys.exit(19)
+        # Create a slug for each video (to be used for the website URLs)
+        uploaded_videos = determine_videos_slug(uploaded_videos)
         if args.dump_uploaded_videos:
             save_uploaded_videos(uploaded_videos, dump_file)
     return uploaded_videos
@@ -144,7 +153,12 @@ def add_videos_to_locations_array(uploaded_videos, locations):
         if not "videos" in locations[vid["location"]]:
             locations[vid["location"]]["videos"] = []
         locations[vid["location"]]["videos"].append(vid)
+    return locations
 
+def determine_locations_slug(locations):
+    logging.debug("Determining each location's slug...")
+    for loc in locations:
+        locations[loc]["slug"] = slugify(loc)
     return locations
 
 def save_website_data(locations, website_data_file):
@@ -198,6 +212,9 @@ def website(args):
 
     # Determine the geolocation of each location
     locations = determine_geolocation(locations, GEOLOCATIONS_FILE)
+
+    # Create a slug for each location (to be used for the website URLs)
+    locations = determine_locations_slug(locations)
 
     # Add the videos in each location array
     locations = add_videos_to_locations_array(uploaded_videos, locations)

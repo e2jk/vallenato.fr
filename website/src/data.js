@@ -2,12 +2,14 @@ var locations = {
   "'s-Hertogenbosch, Pa\u00edses Bajos": {
     "latitude": 51.688649,
     "longitude": 5.341865,
+    "slug": "s-hertogenbosch-paises-bajos",
     "videos": [
       {
         "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/en-carne-propia.html\nOosterplas, 's-Hertogenbosch, Pa\u00edses Bajos, 31/08/2019\nEn Carne Propia - Silvio Brito",
         "id": "Qa_z4L0ZXqo",
         "location": "'s-Hertogenbosch, Pa\u00edses Bajos",
         "publishedAt": "2019-09-21T15:21:06.000Z",
+        "slug": "en-carne-propia-el-oosterplas-s-hertogenbosch-paises-bajos",
         "tags": [
           "Acorde\u00f3n",
           "Vallenato",
@@ -29,6 +31,7 @@ var locations = {
         "id": "BqFlTbrWDYk",
         "location": "'s-Hertogenbosch, Pa\u00edses Bajos",
         "publishedAt": "2019-09-21T15:30:55.000Z",
+        "slug": "los-caminos-de-la-vida-el-oosterplas-s-hertogenbosch-paises-bajos",
         "tags": [
           "Acorde\u00f3n",
           "Vallenato",
@@ -50,6 +53,7 @@ var locations = {
         "id": "7sEKBccnvnI",
         "location": "'s-Hertogenbosch, Pa\u00edses Bajos",
         "publishedAt": "2019-09-21T15:24:41.000Z",
+        "slug": "oye-bonita-el-oosterplas-s-hertogenbosch-paises-bajos",
         "tags": [
           "Acorde\u00f3n",
           "Vallenato",
@@ -71,12 +75,14 @@ var locations = {
   "Aroeira, Portugal": {
     "latitude": 38.591438,
     "longitude": -9.18457,
+    "slug": "aroeira-portugal",
     "videos": [
       {
         "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/la-creciente.html\nAroeira, Portugal, 24/09/2017\nLa Creciente - Binomio de Oro",
         "id": "Ig-pKoEHsyk",
         "location": "Aroeira, Portugal",
         "publishedAt": "2017-09-24T11:02:49.000Z",
+        "slug": "la-creciente-aroeira-portugal",
         "tags": [
           "Binomio de Oro",
           "Aroeira",
@@ -97,6 +103,7 @@ var locations = {
         "id": "9U-5uhf-knE",
         "location": "Aroeira, Portugal",
         "publishedAt": "2017-09-24T11:02:37.000Z",
+        "slug": "oye-bonita-aroeira-portugal",
         "tags": [
           "Oye Bonita",
           "Aroeira",
@@ -117,6 +124,7 @@ var locations = {
         "id": "0lV8SztnsEg",
         "location": "Aroeira, Portugal",
         "publishedAt": "2017-09-24T11:02:23.000Z",
+        "slug": "esa-aroeira-portugal",
         "tags": [
           "Esa",
           "Binomio de Oro",
@@ -137,12 +145,14 @@ var locations = {
   "Atlanta, Georgia, USA": {
     "latitude": 33.748997,
     "longitude": -84.387985,
+    "slug": "atlanta-georgia-usa",
     "videos": [
       {
         "description": "Atlanta, Georgia, USA, 04/05/2019\nOye Bonita - Diomedes D\u00edaz",
         "id": "0-0jKQUGSY4",
         "location": "Atlanta, Georgia, USA",
         "publishedAt": "2019-05-04T17:33:40.000Z",
+        "slug": "oye-bonita-atlanta-georgia-usa",
         "tags": [
           "Acorde\u00f3n",
           "Vallenato",
@@ -164,12 +174,14 @@ var locations = {
   "Bruselas, Belgica": {
     "latitude": 50.84554,
     "longitude": 4.35571,
+    "slug": "bruselas-belgica",
     "videos": [
       {
         "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/la-guanena.html\nBruselas, Belgica, 08/12/2018\nLa Guane\u00f1a y el Son Sure\u00f1o, m\u00fasica Nari\u00f1ense",
         "id": "XQ4TpG4gGrQ",
         "location": "Bruselas, Belgica",
         "publishedAt": "2018-12-08T11:08:56.000Z",
+        "slug": "la-guanena-navidena-bruselas-belgica",
         "tags": [
           "Acorde\u00f3n",
           "Vallenato",
@@ -191,12 +203,14 @@ var locations = {
   "Buesaco, Nari\u00f1o, Colombia": {
     "latitude": 1.3829,
     "longitude": -77.1556,
+    "slug": "buesaco-narino-colombia",
     "videos": [
       {
         "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/esa.html\nBuesaco, Nari\u00f1o, Colombia, 07/08/2018\nEsa - Binomio de Oro",
         "id": "WGFi6wkxiNI",
         "location": "Buesaco, Nari\u00f1o, Colombia",
         "publishedAt": "2018-08-08T13:19:14.000Z",
+        "slug": "esa-buesaco-narino-colombia",
         "tags": [
           "Acorde\u00f3n",
           "Vallenato",
@@ -218,6 +232,7 @@ var locations = {
         "id": "1xNNg1OMcEU",
         "location": "Buesaco, Nari\u00f1o, Colombia",
         "publishedAt": "2018-08-08T13:15:30.000Z",
+        "slug": "feliz-cumpleanos-de-diomedes-diaz-buesaco-narino-colombia",
         "tags": [
           "Acorde\u00f3n",
           "Vallenato",
@@ -241,6 +256,7 @@ var locations = {
         "id": "hsknLJap9XA",
         "location": "Buesaco, Nari\u00f1o, Colombia",
         "publishedAt": "2018-08-08T13:10:07.000Z",
+        "slug": "la-creciente-buesaco-narino-colombia",
         "tags": [
           "Acorde\u00f3n",
           "Vallenato",
@@ -262,6 +278,7 @@ var locations = {
         "id": "1vl139qt3nE",
         "location": "Buesaco, Nari\u00f1o, Colombia",
         "publishedAt": "2018-08-08T13:05:21.000Z",
+        "slug": "la-guanena-y-el-son-sureno-buesaco-narino-colombia",
         "tags": [
           "Acorde\u00f3n",
           "Buesaco",
@@ -283,6 +300,7 @@ var locations = {
         "id": "yrWZw-lgGbM",
         "location": "Buesaco, Nari\u00f1o, Colombia",
         "publishedAt": "2018-08-08T12:44:22.000Z",
+        "slug": "oye-bonita-buesaco-narino-colombia",
         "tags": [
           "Acorde\u00f3n",
           "Vallenato",
@@ -304,6 +322,7 @@ var locations = {
         "id": "KASEblFElVM",
         "location": "Buesaco, Nari\u00f1o, Colombia",
         "publishedAt": "2017-01-12T15:16:40.000Z",
+        "slug": "oye-bonita-buesaco-narino-colombia",
         "tags": [
           "Oye Bonita",
           "Buesaco",
@@ -324,12 +343,14 @@ var locations = {
   "Cali, Valle del Cauca, Colombia": {
     "latitude": 3.45298,
     "longitude": -76.518784,
+    "slug": "cali-valle-del-cauca-colombia",
     "videos": [
       {
         "description": "Perdonan la mala calidad del sonido, grabado como se pudo...\nCali (Palmira), Valle del Cauca, Colombia, 09/08/2018\nOye Bonita - Diomedes D\u00edaz",
         "id": "JGSCmr0R_O4",
         "location": "Cali, Valle del Cauca, Colombia",
         "publishedAt": "2018-08-10T02:17:01.000Z",
+        "slug": "oye-bonita-el-aeropuerto-de-cali",
         "tags": [
           "Acorde\u00f3n",
           "Vallenato",
@@ -353,12 +374,14 @@ var locations = {
   "Cimarrones, Nari\u00f1o, Colombia": {
     "latitude": 1.450006,
     "longitude": -77.263896,
+    "slug": "cimarrones-narino-colombia",
     "videos": [
       {
         "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/esa.html\nCimarrones, Nari\u00f1o, Colombia, 08/08/2019\nEsa - Binomio de Oro",
         "id": "iVO40yK3mdo",
         "location": "Cimarrones, Nari\u00f1o, Colombia",
         "publishedAt": "2019-08-09T15:31:51.000Z",
+        "slug": "esa-cimarrones-narino-colombia",
         "tags": [
           "Acorde\u00f3n",
           "Vallenato",
@@ -380,6 +403,7 @@ var locations = {
         "id": "r7Dds5KX3w8",
         "location": "Cimarrones, Nari\u00f1o, Colombia",
         "publishedAt": "2019-08-09T15:31:51.000Z",
+        "slug": "la-creciente-cimarrones-narino-colombia",
         "tags": [
           "Acorde\u00f3n",
           "Vallenato",
@@ -401,6 +425,7 @@ var locations = {
         "id": "XdeoiYuLbQA",
         "location": "Cimarrones, Nari\u00f1o, Colombia",
         "publishedAt": "2019-08-09T15:24:07.000Z",
+        "slug": "los-caminos-de-la-vida-cimarrones-narino-colombia",
         "tags": [
           "Acorde\u00f3n",
           "Vallenato",
@@ -422,6 +447,7 @@ var locations = {
         "id": "qR-w3Culw5Q",
         "location": "Cimarrones, Nari\u00f1o, Colombia",
         "publishedAt": "2019-08-09T15:10:38.000Z",
+        "slug": "oye-bonita-cimarrones-narino-colombia",
         "tags": [
           "Acorde\u00f3n",
           "Vallenato",
@@ -443,12 +469,14 @@ var locations = {
   "Ciudad de Panam\u00e1, Panam\u00e1": {
     "latitude": 8.969049,
     "longitude": -79.535716,
+    "slug": "ciudad-de-panama-panama",
     "videos": [
       {
         "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/los-caminos-de-la-vida.html\nDesde el aeropuerto de Panam\u00e1, 22/08/2019\nLos Caminos De La Vida - Los Diablitos",
         "id": "U-N7MtQ7HV0",
         "location": "Ciudad de Panam\u00e1, Panam\u00e1",
         "publishedAt": "2019-08-24T19:55:40.000Z",
+        "slug": "los-caminos-de-la-vida-el-aeropuerto-de-panama",
         "tags": [
           "Acorde\u00f3n",
           "Vallenato",
@@ -469,6 +497,7 @@ var locations = {
         "id": "CyXCWPMDhgY",
         "location": "Ciudad de Panam\u00e1, Panam\u00e1",
         "publishedAt": "2019-08-24T19:55:41.000Z",
+        "slug": "oye-bonita-el-aeropuerto-de-panama",
         "tags": [
           "Acorde\u00f3n",
           "Vallenato",
@@ -489,12 +518,14 @@ var locations = {
   "El Remolino, Nari\u00f1o, Colombia": {
     "latitude": 1.675202,
     "longitude": -77.330858,
+    "slug": "el-remolino-narino-colombia",
     "videos": [
       {
         "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/la-creciente.html\nCerca de El Remolino, Nari\u00f1o, Colombia, 21/08/2017\nLa Creciente - Binomio de Oro",
         "id": "RBU3ZNWFc-I",
         "location": "El Remolino, Nari\u00f1o, Colombia",
         "publishedAt": "2017-08-22T13:47:15.000Z",
+        "slug": "la-creciente-cerca-de-el-remolino-narino-colombia",
         "tags": [
           "Binomio de Oro",
           "El Remolino",
@@ -516,6 +547,7 @@ var locations = {
         "id": "kkRJ8Ga5QLg",
         "location": "El Remolino, Nari\u00f1o, Colombia",
         "publishedAt": "2017-08-22T13:47:08.000Z",
+        "slug": "esa-cerca-de-el-remolino-narino-colombia",
         "tags": [
           "Esa",
           "Binomio de Oro",
@@ -537,6 +569,7 @@ var locations = {
         "id": "DGdmC-3jThE",
         "location": "El Remolino, Nari\u00f1o, Colombia",
         "publishedAt": "2017-08-22T14:26:33.000Z",
+        "slug": "la-creciente-el-remolino-narino-colombia",
         "tags": [
           "Binomio de Oro",
           "El Remolino",
@@ -558,6 +591,7 @@ var locations = {
         "id": "4ro6NMfNW6U",
         "location": "El Remolino, Nari\u00f1o, Colombia",
         "publishedAt": "2017-08-22T14:26:42.000Z",
+        "slug": "lleno-de-ti-el-remolino-narino-colombia",
         "tags": [
           "Binomio de Oro",
           "El Remolino",
@@ -579,6 +613,7 @@ var locations = {
         "id": "xG20_8UVC38",
         "location": "El Remolino, Nari\u00f1o, Colombia",
         "publishedAt": "2017-08-22T13:26:38.000Z",
+        "slug": "esa-el-remolino-narino-colombia",
         "tags": [
           "Esa",
           "Binomio de Oro",
@@ -600,6 +635,7 @@ var locations = {
         "id": "Q48-SY6duqU",
         "location": "El Remolino, Nari\u00f1o, Colombia",
         "publishedAt": "2017-08-22T13:26:14.000Z",
+        "slug": "esa-el-remolino-narino-colombia",
         "tags": [
           "Esa",
           "Binomio de Oro",
@@ -621,6 +657,7 @@ var locations = {
         "id": "F_L6_Q8St6c",
         "location": "El Remolino, Nari\u00f1o, Colombia",
         "publishedAt": "2017-08-22T13:03:37.000Z",
+        "slug": "oye-bonita-el-remolino-narino-colombia",
         "tags": [
           "Oye Bonita",
           "Vallenato",
@@ -642,12 +679,14 @@ var locations = {
   "Koh Phangan, Tailandia": {
     "latitude": 9.73495,
     "longitude": 100.030571,
+    "slug": "koh-phangan-tailandia",
     "videos": [
       {
         "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/los-caminos-de-la-vida.html\nKoh Phangan, Tailandia, 24/02/2017\nLos Caminos De La Vida - Los Diablitos",
         "id": "FBP75VSH3mA",
         "location": "Koh Phangan, Tailandia",
         "publishedAt": "2017-02-25T20:46:27.000Z",
+        "slug": "los-caminos-de-la-vida-koh-phangan-tailandia",
         "tags": [
           "Los Caminos De La Vida",
           "Los Diablitos",
@@ -669,6 +708,7 @@ var locations = {
         "id": "SJ02fqu_BVQ",
         "location": "Koh Phangan, Tailandia",
         "publishedAt": "2017-02-23T15:54:20.000Z",
+        "slug": "feliz-cumpleanos-de-diomedes-diaz-koh-phangan-tailandia",
         "tags": [
           "Ko Pha Ngan",
           "Tailandia",
@@ -691,6 +731,7 @@ var locations = {
         "id": "UnR6G2Pg2ao",
         "location": "Koh Phangan, Tailandia",
         "publishedAt": "2017-02-22T08:43:34.000Z",
+        "slug": "oye-bonita-koh-phangan-tailandia",
         "tags": [
           "Oye Bonita",
           "Ko Pha Ngan",
@@ -712,12 +753,14 @@ var locations = {
   "La Cristalina, Nari\u00f1o, Colombia": {
     "latitude": 1.140297,
     "longitude": -77.233292,
+    "slug": "la-cristalina-narino-colombia",
     "videos": [
       {
         "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/esa.html\nLa Cristalina, Nari\u00f1o, Colombia, 16/08/2019\nEsa - Binomio de Oro",
         "id": "98ptD9Xw4Sw",
         "location": "La Cristalina, Nari\u00f1o, Colombia",
         "publishedAt": "2019-08-17T14:20:05.000Z",
+        "slug": "esa-la-cristalina-narino-colombia",
         "tags": [
           "Acorde\u00f3n",
           "Vallenato",
@@ -739,6 +782,7 @@ var locations = {
         "id": "FUHLr2gnYgw",
         "location": "La Cristalina, Nari\u00f1o, Colombia",
         "publishedAt": "2019-08-17T14:19:21.000Z",
+        "slug": "en-carne-propia-la-cristalina-narino-colombia",
         "tags": [
           "Acorde\u00f3n",
           "Vallenato",
@@ -760,6 +804,7 @@ var locations = {
         "id": "eEmtEtFgu94",
         "location": "La Cristalina, Nari\u00f1o, Colombia",
         "publishedAt": "2019-08-11T23:25:51.000Z",
+        "slug": "muere-una-flor-la-cristalina-narino-colombia",
         "tags": [
           "Acorde\u00f3n",
           "Vallenato",
@@ -781,6 +826,7 @@ var locations = {
         "id": "FWTluHE1z5M",
         "location": "La Cristalina, Nari\u00f1o, Colombia",
         "publishedAt": "2019-08-11T23:16:41.000Z",
+        "slug": "jaime-molina-la-cristalina-narino-colombia",
         "tags": [
           "Acorde\u00f3n",
           "Vallenato",
@@ -802,6 +848,7 @@ var locations = {
         "id": "fpTKC8_emJA",
         "location": "La Cristalina, Nari\u00f1o, Colombia",
         "publishedAt": "2019-08-11T23:11:48.000Z",
+        "slug": "oye-bonita-la-cristalina-narino-colombia",
         "tags": [
           "Acorde\u00f3n",
           "Vallenato",
@@ -823,6 +870,7 @@ var locations = {
         "id": "WFUVbEYQVUM",
         "location": "La Cristalina, Nari\u00f1o, Colombia",
         "publishedAt": "2019-08-11T23:09:40.000Z",
+        "slug": "la-guanena-y-el-son-sureno-la-cristalina-narino-colombia",
         "tags": [
           "Acorde\u00f3n",
           "Vallenato",
@@ -845,6 +893,7 @@ var locations = {
         "id": "IU8oteyK5-4",
         "location": "La Cristalina, Nari\u00f1o, Colombia",
         "publishedAt": "2019-08-11T23:09:40.000Z",
+        "slug": "los-caminos-de-la-vida-la-cristalina-narino-colombia",
         "tags": [
           "Acorde\u00f3n",
           "Vallenato",
@@ -866,12 +915,14 @@ var locations = {
   "Lisboa, Portugal": {
     "latitude": 38.722252,
     "longitude": -9.139337,
+    "slug": "lisboa-portugal",
     "videos": [
       {
         "description": "Lisboa, Portugal, 24/09/2017\nOye Bonita - Diomedes D\u00edaz",
         "id": "lSr5bbXMmww",
         "location": "Lisboa, Portugal",
         "publishedAt": "2017-09-24T16:26:19.000Z",
+        "slug": "oye-bonita-lisboa-portugal",
         "tags": [
           "Oye Bonita",
           "Lisboa",
@@ -892,6 +943,7 @@ var locations = {
         "id": "fZJ-VDb3xl0",
         "location": "Lisboa, Portugal",
         "publishedAt": "2017-09-24T16:24:15.000Z",
+        "slug": "esa-lisboa-portugal",
         "tags": [
           "Esa",
           "Binomio de Oro",
@@ -912,12 +964,14 @@ var locations = {
   "Niagara Falls, Ontario, Canada": {
     "latitude": 43.084329,
     "longitude": -79.073737,
+    "slug": "niagara-falls-ontario-canada",
     "videos": [
       {
         "description": "Niagara Falls, Ontario, Canada, 20/08/2018\nOye Bonita - Diomedes D\u00edaz",
         "id": "u34fzbt--nM",
         "location": "Niagara Falls, Ontario, Canada",
         "publishedAt": "2018-08-21T20:36:16.000Z",
+        "slug": "oye-bonita-niagara-falls-ontario-canada",
         "tags": [
           "Acorde\u00f3n",
           "Vallenato",
@@ -937,12 +991,14 @@ var locations = {
   "Par\u00eds, Francia": {
     "latitude": 48.858372,
     "longitude": 2.294481,
+    "slug": "paris-francia",
     "videos": [
       {
         "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/tu-cumpleanos.html\nPar\u00eds, Francia, 28/05/2017\nTu Cumplea\u00f1os - Diomedes D\u00edaz",
         "id": "q6cUzC6ESZ8",
         "location": "Par\u00eds, Francia",
         "publishedAt": "2017-05-30T20:05:18.000Z",
+        "slug": "feliz-cumpleanos-de-diomedes-diaz-paris-francia",
         "tags": [
           "Par\u00eds",
           "Francia",
@@ -965,6 +1021,7 @@ var locations = {
         "id": "OiZsQC1awnY",
         "location": "Par\u00eds, Francia",
         "publishedAt": "2017-05-30T20:01:41.000Z",
+        "slug": "oye-bonita-paris-francia",
         "tags": [
           "Oye Bonita",
           "Par\u00eds",
@@ -986,12 +1043,14 @@ var locations = {
   "Pasisara, Nari\u00f1o, Colombia": {
     "latitude": 1.391745,
     "longitude": -77.25566,
+    "slug": "pasisara-narino-colombia",
     "videos": [
       {
         "description": "Para aprender a tocar estas canciones: https://vallenato.fr/aprender/la-guanena.html y https://vallenato.fr/aprender/son-sureno.html\nPasisara, Nari\u00f1o, Colombia, 01/08/2018\nLa Guane\u00f1a y el Son Sure\u00f1o, m\u00fasica Nari\u00f1ense",
         "id": "r6NlIvnDDQY",
         "location": "Pasisara, Nari\u00f1o, Colombia",
         "publishedAt": "2018-08-03T21:07:36.000Z",
+        "slug": "la-guanena-y-el-son-sureno-pasisara-narino-colombia",
         "tags": [
           "Acorde\u00f3n",
           "Son Sure\u00f1o",
@@ -1013,6 +1072,7 @@ var locations = {
         "id": "p9NqLfoSLko",
         "location": "Pasisara, Nari\u00f1o, Colombia",
         "publishedAt": "2018-08-03T20:18:50.000Z",
+        "slug": "oye-bonita-pasisara-narino-colombia",
         "tags": [
           "Acorde\u00f3n",
           "Vallenato",
@@ -1034,6 +1094,7 @@ var locations = {
         "id": "1kZBbmRnnq8",
         "location": "Pasisara, Nari\u00f1o, Colombia",
         "publishedAt": "2018-08-03T16:35:26.000Z",
+        "slug": "la-guanena-y-el-son-sureno-pasisara-narino-colombia",
         "tags": [
           "Acorde\u00f3n",
           "La Guane\u00f1a",
@@ -1053,12 +1114,14 @@ var locations = {
   "Pasto, Nari\u00f1o, Colombia": {
     "latitude": 1.214591,
     "longitude": -77.278265,
+    "slug": "pasto-narino-colombia",
     "videos": [
       {
         "description": "Para aprender a tocar estas canciones: https://vallenato.fr/aprender/la-guanena.html y https://vallenato.fr/aprender/son-sureno.html\nCon el grupo La Santa Vallenata: https://www.facebook.com/lasantavallenata\nPasto, Nari\u00f1o, Colombia, 03/08/2018\nLa Guane\u00f1a y el Son Sure\u00f1o, m\u00fasica Nari\u00f1ense",
         "id": "oPEirA4pXdg",
         "location": "Pasto, Nari\u00f1o, Colombia",
         "publishedAt": "2018-08-04T17:37:37.000Z",
+        "slug": "la-guanena-y-el-son-sureno-en-vivo",
         "tags": [
           "Acorde\u00f3n"
         ],
@@ -1074,12 +1137,14 @@ var locations = {
   "Providencia, Colombia": {
     "latitude": 13.349404,
     "longitude": -81.375615,
+    "slug": "providencia-colombia",
     "videos": [
       {
         "description": "Providencia, Colombia, 15/08/2018\nOye Bonita - Diomedes D\u00edaz",
         "id": "UGPpnz-_HwM",
         "location": "Providencia, Colombia",
         "publishedAt": "2018-08-21T19:13:42.000Z",
+        "slug": "oye-bonita-con-los-guardias-de-seguridad-del-aeropuerto-de-providencia-colombia",
         "tags": [
           "Acorde\u00f3n",
           "Vallenato",
@@ -1101,6 +1166,7 @@ var locations = {
         "id": "gtTJVaDp3A4",
         "location": "Providencia, Colombia",
         "publishedAt": "2018-08-21T19:13:42.000Z",
+        "slug": "oye-bonita-el-aeropuerto-de-providencia-colombia",
         "tags": [
           "Acorde\u00f3n",
           "Vallenato",
@@ -1122,6 +1188,7 @@ var locations = {
         "id": "Y8rUJPyB2lg",
         "location": "Providencia, Colombia",
         "publishedAt": "2018-08-21T19:13:42.000Z",
+        "slug": "solo-para-ti-providencia-colombia",
         "tags": [
           "Acorde\u00f3n",
           "Vallenato",
@@ -1142,6 +1209,7 @@ var locations = {
         "id": "OIwXOS8YiLo",
         "location": "Providencia, Colombia",
         "publishedAt": "2018-08-21T19:13:42.000Z",
+        "slug": "oye-bonita-providencia-colombia",
         "tags": [
           "Acorde\u00f3n",
           "Vallenato",
@@ -1162,6 +1230,7 @@ var locations = {
         "id": "-IsC3zMBs64",
         "location": "Providencia, Colombia",
         "publishedAt": "2018-08-21T19:13:42.000Z",
+        "slug": "muere-una-flor-providencia-colombia",
         "tags": [
           "Acorde\u00f3n",
           "Vallenato",
@@ -1182,6 +1251,7 @@ var locations = {
         "id": "i9rtpcQ7ijM",
         "location": "Providencia, Colombia",
         "publishedAt": "2018-08-21T19:13:42.000Z",
+        "slug": "los-caminos-de-la-vida-providencia-colombia",
         "tags": [
           "Acorde\u00f3n",
           "Vallenato",
@@ -1202,6 +1272,7 @@ var locations = {
         "id": "OmLralQi2co",
         "location": "Providencia, Colombia",
         "publishedAt": "2018-08-21T19:13:42.000Z",
+        "slug": "lleno-de-ti-providencia-colombia",
         "tags": [
           "Acorde\u00f3n",
           "Vallenato",
@@ -1222,6 +1293,7 @@ var locations = {
         "id": "6ew3wWZcl_w",
         "location": "Providencia, Colombia",
         "publishedAt": "2018-08-21T19:13:42.000Z",
+        "slug": "la-guanena-y-el-son-sureno-providencia-colombia",
         "tags": [
           "Acorde\u00f3n",
           "Vallenato",
@@ -1243,6 +1315,7 @@ var locations = {
         "id": "0miSssIAcLk",
         "location": "Providencia, Colombia",
         "publishedAt": "2018-08-21T19:13:42.000Z",
+        "slug": "la-guanena-y-el-son-sureno-providencia-colombia",
         "tags": [
           "Acorde\u00f3n",
           "Vallenato",
@@ -1264,6 +1337,7 @@ var locations = {
         "id": "HIvgX6nj2LA",
         "location": "Providencia, Colombia",
         "publishedAt": "2018-08-21T19:13:42.000Z",
+        "slug": "la-creciente-providencia-colombia",
         "tags": [
           "Acorde\u00f3n",
           "Vallenato",
@@ -1284,6 +1358,7 @@ var locations = {
         "id": "yyaHLlqC1Nw",
         "location": "Providencia, Colombia",
         "publishedAt": "2018-08-21T19:13:42.000Z",
+        "slug": "la-creciente-providencia-colombia",
         "tags": [
           "Acorde\u00f3n",
           "Vallenato",
@@ -1304,6 +1379,7 @@ var locations = {
         "id": "uyPyD1VRgDI",
         "location": "Providencia, Colombia",
         "publishedAt": "2018-08-21T19:13:42.000Z",
+        "slug": "feliz-cumpleanos-de-diomedes-diaz-providencia-colombia",
         "tags": [
           "Acorde\u00f3n",
           "Vallenato",
@@ -1326,6 +1402,7 @@ var locations = {
         "id": "ujwK6RXsv8A",
         "location": "Providencia, Colombia",
         "publishedAt": "2018-08-21T19:13:42.000Z",
+        "slug": "esa-providencia-colombia",
         "tags": [
           "Acorde\u00f3n",
           "Vallenato",
@@ -1346,12 +1423,14 @@ var locations = {
   "San Andr\u00e9s, Colombia": {
     "latitude": 12.544912,
     "longitude": -81.716716,
+    "slug": "san-andres-colombia",
     "videos": [
       {
         "description": "Para aprender a tocar estas canciones: https://vallenato.fr/aprender/la-guanena.html y https://vallenato.fr/aprender/son-sureno.html\nSan Andr\u00e9s, Colombia, 12/08/2018\nLa Guane\u00f1a y el Son Sure\u00f1o, m\u00fasica Nari\u00f1ense",
         "id": "oZfgMDbQFgo",
         "location": "San Andr\u00e9s, Colombia",
         "publishedAt": "2018-08-18T16:51:33.000Z",
+        "slug": "la-guanena-y-el-son-sureno-san-andres-colombia",
         "tags": [
           "Acorde\u00f3n",
           "San Andr\u00e9s",
@@ -1372,6 +1451,7 @@ var locations = {
         "id": "qu89H7gIJJw",
         "location": "San Andr\u00e9s, Colombia",
         "publishedAt": "2018-08-17T22:22:17.000Z",
+        "slug": "oye-bonita-san-andres-colombia",
         "tags": [
           "Acorde\u00f3n",
           "Vallenato",
@@ -1392,6 +1472,7 @@ var locations = {
         "id": "cgPrtzoHfgo",
         "location": "San Andr\u00e9s, Colombia",
         "publishedAt": "2018-08-17T15:34:19.000Z",
+        "slug": "oye-bonita-san-andres-colombia",
         "tags": [
           "Acorde\u00f3n",
           "Vallenato",
@@ -1412,6 +1493,7 @@ var locations = {
         "id": "JL5L9PTW6rU",
         "location": "San Andr\u00e9s, Colombia",
         "publishedAt": "2018-08-17T02:08:09.000Z",
+        "slug": "los-caminos-de-la-vida-san-andres-colombia",
         "tags": [
           "Acorde\u00f3n",
           "Vallenato",
@@ -1432,6 +1514,7 @@ var locations = {
         "id": "Rj-D__RNtj0",
         "location": "San Andr\u00e9s, Colombia",
         "publishedAt": "2018-08-16T18:14:12.000Z",
+        "slug": "la-creciente-san-andres-colombia",
         "tags": [
           "Acorde\u00f3n",
           "Vallenato",
@@ -1452,6 +1535,7 @@ var locations = {
         "id": "5i-vi3zusiI",
         "location": "San Andr\u00e9s, Colombia",
         "publishedAt": "2018-08-16T02:05:09.000Z",
+        "slug": "esa-san-andres-colombia",
         "tags": [
           "Acorde\u00f3n",
           "Vallenato",
@@ -1471,12 +1555,14 @@ var locations = {
   "Santa Marta, Magdalena, Colombia": {
     "latitude": 11.243938,
     "longitude": -74.21492,
+    "slug": "santa-marta-magdalena-colombia",
     "videos": [
       {
         "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/la-cumbia-del-amor.html\nSanta Marta, Magdalena, Colombia, 21/08/2019\nLa Cumbia del Amor - Lisandro Mesa",
         "id": "s05RpOPL22U",
         "location": "Santa Marta, Magdalena, Colombia",
         "publishedAt": "2019-08-24T19:55:41.000Z",
+        "slug": "la-cumbia-del-amor-santa-marta-magdalena-colombia",
         "tags": [
           "Acorde\u00f3n",
           "Vallenato",
@@ -1498,6 +1584,7 @@ var locations = {
         "id": "oxY864QMbyg",
         "location": "Santa Marta, Magdalena, Colombia",
         "publishedAt": "2019-08-24T19:55:41.000Z",
+        "slug": "jaime-molina-santa-marta-magdalena-colombia",
         "tags": [
           "Acorde\u00f3n",
           "Vallenato",
@@ -1519,6 +1606,7 @@ var locations = {
         "id": "oJXULyP_12c",
         "location": "Santa Marta, Magdalena, Colombia",
         "publishedAt": "2019-08-24T19:55:41.000Z",
+        "slug": "los-caminos-de-la-vida-santa-marta-magdalena-colombia",
         "tags": [
           "Acorde\u00f3n",
           "Vallenato",
@@ -1540,6 +1628,7 @@ var locations = {
         "id": "c-JA8JsBT_M",
         "location": "Santa Marta, Magdalena, Colombia",
         "publishedAt": "2019-08-24T19:55:41.000Z",
+        "slug": "en-carne-propia-santa-marta-magdalena-colombia",
         "tags": [
           "Acorde\u00f3n",
           "Vallenato",
@@ -1561,6 +1650,7 @@ var locations = {
         "id": "hBoZG1S7nPM",
         "location": "Santa Marta, Magdalena, Colombia",
         "publishedAt": "2019-08-24T19:55:41.000Z",
+        "slug": "oye-bonita-santa-marta-magdalena-colombia",
         "tags": [
           "Acorde\u00f3n",
           "Vallenato",
@@ -1583,12 +1673,14 @@ var locations = {
   "Solbach, Francia": {
     "latitude": 48.4307953,
     "longitude": 7.1815304,
+    "slug": "solbach-francia",
     "videos": [
       {
         "description": "Solbach, Francia, 22/04/2019\nOye Bonita - Diomedes D\u00edaz",
         "id": "zO1gkdRfFPk",
         "location": "Solbach, Francia",
         "publishedAt": "2019-05-01T04:52:51.000Z",
+        "slug": "oye-bonita-solbach-francia",
         "tags": [
           "Acorde\u00f3n",
           "Vallenato",
@@ -1609,6 +1701,7 @@ var locations = {
         "id": "INhp_eqio3o",
         "location": "Solbach, Francia",
         "publishedAt": "2019-05-01T00:24:43.000Z",
+        "slug": "jaime-molina-solbach-francia",
         "tags": [
           "Acorde\u00f3n",
           "Vallenato",
@@ -1629,6 +1722,7 @@ var locations = {
         "id": "oayg1b7a4rQ",
         "location": "Solbach, Francia",
         "publishedAt": "2019-04-25T20:10:36.000Z",
+        "slug": "la-creciente-solbach-francia",
         "tags": [
           "Acorde\u00f3n",
           "Vallenato",
@@ -1649,6 +1743,7 @@ var locations = {
         "id": "9D6kvxomawA",
         "location": "Solbach, Francia",
         "publishedAt": "2019-04-25T20:01:25.000Z",
+        "slug": "esa-solbach-francia",
         "tags": [
           "Acorde\u00f3n",
           "Vallenato",
@@ -1669,12 +1764,14 @@ var locations = {
   "Verona, Wisconsin, USA": {
     "latitude": 42.999274,
     "longitude": -89.569005,
+    "slug": "verona-wisconsin-usa",
     "videos": [
       {
         "description": "3 songs in this video:\n- Oye Bonita - Diomedes D\u00edaz\n- Esa - Binomio de Oro\n- La Creciente - Binomio de Oro\n\nEpic Campus, Verona, Wisconsin, USA, 30/04/2019\n\nPara aprender a tocar estas canciones:\n- https://vallenato.fr/aprender/esa.html\n- https://vallenato.fr/aprender/la-creciente.html",
         "id": "uK4t2nNiySw",
         "location": "Verona, Wisconsin, USA",
         "publishedAt": "2019-05-01T20:44:20.000Z",
+        "slug": "vallenato-at-epic-verona-wisconsin-usa",
         "tags": [
           "Acorde\u00f3n",
           "Vallenato",
@@ -1701,6 +1798,7 @@ var locations = {
         "id": "T4UX7dXuMP4",
         "location": "Verona, Wisconsin, USA",
         "publishedAt": "2019-05-01T18:17:51.000Z",
+        "slug": "esa-epic-verona-wisconsin-usa",
         "tags": [
           "Acorde\u00f3n",
           "Vallenato",
@@ -1724,6 +1822,7 @@ var locations = {
         "id": "XlPejBsVgu4",
         "location": "Verona, Wisconsin, USA",
         "publishedAt": "2019-05-01T06:03:02.000Z",
+        "slug": "la-creciente-epic-verona-wisconsin-usa",
         "tags": [
           "Acorde\u00f3n",
           "Vallenato",
@@ -1747,6 +1846,7 @@ var locations = {
         "id": "iEy6Zb8QRGU",
         "location": "Verona, Wisconsin, USA",
         "publishedAt": "2019-05-01T05:04:01.000Z",
+        "slug": "oye-bonita-epic-verona-wisconsin-usa",
         "tags": [
           "Acorde\u00f3n",
           "Vallenato",
@@ -1770,12 +1870,14 @@ var locations = {
   "Winterberg, Alemania": {
     "latitude": 51.19335,
     "longitude": 8.53342,
+    "slug": "winterberg-alemania",
     "videos": [
       {
         "description": "Winterberg, Alemania, 04/03/2019\nOye Bonita - Diomedes D\u00edaz",
         "id": "AakPCRoNMHM",
         "location": "Winterberg, Alemania",
         "publishedAt": "2019-03-05T10:17:15.000Z",
+        "slug": "oye-bonita-winterberg-alemania",
         "tags": [
           "Acorde\u00f3n",
           "Vallenato",

@@ -16,6 +16,9 @@ function main(){
   // Handle overlay closing via cross icon
   document.getElementById('list_overlay_close').addEventListener("click", close_current_overlay);
   document.getElementById('video_overlay_close').addEventListener("click", close_current_overlay);
+
+  // Check if we started with another page than the root
+  //TODO
 }
 
 function populateMapAndList(mymap){
@@ -54,6 +57,9 @@ function overlay_on(id, loc) {
   overlay_show(id);
   document.getElementById("list_location").innerHTML = loc;
 
+  // Update the URL for that location
+  history.pushState({}, loc, "#" + locations[loc]["slug"]);
+
   var ul = document.getElementById("list_videos");
   // Empty the list, if populated before
   ul.innerHTML = "";
@@ -64,11 +70,12 @@ function overlay_on(id, loc) {
     ul.appendChild(li);
     let vid_id = locations[loc]["videos"][vid].id;
     vid_title = locations[loc]["videos"][vid].title;
+    let vid_title_slug = locations[loc]["videos"][vid].slug;
     vid_thumbnail_url = locations[loc]["videos"][vid].thumbnail.url;
     li.innerHTML = "<p id='vid_title_" + vid_id + "'>" + vid_title + "</p><img id='vid_img_" + vid_id + "' src='" + vid_thumbnail_url + "'/>"
     // Handle clicks on the title or the image to play the video
-    document.getElementById("vid_title_" + vid_id).addEventListener("click", function(){ play_video(vid_id); });
-    document.getElementById("vid_img_" + vid_id).addEventListener("click", function(){ play_video(vid_id); });
+    document.getElementById("vid_title_" + vid_id).addEventListener("click", function(){ play_video(vid_id, vid_title_slug); });
+    document.getElementById("vid_img_" + vid_id).addEventListener("click", function(){ play_video(vid_id, vid_title_slug); });
   }
 }
 
@@ -87,7 +94,9 @@ function marker_hover(marker_id, highlight) {
   document.getElementById(location_list_id).className = highlight;
 }
 
-function play_video(id) {
+function play_video(id, title_slug) {
+  // Update the URL for that video
+  history.pushState({}, id, "#" + title_slug + "/" + id);
   // Update the video overlay with the url for this video
   document.getElementById("video_overlay_iframe_placeholder").innerHTML = `<iframe id="video_overlay_iframe" width="560" height="315" src="https://www.youtube.com/embed/` + id + `?autoplay=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
   // Show the overlay containing the YouTube Embed iframe
@@ -101,12 +110,16 @@ function close_current_overlay() {
     // If the Location List overlay is shown, just hide that one
     overlay_hide("list_overlay");
     overlay_hide("video_overlay"); // Just to be sure ;)
+    // Reset the URL to the root
+    history.back();
   } else if("block" === document.getElementById("video_overlay").style.display) {
     // If the Video overlay is shown, hide it and show the Location List overlay
     overlay_show("list_overlay");
     overlay_hide("video_overlay");
     // Also remove the iframe (in case the YouTube video is playing)
     document.getElementById("video_overlay_iframe_placeholder").innerHTML = "";
+    // Reset the URL to the location
+    history.back();
   }
 }
 

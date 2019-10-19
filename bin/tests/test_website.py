@@ -42,6 +42,21 @@ class TestGetDumpedUploadedVideos(unittest.TestCase):
         self.assertEqual(str(the_exception), "Expecting value: line 1 column 1 (char 0)")
 
 
+class TestDetermineVideosSlug(unittest.TestCase):
+    def test_determine_videos_slug(self):
+        with open("tests/data/sample_uploaded_videos_dump_full.json") as in_file:
+            sample_uploaded_videos = json.load(in_file)
+        uploaded_videos = website.determine_videos_slug(sample_uploaded_videos)
+        self.assertEqual(uploaded_videos[-1]["title"], "Oye Bonita, desde Buesaco, Nariño, Colombia")
+        self.assertEqual(uploaded_videos[-1]["slug"], "oye-bonita-buesaco-narino-colombia")
+        self.assertEqual(uploaded_videos[-10]["title"], "Lleno de Ti, desde El Remolino, Nariño, Colombia")
+        self.assertEqual(uploaded_videos[-10]["slug"], "lleno-de-ti-el-remolino-narino-colombia")
+        self.assertEqual(uploaded_videos[-20]["title"], "Oye Bonita, desde Pasisara, Nariño, Colombia")
+        self.assertEqual(uploaded_videos[-20]["slug"], "oye-bonita-pasisara-narino-colombia")
+        self.assertEqual(uploaded_videos[-30]["title"], "La Creciente, desde San Andrés, Colombia")
+        self.assertEqual(uploaded_videos[-30]["slug"], "la-creciente-san-andres-colombia")
+
+
 class TestGetUploadedVideos(unittest.TestCase):
     @patch("website.yt_list_my_uploaded_videos")
     @patch("website.yt_get_authenticated_service")
@@ -192,6 +207,16 @@ class TestAddVideosToLocationsArray(unittest.TestCase):
         self.assertEqual(len(locations["Aroeira, Portugal"]["videos"]), 3)
         self.assertEqual(len(locations["Niagara Falls, Ontario, Canada"]["videos"]), 1)
         self.assertEqual(len(locations["Providencia, Colombia"]["videos"]), 13)
+
+
+class TestDetermineLocationsSlug(unittest.TestCase):
+    def test_determine_locations_slug(self):
+        with open("tests/data/sample_geolocations_full.json") as in_file:
+            locations = json.load(in_file)
+        locations = website.determine_locations_slug(locations)
+        self.assertEqual(locations['Solbach, Francia']["slug"],'solbach-francia')
+        self.assertEqual(locations['Niagara Falls, Ontario, Canada']["slug"],'niagara-falls-ontario-canada')
+        self.assertEqual(locations['Buesaco, Nariño, Colombia']["slug"],'buesaco-narino-colombia')
 
 
 class TestSaveWebsiteData(unittest.TestCase):
