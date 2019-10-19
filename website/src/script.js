@@ -1,4 +1,5 @@
 /*jslint browser: true, white */
+var video_location = null;
 function main(){
   // Create and initialize the map
   var mymap = L.map('map').setView([20,10], 2);
@@ -36,14 +37,14 @@ function populateMapAndList(mymap){
       };
       var marker = L.marker([locations[loc].latitude, locations[loc].longitude], markerOptions).addTo(mymap);
       marker._icon.id = "location_marker_" + i;
-      marker.addEventListener("click", function(){ update_history_for_location(loc); show_location_overlay(loc); });
+      marker.addEventListener("click", function(){ navigate_to_location(loc); });
       marker.addEventListener("mouseover", function(evt){ marker_hover(evt.target._icon.id, "highlighted"); });
       marker.addEventListener("mouseout", function(evt){ marker_hover(evt.target._icon.id, ""); });
 
       // Update list on the right side
       var li = document.createElement('li');
       li.id = "location_list_" + i;
-      li.addEventListener("click", function(){ update_history_for_location(loc); show_location_overlay(loc); });
+      li.addEventListener("click", function(){ navigate_to_location(loc); });
       ul.appendChild(li);
       li.innerHTML = loc;
 
@@ -82,6 +83,8 @@ function check_initial_page() {
                 slug_found = true;
                 // First load that location's overlay, to handle closing the video overlay nicely
                 show_location_overlay(loc);
+                // Keep a reference to that video's location for history handling
+                video_location = loc;
                 // Load that page's video
                 // Note: autoplay will likely be disabled by the browser, as it won't have detected an explicit user action
                 show_video_overlay(vid_id, vid_title_slug);
@@ -101,6 +104,16 @@ function check_initial_page() {
       // TODO: redirect to the root page
     }
   }
+}
+
+function update_history_for_home() {
+  // Update the URL for that location
+  history.pushState({"type": "home"}, "Vallenato.fr", "#");
+}
+
+function navigate_to_location(loc) {
+  update_history_for_location(loc);
+  show_location_overlay(loc);
 }
 
 function update_history_for_location(loc) {
@@ -127,8 +140,8 @@ function show_location_overlay(loc) {
       vid_thumbnail_url = locations[loc]["videos"][vid].thumbnail.url;
       li.innerHTML = "<p id='vid_title_" + vid_id + "'>" + vid_title + "</p><img id='vid_img_" + vid_id + "' src='" + vid_thumbnail_url + "'/>"
       // Handle clicks on the title or the image to play the video
-      document.getElementById("vid_title_" + vid_id).addEventListener("click", function(){ update_history_for_video(vid_id, vid_title_slug); show_video_overlay(vid_id, vid_title_slug); });
-      document.getElementById("vid_img_" + vid_id).addEventListener("click", function(){ update_history_for_video(vid_id, vid_title_slug); show_video_overlay(vid_id, vid_title_slug); });
+      document.getElementById("vid_title_" + vid_id).addEventListener("click", function(){ navigate_to_video(vid_id, vid_title_slug, loc); });
+      document.getElementById("vid_img_" + vid_id).addEventListener("click", function(){ navigate_to_video(vid_id, vid_title_slug, loc); });
     }
   }
 }
@@ -146,6 +159,13 @@ function overlay_hide(id) {
 function marker_hover(marker_id, highlight) {
   var location_list_id = marker_id.replace("location_marker_", "location_list_");
   document.getElementById(location_list_id).className = highlight;
+}
+
+function navigate_to_video(id, title_slug, loc) {
+  // Keep a reference to that video's location for history handling
+  video_location = loc;
+  update_history_for_video(id, title_slug);
+  show_video_overlay(id, title_slug);
 }
 
 function update_history_for_video(id, title_slug) {
@@ -167,16 +187,16 @@ function close_current_overlay() {
     // If the Location List overlay is shown, just hide that one
     overlay_hide("list_overlay");
     overlay_hide("video_overlay"); // Just to be sure ;)
-    // Reset the URL to the root
-    history.back();
+    // Add an entry to the history, back to home
+    update_history_for_home();
   } else if("block" === document.getElementById("video_overlay").style.display) {
     // If the Video overlay is shown, hide it and show the Location List overlay
     overlay_show("list_overlay");
     overlay_hide("video_overlay");
     // Also remove the iframe (in case the YouTube video is playing)
     document.getElementById("video_overlay_iframe_placeholder").innerHTML = "";
-    // Reset the URL to the location
-    history.back();
+    // Add an entry to the history, back to the location's page
+    update_history_for_location(video_location);
   }
 }
 
