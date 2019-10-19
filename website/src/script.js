@@ -84,7 +84,7 @@ function check_initial_page() {
                 show_location_overlay(loc);
                 // Load that page's video
                 // Note: autoplay will likely be disabled by the browser, as it won't have detected an explicit user action
-                play_video(vid_id, vid_title_slug);
+                show_video_overlay(vid_id, vid_title_slug);
                 break;
               }
             }
@@ -127,8 +127,8 @@ function show_location_overlay(loc) {
       vid_thumbnail_url = locations[loc]["videos"][vid].thumbnail.url;
       li.innerHTML = "<p id='vid_title_" + vid_id + "'>" + vid_title + "</p><img id='vid_img_" + vid_id + "' src='" + vid_thumbnail_url + "'/>"
       // Handle clicks on the title or the image to play the video
-      document.getElementById("vid_title_" + vid_id).addEventListener("click", function(){ play_video(vid_id, vid_title_slug); });
-      document.getElementById("vid_img_" + vid_id).addEventListener("click", function(){ play_video(vid_id, vid_title_slug); });
+      document.getElementById("vid_title_" + vid_id).addEventListener("click", function(){ update_history_for_video(vid_id, vid_title_slug); show_video_overlay(vid_id, vid_title_slug); });
+      document.getElementById("vid_img_" + vid_id).addEventListener("click", function(){ update_history_for_video(vid_id, vid_title_slug); show_video_overlay(vid_id, vid_title_slug); });
     }
   }
 }
@@ -148,9 +148,12 @@ function marker_hover(marker_id, highlight) {
   document.getElementById(location_list_id).className = highlight;
 }
 
-function play_video(id, title_slug) {
+function update_history_for_video(id, title_slug) {
   // Update the URL for that video
   history.pushState({"type": "video", "id": id, "title_slug": title_slug}, id, "#" + title_slug + "/" + id);
+}
+
+function show_video_overlay(id, title_slug) {
   // Update the video overlay with the url for this video
   document.getElementById("video_overlay_iframe_placeholder").innerHTML = `<iframe id="video_overlay_iframe" width="560" height="315" src="https://www.youtube.com/embed/` + id + `?autoplay=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
   // Show the overlay containing the YouTube Embed iframe
