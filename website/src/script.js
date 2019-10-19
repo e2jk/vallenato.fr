@@ -86,7 +86,7 @@ function check_valid_slug() {
               video_location = loc;
               // Load that page's video
               // Note: autoplay will likely be disabled by the browser, as it won't have detected an explicit user action
-              show_video_overlay(vid_id, vid_title_slug);
+              show_video_overlay(vid_id, vid_title_slug, locations[loc]["videos"][vid].title);
               break;
             }
           }
@@ -126,6 +126,9 @@ function show_location_overlay(loc) {
   // Also remove the iframe (in case the YouTube video is playing)
   document.getElementById("video_overlay_iframe_placeholder").innerHTML = "";
 
+  // Update page title
+  document.title = loc + " - El Vallenatero Francés";
+
   document.getElementById("list_location").innerHTML = loc;
 
   var ul = document.getElementById("list_videos");
@@ -138,13 +141,13 @@ function show_location_overlay(loc) {
       var li = document.createElement('li');
       ul.appendChild(li);
       let vid_id = locations[loc]["videos"][vid].id;
-      vid_title = locations[loc]["videos"][vid].title;
+      let vid_title = locations[loc]["videos"][vid].title;
       let vid_title_slug = locations[loc]["videos"][vid].slug;
       vid_thumbnail_url = locations[loc]["videos"][vid].thumbnail.url;
       li.innerHTML = "<p id='vid_title_" + vid_id + "'>" + vid_title + "</p><img id='vid_img_" + vid_id + "' src='" + vid_thumbnail_url + "'/>"
       // Handle clicks on the title or the image to play the video
-      document.getElementById("vid_title_" + vid_id).addEventListener("click", function(){ navigate_to_video(vid_id, vid_title_slug, loc); });
-      document.getElementById("vid_img_" + vid_id).addEventListener("click", function(){ navigate_to_video(vid_id, vid_title_slug, loc); });
+      document.getElementById("vid_title_" + vid_id).addEventListener("click", function(){ navigate_to_video(vid_id, vid_title_slug, loc, vid_title); });
+      document.getElementById("vid_img_" + vid_id).addEventListener("click", function(){ navigate_to_video(vid_id, vid_title_slug, loc, vid_title); });
     }
   }
 }
@@ -164,25 +167,27 @@ function marker_hover(marker_id, highlight) {
   document.getElementById(location_list_id).className = highlight;
 }
 
-function navigate_to_video(id, title_slug, loc) {
+function navigate_to_video(id, title_slug, loc, title) {
   // Keep a reference to that video's location for history handling
   video_location = loc;
-  update_history_for_video(id, title_slug);
-  show_video_overlay(id, title_slug);
+  update_history_for_video(id, title_slug, title);
+  show_video_overlay(id, title_slug, title);
 }
 
-function update_history_for_video(id, title_slug) {
+function update_history_for_video(id, title_slug, title) {
   // Update the URL for that video
-  history.pushState({"type": "video", "id": id, "title_slug": title_slug}, id, "#" + title_slug + "/" + id);
+  history.pushState({"type": "video", "id": id, "title_slug": title_slug, "title": title}, id, "#" + title_slug + "/" + id);
 }
 
-function show_video_overlay(id, title_slug) {
+function show_video_overlay(id, title_slug, title) {
   // Update the video overlay with the url for this video
   document.getElementById("video_overlay_iframe_placeholder").innerHTML = `<iframe id="video_overlay_iframe" width="560" height="315" src="https://www.youtube.com/embed/` + id + `?autoplay=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
   // Show the overlay containing the YouTube Embed iframe
   overlay_show("video_overlay");
   // Hide the overlay containing the list of videos at that location
   overlay_hide("list_overlay");
+  // Update page title
+  document.title = title + " - El Vallenatero Francés";
 }
 
 function show_home_page() {
@@ -191,6 +196,9 @@ function show_home_page() {
   overlay_hide("video_overlay");
   // Also remove the iframe (in case the YouTube video is playing)
   document.getElementById("video_overlay_iframe_placeholder").innerHTML = "";
+
+  // Update page title
+  document.title = "El Vallenatero Francés";
 }
 
 function close_current_overlay() {
@@ -205,6 +213,8 @@ function close_current_overlay() {
     overlay_hide("video_overlay");
     // Also remove the iframe (in case the YouTube video is playing)
     document.getElementById("video_overlay_iframe_placeholder").innerHTML = "";
+    // Update page title
+    document.title = video_location + " - El Vallenatero Francés";
     // Add an entry to the history, back to the location's page
     update_history_for_location(video_location);
   }
@@ -233,7 +243,7 @@ function URL_changed() {
       if("location" === history.state.type) {
         show_location_overlay(history.state.loc);
       } else if ("video" === history.state.type) {
-        show_video_overlay(history.state.id, history.state.title_slug);
+        show_video_overlay(history.state.id, history.state.title_slug, history.state.title);
       } else {
         // Fallback to the home page (should never happen)
         show_home_page();
