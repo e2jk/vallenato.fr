@@ -19,7 +19,9 @@ function main(){
   document.getElementById('video_overlay_close').addEventListener("click", close_current_overlay);
 
   // Check if we started with another page than the root
-  check_initial_page();
+  if("" !== window.location.hash){
+    check_valid_slug();
+  }
 }
 
 function populateMapAndList(mymap){
@@ -54,55 +56,51 @@ function populateMapAndList(mymap){
   }
 }
 
-function check_initial_page() {
-  if("" === window.location.hash){
-    // Nothing to do, it's the home page
-  } else {
-    // Identify for which page this slug is
-    var slug_found = false;
-    // Check if it's a location's slug
+function check_valid_slug() {
+  // Identify for which page this slug is
+  var slug_found = false;
+  // Check if it's a location's slug
+  for (let loc in locations) {
+    if (locations.hasOwnProperty(loc)) {
+      if("#" + locations[loc].slug === window.location.hash){
+        slug_found = true;
+        show_location_overlay(loc);
+        break;
+      }
+    }
+  }
+
+  if (!slug_found) {
+    // Check if it's an individual video's slug
     for (let loc in locations) {
       if (locations.hasOwnProperty(loc)) {
-        if("#" + locations[loc].slug === window.location.hash){
-          slug_found = true;
-          show_location_overlay(loc);
+        for (let vid in locations[loc]["videos"]) {
+          if (locations[loc]["videos"].hasOwnProperty(vid)) {
+            let vid_id = locations[loc]["videos"][vid].id;
+            let vid_title_slug = locations[loc]["videos"][vid].slug;
+            if("#" + vid_title_slug + "/" + vid_id === window.location.hash){
+              slug_found = true;
+              // First load that location's overlay, to handle closing the video overlay nicely
+              show_location_overlay(loc);
+              // Keep a reference to that video's location for history handling
+              video_location = loc;
+              // Load that page's video
+              // Note: autoplay will likely be disabled by the browser, as it won't have detected an explicit user action
+              show_video_overlay(vid_id, vid_title_slug);
+              break;
+            }
+          }
+        }
+        if(slug_found) {
           break;
         }
       }
     }
+  }
 
-    if (!slug_found) {
-      // Check if it's an individual video's slug
-      for (let loc in locations) {
-        if (locations.hasOwnProperty(loc)) {
-          for (let vid in locations[loc]["videos"]) {
-            if (locations[loc]["videos"].hasOwnProperty(vid)) {
-              let vid_id = locations[loc]["videos"][vid].id;
-              let vid_title_slug = locations[loc]["videos"][vid].slug;
-              if("#" + vid_title_slug + "/" + vid_id === window.location.hash){
-                slug_found = true;
-                // First load that location's overlay, to handle closing the video overlay nicely
-                show_location_overlay(loc);
-                // Keep a reference to that video's location for history handling
-                video_location = loc;
-                // Load that page's video
-                // Note: autoplay will likely be disabled by the browser, as it won't have detected an explicit user action
-                show_video_overlay(vid_id, vid_title_slug);
-                break;
-              }
-            }
-          }
-          if(slug_found) {
-            break;
-          }
-        }
-      }
-    }
-
-    if (!slug_found) {
-      // Invalid slug, redirecting to home page
-      window.location = "/";
-    }
+  if (!slug_found) {
+    // Invalid slug, redirecting to home page
+    window.location = "/";
   }
 }
 
@@ -242,7 +240,7 @@ function URL_changed() {
       }
     } else {
       // Probably a hand-typed hash URL
-      check_initial_page();
+      check_valid_slug();
     }
   }
 };
