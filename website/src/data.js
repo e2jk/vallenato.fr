@@ -994,6 +994,94 @@ var locations = {
     "slug": "paris-francia",
     "videos": [
       {
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/los-caminos-de-la-vida.html\nPar\u00eds, Francia, 29/10/2019\nLos Caminos De La Vida - Los Diablitos",
+        "id": "LpH08IAIcGc",
+        "location": "Par\u00eds, Francia",
+        "publishedAt": "2019-10-29T20:59:31.000Z",
+        "slug": "los-caminos-de-la-vida-paris-francia",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "Par\u00eds",
+          "Francia",
+          "Acord\u00e9on",
+          "Los Caminos De La Vida",
+          "Los Diablitos"
+        ],
+        "thumbnail": {
+          "height": 90,
+          "url": "https://i.ytimg.com/vi/LpH08IAIcGc/default.jpg",
+          "width": 120
+        },
+        "title": "Los Caminos De La Vida, desde Par\u00eds, Francia"
+      },
+      {
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/en-carne-propia.html?p=1\nPar\u00eds, Francia, 29/10/2019\nEn Carne Propia - Silvio Brito",
+        "id": "YIT1jLm8ASY",
+        "location": "Par\u00eds, Francia",
+        "publishedAt": "2019-10-29T20:54:03.000Z",
+        "slug": "en-carne-propia-paris-francia",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "Par\u00eds",
+          "Francia",
+          "Acord\u00e9on",
+          "En Carne Propia",
+          "Silvio Brito"
+        ],
+        "thumbnail": {
+          "height": 90,
+          "url": "https://i.ytimg.com/vi/YIT1jLm8ASY/default.jpg",
+          "width": 120
+        },
+        "title": "En Carne Propia, desde Par\u00eds, Francia"
+      },
+      {
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/corazon-martirizado.html\nPar\u00eds, Francia, 29/10/2019\nCorazon Martirizado - Los Hermanos Zuleta",
+        "id": "zDAoPtmYHUM",
+        "location": "Par\u00eds, Francia",
+        "publishedAt": "2019-10-29T20:50:25.000Z",
+        "slug": "corazon-martirizado-paris-francia",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "Par\u00eds",
+          "Francia",
+          "Acord\u00e9on",
+          "Corazon Martirizado",
+          "Los Hermanos Zuleta"
+        ],
+        "thumbnail": {
+          "height": 90,
+          "url": "https://i.ytimg.com/vi/zDAoPtmYHUM/default.jpg",
+          "width": 120
+        },
+        "title": "Corazon Martirizado, desde Par\u00eds, Francia"
+      },
+      {
+        "description": "Par\u00eds, Francia, 29/10/2019\nOye Bonita - Diomedes D\u00edaz",
+        "id": "Dv608xMPMlI",
+        "location": "Par\u00eds, Francia",
+        "publishedAt": "2019-10-29T20:43:03.000Z",
+        "slug": "oye-bonita-paris-francia",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "Oye Bonita",
+          "Par\u00eds",
+          "Francia",
+          "Diomedes D\u00edaz",
+          "Acord\u00e9on"
+        ],
+        "thumbnail": {
+          "height": 90,
+          "url": "https://i.ytimg.com/vi/Dv608xMPMlI/default.jpg",
+          "width": 120
+        },
+        "title": "Oye Bonita, desde Par\u00eds, Francia"
+      },
+      {
         "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/tu-cumpleanos.html\nPar\u00eds, Francia, 28/05/2017\nTu Cumplea\u00f1os - Diomedes D\u00edaz",
         "id": "q6cUzC6ESZ8",
         "location": "Par\u00eds, Francia",
