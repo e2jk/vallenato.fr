@@ -257,6 +257,14 @@ class TestGenerateWebsite(unittest.TestCase):
         # The prod file points to the CDN copy of the jQuery library
         self.assertTrue('<script src="https://code.jquery.com/jquery-%s.slim.min.js"\n        integrity="sha384-' % website.JQUERY_VERSION in filedata)
 
+        # Confirm the local copies of the libraries are not present in the prd folder
+        # Only these 4 files should exist in the prd folder
+        expected_prd_files = ['data.js', 'index.html', 'script.js', 'style.css']
+        prd_files = os.listdir("../website/prod/")
+        self.assertEqual(len(prd_files), len(expected_prd_files))
+        for f in expected_prd_files:
+            self.assertTrue(f in prd_files)
+
 
 class TestWebsite(unittest.TestCase):
     @patch("website.get_uploaded_videos")

@@ -170,6 +170,15 @@ def save_website_data(locations, website_data_file):
     with open(website_data_file, 'w') as out_file:
         out_file.write(js_content)
 
+def ignored_files_in_prod(adir, filenames):
+    ignored_files = [
+        'aprender',
+        'bootstrap-%s-dist' % BOOTSTRAP_VERSION,
+        'jquery-%s.slim.min.js' % JQUERY_VERSION,
+        'leaflet'
+    ]
+    return [filename for filename in filenames if filename in ignored_files]
+
 def generate_website():
     input_src_folder = "../website/src"
     output_prod_folder = "../website/prod"
@@ -178,24 +187,13 @@ def generate_website():
     if os.path.exists(output_prod_folder):
         shutil.rmtree(output_prod_folder)
 
-    # Copy src to prod folder
-    shutil.copytree(input_src_folder, output_prod_folder)
-
     # Update the values accordingly for prod
     # Main difference between development (src) and production websites:
     # - src contains a full copy of the leaflet, Bootstrap and jQuery libraries
     # - prod uses CDNs
 
-    # Prod
-    # Delete the local leaflet.js folder
-    if os.path.exists("%s/leaflet" % output_prod_folder):
-        shutil.rmtree("%s/leaflet" % output_prod_folder)
-    # Delete the local Bootstrap folder
-    if os.path.exists("%s/bootstrap-%s-dist" % (output_prod_folder, BOOTSTRAP_VERSION)):
-        shutil.rmtree("%s/bootstrap-%s-dist" % (output_prod_folder, BOOTSTRAP_VERSION))
-    # Delete the local jQuery file
-    if os.path.exists("%s/jquery-%s.slim.min.js" % (output_prod_folder, JQUERY_VERSION)):
-        os.remove("%s/jquery-%s.slim.min.js" % (output_prod_folder, JQUERY_VERSION))
+    # Copy src to prod folder, ignoring the files and folder replaced by CDNs in prod
+    shutil.copytree(input_src_folder, output_prod_folder, ignore=ignored_files_in_prod)
 
     # Update links to leaflet (CDN)
     # Read the prod index file
