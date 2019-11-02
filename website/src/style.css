@@ -41,7 +41,7 @@ body {
 #video_overlay {
   z-index: 1002;
 }
-#list_videos li p, #list_videos li img {
+.vid_card {
   cursor: pointer;
 }
 .highlighted{

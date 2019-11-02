@@ -125,30 +125,59 @@ function show_location_overlay(loc) {
   overlay_hide("video_overlay");
   // Also remove the iframe (in case the YouTube video is playing)
   document.getElementById("video_overlay_iframe_placeholder").innerHTML = "";
-
-  // Update page title
+  // Update page title and header
   document.title = loc + " - El Vallenatero Francés";
-
   document.getElementById("list_location").innerHTML = loc;
 
-  var ul = document.getElementById("list_videos");
-  // Empty the list, if populated before
-  ul.innerHTML = "";
-
+  // Show all the videos taken at that location
+  var content = "";
+  var num_vid = 0;
+  var vid_array = [];
   for (let vid in locations[loc]["videos"]) {
     if (locations[loc]["videos"].hasOwnProperty(vid)) {
-      // Show all the videos taken at that location
-      var li = document.createElement('li');
-      ul.appendChild(li);
+      console.log(locations[loc]["videos"][vid]);
       let vid_id = locations[loc]["videos"][vid].id;
       let vid_title = locations[loc]["videos"][vid].title;
       let vid_title_slug = locations[loc]["videos"][vid].slug;
-      vid_thumbnail_url = locations[loc]["videos"][vid].thumbnail.url;
-      li.innerHTML = "<p id='vid_title_" + vid_id + "'>" + vid_title + "</p><img id='vid_img_" + vid_id + "' src='" + vid_thumbnail_url + "'/>"
-      // Handle clicks on the title or the image to play the video
-      document.getElementById("vid_title_" + vid_id).addEventListener("click", function(){ navigate_to_video(vid_id, vid_title_slug, loc, vid_title); });
-      document.getElementById("vid_img_" + vid_id).addEventListener("click", function(){ navigate_to_video(vid_id, vid_title_slug, loc, vid_title); });
+      let vid_thumbnail_url = locations[loc]["videos"][vid].thumbnail.url;
+      let vid_description = locations[loc]["videos"][vid].description.replace(/\n/g, "<br/>");
+      let vid_publishedAt = locations[loc]["videos"][vid].publishedAt.substring(0, 10);
+      content += `<div id="vid_card_` + vid_id + `" class="card mb-3 vid_card" style="max-width: 17rem;">
+        <img id="vid_img_` + vid_id + `" src="` + vid_thumbnail_url + `" class="card-img-top" alt="Image for ` + vid_title + `">
+        <div class="card-body">
+          <h5 id="vid_title_` + vid_id + `" class="card-title">` + vid_title + `</h5>
+          <p class="card-text">` + vid_description + `</p>
+        </div>
+        <div class="card-footer">
+          <small class="text-muted">Publicado: ` + vid_publishedAt + `</small>
+        </div>
+      </div>`;
+      // Force a wrap every X columns on different viewport width (breakpoints)
+      num_vid++;
+      if (num_vid%2 === 0) {
+        content += `<div class="w-100 d-none d-sm-block d-md-none"><!-- wrap every 2 on sm--></div>`;
+      }
+      if (num_vid%3 === 0) {
+        content += `<div class="w-100 d-none d-md-block d-lg-none"><!-- wrap every 3 on md--></div>`;
+      }
+      if (num_vid%4 === 0) {
+        content += `<div class="w-100 d-none d-lg-block d-xl-none"><!-- wrap every 4 on lg--></div>`;
+      }
+      if (num_vid%5 === 0) {
+        content += `<div class="w-100 d-none d-xl-block"><!-- wrap every 5 on xl--></div>`;
+      }
+      // Keep the video's info to handle the click events
+      vid_array.push({vid_id:vid_id, vid_title:vid_title, vid_title_slug:vid_title_slug});
     }
+  }
+  document.getElementById("list_videos").innerHTML = content;
+
+  // Add an event handler on the entire card to play the video
+  for (var i = 0; i < num_vid; i++) {
+    let vid_id = vid_array[i]["vid_id"];
+    let vid_title = vid_array[i]["vid_title"];
+    let vid_title_slug  = vid_array[i]["vid_title_slug"];
+    document.getElementById("vid_card_" + vid_id).addEventListener("click", function(){ navigate_to_video(vid_id, vid_title_slug, loc, vid_title); });
   }
 }
 
