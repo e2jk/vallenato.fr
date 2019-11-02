@@ -49,7 +49,9 @@
 
     <!-- Begin list overlay -->
     <div id="list_overlay">
-      <img id="list_overlay_close" src="close-24px.svg" />
+      <button id="list_overlay_close" type="button" class="close" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
       <h2 id="list_location"><h2>
       <ul id="list_videos"></ul>
     </div>
@@ -58,7 +60,9 @@
 
     <!-- Begin video overlay -->
     <div id="video_overlay">
-      <img id="video_overlay_close" src="close-24px.svg" />
+      <button id="video_overlay_close" type="button" class="close" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
       <div id="video_overlay_iframe_placeholder"></div>
     </div>
     <!-- End video overlay -->

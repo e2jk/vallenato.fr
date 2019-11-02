@@ -16,7 +16,7 @@ body {
 #map {
   height: 500px;
 }
-#list li, #list_overlay_close, #video_overlay_close {
+#list li {
   cursor: pointer;
 }
 #list li:hover {
@@ -46,9 +46,6 @@ body {
 }
 .highlighted{
   background-color: lightblue;
-}
-#list_overlay_close, #video_overlay_close {
-  float: right;
 }
 #video_overlay_iframe{
   position: absolute;
