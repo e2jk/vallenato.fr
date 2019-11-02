@@ -135,12 +135,18 @@ function show_location_overlay(loc) {
   var vid_array = [];
   for (let vid in locations[loc]["videos"]) {
     if (locations[loc]["videos"].hasOwnProperty(vid)) {
-      console.log(locations[loc]["videos"][vid]);
       let vid_id = locations[loc]["videos"][vid].id;
       let vid_title = locations[loc]["videos"][vid].title;
       let vid_title_slug = locations[loc]["videos"][vid].slug;
       let vid_thumbnail_url = locations[loc]["videos"][vid].thumbnail.url;
       let vid_description = locations[loc]["videos"][vid].description.replace(/\n/g, "<br/>");
+      // Replace URLs in the description with clickable links
+      if (vid_description.startsWith("Para aprender a tocar esta canción: https://vallenato.fr/aprender/")) {
+        vid_description = vid_description.replace(/Para aprender a tocar esta canción: (https:\/\/vallenato.fr\/aprender\/.*\.html)/, `<a href="$1" onClick="event.stopPropagation();">Aprender a tocar esta canción</a>.`);
+      }
+      if (vid_description.startsWith("Para aprender a tocar estas canciones: https://vallenato.fr/aprender/")) {
+        vid_description = vid_description.replace(/Para aprender a tocar estas canciones: (https:\/\/vallenato.fr\/aprender\/.*\.html) y (https:\/\/vallenato.fr\/aprender\/.*\.html)/, `Aprender a tocar estas canciones: <a href="$1" onClick="event.stopPropagation();">1</a> y <a href="$2" onClick="event.stopPropagation();">2</a>.`);
+      }
       let vid_publishedAt = locations[loc]["videos"][vid].publishedAt.substring(0, 10);
       content += `<div id="vid_card_` + vid_id + `" class="card mb-3 vid_card" style="max-width: 17rem;">
         <img id="vid_img_` + vid_id + `" src="` + vid_thumbnail_url + `" class="card-img-top" alt="Image for ` + vid_title + `">
