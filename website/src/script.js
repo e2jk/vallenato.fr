@@ -25,10 +25,8 @@ function main(){
 }
 
 function populateMapAndList(mymap){
-  var ul = document.createElement('ul');
-  document.getElementById('list').appendChild(ul);
-
-  var i = 0;
+  var num_loc = 0;
+  var list_content = "";
   for (let loc in locations) {
     if (locations.hasOwnProperty(loc)) {
       // Add marker on the map
@@ -38,22 +36,20 @@ function populateMapAndList(mymap){
         keyboard: true // marker can be tabbed to with a keyboard and clicked by pressing enter
       };
       var marker = L.marker([locations[loc].latitude, locations[loc].longitude], markerOptions).addTo(mymap);
-      marker._icon.id = "location_marker_" + i;
+      marker._icon.id = "location_marker_" + num_loc;
       marker.addEventListener("click", function(){ navigate_to_location(loc); });
-      marker.addEventListener("mouseover", function(evt){ marker_hover(evt.target._icon.id, "highlighted"); });
-      marker.addEventListener("mouseout", function(evt){ marker_hover(evt.target._icon.id, ""); });
+      marker.addEventListener("mouseover", function(evt){ marker_hover(evt.target._icon.id, true); });
+      marker.addEventListener("mouseout", function(evt){ marker_hover(evt.target._icon.id, false); });
 
       // Update list on the right side
-      var li = document.createElement('li');
-      li.id = "location_list_" + i;
-      li.addEventListener("click", function(){ navigate_to_location(loc); });
-      ul.appendChild(li);
-      li.innerHTML = loc;
+      list_content += `<a href="#` + locations[loc]["slug"] + `" id="location_list_` + num_loc + `" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">` + loc + `<span class="badge badge-primary badge-pill badge-dark">` + locations[loc].videos.length + `</span></a>`;
 
       // Increment marker ID
-      i++;
+      num_loc++;
     }
   }
+  // Populate the locations list
+  document.getElementById('list').innerHTML = list_content;
 }
 
 function check_valid_slug() {
@@ -176,6 +172,7 @@ function show_location_overlay(loc) {
       vid_array.push({vid_id:vid_id, vid_title:vid_title, vid_title_slug:vid_title_slug});
     }
   }
+  // Populate the list of videos
   document.getElementById("list_videos").innerHTML = content;
 
   // Add an event handler on the entire card to play the video
@@ -199,7 +196,12 @@ function overlay_hide(id) {
 
 function marker_hover(marker_id, highlight) {
   var location_list_id = marker_id.replace("location_marker_", "location_list_");
-  document.getElementById(location_list_id).className = highlight;
+  var el = document.getElementById(location_list_id);
+  if (highlight) {
+    el.style.background = "#f8f9fa";
+  } else {
+    el.style.background = "#fff";
+  }
 }
 
 function navigate_to_video(id, title_slug, loc, title) {

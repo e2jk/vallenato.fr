@@ -44,9 +44,6 @@ body {
 .vid_card {
   cursor: pointer;
 }
-.highlighted{
-  background-color: lightblue;
-}
 #video_overlay_iframe{
   position: absolute;
   margin: 30px;
