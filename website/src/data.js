@@ -20,9 +20,9 @@ var locations = {
           "Oosterplas"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/Qa_z4L0ZXqo/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/Qa_z4L0ZXqo/mqdefault.jpg",
+          "width": 320
         },
         "title": "En Carne Propia, desde el Oosterplas, 's-Hertogenbosch, Pa\u00edses Bajos"
       },
@@ -42,9 +42,9 @@ var locations = {
           "Oosterplas"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/BqFlTbrWDYk/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/BqFlTbrWDYk/mqdefault.jpg",
+          "width": 320
         },
         "title": "Los Caminos De La Vida, desde el Oosterplas, 's-Hertogenbosch, Pa\u00edses Bajos"
       },
@@ -64,9 +64,9 @@ var locations = {
           "Oosterplas"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/7sEKBccnvnI/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/7sEKBccnvnI/mqdefault.jpg",
+          "width": 320
         },
         "title": "Oye Bonita, desde el Oosterplas, 's-Hertogenbosch, Pa\u00edses Bajos"
       }
@@ -92,9 +92,9 @@ var locations = {
           "La Creciente"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/Ig-pKoEHsyk/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/Ig-pKoEHsyk/mqdefault.jpg",
+          "width": 320
         },
         "title": "La Creciente, desde Aroeira, Portugal"
       },
@@ -113,9 +113,9 @@ var locations = {
           "Acord\u00e9on"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/9U-5uhf-knE/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/9U-5uhf-knE/mqdefault.jpg",
+          "width": 320
         },
         "title": "Oye Bonita, desde Aroeira, Portugal"
       },
@@ -134,9 +134,9 @@ var locations = {
           "Vallenato"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/0lV8SztnsEg/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/0lV8SztnsEg/mqdefault.jpg",
+          "width": 320
         },
         "title": "Esa, desde Aroeira, Portugal"
       }
@@ -163,9 +163,9 @@ var locations = {
           "USA"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/0-0jKQUGSY4/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/0-0jKQUGSY4/mqdefault.jpg",
+          "width": 320
         },
         "title": "Oye Bonita, desde Atlanta, Georgia, USA"
       }
@@ -192,9 +192,9 @@ var locations = {
           "Navidad"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/XQ4TpG4gGrQ/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/XQ4TpG4gGrQ/mqdefault.jpg",
+          "width": 320
         },
         "title": "La Guane\u00f1a navide\u00f1a, desde Bruselas, Belgica"
       }
@@ -221,9 +221,9 @@ var locations = {
           "Colombia"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/WGFi6wkxiNI/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/WGFi6wkxiNI/mqdefault.jpg",
+          "width": 320
         },
         "title": "Esa, desde Buesaco, Nari\u00f1o, Colombia"
       },
@@ -245,9 +245,9 @@ var locations = {
           "Colombia"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/1xNNg1OMcEU/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/1xNNg1OMcEU/mqdefault.jpg",
+          "width": 320
         },
         "title": "Feliz Cumplea\u00f1os de Diomedes D\u00edaz, desde Buesaco, Nari\u00f1o, Colombia"
       },
@@ -267,9 +267,9 @@ var locations = {
           "Binomio de Oro"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/hsknLJap9XA/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/hsknLJap9XA/mqdefault.jpg",
+          "width": 320
         },
         "title": "La Creciente, desde Buesaco, Nari\u00f1o, Colombia"
       },
@@ -289,9 +289,9 @@ var locations = {
           "Son Sure\u00f1o"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/1vl139qt3nE/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/1vl139qt3nE/mqdefault.jpg",
+          "width": 320
         },
         "title": "La Guane\u00f1a y el Son Sure\u00f1o, desde Buesaco, Nari\u00f1o, Colombia"
       },
@@ -311,9 +311,9 @@ var locations = {
           "Colombia"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/yrWZw-lgGbM/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/yrWZw-lgGbM/mqdefault.jpg",
+          "width": 320
         },
         "title": "Oye Bonita, desde Buesaco, Nari\u00f1o, Colombia"
       },
@@ -332,9 +332,9 @@ var locations = {
           "Acorde\u00f3n"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/KASEblFElVM/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/KASEblFElVM/mqdefault.jpg",
+          "width": 320
         },
         "title": "Oye Bonita, desde Buesaco, Nari\u00f1o, Colombia"
       }
@@ -363,9 +363,9 @@ var locations = {
           "Aeropuerto"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/JGSCmr0R_O4/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/JGSCmr0R_O4/mqdefault.jpg",
+          "width": 320
         },
         "title": "Oye Bonita, desde el aeropuerto de Cali"
       }
@@ -392,9 +392,9 @@ var locations = {
           "Colombia"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/iVO40yK3mdo/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/iVO40yK3mdo/mqdefault.jpg",
+          "width": 320
         },
         "title": "Esa, desde Cimarrones, Nari\u00f1o, Colombia"
       },
@@ -414,9 +414,9 @@ var locations = {
           "Colombia"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/r7Dds5KX3w8/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/r7Dds5KX3w8/mqdefault.jpg",
+          "width": 320
         },
         "title": "La Creciente, desde Cimarrones, Nari\u00f1o, Colombia"
       },
@@ -436,9 +436,9 @@ var locations = {
           "Colombia"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/XdeoiYuLbQA/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/XdeoiYuLbQA/mqdefault.jpg",
+          "width": 320
         },
         "title": "Los Caminos De La Vida, desde Cimarrones, Nari\u00f1o, Colombia"
       },
@@ -458,9 +458,9 @@ var locations = {
           "Colombia"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/qR-w3Culw5Q/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/qR-w3Culw5Q/mqdefault.jpg",
+          "width": 320
         },
         "title": "Oye Bonita, desde Cimarrones, Nari\u00f1o, Colombia"
       }
@@ -486,9 +486,9 @@ var locations = {
           "Los Diablitos"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/U-N7MtQ7HV0/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/U-N7MtQ7HV0/mqdefault.jpg",
+          "width": 320
         },
         "title": "Los Caminos De La Vida, desde el aeropuerto de Panam\u00e1"
       },
@@ -507,9 +507,9 @@ var locations = {
           "Panam\u00e1"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/CyXCWPMDhgY/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/CyXCWPMDhgY/mqdefault.jpg",
+          "width": 320
         },
         "title": "Oye Bonita, desde el aeropuerto de Panam\u00e1"
       }
@@ -536,9 +536,9 @@ var locations = {
           "La Creciente"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/RBU3ZNWFc-I/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/RBU3ZNWFc-I/mqdefault.jpg",
+          "width": 320
         },
         "title": "La Creciente, cerca de El Remolino, Nari\u00f1o, Colombia"
       },
@@ -558,9 +558,9 @@ var locations = {
           "Vallenato"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/kkRJ8Ga5QLg/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/kkRJ8Ga5QLg/mqdefault.jpg",
+          "width": 320
         },
         "title": "Esa, cerca de El Remolino, Nari\u00f1o, Colombia"
       },
@@ -580,9 +580,9 @@ var locations = {
           "La Creciente"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/DGdmC-3jThE/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/DGdmC-3jThE/mqdefault.jpg",
+          "width": 320
         },
         "title": "La Creciente, desde El Remolino, Nari\u00f1o, Colombia"
       },
@@ -602,9 +602,9 @@ var locations = {
           "Lleno de Ti"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/4ro6NMfNW6U/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/4ro6NMfNW6U/mqdefault.jpg",
+          "width": 320
         },
         "title": "Lleno de Ti, desde El Remolino, Nari\u00f1o, Colombia"
       },
@@ -624,9 +624,9 @@ var locations = {
           "Vallenato"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/xG20_8UVC38/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/xG20_8UVC38/mqdefault.jpg",
+          "width": 320
         },
         "title": "Esa, desde El Remolino, Nari\u00f1o, Colombia"
       },
@@ -646,9 +646,9 @@ var locations = {
           "Vallenato"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/Q48-SY6duqU/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/Q48-SY6duqU/mqdefault.jpg",
+          "width": 320
         },
         "title": "Esa, desde El Remolino, Nari\u00f1o, Colombia"
       },
@@ -668,9 +668,9 @@ var locations = {
           "El Remolino"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/F_L6_Q8St6c/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/F_L6_Q8St6c/mqdefault.jpg",
+          "width": 320
         },
         "title": "Oye Bonita, desde El Remolino, Nari\u00f1o, Colombia"
       }
@@ -697,9 +697,9 @@ var locations = {
           "Koh Phangan"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/FBP75VSH3mA/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/FBP75VSH3mA/mqdefault.jpg",
+          "width": 320
         },
         "title": "Los Caminos De La Vida, desde Koh Phangan, Tailandia"
       },
@@ -720,9 +720,9 @@ var locations = {
           "Koh Phangan"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/SJ02fqu_BVQ/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/SJ02fqu_BVQ/mqdefault.jpg",
+          "width": 320
         },
         "title": "Feliz Cumplea\u00f1os de Diomedes D\u00edaz, desde Koh Phangan, Tailandia"
       },
@@ -742,9 +742,9 @@ var locations = {
           "Koh Phangan"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/UnR6G2Pg2ao/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/UnR6G2Pg2ao/mqdefault.jpg",
+          "width": 320
         },
         "title": "Oye Bonita, desde Koh Phangan, Tailandia"
       }
@@ -771,9 +771,9 @@ var locations = {
           "Colombia"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/98ptD9Xw4Sw/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/98ptD9Xw4Sw/mqdefault.jpg",
+          "width": 320
         },
         "title": "Esa, desde La Cristalina, Nari\u00f1o, Colombia"
       },
@@ -793,9 +793,9 @@ var locations = {
           "Colombia"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/FUHLr2gnYgw/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/FUHLr2gnYgw/mqdefault.jpg",
+          "width": 320
         },
         "title": "En Carne Propia, desde La Cristalina, Nari\u00f1o, Colombia"
       },
@@ -815,9 +815,9 @@ var locations = {
           "Colombia"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/eEmtEtFgu94/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/eEmtEtFgu94/mqdefault.jpg",
+          "width": 320
         },
         "title": "Muere una Flor, desde La Cristalina, Nari\u00f1o, Colombia"
       },
@@ -837,9 +837,9 @@ var locations = {
           "Colombia"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/FWTluHE1z5M/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/FWTluHE1z5M/mqdefault.jpg",
+          "width": 320
         },
         "title": "Jaime Molina, desde La Cristalina, Nari\u00f1o, Colombia"
       },
@@ -859,9 +859,9 @@ var locations = {
           "Colombia"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/fpTKC8_emJA/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/fpTKC8_emJA/mqdefault.jpg",
+          "width": 320
         },
         "title": "Oye Bonita, desde La Cristalina, Nari\u00f1o, Colombia"
       },
@@ -882,9 +882,9 @@ var locations = {
           "Nari\u00f1o"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/WFUVbEYQVUM/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/WFUVbEYQVUM/mqdefault.jpg",
+          "width": 320
         },
         "title": "La Guane\u00f1a y el Son Sure\u00f1o, desde La Cristalina, Nari\u00f1o, Colombia"
       },
@@ -904,9 +904,9 @@ var locations = {
           "La Cristalina"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/IU8oteyK5-4/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/IU8oteyK5-4/mqdefault.jpg",
+          "width": 320
         },
         "title": "Los Caminos De La Vida, desde La Cristalina, Nari\u00f1o, Colombia"
       }
@@ -932,9 +932,9 @@ var locations = {
           "Acord\u00e9on"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/lSr5bbXMmww/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/lSr5bbXMmww/mqdefault.jpg",
+          "width": 320
         },
         "title": "Oye Bonita, desde Lisboa, Portugal"
       },
@@ -953,9 +953,9 @@ var locations = {
           "Vallenato"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/fZJ-VDb3xl0/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/fZJ-VDb3xl0/mqdefault.jpg",
+          "width": 320
         },
         "title": "Esa, desde Lisboa, Portugal"
       }
@@ -980,9 +980,9 @@ var locations = {
           "Canada"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/u34fzbt--nM/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/u34fzbt--nM/mqdefault.jpg",
+          "width": 320
         },
         "title": "Oye Bonita, desde Niagara Falls, Ontario, Canada"
       }
@@ -1009,9 +1009,9 @@ var locations = {
           "Los Diablitos"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/LpH08IAIcGc/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/LpH08IAIcGc/mqdefault.jpg",
+          "width": 320
         },
         "title": "Los Caminos De La Vida, desde Par\u00eds, Francia"
       },
@@ -1031,9 +1031,9 @@ var locations = {
           "Silvio Brito"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/YIT1jLm8ASY/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/YIT1jLm8ASY/mqdefault.jpg",
+          "width": 320
         },
         "title": "En Carne Propia, desde Par\u00eds, Francia"
       },
@@ -1053,9 +1053,9 @@ var locations = {
           "Los Hermanos Zuleta"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/zDAoPtmYHUM/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/zDAoPtmYHUM/mqdefault.jpg",
+          "width": 320
         },
         "title": "Corazon Martirizado, desde Par\u00eds, Francia"
       },
@@ -1075,9 +1075,9 @@ var locations = {
           "Acord\u00e9on"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/Dv608xMPMlI/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/Dv608xMPMlI/mqdefault.jpg",
+          "width": 320
         },
         "title": "Oye Bonita, desde Par\u00eds, Francia"
       },
@@ -1098,9 +1098,9 @@ var locations = {
           "Feliz Cumplea\u00f1os"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/q6cUzC6ESZ8/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/q6cUzC6ESZ8/mqdefault.jpg",
+          "width": 320
         },
         "title": "Feliz Cumplea\u00f1os de Diomedes D\u00edaz, desde Par\u00eds, Francia"
       },
@@ -1120,9 +1120,9 @@ var locations = {
           "Tour Eiffel"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/OiZsQC1awnY/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/OiZsQC1awnY/mqdefault.jpg",
+          "width": 320
         },
         "title": "Oye Bonita, desde Par\u00eds, Francia"
       }
@@ -1149,9 +1149,9 @@ var locations = {
           "M\u00fasica Nari\u00f1ense"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/r6NlIvnDDQY/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/r6NlIvnDDQY/mqdefault.jpg",
+          "width": 320
         },
         "title": "La Guane\u00f1a y el Son Sure\u00f1o, desde Pasisara, Nari\u00f1o, Colombia"
       },
@@ -1171,9 +1171,9 @@ var locations = {
           "Colombia"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/p9NqLfoSLko/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/p9NqLfoSLko/mqdefault.jpg",
+          "width": 320
         },
         "title": "Oye Bonita, desde Pasisara, Nari\u00f1o, Colombia"
       },
@@ -1191,9 +1191,9 @@ var locations = {
           "Pasisara"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/1kZBbmRnnq8/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/1kZBbmRnnq8/mqdefault.jpg",
+          "width": 320
         },
         "title": "La Guane\u00f1a y el Son Sure\u00f1o, desde Pasisara, Nari\u00f1o, Colombia"
       }
@@ -1214,9 +1214,9 @@ var locations = {
           "Acorde\u00f3n"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/oPEirA4pXdg/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/oPEirA4pXdg/mqdefault.jpg",
+          "width": 320
         },
         "title": "La Guane\u00f1a y el Son Sure\u00f1o, \u00a1en vivo!"
       }
@@ -1243,9 +1243,9 @@ var locations = {
           "Aeropuerto"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/UGPpnz-_HwM/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/UGPpnz-_HwM/mqdefault.jpg",
+          "width": 320
         },
         "title": "Oye Bonita, con los guardias de seguridad del aeropuerto de Providencia, Colombia"
       },
@@ -1265,9 +1265,9 @@ var locations = {
           "Aeropuerto"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/gtTJVaDp3A4/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/gtTJVaDp3A4/mqdefault.jpg",
+          "width": 320
         },
         "title": "Oye Bonita, desde el aeropuerto de Providencia, Colombia"
       },
@@ -1286,9 +1286,9 @@ var locations = {
           "Colombia"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/Y8rUJPyB2lg/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/Y8rUJPyB2lg/mqdefault.jpg",
+          "width": 320
         },
         "title": "Solo Para Ti, desde Providencia, Colombia"
       },
@@ -1307,9 +1307,9 @@ var locations = {
           "Colombia"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/OIwXOS8YiLo/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/OIwXOS8YiLo/mqdefault.jpg",
+          "width": 320
         },
         "title": "Oye Bonita, desde Providencia, Colombia"
       },
@@ -1328,9 +1328,9 @@ var locations = {
           "Muere una Flor"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/-IsC3zMBs64/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/-IsC3zMBs64/mqdefault.jpg",
+          "width": 320
         },
         "title": "Muere una Flor, desde Providencia, Colombia"
       },
@@ -1349,9 +1349,9 @@ var locations = {
           "Colombia"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/i9rtpcQ7ijM/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/i9rtpcQ7ijM/mqdefault.jpg",
+          "width": 320
         },
         "title": "Los Caminos De La Vida, desde Providencia, Colombia"
       },
@@ -1370,9 +1370,9 @@ var locations = {
           "Lleno de Ti"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/OmLralQi2co/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/OmLralQi2co/mqdefault.jpg",
+          "width": 320
         },
         "title": "Lleno de Ti, desde Providencia, Colombia"
       },
@@ -1392,9 +1392,9 @@ var locations = {
           "Providencia"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/6ew3wWZcl_w/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/6ew3wWZcl_w/mqdefault.jpg",
+          "width": 320
         },
         "title": "La Guane\u00f1a y el Son Sure\u00f1o, desde Providencia, Colombia"
       },
@@ -1414,9 +1414,9 @@ var locations = {
           "Providencia"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/0miSssIAcLk/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/0miSssIAcLk/mqdefault.jpg",
+          "width": 320
         },
         "title": "La Guane\u00f1a y el Son Sure\u00f1o, desde Providencia, Colombia"
       },
@@ -1435,9 +1435,9 @@ var locations = {
           "Colombia"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/HIvgX6nj2LA/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/HIvgX6nj2LA/mqdefault.jpg",
+          "width": 320
         },
         "title": "La Creciente, desde Providencia, Colombia"
       },
@@ -1456,9 +1456,9 @@ var locations = {
           "Colombia"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/yyaHLlqC1Nw/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/yyaHLlqC1Nw/mqdefault.jpg",
+          "width": 320
         },
         "title": "La Creciente, desde Providencia, Colombia"
       },
@@ -1479,9 +1479,9 @@ var locations = {
           "Colombia"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/uyPyD1VRgDI/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/uyPyD1VRgDI/mqdefault.jpg",
+          "width": 320
         },
         "title": "Feliz Cumplea\u00f1os de Diomedes D\u00edaz, desde Providencia, Colombia"
       },
@@ -1500,9 +1500,9 @@ var locations = {
           "Colombia"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/ujwK6RXsv8A/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/ujwK6RXsv8A/mqdefault.jpg",
+          "width": 320
         },
         "title": "Esa, desde Providencia, Colombia"
       }
@@ -1528,9 +1528,9 @@ var locations = {
           "M\u00fasica Nari\u00f1ense"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/oZfgMDbQFgo/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/oZfgMDbQFgo/mqdefault.jpg",
+          "width": 320
         },
         "title": "La Guane\u00f1a y el Son Sure\u00f1o, desde San Andr\u00e9s, Colombia"
       },
@@ -1549,9 +1549,9 @@ var locations = {
           "Colombia"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/qu89H7gIJJw/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/qu89H7gIJJw/mqdefault.jpg",
+          "width": 320
         },
         "title": "Oye Bonita, desde San Andr\u00e9s, Colombia"
       },
@@ -1570,9 +1570,9 @@ var locations = {
           "Colombia"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/cgPrtzoHfgo/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/cgPrtzoHfgo/mqdefault.jpg",
+          "width": 320
         },
         "title": "Oye Bonita, desde San Andr\u00e9s, Colombia"
       },
@@ -1591,9 +1591,9 @@ var locations = {
           "Colombia"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/JL5L9PTW6rU/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/JL5L9PTW6rU/mqdefault.jpg",
+          "width": 320
         },
         "title": "Los Caminos De La Vida, desde San Andr\u00e9s, Colombia"
       },
@@ -1612,9 +1612,9 @@ var locations = {
           "Binomio de Oro"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/Rj-D__RNtj0/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/Rj-D__RNtj0/mqdefault.jpg",
+          "width": 320
         },
         "title": "La Creciente, desde San Andr\u00e9s, Colombia"
       },
@@ -1632,9 +1632,9 @@ var locations = {
           "Colombia"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/5i-vi3zusiI/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/5i-vi3zusiI/mqdefault.jpg",
+          "width": 320
         },
         "title": "Esa, desde San Andr\u00e9s, Colombia"
       }
@@ -1661,9 +1661,9 @@ var locations = {
           "Colombia"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/s05RpOPL22U/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/s05RpOPL22U/mqdefault.jpg",
+          "width": 320
         },
         "title": "La Cumbia del Amor, desde Santa Marta, Magdalena, Colombia"
       },
@@ -1683,9 +1683,9 @@ var locations = {
           "Carlos Vives"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/oxY864QMbyg/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/oxY864QMbyg/mqdefault.jpg",
+          "width": 320
         },
         "title": "Jaime Molina, desde Santa Marta, Magdalena, Colombia"
       },
@@ -1705,9 +1705,9 @@ var locations = {
           "Los Diablitos"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/oJXULyP_12c/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/oJXULyP_12c/mqdefault.jpg",
+          "width": 320
         },
         "title": "Los Caminos De La Vida, desde Santa Marta, Magdalena, Colombia"
       },
@@ -1727,9 +1727,9 @@ var locations = {
           "Silvio Brito"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/c-JA8JsBT_M/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/c-JA8JsBT_M/mqdefault.jpg",
+          "width": 320
         },
         "title": "En Carne Propia, desde Santa Marta, Magdalena, Colombia"
       },
@@ -1750,9 +1750,9 @@ var locations = {
           "Colombia"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/hBoZG1S7nPM/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/hBoZG1S7nPM/mqdefault.jpg",
+          "width": 320
         },
         "title": "Oye Bonita, desde Santa Marta, Magdalena, Colombia"
       }
@@ -1778,9 +1778,9 @@ var locations = {
           "Francia"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/zO1gkdRfFPk/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/zO1gkdRfFPk/mqdefault.jpg",
+          "width": 320
         },
         "title": "Oye Bonita, desde Solbach, Francia"
       },
@@ -1799,9 +1799,9 @@ var locations = {
           "Francia"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/INhp_eqio3o/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/INhp_eqio3o/mqdefault.jpg",
+          "width": 320
         },
         "title": "Jaime Molina, desde Solbach, Francia"
       },
@@ -1820,9 +1820,9 @@ var locations = {
           "Francia"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/oayg1b7a4rQ/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/oayg1b7a4rQ/mqdefault.jpg",
+          "width": 320
         },
         "title": "La Creciente, desde Solbach, Francia"
       },
@@ -1841,9 +1841,9 @@ var locations = {
           "Francia"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/9D6kvxomawA/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/9D6kvxomawA/mqdefault.jpg",
+          "width": 320
         },
         "title": "Esa, desde Solbach, Francia"
       }
@@ -1875,9 +1875,9 @@ var locations = {
           "La Creciente"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/uK4t2nNiySw/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/uK4t2nNiySw/mqdefault.jpg",
+          "width": 320
         },
         "title": "Vallenato at Epic, Verona, Wisconsin, USA"
       },
@@ -1899,9 +1899,9 @@ var locations = {
           "Epic"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/T4UX7dXuMP4/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/T4UX7dXuMP4/mqdefault.jpg",
+          "width": 320
         },
         "title": "Esa, desde Epic, Verona, Wisconsin, USA"
       },
@@ -1923,9 +1923,9 @@ var locations = {
           "Epic"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/XlPejBsVgu4/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/XlPejBsVgu4/mqdefault.jpg",
+          "width": 320
         },
         "title": "La Creciente, desde Epic, Verona, Wisconsin, USA"
       },
@@ -1947,9 +1947,9 @@ var locations = {
           "Epic"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/iEy6Zb8QRGU/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/iEy6Zb8QRGU/mqdefault.jpg",
+          "width": 320
         },
         "title": "Oye Bonita, desde Epic, Verona, Wisconsin, USA"
       }
@@ -1975,9 +1975,9 @@ var locations = {
           "Alemania"
         ],
         "thumbnail": {
-          "height": 90,
-          "url": "https://i.ytimg.com/vi/AakPCRoNMHM/default.jpg",
-          "width": 120
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/AakPCRoNMHM/mqdefault.jpg",
+          "width": 320
         },
         "title": "Oye Bonita, desde Winterberg, Alemania"
       }

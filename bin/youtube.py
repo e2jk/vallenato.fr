@@ -128,7 +128,8 @@ def yt_list_my_uploaded_videos(uploads_playlist_id, youtube):
                 except KeyError:
                     vid["tags"] = []
                 vid["publishedAt"] = video['snippet']['publishedAt']
-                vid["thumbnail"] = video['snippet']['thumbnails']['default']
+                # Sizes: default, medium, high, standard, maxres
+                vid["thumbnail"] = video['snippet']['thumbnails']['medium']
 
                 uploaded_videos.append(vid)
                 logging.debug(vid)
