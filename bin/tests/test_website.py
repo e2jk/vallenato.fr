@@ -251,6 +251,11 @@ class TestGenerateWebsite(unittest.TestCase):
         # The prod file points to the CDN copy of the leaflet library
         self.assertTrue('<link rel="stylesheet" href="https://unpkg.com/leaflet@%s/dist/leaflet.css"\n        integrity="sha512-' % website.LEAFLET_VERSION in filedata)
         self.assertTrue('<script src="https://unpkg.com/leaflet@%s/dist/leaflet.js"\n        integrity="sha512-' % website.LEAFLET_VERSION in filedata)
+        # The prod file points to the CDN copy of the Bootstrap library
+        self.assertTrue('<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/%s/css/bootstrap.min.css"\n        integrity="sha384-' % website.BOOTSTRAP_VERSION in filedata)
+        self.assertTrue('<script src="https://stackpath.bootstrapcdn.com/bootstrap/%s/js/bootstrap.min.js"\n        integrity="sha384-' % website.BOOTSTRAP_VERSION in filedata)
+        # The prod file points to the CDN copy of the jQuery library
+        self.assertTrue('<script src="https://code.jquery.com/jquery-%s.slim.min.js"\n        integrity="sha384-' % website.JQUERY_VERSION in filedata)
 
 
 class TestWebsite(unittest.TestCase):

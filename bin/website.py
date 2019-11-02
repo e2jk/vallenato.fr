@@ -36,8 +36,10 @@ LOCATION_SPECIAL_CASES_FILE = "data/location_special_cases.json"
 GEOLOCATIONS_FILE = "data/geolocations.json"
 # Output file used for the website
 WEBSITE_DATA_FILE = "../website/src/data.js"
-# Version of the Leaflet library
+# Version of the external libraries
 LEAFLET_VERSION = "1.5.1"
+BOOTSTRAP_VERSION = "4.3.1"
+JQUERY_VERSION = "3.3.1"
 
 
 def get_dumped_uploaded_videos(dump_file):
@@ -172,7 +174,7 @@ def generate_website():
     input_src_folder = "../website/src"
     output_prod_folder = "../website/prod"
 
-    # Delete the previous output folder (if existing)
+    # Delete the previous production output folder (if existing)
     if os.path.exists(output_prod_folder):
         shutil.rmtree(output_prod_folder)
 
@@ -181,24 +183,45 @@ def generate_website():
 
     # Update the values accordingly for prod
     # Main difference between development (src) and production websites:
-    # Dev contains a full copy of the leaflet library, prod uses a CDN
+    # - src contains a full copy of the leaflet, Bootstrap and jQuery libraries
+    # - prod uses CDNs
 
     # Prod
     # Delete the local leaflet.js folder
     if os.path.exists("%s/leaflet" % output_prod_folder):
         shutil.rmtree("%s/leaflet" % output_prod_folder)
+    # Delete the local Bootstrap folder
+    if os.path.exists("%s/bootstrap-%s-dist" % (output_prod_folder, BOOTSTRAP_VERSION)):
+        shutil.rmtree("%s/bootstrap-%s-dist" % (output_prod_folder, BOOTSTRAP_VERSION))
+    # Delete the local jQuery file
+    if os.path.exists("%s/jquery-%s.slim.min.js" % (output_prod_folder, JQUERY_VERSION)):
+        os.remove("%s/jquery-%s.slim.min.js" % (output_prod_folder, JQUERY_VERSION))
+
     # Update links to leaflet (CDN)
     # Read the prod index file
     with open("%s/index.html" % output_prod_folder, 'r') as file :
         filedata = file.read()
     # Replace the target strings
+    # Leaflet
     filedata = filedata.replace(
         '<link rel="stylesheet" href="leaflet/%s/leaflet.css">' % LEAFLET_VERSION,
         '<link rel="stylesheet" href="https://unpkg.com/leaflet@%s/dist/leaflet.css"\n        integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="\n        crossorigin=""/>' % LEAFLET_VERSION)
     filedata = filedata.replace(
         '<script type = "text/javascript" src="leaflet/%s/leaflet.js"></script>' % LEAFLET_VERSION,
         '<script src="https://unpkg.com/leaflet@%s/dist/leaflet.js"\n        integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="\n        crossorigin="">\n    </script>' % LEAFLET_VERSION)
-    # Save edited file
+    # Bootstrap
+    filedata = filedata.replace(
+        '<link rel="stylesheet" href="bootstrap-%s-dist/css/bootstrap.min.css">' % BOOTSTRAP_VERSION,
+        '<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/%s/css/bootstrap.min.css"\n        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"\n        crossorigin="anonymous">' % BOOTSTRAP_VERSION)
+    filedata = filedata.replace(
+        '<script src="bootstrap-%s-dist/js/bootstrap.min.js"></script>' % BOOTSTRAP_VERSION,
+        '<script src="https://stackpath.bootstrapcdn.com/bootstrap/%s/js/bootstrap.min.js"\n        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"\n        crossorigin="anonymous"></script>' % BOOTSTRAP_VERSION)
+    # jQuery (for Bootstrap)
+    filedata = filedata.replace(
+        '<script src="jquery-%s.slim.min.js"></script>' % JQUERY_VERSION,
+        '<script src="https://code.jquery.com/jquery-%s.slim.min.js"\n        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"\n        crossorigin="anonymous"></script>' % JQUERY_VERSION)
+
+    # Save edited prod index file
     with open("%s/index.html" % output_prod_folder, 'w') as file:
         file.write(filedata)
 
