@@ -276,7 +276,7 @@ function update_history_for_video(id, title_slug, title) {
 
 function show_video_overlay(id, title_slug, title) {
   // Update the video overlay with the url for this video
-  document.getElementById("video_overlay_iframe_placeholder").innerHTML = `<iframe id="video_overlay_iframe" width="560" height="315" src="https://www.youtube.com/embed/` + id + `?autoplay=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
+  document.getElementById("video_overlay_iframe_placeholder").innerHTML = `<iframe id="video_overlay_iframe" src="https://www.youtube.com/embed/` + id + `?autoplay=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
   // Show the overlay containing the YouTube Embed iframe
   overlay_show("video_overlay");
   // Hide the overlay containing the list of videos at that location

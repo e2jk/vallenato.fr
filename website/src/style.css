@@ -35,14 +35,11 @@ body {
 #video_overlay {
   z-index: 1002;
 }
+.close {
+  font-size: 2.75rem;
+}
 .vid_card, .country-card {
   cursor: pointer;
-}
-#video_overlay_iframe{
-  position: absolute;
-  margin: 30px;
-  width: 95%;
-  height: 90%;
 }
 /*Medium devices (tablets, 768px and up)*/
 @media (min-width: 768px) {
