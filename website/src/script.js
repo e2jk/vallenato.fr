@@ -27,6 +27,8 @@ function main(){
 function populateMapAndList(mymap){
   var list_content = "";
   var countries = {};
+  var num_locations = 0;
+  var num_videos = 0;
   for (let loc in locations) {
     if (locations.hasOwnProperty(loc)) {
       // Add marker on the map
@@ -44,6 +46,8 @@ function populateMapAndList(mymap){
         countries[c] = [];
       }
       countries[c].push(loc);
+      num_videos += locations[loc].videos.length;
+      num_locations++;
     }
   }
 
@@ -55,34 +59,41 @@ function populateMapAndList(mymap){
     }
   }
   countries_sorted.sort();
+  // Add the entire world
+  countries["Mundo entero"] = new Array(num_locations);
+  countries_sorted.push("Mundo entero");
 
-  var numCountry = 0;
+  var num_countries = 0;
   for (let i in countries_sorted) {
     c = countries_sorted[i];
     if (countries.hasOwnProperty(c)) {
       list_content += `<div class="card">
-      <div class="card-header" id="heading` + numCountry + `">
+      <div class="card-header" id="heading` + num_countries + `">
         <h2 class="mb-0">`;
-      list_content += `<button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse` + numCountry + `" aria-expanded="false" aria-controls="collapse` + numCountry + `">` + c + ` <span class="badge badge-primary badge-pill badge-dark">` + countries[c].length + `</span><span class="sr-only"> lugares</span></button>`;
+      list_content += `<button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse` + num_countries + `" aria-expanded="false" aria-controls="collapse` + num_countries + `">` + c + ` <span class="badge badge-primary badge-pill badge-dark">` + countries[c].length + `</span><span class="sr-only"> lugares</span></button>`;
       list_content += `
         </h2>
       </div>
       `;
-      list_content += `<div id="collapse` + numCountry + `" class="collapse list-group list-group-flush" aria-labelledby="heading` + numCountry + `" data-parent="#list">`;
-      for (let l in countries[c]) {
-        if (countries[c].hasOwnProperty(l)) {
-          loc = countries[c][l];
-          // Remove the country name to display the location name
-          loc_parts = loc.split(", ");
-          loc_parts.pop();
-          loc_short_name = loc_parts.join(", ");
-          list_content += `<a href="#` + locations[loc]["slug"] + `" class="card-body list-group-item list-group-item-action d-flex justify-content-between align-items-center">` + loc_short_name + `<span class="badge badge-primary badge-pill badge-dark">` + locations[loc].videos.length + `</span></a>`;
+      list_content += `<div id="collapse` + num_countries + `" class="collapse list-group list-group-flush" aria-labelledby="heading` + num_countries + `" data-parent="#list">`;
+      if ("Mundo entero" === c) {
+        list_content += `<a href="#mundo-entero" class="card-body list-group-item list-group-item-action d-flex justify-content-between align-items-center">Mundo entero<span class="badge badge-primary badge-pill badge-dark">` + num_videos + `</span><span class="sr-only"> videos</span></a>`;
+      } else {
+        for (let l in countries[c]) {
+          if (countries[c].hasOwnProperty(l)) {
+            loc = countries[c][l];
+            // Remove the country name to display the location name
+            loc_parts = loc.split(", ");
+            loc_parts.pop();
+            loc_short_name = loc_parts.join(", ");
+            list_content += `<a href="#` + locations[loc]["slug"] + `" class="card-body list-group-item list-group-item-action d-flex justify-content-between align-items-center">` + loc_short_name + `<span class="badge badge-primary badge-pill badge-dark">` + locations[loc].videos.length + `</span><span class="sr-only"> videos</span></a>`;
+          }
         }
       }
       list_content += `
         </div>
       </div>`;
-      numCountry++;
+      num_countries++;
     }
   }
   // Populate the locations list
@@ -92,6 +103,14 @@ function populateMapAndList(mymap){
 function check_valid_slug() {
   // Identify for which page this slug is
   var slug_found = false;
+
+  // Check if it's a location's slug
+  if("#mundo-entero" === window.location.hash){
+    slug_found = true;
+    show_location_overlay("Mundo entero");
+    return;
+  }
+
   // Check if it's a location's slug
   for (let loc in locations) {
     if (locations.hasOwnProperty(loc)) {
@@ -153,6 +172,7 @@ function update_history_for_location(loc) {
 }
 
 function show_location_overlay(loc) {
+  document.getElementById("list_videos").innerHTML = "";
   overlay_show("list_overlay");
   // In case a video was shown
   overlay_hide("video_overlay");
@@ -161,6 +181,20 @@ function show_location_overlay(loc) {
   // Update page title and header
   document.title = loc + " - El Vallenatero Francés";
   document.getElementById("list_location").innerHTML = loc;
+
+  // Populate the global array if displaying the entire world for the first time
+  if ("Mundo entero" === loc && undefined === locations[loc]) {
+    var global_videos = new Array();
+    for (let loc2 in locations) {
+      if (locations.hasOwnProperty(loc2)) {
+        global_videos = global_videos.concat(locations[loc2]["videos"]);
+      }
+    }
+    // Sort by publishedAt timestamp (most recent first)
+    global_videos.sort((a,b) => (a.publishedAt < b.publishedAt) ? 1 : ((a.publishedAt > b.publishedAt) ? -1 : 0));
+    locations[loc] = {};
+    locations[loc]["videos"] = global_videos;
+  }
 
   // Show all the videos taken at that location
   var content = "";
