@@ -44,3 +44,9 @@ body {
   width: 95%;
   height: 90%;
 }
+/*Medium devices (tablets, 768px and up)*/
+@media (min-width: 768px) {
+  .country-card, #list .list-group-item{
+    padding: .5rem 1rem;
+  }
+}
