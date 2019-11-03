@@ -25,8 +25,8 @@ function main(){
 }
 
 function populateMapAndList(mymap){
-  var num_loc = 0;
   var list_content = "";
+  var countries = {};
   for (let loc in locations) {
     if (locations.hasOwnProperty(loc)) {
       // Add marker on the map
@@ -36,16 +36,53 @@ function populateMapAndList(mymap){
         keyboard: true // marker can be tabbed to with a keyboard and clicked by pressing enter
       };
       var marker = L.marker([locations[loc].latitude, locations[loc].longitude], markerOptions).addTo(mymap);
-      marker._icon.id = "location_marker_" + num_loc;
       marker.addEventListener("click", function(){ navigate_to_location(loc); });
-      marker.addEventListener("mouseover", function(evt){ marker_hover(evt.target._icon.id, true); });
-      marker.addEventListener("mouseout", function(evt){ marker_hover(evt.target._icon.id, false); });
 
-      // Update list on the right side
-      list_content += `<a href="#` + locations[loc]["slug"] + `" id="location_list_` + num_loc + `" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">` + loc + `<span class="badge badge-primary badge-pill badge-dark">` + locations[loc].videos.length + `</span></a>`;
+      // Group locations per country
+      c = loc.split(", ").pop(); // That location's country name
+      if (!countries.hasOwnProperty(c)) {
+        countries[c] = [];
+      }
+      countries[c].push(loc);
+    }
+  }
 
-      // Increment marker ID
-      num_loc++;
+  // Sort countries alphabetically
+  countries_sorted = [];
+  for (let c in countries) {
+    if (countries.hasOwnProperty(c)) {
+      countries_sorted.push(c);
+    }
+  }
+  countries_sorted.sort();
+
+  var numCountry = 0;
+  for (let i in countries_sorted) {
+    c = countries_sorted[i];
+    if (countries.hasOwnProperty(c)) {
+      list_content += `<div class="card">
+      <div class="card-header" id="heading` + numCountry + `">
+        <h2 class="mb-0">`;
+      list_content += `<button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse` + numCountry + `" aria-expanded="false" aria-controls="collapse` + numCountry + `">` + c + ` <span class="badge badge-primary badge-pill badge-dark">` + countries[c].length + `</span><span class="sr-only"> lugares</span></button>`;
+      list_content += `
+        </h2>
+      </div>
+      `;
+      list_content += `<div id="collapse` + numCountry + `" class="collapse list-group list-group-flush" aria-labelledby="heading` + numCountry + `" data-parent="#list">`;
+      for (let l in countries[c]) {
+        if (countries[c].hasOwnProperty(l)) {
+          loc = countries[c][l];
+          // Remove the country name to display the location name
+          loc_parts = loc.split(", ");
+          loc_parts.pop();
+          loc_short_name = loc_parts.join(", ");
+          list_content += `<a href="#` + locations[loc]["slug"] + `" class="card-body list-group-item list-group-item-action d-flex justify-content-between align-items-center">` + loc_short_name + `<span class="badge badge-primary badge-pill badge-dark">` + locations[loc].videos.length + `</span></a>`;
+        }
+      }
+      list_content += `
+        </div>
+      </div>`;
+      numCountry++;
     }
   }
   // Populate the locations list
@@ -192,16 +229,6 @@ function overlay_show(id) {
 function overlay_hide(id) {
   // Hide the overlay
   document.getElementById(id).style.display = "none";
-}
-
-function marker_hover(marker_id, highlight) {
-  var location_list_id = marker_id.replace("location_marker_", "location_list_");
-  var el = document.getElementById(location_list_id);
-  if (highlight) {
-    el.style.background = "#f8f9fa";
-  } else {
-    el.style.background = "#fff";
-  }
 }
 
 function navigate_to_video(id, title_slug, loc, title) {
