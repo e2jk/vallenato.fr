@@ -1016,7 +1016,7 @@ var locations = {
         "title": "Los Caminos De La Vida, desde Par\u00eds, Francia"
       },
       {
-        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/en-carne-propia.html?p=1\nPar\u00eds, Francia, 29/10/2019\nEn Carne Propia - Silvio Brito",
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/en-carne-propia.html\nPar\u00eds, Francia, 29/10/2019\nEn Carne Propia - Silvio Brito",
         "id": "YIT1jLm8ASY",
         "location": "Par\u00eds, Francia",
         "publishedAt": "2019-10-29T20:54:03.000Z",
