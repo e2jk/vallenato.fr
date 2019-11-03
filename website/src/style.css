@@ -16,12 +16,6 @@ body {
 #map {
   height: 500px;
 }
-#list li {
-  cursor: pointer;
-}
-#list li:hover {
-  text-decoration: underline;
-}
 #list_overlay, #video_overlay {
   position: fixed; /* Sit on top of the page content */
   padding: 60px 15px 0; /* Show just under the header */
@@ -41,7 +35,7 @@ body {
 #video_overlay {
   z-index: 1002;
 }
-.vid_card {
+.vid_card, .country-card {
   cursor: pointer;
 }
 #video_overlay_iframe{

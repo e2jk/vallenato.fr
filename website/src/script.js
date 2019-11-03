@@ -68,11 +68,8 @@ function populateMapAndList(mymap){
     c = countries_sorted[i];
     if (countries.hasOwnProperty(c)) {
       list_content += `<div class="card">
-      <div class="card-header" id="heading` + num_countries + `">
-        <h2 class="mb-0">`;
-      list_content += `<button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse` + num_countries + `" aria-expanded="false" aria-controls="collapse` + num_countries + `">` + c + ` <span class="badge badge-primary badge-pill badge-dark">` + countries[c].length + `</span><span class="sr-only"> lugares</span></button>`;
-      list_content += `
-        </h2>
+      <div class="card-header country-card" id="heading` + num_countries + `" data-toggle="collapse" data-target="#collapse` + num_countries + `" aria-expanded="false" aria-controls="collapse` + num_countries + `">
+        <div class="mb-0">` + c + `</div>
       </div>
       `;
       list_content += `<div id="collapse` + num_countries + `" class="collapse list-group list-group-flush" aria-labelledby="heading` + num_countries + `" data-parent="#list">`;
