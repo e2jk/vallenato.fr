@@ -401,8 +401,8 @@ class TestUpdateIndexPage(unittest.TestCase):
         # Confirm that the index page has been updated
         with open("../aprender/index.html", 'r') as file :
             filedata = file.read()
-        self.assertTrue('</li>\n      <li><a href="blabla-bla.html">Bonita cancion - Super cantante</a> - NNmNNs en NN partes</li>\n    </ul>' in filedata)
-        self.assertTrue('</a></li>\n      <li>Bonita cancion - Super cantante: <a href="https://www.youtube.com/watch?v=oPEirA4pXdg">Tutorial en YouTube</a> por <a href="https://www.youtube.com/channel/UC_8R235jg1ld6MCMOzz2khQ">El Vallenatero Francés</a></li>\n    </ul>' in filedata)
+            self.assertTrue('</li>\n              <li><a href="blabla-bla.html">Bonita cancion - Super cantante</a> - NNmNNs en NN partes</li>\n            </ul>' in filedata)
+            self.assertTrue('</a></li>\n              <li>Bonita cancion - Super cantante: <a href="https://www.youtube.com/watch?v=oPEirA4pXdg">Tutorial en YouTube</a> por <a href="https://www.youtube.com/channel/UC_8R235jg1ld6MCMOzz2khQ">El Vallenatero Francés</a></li>\n            </ul>' in filedata)
         # Restore the index page
         os.remove("../aprender/index.html")
         shutil.move("../aprender/index.html.bak", "../aprender/index.html")
@@ -443,8 +443,8 @@ class TestAprender(unittest.TestCase):
         # Confirm that a temporary file with the content to be added to the index page has been created
         with open("../aprender/temp/blabla-bla/index-dummy.html", 'r') as file :
             filedata = file.read()
-            self.assertTrue('\n      <li><a href="blabla-bla.html">Bonita cancion - Super cantante</a> - NNmNNs en NN partes</li>' in filedata)
-            self.assertTrue('\n      <li>Bonita cancion - Super cantante: <a href="https://www.youtube.com/watch?v=oPEirA4pXdg">Tutorial en YouTube</a> por <a href="https://www.youtube.com/channel/UC_8R235jg1ld6MCMOzz2khQ">El Vallenatero Francés</a></li>' in filedata)
+            self.assertTrue('\n              <li><a href="blabla-bla.html">Bonita cancion - Super cantante</a> - NNmNNs en NN partes</li>' in filedata)
+            self.assertTrue('\n              <li>Bonita cancion - Super cantante: <a href="https://www.youtube.com/watch?v=oPEirA4pXdg">Tutorial en YouTube</a> por <a href="https://www.youtube.com/channel/UC_8R235jg1ld6MCMOzz2khQ">El Vallenatero Francés</a></li>' in filedata)
         # Delete the temporary folder
         shutil.rmtree("../aprender/temp/blabla-bla/")
         # Confirm the webbrowser is called to be opened to the new template's page

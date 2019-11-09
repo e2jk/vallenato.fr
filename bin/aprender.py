@@ -220,10 +220,10 @@ def create_new_tutorial_page(tutorial_slug, song_title, song_author, tutorial_id
         file.write(filedata)
 
 def index_new_tutorial_link(tutorial_slug, song_title, song_author):
-    return '\n      <li><a href="%s.html">%s - %s</a> - NNmNNs en NN partes</li>' % (tutorial_slug, song_title, song_author)
+    return '\n              <li><a href="%s.html">%s - %s</a> - NNmNNs en NN partes</li>' % (tutorial_slug, song_title, song_author)
 
 def index_new_youtube_links(song_title, song_author, tutorial_url, tutocreator_channel, tutocreator):
-    return '\n      <li>%s - %s: <a href="%s">Tutorial en YouTube</a> por <a href="https://www.youtube.com/channel/%s">%s</a></li>' % (song_title, song_author, tutorial_url, tutocreator_channel, tutocreator)
+    return '\n              <li>%s - %s: <a href="%s">Tutorial en YouTube</a> por <a href="https://www.youtube.com/channel/%s">%s</a></li>' % (song_title, song_author, tutorial_url, tutocreator_channel, tutocreator)
 
 def dummy_index_update(tutorial_slug, song_title, song_author, tutorial_url, tutocreator_channel, tutocreator, output_folder):
     dummy_index_page = "%sindex-dummy.html" % output_folder
@@ -245,12 +245,12 @@ def update_index_page(tutorial_slug, song_title, song_author, tutorial_url, tuto
         filedata = file.read()
 
     # Add a link to the new tutorial's page
-    end_section = '\n    </ul>\n    <h2>Otros recursos</h2>'
+    end_section = '\n            </ul>\n          </div>\n          <div class="col-md">\n            <h2>Otros recursos</h2>'
     new_link = index_new_tutorial_link(tutorial_slug, song_title, song_author)
     filedata = filedata.replace(end_section, "%s%s" %(new_link, end_section))
 
     # Add links to the tutorial and the author's YouTube channel
-    end_section = '\n    </ul>\n    <p><a href="https://vallenato.fr">El Vallenatero Francés</a>'
+    end_section = '\n            </ul>\n          </div>\n        </div>\n      </div>\n    </main>\n    <!-- End page content -->'
     new_link = index_new_youtube_links(song_title, song_author, tutorial_url, tutocreator_channel, tutocreator)
     filedata = filedata.replace(end_section, "%s%s" %(new_link, end_section))
 
