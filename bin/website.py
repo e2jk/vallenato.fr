@@ -199,7 +199,22 @@ def generate_website():
     # - prod uses CDNs
 
     # Copy src to prod folder, ignoring the files and folder replaced by CDNs in prod
+    # The videos are also not copied, as we're going to hard-link them
     shutil.copytree(input_src_folder, output_prod_folder, ignore=ignored_files_in_prod)
+
+    # Create hard links for the videos in the prod folder
+    # (hard links can only be created for files, need to recreate the folder structure)
+    os.mkdir("%s/aprender/videos" % output_prod_folder)
+    for d in os.listdir("%s/aprender/videos" % input_src_folder):
+        if d not in ["TODO", "blabla-bla"]:
+            # Create a folder for that tutorial's video files
+            #TODO: copy folder without content in order to keep the original folder's
+            # creation date, in order to not confuse the rsync upload process
+            os.mkdir("%s/aprender/videos/%s" % (output_prod_folder, d))
+            for f in os.listdir("%s/aprender/videos/%s" % (input_src_folder, d)):
+                # Create a hard link to the video file
+                os.link("%s/aprender/videos/%s/%s" % (input_src_folder, d, f),
+                        "%s/aprender/videos/%s/%s" % (output_prod_folder, d, f))
 
     # Update links to leaflet (CDN)
     # Read the prod files

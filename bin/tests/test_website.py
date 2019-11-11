@@ -269,10 +269,13 @@ class TestGenerateWebsite(unittest.TestCase):
         self.assertEqual(len(prd_files), len(expected_prd_files))
         for f in expected_prd_files:
             self.assertTrue(f in prd_files)
-        # Confirm the temp or local videos folders are not copied to the prd folder
+        # Confirm the aprender/temp folder is not copied to the prd folder
         prd_aprender_files = os.listdir("../website/prod/aprender")
         self.assertFalse("temp" in prd_aprender_files)
-        self.assertFalse("videos" in prd_aprender_files)
+        # Confirm the aprender/videos folder doesn't contain unwanted directories
+        prd_aprender_videos_files = os.listdir("../website/prod/aprender/videos")
+        self.assertFalse("TODO" in prd_aprender_videos_files)
+        self.assertFalse("blabla-bla" in prd_aprender_videos_files)
 
 
 class TestWebsite(unittest.TestCase):
