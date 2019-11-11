@@ -171,12 +171,18 @@ def save_website_data(locations, website_data_file):
         out_file.write(js_content)
 
 def ignored_files_in_prod(adir, filenames):
-    ignored_files = [
-        'aprender',
-        'bootstrap-%s-dist' % BOOTSTRAP_VERSION,
-        'jquery-%s.slim.min.js' % JQUERY_VERSION,
-        'leaflet'
-    ]
+    ignored_files = []
+    if "../website/src" == adir:
+        ignored_files = [
+            'bootstrap-%s-dist' % BOOTSTRAP_VERSION,
+            'jquery-%s.slim.min.js' % JQUERY_VERSION,
+            'leaflet'
+        ]
+    if "../website/src/aprender" == adir:
+        ignored_files = [
+            'temp',
+            'videos'
+        ]
     return [filename for filename in filenames if filename in ignored_files]
 
 def generate_website():
@@ -196,32 +202,45 @@ def generate_website():
     shutil.copytree(input_src_folder, output_prod_folder, ignore=ignored_files_in_prod)
 
     # Update links to leaflet (CDN)
-    # Read the prod index file
+    # Read the prod files
     with open("%s/index.html" % output_prod_folder, 'r') as file :
-        filedata = file.read()
+        index_data = file.read()
+    with open("%s/aprender/index.html" % output_prod_folder, 'r') as file :
+        index_aprender_data = file.read()
     # Replace the target strings
     # Leaflet
-    filedata = filedata.replace(
+    index_data = index_data.replace(
         '<link rel="stylesheet" href="leaflet/%s/leaflet.css">' % LEAFLET_VERSION,
         '<link rel="stylesheet" href="https://unpkg.com/leaflet@%s/dist/leaflet.css"\n        integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="\n        crossorigin=""/>' % LEAFLET_VERSION)
-    filedata = filedata.replace(
+    index_data = index_data.replace(
         '<script type = "text/javascript" src="leaflet/%s/leaflet.js"></script>' % LEAFLET_VERSION,
         '<script src="https://unpkg.com/leaflet@%s/dist/leaflet.js"\n        integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="\n        crossorigin="">\n    </script>' % LEAFLET_VERSION)
     # Bootstrap
-    filedata = filedata.replace(
+    index_data = index_data.replace(
         '<link rel="stylesheet" href="bootstrap-%s-dist/css/bootstrap.min.css">' % BOOTSTRAP_VERSION,
         '<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/%s/css/bootstrap.min.css"\n        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"\n        crossorigin="anonymous">' % BOOTSTRAP_VERSION)
-    filedata = filedata.replace(
+    index_data = index_data.replace(
         '<script src="bootstrap-%s-dist/js/bootstrap.min.js"></script>' % BOOTSTRAP_VERSION,
         '<script src="https://stackpath.bootstrapcdn.com/bootstrap/%s/js/bootstrap.min.js"\n        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"\n        crossorigin="anonymous"></script>' % BOOTSTRAP_VERSION)
+    index_aprender_data = index_aprender_data.replace(
+        '<link rel="stylesheet" href="../bootstrap-%s-dist/css/bootstrap.min.css">' % BOOTSTRAP_VERSION,
+        '<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/%s/css/bootstrap.min.css"\n        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"\n        crossorigin="anonymous">' % BOOTSTRAP_VERSION)
+    index_aprender_data = index_aprender_data.replace(
+        '<script src="../bootstrap-%s-dist/js/bootstrap.min.js"></script>' % BOOTSTRAP_VERSION,
+        '<script src="https://stackpath.bootstrapcdn.com/bootstrap/%s/js/bootstrap.min.js"\n        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"\n        crossorigin="anonymous"></script>' % BOOTSTRAP_VERSION)
     # jQuery (for Bootstrap)
-    filedata = filedata.replace(
+    index_data = index_data.replace(
         '<script src="jquery-%s.slim.min.js"></script>' % JQUERY_VERSION,
         '<script src="https://code.jquery.com/jquery-%s.slim.min.js"\n        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"\n        crossorigin="anonymous"></script>' % JQUERY_VERSION)
+    index_aprender_data = index_aprender_data.replace(
+        '<script src="../jquery-%s.slim.min.js"></script>' % JQUERY_VERSION,
+        '<script src="https://code.jquery.com/jquery-%s.slim.min.js"\n        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"\n        crossorigin="anonymous"></script>' % JQUERY_VERSION)
 
-    # Save edited prod index file
+    # Save edited prod files
     with open("%s/index.html" % output_prod_folder, 'w') as file:
-        file.write(filedata)
+        file.write(index_data)
+    with open("%s/aprender/index.html" % output_prod_folder, 'w') as file:
+        file.write(index_aprender_data)
 
 def website(args):
     # Retrieve the list of uploaded videos

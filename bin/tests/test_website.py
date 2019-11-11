@@ -245,25 +245,34 @@ class TestGenerateWebsite(unittest.TestCase):
         # Check prod folder exist
         self.assertTrue(os.path.exists("../website/prod"))
 
-        # Check the expected values are in the prod index file
+        # Check the expected values are in the prod files
         with open("../website/prod/index.html", 'r') as file :
-            filedata = file.read()
+            index_data = file.read()
+        with open("../website/prod/aprender/index.html", 'r') as file :
+            index_aprender_data = file.read()
         # The prod file points to the CDN copy of the leaflet library
-        self.assertTrue('<link rel="stylesheet" href="https://unpkg.com/leaflet@%s/dist/leaflet.css"\n        integrity="sha512-' % website.LEAFLET_VERSION in filedata)
-        self.assertTrue('<script src="https://unpkg.com/leaflet@%s/dist/leaflet.js"\n        integrity="sha512-' % website.LEAFLET_VERSION in filedata)
-        # The prod file points to the CDN copy of the Bootstrap library
-        self.assertTrue('<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/%s/css/bootstrap.min.css"\n        integrity="sha384-' % website.BOOTSTRAP_VERSION in filedata)
-        self.assertTrue('<script src="https://stackpath.bootstrapcdn.com/bootstrap/%s/js/bootstrap.min.js"\n        integrity="sha384-' % website.BOOTSTRAP_VERSION in filedata)
-        # The prod file points to the CDN copy of the jQuery library
-        self.assertTrue('<script src="https://code.jquery.com/jquery-%s.slim.min.js"\n        integrity="sha384-' % website.JQUERY_VERSION in filedata)
+        self.assertTrue('<link rel="stylesheet" href="https://unpkg.com/leaflet@%s/dist/leaflet.css"\n        integrity="sha512-' % website.LEAFLET_VERSION in index_data)
+        self.assertTrue('<script src="https://unpkg.com/leaflet@%s/dist/leaflet.js"\n        integrity="sha512-' % website.LEAFLET_VERSION in index_data)
+        # The prod files point to the CDN copy of the Bootstrap library
+        self.assertTrue('<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/%s/css/bootstrap.min.css"\n        integrity="sha384-' % website.BOOTSTRAP_VERSION in index_data)
+        self.assertTrue('<script src="https://stackpath.bootstrapcdn.com/bootstrap/%s/js/bootstrap.min.js"\n        integrity="sha384-' % website.BOOTSTRAP_VERSION in index_data)
+        self.assertTrue('<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/%s/css/bootstrap.min.css"\n        integrity="sha384-' % website.BOOTSTRAP_VERSION in index_aprender_data)
+        self.assertTrue('<script src="https://stackpath.bootstrapcdn.com/bootstrap/%s/js/bootstrap.min.js"\n        integrity="sha384-' % website.BOOTSTRAP_VERSION in index_aprender_data)
+        # The prod files point to the CDN copy of the jQuery library
+        self.assertTrue('<script src="https://code.jquery.com/jquery-%s.slim.min.js"\n        integrity="sha384-' % website.JQUERY_VERSION in index_data)
+        self.assertTrue('<script src="https://code.jquery.com/jquery-%s.slim.min.js"\n        integrity="sha384-' % website.JQUERY_VERSION in index_aprender_data)
 
         # Confirm the local copies of the libraries are not present in the prd folder
-        # Only these 4 files should exist in the prd folder
-        expected_prd_files = ['data.js', 'index.html', 'script.js', 'style.css']
+        # Only these 5 files/folders should exist in the prd folder
+        expected_prd_files = ['aprender', 'data.js', 'index.html', 'script.js', 'style.css']
         prd_files = os.listdir("../website/prod/")
         self.assertEqual(len(prd_files), len(expected_prd_files))
         for f in expected_prd_files:
             self.assertTrue(f in prd_files)
+        # Confirm the temp or local videos folders are not copied to the prd folder
+        prd_aprender_files = os.listdir("../website/prod/aprender")
+        self.assertFalse("temp" in prd_aprender_files)
+        self.assertFalse("videos" in prd_aprender_files)
 
 
 class TestWebsite(unittest.TestCase):
