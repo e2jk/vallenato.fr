@@ -155,30 +155,30 @@ class TestInitMain(unittest.TestCase):
         yt_tutorial_video = MagicMock()
         a_gtatac.return_value = ("Bonita cancion", "Super cantante", "El Vallenatero Francés", "UC_8R235jg1ld6MCMOzz2khQ", yt_tutorial_video)
         # Create a copy of the index.html file that is going to be edited
-        shutil.copy("../aprender/index.html", "../aprender/index.html.bak")
+        shutil.copy("../website/src/aprender/index.html", "../website/src/aprender/index.html.bak")
         # Run the init(), will run the full --aprender branch
         target.init()
         # Confirm that a new tutorial page has been created in the temporary folder
-        self.assertTrue(os.path.exists("../aprender/blabla-bla.html"))
+        self.assertTrue(os.path.exists("../website/src/aprender/blabla-bla.html"))
         # Confirm that the content of the new template has been updated
-        with open("../aprender/blabla-bla.html", 'r') as file :
+        with open("../website/src/aprender/blabla-bla.html", 'r') as file :
             filedata = file.read()
             self.assertTrue("<title>Bonita cancion - Super cantante</title>" in filedata)
             self.assertTrue('<span id="nameCurrent">Bonita cancion - Super cantante</span>' in filedata)
             self.assertTrue('{"id": "oPEirA4pXdg", "start": 0, "end": 999}' in filedata)
             self.assertTrue('var fullVersion = "q6cUzC6ESZ8";' in filedata)
         # Confirm that a temporary file with the content to be added to the index page has been created
-        with open("../aprender/index.html", 'r') as file :
+        with open("../website/src/aprender/index.html", 'r') as file :
             filedata = file.read()
             self.assertTrue('\n              <li><a href="blabla-bla.html">Bonita cancion - Super cantante</a> - NNmNNs en NN partes</li>' in filedata)
             self.assertTrue('\n              <li>Bonita cancion - Super cantante: <a href="https://www.youtube.com/watch?v=oPEirA4pXdg">Tutorial en YouTube</a> por <a href="https://www.youtube.com/channel/UC_8R235jg1ld6MCMOzz2khQ">El Vallenatero Francés</a></li>' in filedata)
         # Confirm the webbrowser is called to be opened to the new template's page
-        mockwbopen.assert_called_once_with("../aprender/blabla-bla.html", autoraise=True, new=2)
+        mockwbopen.assert_called_once_with("../website/src/aprender/blabla-bla.html", autoraise=True, new=2)
         # Delete that new tutorial page
-        os.remove("../aprender/blabla-bla.html")
+        os.remove("../website/src/aprender/blabla-bla.html")
         # Restore the index page
-        os.remove("../aprender/index.html")
-        shutil.move("../aprender/index.html.bak", "../aprender/index.html")
+        os.remove("../website/src/aprender/index.html")
+        shutil.move("../website/src/aprender/index.html.bak", "../website/src/aprender/index.html")
 
     @patch("website.get_uploaded_videos")
     def test_website(self, w_guv):

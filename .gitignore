@@ -1,5 +1,3 @@
-aprender/temp/
-aprender/videos/
 bin/__pycache__/
 bin/tests/__pycache__/
 bin/.coverage
@@ -8,6 +6,8 @@ bin/vallenato.fr-oauth2.json
 bin/data/uploaded_videos_dump.json
 html_dev/coverage/
 website/prod/
+website/src/aprender/temp/
+website/src/aprender/videos/
 website/src/leaflet
 website/src/bootstrap-[0-9].[0-9].[0-9]-dist
 website/src/jquery-[0-9].[0-9].[0-9].slim.min.js
