@@ -13,6 +13,5 @@ https://vallenato.fr - https://vallenato.fr/aprender/
 Estructura de este Repository
 -----------------------------
 
-* [`./aprender`](../../tree/master/aprender): Los tutoriales publicados en https://vallenato.fr/aprender/
-* [`./bin`](../../tree/master/bin): Script para crear nuevos tutoriales.
-* [`./website`](../../tree/master/website): El sitio https://vallenato.fr/
+* [`./bin`](../../tree/master/bin): Script para gestionar el sitio: meter al dia la lista de videos en el sition, crear nuevos tutoriales.
+* [`./website`](../../tree/master/website/src): El sitio https://vallenato.fr/, incluyendo los tutoriales de [`/aprender`](../../tree/master/website/src/aprender)
