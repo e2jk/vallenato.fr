@@ -220,7 +220,13 @@ def create_new_tutorial_page(tutorial_slug, song_title, song_author, tutorial_id
         file.write(filedata)
 
 def index_new_tutorial_link(tutorial_slug, song_title, song_author):
-    return '\n              <li><a href="%s.html">%s - %s</a> - NNmNNs en NN partes</li>' % (tutorial_slug, song_title, song_author)
+    return """\n              <div class="card mb-3" style="max-width: 17rem;">
+                <div class="card-body">
+                  <h5 class="card-title">%s - %s</h5>
+                  <a href="%s.html" class="stretched-link text-hide">Ver el tutorial</a>
+                </div>
+                <div class="card-footer"><small class="text-muted">NNmNNs en NN partes</small></div>
+              </div>""" % (song_title, song_author, tutorial_slug)
 
 def index_new_youtube_links(song_title, song_author, tutorial_url, tutocreator_channel, tutocreator):
     return '\n              <li>%s - %s: <a href="%s">Tutorial en YouTube</a> por <a href="https://www.youtube.com/channel/%s">%s</a></li>' % (song_title, song_author, tutorial_url, tutocreator_channel, tutocreator)
@@ -245,9 +251,17 @@ def update_index_page(tutorial_slug, song_title, song_author, tutorial_url, tuto
         filedata = file.read()
 
     # Add a link to the new tutorial's page
-    end_section = '\n            </ul>\n          </div>\n          <div class="col-md">\n            <h2>Otros recursos</h2>'
+    end_section = """
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md">
+            <h2>Otros recursos</h2>"""
     new_link = index_new_tutorial_link(tutorial_slug, song_title, song_author)
-    filedata = filedata.replace(end_section, "%s%s" %(new_link, end_section))
+    tut_number = filedata.count("<!-- Tutorial ") + 1
+    #TODO: add "wrap every N on ZZ" depending on the tutorial's number
+    filedata = filedata.replace(end_section, "\n              <!-- Tutorial %d -->%s\n%s" %(tut_number, new_link, end_section))
 
     # Add links to the tutorial and the author's YouTube channel
     end_section = '\n            </ul>\n          </div>\n        </div>\n      </div>\n    </main>\n    <!-- End page content -->'

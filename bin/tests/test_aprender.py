@@ -401,7 +401,13 @@ class TestUpdateIndexPage(unittest.TestCase):
         # Confirm that the index page has been updated
         with open("../website/src/aprender/index.html", 'r') as file :
             filedata = file.read()
-            self.assertTrue('</li>\n              <li><a href="blabla-bla.html">Bonita cancion - Super cantante</a> - NNmNNs en NN partes</li>\n            </ul>' in filedata)
+            self.assertTrue("""              <div class="card mb-3" style="max-width: 17rem;">
+                <div class="card-body">
+                  <h5 class="card-title">Bonita cancion - Super cantante</h5>
+                  <a href="blabla-bla.html" class="stretched-link text-hide">Ver el tutorial</a>
+                </div>
+                <div class="card-footer"><small class="text-muted">NNmNNs en NN partes</small></div>
+              </div>""" in filedata)
             self.assertTrue('</a></li>\n              <li>Bonita cancion - Super cantante: <a href="https://www.youtube.com/watch?v=oPEirA4pXdg">Tutorial en YouTube</a> por <a href="https://www.youtube.com/channel/UC_8R235jg1ld6MCMOzz2khQ">El Vallenatero Francés</a></li>\n            </ul>' in filedata)
         # Restore the index page
         os.remove("../website/src/aprender/index.html")
@@ -443,7 +449,13 @@ class TestAprender(unittest.TestCase):
         # Confirm that a temporary file with the content to be added to the index page has been created
         with open("../website/src/aprender/temp/blabla-bla/index-dummy.html", 'r') as file :
             filedata = file.read()
-            self.assertTrue('\n              <li><a href="blabla-bla.html">Bonita cancion - Super cantante</a> - NNmNNs en NN partes</li>' in filedata)
+            self.assertTrue("""              <div class="card mb-3" style="max-width: 17rem;">
+                <div class="card-body">
+                  <h5 class="card-title">Bonita cancion - Super cantante</h5>
+                  <a href="blabla-bla.html" class="stretched-link text-hide">Ver el tutorial</a>
+                </div>
+                <div class="card-footer"><small class="text-muted">NNmNNs en NN partes</small></div>
+              </div>""" in filedata)
             self.assertTrue('\n              <li>Bonita cancion - Super cantante: <a href="https://www.youtube.com/watch?v=oPEirA4pXdg">Tutorial en YouTube</a> por <a href="https://www.youtube.com/channel/UC_8R235jg1ld6MCMOzz2khQ">El Vallenatero Francés</a></li>' in filedata)
         # Delete the temporary folder
         shutil.rmtree("../website/src/aprender/temp/blabla-bla/")
