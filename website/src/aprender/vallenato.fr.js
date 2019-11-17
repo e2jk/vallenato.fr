@@ -4,12 +4,9 @@
 var localPlayer = false;
 var editMode = false;
 var currentVideo;
-var videoTitle;
 var player;
 var playerConfig;
 var videoJustChanged;
-var totalDuration = 0;
-var progressArray = [];
 
 // Inspired from https://stackoverflow.com/a/11582513/185053 , modified for JSLint
 function getURLParameter(name) {
@@ -43,6 +40,7 @@ function determineCurrentVideoParameter() {
   if (!isNumeric(currentVideo)) {
     window.location = "?p=1" + (localPlayer ? "&local=1" : "") + (editMode ? "&editar=1" : "");
   }
+  currentVideo = parseInt(currentVideo);
   currentVideo -= 1; //URL Parameter/visible ID is 1-based, while array is 0-based
   // currentVideo == -1 means playing the complete video
   if (currentVideo < -1) {
@@ -64,44 +62,24 @@ function updateUI(updateURL) {
     window.history.pushState({}, document.title, newURL);
   }
 
-  // Show the name of the current video
-  var updatedTitle = videoTitle;
-  if (editMode) {
-    updatedTitle += " (edit mode)";
+  // Set the current video as active in the partsList bar
+  $("#partsList").children().each(function (i) {
+    if (i === currentVideo) {
+      $(this).addClass("active");
+    } else {
+      $(this).removeClass("active");
+    }
+  });
+  // Version completa
+  if (currentVideo === -1) {
+    $("#versionCompleta").addClass("active");
   } else {
-    updatedTitle += ((currentVideo === -1) ? ", versión completa" : ", Parte " + (currentVideo + 1));
-  }
-  document.title = updatedTitle;
-  document.getElementById("nameCurrent").innerHTML = updatedTitle;
-
-  // Set the current video as active in the navigation bar
-  // First check that the element has child nodes
-  var ul = document.getElementById("navigation");
-  if (ul.hasChildNodes()) {
-    // First node is a text node, start with 1 and use i-1 to compare to currentVideo
-    ul.childNodes.forEach(function (child, i) {
-      child.className = (i - 1 === currentVideo) ? "active" : "";
-    });
+    $("#versionCompleta").removeClass("active");
   }
 
   // Show the appropriate buttons
   document.getElementById("previousButton").style.visibility = (currentVideo < 1) ? "hidden" : "visible";
   document.getElementById("nextButton").style.visibility = (currentVideo > videos.length - 2) ? "hidden" : "visible";
-  document.getElementById("versionCompleta").style.display = (currentVideo === -1) ? "none" : "inline";
-
-  // Update the progress bar (if not in Edit Mode)
-  if (!editMode) {
-    var pBar = document.getElementById("progress");
-    if (currentVideo > -1 && currentVideo < videos.length) {
-      pBar.style.display = "inline";
-      pBar.max = totalDuration;
-      pBar.value = progressArray[currentVideo];
-      pBar.getElementsByTagName("span")[0].innerHTML = Math.floor((100 / totalDuration) * progressArray[currentVideo]);
-    } else {
-      // If full tutorial or complete video, hide the progress bar
-      pBar.style.display = "none";
-    }
-  }
 }
 
 function getVideoValues() {
@@ -185,17 +163,26 @@ function changeVideo(updateURL) {
 function changeVideoEvent(evt) {
   "use strict";
   if ("INPUT" === evt.target.nodeName) {
+    // When in Edit Mode, and clicking inside a timestamp input element
     // Don't restart this part if we were already playing it
-    if (evt.target.parentNode.parentNode.num === currentVideo) {
+    if (parseInt(evt.target.parentNode.parentNode.id.substring(4)) === currentVideo) {
       return;
     }
-    currentVideo = evt.target.parentNode.parentNode.num;
+    currentVideo = evt.target.parentNode.parentNode.id.substring(4);
+  } else if ("SPAN" === evt.target.nodeName) {
+    currentVideo = evt.target.parentNode.id.substring(4);
+  } else if ("BUTTON" === evt.target.nodeName) {
+    currentVideo = evt.target.id.substring(4);
   }
-  if ("DIV" === evt.target.nodeName) {
-    currentVideo = evt.target.parentNode.num;
-  } else if ("LI" === evt.target.nodeName) {
-    currentVideo = evt.target.num;
+
+  if(currentVideo.startsWith("Full")) {
+    // This is part of Full videos, update currentVideo accordingly
+    currentVideo = parseInt(currentVideo.substring(4)) + videos.length;
+  } else {
+    // Make sure it's numeric, since it comes from the id that's a string
+    currentVideo = parseInt(currentVideo);
   }
+
   changeVideo(true);
 }
 
@@ -353,16 +340,6 @@ function str_pad_left(string,pad,length) {
   return (new Array(length+1).join(pad)+string).slice(-length);
 }
 
-function populateProgressArray() {
-  "use strict";
-  // Construct the array used for the progress bar and calculate the total duration of the tutorial
-  videos.forEach(function (video) {
-    var duration = video.end - video.start;
-    progressArray.push(totalDuration);
-    totalDuration += duration;
-  });
-}
-
 function previousVideo() {
   "use strict";
   // The button can't go lower than 0 (by design), but with the "p" shortcut we want to be able to go to the Full Version
@@ -373,20 +350,6 @@ function previousVideo() {
 function nextVideo() {
   "use strict";
   currentVideo = (currentVideo < videos.length - 2) ? currentVideo + 1 : videos.length - 1;
-  changeVideo(true);
-}
-
-function progressbarClicked(evt) {
-  "use strict";
-  var desiredDuration = Math.floor(evt.offsetX * totalDuration / evt.target.offsetWidth);
-  var i = 0;
-  while (desiredDuration > progressArray[i]) {
-    if (i > videos.length) {
-      break;
-    } // Safety check
-    i += 1;
-  }
-  currentVideo = i - 1; // The video that contains the timestamp clicked on
   changeVideo(true);
 }
 
@@ -496,18 +459,7 @@ function newPart() {
   // The end time is the end of the video
   var endTime = parseInt(player.duration + 1);
   // Add new UI elements
-  var ul = document.getElementById("navigation");
-  var li = document.createElement("li");
-  li.appendChild(document.createTextNode("Parte " + (i + 1)));
-  var editDiv = document.createElement("div");
-  editDiv.innerHTML = "<input class='editInput' type='text' id='startVal" + i + "' value='" + startTime + "'>-<input class='editInput' type='text' id='endVal" + i + "' value='" + endTime + "'>";
-  li.appendChild(editDiv);
-  li.addEventListener("click", changeVideoEvent, false);
-  li.num = i;
-  ul.appendChild(li);
-  // Pressing Enter in one of the time input boxes saves the changes
-  document.getElementById("startVal" + i).addEventListener("keydown", function (e) { if (e.keyCode === 13) { saveTimestamps(); } }, false);
-  document.getElementById("endVal" + i).addEventListener("keydown", function (e) { if (e.keyCode === 13) { saveTimestamps(); } }, false);
+  partsList.insertAdjacentHTML('beforeend', newPartMarkup(i, false, startTime, endTime));
   // Add stub for this new part in the videos array
   videos.push({"id": videos[videos.length - 1].id, "start": startTime, "end": endTime});
   // Start playing this new part
@@ -542,8 +494,10 @@ function saveTimestamps() {
     document.getElementById("outputJS").style.color = "black";
   }, 1500);
   // Update the duration information and print that out to the console
-  totalDuration = 0;
-  populateProgressArray();
+  var totalDuration = 0;
+  videos.forEach(function (video) {
+    totalDuration += video.end - video.start;
+  });
   var totDur = "totalDuration: " + totalDuration + "s - " + str_pad_left(Math.floor(totalDuration / 60),"0",2) + "m" + str_pad_left(totalDuration % 60,"0",2) + "s en " +  videos.length + " partes";
   console.log(totDur);
   // Restart playing the current part, to give sensory feedback to the user that something happened
@@ -560,64 +514,49 @@ function endButton() {
   document.getElementById("endVal" + currentVideo).value = parseInt(player.currentTime);
 }
 
+function newPartMarkup(i, full, startTime, endTime) {
+  "use strict";
+  var newPartContent = `<button id="part` + (full ? "Full" : "") + i + `" class="list-group-item list-group-item-action" onclick="changeVideoEvent(event);">` + (full ? "Full " : "Parte ") + (i + 1);
+  if (!full && editMode) {
+    // Input for new timeslots only supported for regular parts, not Full parts
+    newPartContent += "<span class='d-inline-block ml-1'><input class='editInput' type='text' id='startVal" + i + "' onkeydown='(function (e) { if (e.keyCode === 13) { saveTimestamps(); } })(event);' value='" + startTime + "'>-<input class='editInput' type='text' id='endVal" + i + "' onkeydown='(function (e) { if (e.keyCode === 13) { saveTimestamps(); } })(event);' value='" + endTime + "'></span>";
+  }
+  newPartContent += `</button>`;
+  return newPartContent;
+}
+
 function createUI() {
   "use strict";
   if (editMode) {
     // Adapt UI for Edit Mode
-    document.getElementById("progress").style.display = "none";
-    // Add the Edit Box at the end of the navigation section
-    var editBoxContent =  '<div id="newPart">Añadir nueva parte</div>';
-    editBoxContent +=     '<div id="startButton">Define start time</div>';
-    editBoxContent +=     '<div id="endButton">Define end time</div>';
-    editBoxContent +=     '<div id="saveTimestamps">Guardar cambios</div>';
-    editBoxContent +=     '<textarea id="outputJS">';
-    var editBox = document.createElement("div");
-    editBox.innerHTML = editBoxContent;
-    document.getElementById("navigation").parentNode.appendChild(editBox);
+    $("#editBox").removeClass("d-none");
+    // Button click events
     document.getElementById("newPart").addEventListener("click", newPart, false);
     document.getElementById("saveTimestamps").addEventListener("click", saveTimestamps, false);
     document.getElementById("startButton").addEventListener("click", startButton, false);
     document.getElementById("endButton").addEventListener("click", endButton, false);
   }
-  var ul = document.getElementById("navigation");
+  var partsList = document.getElementById("partsList");
+  var partsListContent = "";
   videos.forEach(function (vid, i) {
-    var li = document.createElement("li");
-    li.appendChild(document.createTextNode("Parte " + (i + 1)));
-    if (editMode) {
-      var editDiv = document.createElement("div");
-      editDiv.innerHTML = "<input class='editInput' type='text' id='startVal" + i + "' value='" + vid.start + "'>-<input class='editInput' type='text' id='endVal" + i + "' value='" + vid.end + "'>";
-      li.appendChild(editDiv);
-    }
-    li.addEventListener("click", changeVideoEvent, false);
-    li.num = i;
-    ul.appendChild(li);
-    if (editMode) {
-      // Pressing Enter in one of the time input boxes saves the changes
-      document.getElementById("startVal" + i).addEventListener("keydown", function (e) { if (e.keyCode === 13) { saveTimestamps(); } }, false);
-      document.getElementById("endVal" + i).addEventListener("keydown", function (e) { if (e.keyCode === 13) { saveTimestamps(); } }, false);
-    }
+    partsListContent += newPartMarkup(i, false, vid.start, vid.end);
   });
+  partsList.innerHTML = partsListContent;
   if (typeof videosFullTutorial !== 'undefined') {
+    var partsListFullContent = "";
     videosFullTutorial.forEach(function (vid, i) {
-      var li = document.createElement("li");
-      li.appendChild(document.createTextNode("Full " + (i + 1)));
-      li.addEventListener("click", changeVideoEvent, false);
-      li.num = (i + videos.length);
-      ul.appendChild(li);
+      partsListFullContent += newPartMarkup(i, true, null, null);
     });
+    document.getElementById("partsListFull").innerHTML = partsListFullContent;
   }
-
-  // Save the initial Title, as it contains the name of the current song
-  videoTitle = document.title;
 
   if (localPlayer) {
     // Link to local index page instead of online version on vallenato.fr
-    document.getElementById("linkAndName").childNodes[1].href = "index.html?local=1";
+    document.getElementById("aprenderLink").href = "index.html?local=1";
   }
 
   document.getElementById("previousButton").addEventListener("click", previousVideo, false);
   document.getElementById("nextButton").addEventListener("click", nextVideo, false);
-  document.getElementById("progress").addEventListener("click", progressbarClicked, false);
   document.getElementById("versionCompleta").addEventListener("click", versionCompletaClicked, false);
   document.getElementById("slowPlayback").addEventListener("CheckboxStateChange", updatePlaybackSpeed, false);
   document.addEventListener("keydown", keyPressed, false); // Keyboard shortcuts
@@ -629,7 +568,6 @@ function createUI() {
 determineLocalOrYouTubePlayer();
 determineEditMode();
 determineCurrentVideoParameter();
-populateProgressArray();
 window.onload = function () {
   "use strict";
   createUI();

@@ -1,3 +1,4 @@
+/* General */
 main > .container-fluid {
   padding: 60px 15px 0;
 }
@@ -8,11 +9,11 @@ main > .container-fluid {
   padding-right: 15px;
   padding-left: 15px;
 }
-
-
 body {
   font-family: Ubuntu, sans-serif;
 }
+
+/* Index */
 #map {
   height: 500px;
 }
@@ -46,4 +47,9 @@ body {
   .country-card, #list .list-group-item{
     padding: .5rem 1rem;
   }
+}
+
+/* Tutorial */
+.editInput{
+  width: 50px;
 }
