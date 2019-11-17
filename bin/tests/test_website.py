@@ -231,10 +231,6 @@ class TestSaveWebsiteData(unittest.TestCase):
         # Check that it starts with the JS bits (and not JSON)
         self.assertEqual(content[0], "var locations = {\n")
         self.assertEqual(content[-1], "};")
-        # Check some random lines
-        self.assertEqual(content[10], "        \"tags\": [\n")
-        self.assertEqual(content[63], "        \"title\": \"Esa, desde Aroeira, Portugal\"\n")
-        self.assertEqual(content[309], "        \"description\": \"Para aprender a tocar esta canci\\u00f3n: https://vallenato.fr/aprender/la-creciente.html\\nCimarrones, Nari\\u00f1o, Colombia, 08/08/2019\\nLa Creciente - Binomio de Oro\",\n")
         # Delete the temporary file created by the test
         os.remove(temp_file)
 
