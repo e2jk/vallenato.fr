@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es" class="h-100">
+  <head>
+    <title>TITLE</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+    <link rel="stylesheet" href="../bootstrap-4.3.1-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../style.css">
+  </head>
+  <body class="d-flex flex-column h-100">
+    <!-- Fixed navbar -->
+    <header>
+      <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <a class="navbar-brand" href="/">El Vallenatero Francés</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="/">Home</a>
+            </li>
+            <li class="nav-item active">
+              <a id="aprenderLink" class="nav-link" href="/aprender/">Aprender a tocar el Acordeón Vallenato <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="https://www.youtube.com/channel/UC_8R235jg1ld6MCMOzz2khQ">Canal de YouTube</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+    <!-- End fixed navbar -->
+
+
+    <!-- Begin page content -->
+    <main role="main" class="flex-shrink-0">
+      <div class="container-fluid">
+        <h1 id="tutorialTitle">TITLE</h1>
+        <div class="row">
+          <div class="col-md order-md-2 mb-2">
+            <section id="player" class="embed-responsive embed-responsive-16by9">
+              <div id="videoPlayer"></div>
+            </section>
+          </div>
+          <div class="col-md-2 order-md-1">
+            <section>
+              <div class="row justify-content-around mb-2">
+                <div class="col px-md-2">
+                  <button id="previousButton" class="btn btn-outline-secondary w-100 px-0" type="submit">Previa</button>
+                </div>
+                <div class="col px-md-2">
+                  <button id="nextButton" class="btn btn-outline-secondary w-100 px-0" type="submit">Siguiente</button>
+                </div>
+              </div>
+              <div id="partsList" class="list-group mb-2"></div>
+              <div id="editBox" class="list-group mb-2 d-none">
+                <button id="newPart" class="btn btn-outline-primary mb-1" type="submit">Añadir nueva parte</button>
+                <button id="startButton" class="btn btn-outline-secondary mb-1" type="submit">Define start time</button>
+                <button id="endButton" class="btn btn-outline-secondary mb-1" type="submit">Define end time</button>
+                <button id="saveTimestamps" class="btn btn-outline-success mb-1" type="submit">Guardar cambios</button>
+                <textarea id="outputJS"></textarea>
+              </div>
+              <div id="partsListFull" class="list-group mb-2"></div>
+              <div class="list-group mb-2">
+                <button id="versionCompleta" class="list-group-item list-group-item-action">Versión completa</button>
+              </div>
+              <div>
+                <label class="optionCheckbox"><input type="checkbox" id="slowPlayback"> Lento</label><br/>
+                <label class="optionCheckbox"><input type="checkbox" id="repeatVideo" checked="checked"> Repetir</label>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </main>
+    <!-- End page content -->
+
+
+    <!-- Begin fixed footer -->
+    <footer class="footer mt-auto py-3">
+      <div class="container">
+        <span class="text-muted">&copy; 2019 El Vallenatero Francés</span>
+      </div>
+    </footer>
+    <!-- End fixed footer -->
+
+
+    <!-- JavaScript by default at the bottom of the body, per https://developers.google.com/apps-script/guides/html/best-practices#load_javascript_last -->
+    <script src="../jquery-3.3.1.slim.min.js"></script>
+    <script src="../bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>
+    <script type = "text/javascript" src="tutoriales.js"></script>
+    <script type = "text/javascript" src="aprender.js"></script>
+  </body>
+</html>

@@ -1,12 +1,17 @@
 // Define [global] variables
 /*jslint browser: true, white, devel: true */
-/*global window, videos, videosFullTutorial, fullVersion, YT */
+/*global window, tutoriales, YT */
 var localPlayer = false;
 var editMode = false;
 var currentVideo;
 var player;
 var playerConfig;
 var videoJustChanged;
+var tutorial_slug;
+var videos;
+var videosFullTutorial;
+var fullVersion;
+var tutorialTitle;
 
 // Inspired from https://stackoverflow.com/a/11582513/185053 , modified for JSLint
 function getURLParameter(name) {
@@ -38,18 +43,18 @@ function determineCurrentVideoParameter() {
   "use strict";
   currentVideo = getURLParameter("p");
   if (!isNumeric(currentVideo)) {
-    window.location = "?p=1" + (localPlayer ? "&local=1" : "") + (editMode ? "&editar=1" : "");
+    window.location = "?tutorial=" + tutorial_slug + "&p=1" + (localPlayer ? "&local=1" : "") + (editMode ? "&editar=1" : "");
   }
   currentVideo = parseInt(currentVideo);
   currentVideo -= 1; //URL Parameter/visible ID is 1-based, while array is 0-based
   // currentVideo == -1 means playing the complete video
   if (currentVideo < -1) {
-    window.location = "?p=1" + (localPlayer ? "&local=1" : "") + (editMode ? "&editar=1" : "");
+    window.location = "?tutorial=" + tutorial_slug + "&p=1" + (localPlayer ? "&local=1" : "") + (editMode ? "&editar=1" : "");
   }
   if (currentVideo > videos.length - 1) {
     // If this video has no full tutorial videos, go back to the latest regular part
     if (typeof videosFullTutorial == 'undefined' || (videosFullTutorial && currentVideo > videos.length + videosFullTutorial.length - 1)) {
-      window.location = "?p=1" + (localPlayer ? "&local=1" : "") + (editMode ? "&editar=1" : "");
+      window.location = "?tutorial=" + tutorial_slug + "&p=1" + (localPlayer ? "&local=1" : "") + (editMode ? "&editar=1" : "");
     }
   }
 }
@@ -58,7 +63,7 @@ function updateUI(updateURL) {
   "use strict";
   if (updateURL) {
     // Change the URL, so that if the user refreshes the page he gets back to this specific part
-    var newURL = "?p=" + (currentVideo + 1) + (localPlayer ? "&local=1" : "") + (editMode ? "&editar=1" : "");
+    var newURL = "?tutorial=" + tutorial_slug + "&p=" + (currentVideo + 1) + (localPlayer ? "&local=1" : "") + (editMode ? "&editar=1" : "");
     window.history.pushState({}, document.title, newURL);
   }
 
@@ -105,10 +110,8 @@ function getVideoValues() {
 
   if (localPlayer) {
     // The local videos are available at:
-    // videos/<folder with the same name as current file>/<YouTube ID>.mp4
-    // Get the name of the current file, i.e. after last / and before .html
-    var localVideoFolderName = window.location.href.split("/").slice(-1)[0].split(".")[0];
-    localVideoURL = "videos/" + localVideoFolderName + "/" + videoId + ".mp4";
+    // videos/<tutorial slug>/<YouTube ID>.mp4
+    localVideoURL = "videos/" + tutorial_slug + "/" + videoId + ".mp4";
   }
 
   return{"videoId": videoId, "localVideoURL": localVideoURL, "startSeconds": startSeconds, "endSeconds": endSeconds};
@@ -311,6 +314,25 @@ function setUpYouTubeVideoPlayer() {
       "onStateChange": onStateChange
     }
   };
+}
+
+function determineTutorial() {
+  "use strict";
+  // var tutorial_slug = "10000-litros-de-old-parr";
+  tutorial_slug = getURLParameter("tutorial");
+  // TODO: handle invalid tutorial slug
+  tutoriales.forEach(function (tuto, i) {
+    if (tuto["slug"] === tutorial_slug) {
+      videos = tuto["videos"];
+      videosFullTutorial = tuto["videos_full_tutorial"];
+      fullVersion = tuto["full_version"];
+      if (tuto["author"]) {
+        tutorialTitle = tuto["title"] + " - " + tuto["author"];
+      } else {
+        tutorialTitle = tuto["title"];
+      }
+    }
+  });
 }
 
 function determineLocalOrYouTubePlayer() {
@@ -527,6 +549,9 @@ function newPartMarkup(i, full, startTime, endTime) {
 
 function createUI() {
   "use strict";
+  // Update page title
+  $("title").html(tutorialTitle);
+  $("#tutorialTitle").html(tutorialTitle);
   if (editMode) {
     // Adapt UI for Edit Mode
     $("#editBox").removeClass("d-none");
@@ -565,6 +590,7 @@ function createUI() {
 }
 
 // Perform some initial setup/calculations
+determineTutorial();
 determineLocalOrYouTubePlayer();
 determineEditMode();
 determineCurrentVideoParameter();
