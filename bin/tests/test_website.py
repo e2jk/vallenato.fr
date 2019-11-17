@@ -259,8 +259,9 @@ class TestGenerateWebsite(unittest.TestCase):
         self.assertTrue('<script src="https://code.jquery.com/jquery-%s.slim.min.js"\n        integrity="sha384-' % website.JQUERY_VERSION in index_aprender_data)
 
         # Confirm the local copies of the libraries are not present in the prd folder
-        # Only these 5 files/folders should exist in the prd folder
-        expected_prd_files = ['aprender', 'data.js', 'index.html', 'script.js', 'style.css']
+        # Only these 6 files/folders should exist in the prd folder
+        # (sitemap.xml gets generated in a later step)
+        expected_prd_files = ['aprender', 'data.js', 'index.html', 'robots.txt', 'script.js', 'style.css']
         prd_files = os.listdir("../website/prod/")
         self.assertEqual(len(prd_files), len(expected_prd_files))
         for f in expected_prd_files:
@@ -272,6 +273,25 @@ class TestGenerateWebsite(unittest.TestCase):
         prd_aprender_videos_files = os.listdir("../website/prod/aprender/videos")
         self.assertFalse("TODO" in prd_aprender_videos_files)
         self.assertFalse("blabla-bla" in prd_aprender_videos_files)
+
+
+class TestGenerateSitemap(unittest.TestCase):
+    def test_generate_sitemap(self):
+        with open("tests/data/sample_locations_final_full.json") as in_file:
+            sample_locations = json.load(in_file)
+        with open("tests/data/sample_uploaded_videos_dump_full.json") as in_file:
+            sample_uploaded_videos = json.load(in_file)
+        website.generate_sitemap(website.SITEMAP_FILE, sample_locations, sample_uploaded_videos)
+        self.assertTrue(os.path.exists(website.SITEMAP_FILE))
+        # Check for the presence of some well-known URLs
+        with open(website.SITEMAP_FILE) as in_file:
+            sitemap_content = in_file.read()
+        self.assertTrue("<loc>https://vallenato.fr</loc>" in sitemap_content)
+        self.assertTrue("<loc>https://vallenato.fr/#mundo-entero</loc>" in sitemap_content)
+        self.assertTrue("<loc>https://vallenato.fr/#buesaco-narino-colombia</loc>" in sitemap_content)
+        self.assertTrue("<loc>https://vallenato.fr/#oye-bonita-buesaco-narino-colombia/KASEblFElVM</loc>" in sitemap_content)
+        self.assertTrue("<loc>https://vallenato.fr/aprender/</loc>" in sitemap_content)
+        self.assertTrue("<loc>https://vallenato.fr/aprender/aprender.html?tutorial=la-guanena</loc>" in sitemap_content)
 
 
 class TestWebsite(unittest.TestCase):
