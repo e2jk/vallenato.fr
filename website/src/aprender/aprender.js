@@ -12,6 +12,8 @@ var videos;
 var videosFullTutorial;
 var fullVersion;
 var tutorialTitle;
+var tutorialAuthor;
+var tutorialFullTitle;
 
 // Inspired from https://stackoverflow.com/a/11582513/185053 , modified for JSLint
 function getURLParameter(name) {
@@ -326,10 +328,11 @@ function determineTutorial() {
       videos = tuto["videos"];
       videosFullTutorial = tuto["videos_full_tutorial"];
       fullVersion = tuto["full_version"];
+      tutorialTitle = tuto["title"]
+      tutorialAuthor = tuto["author"];
+      tutorialFullTitle = tuto["title"];
       if (tuto["author"]) {
-        tutorialTitle = tuto["title"] + " - " + tuto["author"];
-      } else {
-        tutorialTitle = tuto["title"];
+        tutorialFullTitle += " - " + tuto["author"];
       }
     }
   });
@@ -489,26 +492,41 @@ function newPart() {
   changeVideo(true);
 }
 
+function getPartsTimestamps(vids) {
+  "use strict";
+  var outputJSPart = "";
+  vids.forEach(function (vid, i) {
+    var startTime = vids[i].start;
+    var endTime = vids[i].end;
+    if (vids === videos) {
+      if (isNumeric(document.getElementById("startVal" + i).value)) {
+        startTime = parseInt(document.getElementById("startVal" + i).value);
+      }
+      if (isNumeric(document.getElementById("endVal" + i).value)) {
+        endTime = parseInt(document.getElementById("endVal" + i).value);
+      }
+      vids[i].start = startTime;
+      vids[i].end = endTime;
+      // To handle the cases where the input was empty, repopulate with same value or default start/end times
+      document.getElementById("startVal" + i).value = startTime;
+      document.getElementById("endVal" + i).value = endTime;
+    }
+    outputJSPart += '      {"id": "' + vids[i].id + '", "start": ' + startTime + ', "end": ' + endTime + '}' + (i < vids.length - 1 ? ",": "") + '\n';
+  });
+  return outputJSPart;
+}
+
 function saveTimestamps() {
   "use strict";
-  var outputJS = "      var videos = [\n";
-  videos.forEach(function (vid, i) {
-    var startTime = 0;
-    if (isNumeric(document.getElementById("startVal" + i).value)) {
-      startTime = parseInt(document.getElementById("startVal" + i).value);
-    }
-    var endTime = parseInt(player.duration + 1);
-    if (isNumeric(document.getElementById("endVal" + i).value)) {
-      endTime = parseInt(document.getElementById("endVal" + i).value);
-    }
-    videos[i].start = startTime;
-    videos[i].end = endTime;
-    // To handle the cases where the input was empty, repopulate with same value or default start/end times
-    document.getElementById("startVal" + i).value = startTime;
-    document.getElementById("endVal" + i).value = endTime;
-    outputJS += '        {"id": "' + videos[i].id + '", "start": ' + startTime + ', "end": ' + endTime + '}' + (i < videos.length - 1 ? ",": "") + '   // ' + (i + 1) +'\n';
-  });
-  outputJS += "      ];";
+  var outputJS = `,
+  {
+    "slug": "` + tutorial_slug + `",
+    "author": "` + tutorialAuthor + `",
+    "title": "` + tutorialTitle + `",
+    "videos": [\n` + getPartsTimestamps(videos) + `    ],
+    "videos_full_tutorial": [\n` + getPartsTimestamps(videosFullTutorial) + `    ],
+    "full_version": "` + fullVersion + `"
+  }`;
   document.getElementById("outputJS").value = outputJS;
   // Temporarily change the color of the element containing the output JS
   document.getElementById("outputJS").style.color = "red";
@@ -550,8 +568,8 @@ function newPartMarkup(i, full, startTime, endTime) {
 function createUI() {
   "use strict";
   // Update page title
-  $("title").html(tutorialTitle);
-  $("#tutorialTitle").html(tutorialTitle);
+  $("title").html(tutorialFullTitle);
+  $("#tutorialFullTitle").html(tutorialFullTitle);
   if (editMode) {
     // Adapt UI for Edit Mode
     $("#editBox").removeClass("d-none");
