@@ -215,16 +215,19 @@ class TestGetTutorialSlug(unittest.TestCase):
 
 class TestGetSuggestedTutorialSlug(unittest.TestCase):
     def test_get_suggested_tutorial_slug_new(self):
-        (tutorials_path, tutorial_slug) = aprender.get_suggested_tutorial_slug("blabla bla")
+        tutorials_slugs = aprender.get_existing_tutorial_slug()
+        tutorial_slug = aprender.get_suggested_tutorial_slug("blabla bla", tutorials_slugs)
         self.assertEqual(tutorial_slug, "blabla-bla")
 
     def test_get_suggested_tutorial_slug_existing(self):
-        (tutorials_path, tutorial_slug) = aprender.get_suggested_tutorial_slug("Muere una Flor")
+        tutorials_slugs = aprender.get_existing_tutorial_slug()
+        tutorial_slug = aprender.get_suggested_tutorial_slug("Muere una Flor", tutorials_slugs)
         # There is already a tutorial with slug muere-una-flor
         self.assertEqual(tutorial_slug, "muere-una-flor-2")
 
     def test_get_suggested_tutorial_slug_existing_double(self):
-        (tutorials_path, tutorial_slug) = aprender.get_suggested_tutorial_slug("Jaime Molina")
+        tutorials_slugs = aprender.get_existing_tutorial_slug()
+        tutorial_slug = aprender.get_suggested_tutorial_slug("Jaime Molina", tutorials_slugs)
         # There are already two tutorials jaime-molina-1 and jaime-molina-2
         self.assertEqual(tutorial_slug, "jaime-molina-3")
 
