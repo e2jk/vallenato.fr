@@ -75,8 +75,8 @@ var tutoriales = [
   },
   {
     "slug": "anton-tiru-tiru",
-    "author": "Anton Tiru Tiru",
-    "title": "Villancico",
+    "author": null,
+    "title": "Anton Tiru Tiru (Villancico)",
     "videos": [
       {"id": "ioSqMOT7pcw", "start": 67, "end": 71},
       {"id": "ioSqMOT7pcw", "start": 89, "end": 93},
@@ -108,8 +108,8 @@ var tutoriales = [
   },
   {
     "slug": "mi-burrito-sabanero",
-    "author": "Mi Burrito Sabanero",
-    "title": "Villancico",
+    "author": null,
+    "title": "Mi Burrito Sabanero (Villancico)",
     "videos": [
       {"id": "4oAIYNryjDA", "start": 98, "end": 105},
       {"id": "4oAIYNryjDA", "start": 158, "end": 165},
