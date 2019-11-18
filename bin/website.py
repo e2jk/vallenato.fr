@@ -22,6 +22,7 @@ import sys
 import json
 import shutil
 from slugify import slugify
+import sitemap.generator as generator
 
 from youtube import HttpError
 from youtube import yt_get_authenticated_service
@@ -36,6 +37,8 @@ LOCATION_SPECIAL_CASES_FILE = "data/location_special_cases.json"
 GEOLOCATIONS_FILE = "data/geolocations.json"
 # Output file used for the website
 WEBSITE_DATA_FILE = "../website/src/data.js"
+# Sitemap file
+SITEMAP_FILE = "../website/prod/sitemap.xml"
 # Version of the external libraries
 LEAFLET_VERSION = "1.5.1"
 BOOTSTRAP_VERSION = "4.3.1"
@@ -257,6 +260,67 @@ def generate_website():
     with open("%s/aprender/index.html" % output_prod_folder, 'w') as file:
         file.write(index_aprender_data)
 
+def generate_sitemap(sitemap_file, locations, uploaded_videos):
+    base_url = "https://vallenato.fr"
+    sitemap = generator.Sitemap()
+
+    # vallenato.fr index
+    sitemap.add(base_url,
+                # Timestamp of the most recently uploaded video
+                lastmod=uploaded_videos[0]["publishedAt"][:10],
+                changefreq="monthly",
+                priority="1.0")
+
+    # Locations and individual videos
+    sitemap.add("%s/#mundo-entero" % base_url,
+                # Timestamp of the most recently uploaded video
+                lastmod=uploaded_videos[0]["publishedAt"][:10],
+                changefreq="monthly",
+                priority="0.6")
+    for l in locations:
+        # Locations
+        sitemap.add("%s/#%s" % (base_url, locations[l]["slug"]),
+                    # Timestamp of the most recently uploaded video at that location
+                    lastmod=locations[l]["videos"][0]["publishedAt"][:10],
+                    changefreq="yearly",
+                    priority="0.5")
+        for v in locations[l]["videos"]:
+            # Individual videos
+            sitemap.add("%s/#%s/%s" % (base_url, v["slug"], v["id"]),
+                        # Timestamp of that video
+                        lastmod=v["publishedAt"][:10],
+                        changefreq="yearly",
+                        priority="0.5")
+
+    # Aprender index
+    sitemap.add("%s/aprender/" % base_url,
+                changefreq="monthly",
+                priority="1.0")
+
+    # Aprender: individual tutorials
+    with open("../website/src/aprender/tutoriales.js") as in_file:
+        # Remove the JS bits to keep only the JSON content
+        tutoriales_json_content = (in_file.read()[17:-2])
+        tutoriales = json.loads(tutoriales_json_content)
+    for t in tutoriales:
+        tuto_url = "%s/aprender/aprender.html?tutorial=%s" % (base_url, t["slug"])
+        sitemap.add(tuto_url,
+                    changefreq="yearly",
+                    priority="0.5")
+
+    sitemap_xml = sitemap.generate()
+
+    # Prettify the XML "by hand"
+    sitemap_xml = sitemap_xml.replace("<url>", "  <url>")
+    sitemap_xml = sitemap_xml.replace("</url>", "  </url>")
+    sitemap_xml = sitemap_xml.replace("<loc>", "    <loc>")
+    sitemap_xml = sitemap_xml.replace("<lastmod>", "    <lastmod>")
+    sitemap_xml = sitemap_xml.replace("<changefreq>", "    <changefreq>")
+    sitemap_xml = sitemap_xml.replace("<priority>", "    <priority>")
+
+    with open(sitemap_file, 'w') as file:
+        file.write(sitemap_xml)
+
 def website(args):
     # Retrieve the list of uploaded videos
     uploaded_videos = get_uploaded_videos(args, UPLOADED_VIDEOS_DUMP_FILE)
@@ -279,3 +343,6 @@ def website(args):
 
     # Generate the development and production website files
     generate_website()
+
+    # Generate the Sitemap
+    generate_sitemap(SITEMAP_FILE, locations, uploaded_videos)

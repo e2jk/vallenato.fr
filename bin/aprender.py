@@ -26,6 +26,7 @@ from pytube import YouTube
 import logging
 import webbrowser
 from urllib.error import HTTPError
+import json
 
 def get_tutorial_info():
     """Retrieve the information of the new tutorial"""
@@ -106,44 +107,47 @@ def rlinput(prompt, prefill=''):
     finally:
         readline.set_startup_hook()
 
+def get_existing_tutorial_slug():
+    # Get the list of existing tutorial slugs
+    with open("../website/src/aprender/tutoriales.js") as in_file:
+        # Remove the JS bits to keep only the JSON content
+        tutoriales_json_content = (in_file.read()[17:-2])
+        tutoriales = json.loads(tutoriales_json_content)
+    tutorials_slugs = [t["slug"] for t in tutoriales]
+    return tutorials_slugs
+
 def get_tutorial_slug(song_title):
-    (tutorials_path, tutorial_slug) = get_suggested_tutorial_slug(song_title)
+    tutorials_slugs = get_existing_tutorial_slug()
+    tutorial_slug = get_suggested_tutorial_slug(song_title, tutorials_slugs)
     # Propose the slug to the user
     tutorial_slug = rlinput("Tutorial slug/nice URL ('q' to quit): ", tutorial_slug)
     if tutorial_slug.lower() == "q":
         print("Exiting...")
         sys.exit(13)
-    slug_path = os.path.abspath(os.path.join(tutorials_path, "%s.html" % tutorial_slug))
-    while os.path.isfile(slug_path):
-        logging.debug("The path '%s' already exists." % slug_path)
+    while tutorial_slug in tutorials_slugs:
+        logging.debug("The slug '%s' is already used." % tutorial_slug)
         tutorial_slug = rlinput("Tutorial slug/nice URL ('q' to quit): ", tutorial_slug)
         if tutorial_slug.lower() == "q":
             print("Exiting...")
             sys.exit(14)
-        slug_path = os.path.abspath(os.path.join(tutorials_path, "%s.html" % tutorial_slug))
     return tutorial_slug
 
-def get_suggested_tutorial_slug(song_title):
+def get_suggested_tutorial_slug(song_title, tutorials_slugs):
+    # This tutorial's default slug
     tutorial_slug_base = slugify(song_title)
     tutorial_slug = tutorial_slug_base
-    # Get the path of the folder one level up (where all the tutorials are)
-    tutorials_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../website/src/aprender"))
-    # Create the path with this slug name
-    slug_path = os.path.abspath(os.path.join(tutorials_path, "%s.html" % tutorial_slug))
-    # Check if there is already a file with the slug-1 (would otherwise not
-    # detect if there was already more than one tutorial for this song)
-    slug_path_dash_one = os.path.abspath(os.path.join(tutorials_path, "%s-1.html" % tutorial_slug))
-    if os.path.isfile(slug_path_dash_one):
-        logging.debug("The path '%s' doesn't exists, but '%s' does." % (slug_path, slug_path_dash_one))
-        slug_path = slug_path_dash_one
-    i = 2
-    # Check if slug not already used, otherwise increment (starting at 2)
-    while os.path.isfile(slug_path):
-        logging.debug("The path '%s' already exists." % slug_path)
-        tutorial_slug = "%s-%d" % (tutorial_slug_base, i)
-        slug_path = os.path.abspath(os.path.join(tutorials_path, "%s.html" % tutorial_slug))
+
+    i = 1
+    if tutorial_slug not in tutorials_slugs:
+        # Even if this slug is not used, check if maybe the -1 version is already used
+        # This would be the case if there's already a -1 and -2 version
+        if "%s-%d" % (tutorial_slug_base, i) in tutorials_slugs:
+            tutorial_slug = "%s-%d" % (tutorial_slug_base, i)
+    while tutorial_slug in tutorials_slugs:
+        logging.debug("The slug '%s' is already used." % tutorial_slug)
         i += 1
-    return (tutorials_path, tutorial_slug)
+        tutorial_slug = "%s-%d" % (tutorial_slug_base, i)
+    return tutorial_slug
 
 def determine_output_folder(temp_folder, tutorial_slug):
     output_folder = "../website/src/aprender/"
