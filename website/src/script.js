@@ -14,12 +14,22 @@ function main(){
   // Populate the map and the list on the right side
   populateMapAndList(mymap);
 
+  // Set up click handler for all the links on the page
+  $("a").click(function(e) {
+    // All links, except /aprender and the YouTube channel link
+    if(-1 === ["aprender-link", "yt-channel-link"].indexOf(this.id)) {
+      e.preventDefault();
+      history.pushState(null, null, this.href);
+      check_valid_slug();
+    }
+  });
+
   // Handle overlay closing via cross icon
   document.getElementById('list_overlay_close').addEventListener("click", close_current_overlay);
   document.getElementById('video_overlay_close').addEventListener("click", close_current_overlay);
 
   // Check if we started with another page than the root
-  if("" !== window.location.hash){
+  if("/" !== window.location.pathname){
     check_valid_slug();
   }
 }
@@ -74,7 +84,7 @@ function populateMapAndList(mymap){
       `;
       list_content += `<div id="collapse` + num_countries + `" class="collapse list-group list-group-flush" aria-labelledby="heading` + num_countries + `" data-parent="#list">`;
       if ("Mundo entero" === c) {
-        list_content += `<a href="#mundo-entero" class="card-body list-group-item list-group-item-action d-flex justify-content-between align-items-center">Mundo entero<span class="badge badge-primary badge-pill badge-dark">` + num_videos + `</span><span class="sr-only"> videos</span></a>`;
+        list_content += `<a href="/mundo-entero" class="card-body list-group-item list-group-item-action d-flex justify-content-between align-items-center">Mundo entero<span class="badge badge-primary badge-pill badge-dark">` + num_videos + `</span><span class="sr-only"> videos</span></a>`;
       } else {
         for (let l in countries[c]) {
           if (countries[c].hasOwnProperty(l)) {
@@ -83,7 +93,7 @@ function populateMapAndList(mymap){
             loc_parts = loc.split(", ");
             loc_parts.pop();
             loc_short_name = loc_parts.join(", ");
-            list_content += `<a href="#` + locations[loc]["slug"] + `" class="card-body list-group-item list-group-item-action d-flex justify-content-between align-items-center">` + loc_short_name + `<span class="badge badge-primary badge-pill badge-dark">` + locations[loc].videos.length + `</span><span class="sr-only"> videos</span></a>`;
+            list_content += `<a href="/` + locations[loc]["slug"] + `" class="card-body list-group-item list-group-item-action d-flex justify-content-between align-items-center">` + loc_short_name + `<span class="badge badge-primary badge-pill badge-dark">` + locations[loc].videos.length + `</span><span class="sr-only"> videos</span></a>`;
           }
         }
       }
@@ -98,12 +108,15 @@ function populateMapAndList(mymap){
 }
 
 function check_valid_slug() {
-  // Identify for which page this slug is
-  var slug_found = false;
+  // Identify which page to display
+  if("/" === window.location.pathname) {
+    // Go to the home page
+    show_home_page();
+    return;
+  }
 
   // Check if it's a location's slug
-  if("#mundo-entero" === window.location.hash){
-    slug_found = true;
+  if("/mundo-entero" === window.location.pathname){
     show_location_overlay("Mundo entero");
     return;
   }
@@ -111,51 +124,42 @@ function check_valid_slug() {
   // Check if it's a location's slug
   for (let loc in locations) {
     if (locations.hasOwnProperty(loc)) {
-      if("#" + locations[loc].slug === window.location.hash){
-        slug_found = true;
+      if("/" + locations[loc].slug === window.location.pathname){
         show_location_overlay(loc);
-        break;
+        return;
       }
     }
   }
 
-  if (!slug_found) {
-    // Check if it's an individual video's slug
-    for (let loc in locations) {
-      if (locations.hasOwnProperty(loc)) {
-        for (let vid in locations[loc]["videos"]) {
-          if (locations[loc]["videos"].hasOwnProperty(vid)) {
-            let vid_id = locations[loc]["videos"][vid].id;
-            let vid_title_slug = locations[loc]["videos"][vid].slug;
-            if("#" + vid_title_slug + "/" + vid_id === window.location.hash){
-              slug_found = true;
-              // First load that location's overlay, to handle closing the video overlay nicely
-              show_location_overlay(loc);
-              // Keep a reference to that video's location for history handling
-              video_location = loc;
-              // Load that page's video
-              // Note: autoplay will likely be disabled by the browser, as it won't have detected an explicit user action
-              show_video_overlay(vid_id, vid_title_slug, locations[loc]["videos"][vid].title);
-              break;
-            }
+  // Check if it's an individual video's slug
+  for (let loc in locations) {
+    if (locations.hasOwnProperty(loc)) {
+      for (let vid in locations[loc]["videos"]) {
+        if (locations[loc]["videos"].hasOwnProperty(vid)) {
+          let vid_id = locations[loc]["videos"][vid].id;
+          let vid_title_slug = locations[loc]["videos"][vid].slug;
+          if("/" + vid_title_slug + "/" + vid_id === window.location.pathname){
+            // First load that location's overlay, to handle closing the video overlay nicely
+            show_location_overlay(loc);
+            // Keep a reference to that video's location for history handling
+            video_location = loc;
+            // Load that page's video
+            // Note: autoplay will likely be disabled by the browser, as it won't have detected an explicit user action
+            show_video_overlay(vid_id, vid_title_slug, locations[loc]["videos"][vid].title);
+            return;
           }
         }
-        if(slug_found) {
-          break;
-        }
       }
     }
   }
 
-  if (!slug_found) {
-    // Invalid slug, redirecting to home page
-    window.location = "/";
-  }
+  // Invalid slug, redirecting to home page
+  window.location = "/";
 }
 
 function update_history_for_home() {
   // Update the URL for that location
-  history.pushState({"type": "home"}, "Vallenato.fr", "#");
+  history.pushState({"type": "home"}, "Vallenato.fr", "/");
 }
 
 function navigate_to_location(loc) {
@@ -165,7 +169,7 @@ function navigate_to_location(loc) {
 
 function update_history_for_location(loc) {
   // Update the URL for that location
-  history.pushState({"type": "location", "loc": loc}, loc, "#" + locations[loc]["slug"]);
+  history.pushState({"type": "location", "loc": loc}, loc, "/" + locations[loc]["slug"]);
 }
 
 function show_location_overlay(loc) {
@@ -271,7 +275,7 @@ function navigate_to_video(id, title_slug, loc, title) {
 
 function update_history_for_video(id, title_slug, title) {
   // Update the URL for that video
-  history.pushState({"type": "video", "id": id, "title_slug": title_slug, "title": title}, id, "#" + title_slug + "/" + id);
+  history.pushState({"type": "video", "id": id, "title_slug": title_slug, "title": title}, id, "/" + title_slug + "/" + id);
 }
 
 function show_video_overlay(id, title_slug, title) {
@@ -328,29 +332,7 @@ function key_down(evt) {
   }
 };
 
-function URL_changed() {
-  if(!window.location.hash) {
-    // No hash, go to the home page
-    show_home_page();
-  } else {
-    if (history.state && history.state.hasOwnProperty("type")) {
-      // Use back and forward buttons
-      if("location" === history.state.type) {
-        show_location_overlay(history.state.loc);
-      } else if ("video" === history.state.type) {
-        show_video_overlay(history.state.id, history.state.title_slug, history.state.title);
-      } else {
-        // Fallback to the home page (should never happen)
-        show_home_page();
-      }
-    } else {
-      // Probably a hand-typed hash URL
-      check_valid_slug();
-    }
-  }
-};
-
 document.onkeydown = key_down;
-window.onhashchange = URL_changed;
+window.onpopstate = check_valid_slug;
 
 main();
