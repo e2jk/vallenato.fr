@@ -272,21 +272,21 @@ def generate_sitemap(sitemap_file, locations, uploaded_videos):
                 priority="1.0")
 
     # Locations and individual videos
-    sitemap.add("%s/#mundo-entero" % base_url,
+    sitemap.add("%s/mundo-entero" % base_url,
                 # Timestamp of the most recently uploaded video
                 lastmod=uploaded_videos[0]["publishedAt"][:10],
                 changefreq="monthly",
                 priority="0.6")
     for l in locations:
         # Locations
-        sitemap.add("%s/#%s" % (base_url, locations[l]["slug"]),
+        sitemap.add("%s/%s" % (base_url, locations[l]["slug"]),
                     # Timestamp of the most recently uploaded video at that location
                     lastmod=locations[l]["videos"][0]["publishedAt"][:10],
                     changefreq="yearly",
                     priority="0.5")
         for v in locations[l]["videos"]:
             # Individual videos
-            sitemap.add("%s/#%s/%s" % (base_url, v["slug"], v["id"]),
+            sitemap.add("%s/%s/%s" % (base_url, v["slug"], v["id"]),
                         # Timestamp of that video
                         lastmod=v["publishedAt"][:10],
                         changefreq="yearly",
@@ -303,7 +303,7 @@ def generate_sitemap(sitemap_file, locations, uploaded_videos):
         tutoriales_json_content = (in_file.read()[17:-2])
         tutoriales = json.loads(tutoriales_json_content)
     for t in tutoriales:
-        tuto_url = "%s/aprender/aprender.html?tutorial=%s" % (base_url, t["slug"])
+        tuto_url = "%s/aprender/%s" % (base_url, t["slug"])
         sitemap.add(tuto_url,
                     changefreq="yearly",
                     priority="0.5")

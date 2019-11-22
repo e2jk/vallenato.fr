@@ -287,11 +287,12 @@ class TestGenerateSitemap(unittest.TestCase):
         with open(website.SITEMAP_FILE) as in_file:
             sitemap_content = in_file.read()
         self.assertTrue("<loc>https://vallenato.fr</loc>" in sitemap_content)
-        self.assertTrue("<loc>https://vallenato.fr/#mundo-entero</loc>" in sitemap_content)
-        self.assertTrue("<loc>https://vallenato.fr/#buesaco-narino-colombia</loc>" in sitemap_content)
-        self.assertTrue("<loc>https://vallenato.fr/#oye-bonita-buesaco-narino-colombia/KASEblFElVM</loc>" in sitemap_content)
+        self.assertTrue("<loc>https://vallenato.fr/mundo-entero</loc>" in sitemap_content)
+        self.assertTrue("<loc>https://vallenato.fr/buesaco-narino-colombia</loc>" in sitemap_content)
+        self.assertTrue("<loc>https://vallenato.fr/oye-bonita-buesaco-narino-colombia/KASEblFElVM</loc>" in sitemap_content)
+        self.assertTrue("<loc>https://vallenato.fr/oye-bonita-buesaco-narino-colombia/yrWZw-lgGbM</loc>" in sitemap_content)
         self.assertTrue("<loc>https://vallenato.fr/aprender/</loc>" in sitemap_content)
-        self.assertTrue("<loc>https://vallenato.fr/aprender/aprender.html?tutorial=la-guanena</loc>" in sitemap_content)
+        self.assertTrue("<loc>https://vallenato.fr/aprender/la-guanena</loc>" in sitemap_content)
 
 
 class TestWebsite(unittest.TestCase):
