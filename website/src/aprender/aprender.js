@@ -1,11 +1,13 @@
 // Define [global] variables
 /*jslint browser: true, white, devel: true */
 /*global window, tutoriales, YT */
+var current_page_is_tutorial = false;
 var localPlayer = false;
 var editMode = false;
 var currentVideo;
 var player;
 var playerConfig;
+var YouTubeVideoPlayerInitialized = false;
 var videoJustChanged;
 var tutorial_slug;
 var videos;
@@ -14,6 +16,30 @@ var fullVersion;
 var tutorialTitle;
 var tutorialAuthor;
 var tutorialFullTitle;
+
+function main(){
+  // Set up click handler for all the links on the page
+  $("a").click(function(e) {
+    // All links, except home and the YouTube channel links
+    if(-1 === ["home-brand-link", "home-link", "yt-channel-link"].indexOf(this.id)) {
+      e.preventDefault();
+      history.pushState(null, null, this.href);
+      check_valid_slug();
+    }
+  });
+
+  if (null !== getURLParameter("local")) {
+    // Update tutorials links to use local video files instead of the YouTube-hosted videos
+    $("#tutoriales > div > div > a").each(function (link, i) {
+      $(this)[0].href += "?local=1";
+    });
+  }
+
+  // Check if we started with another page than the root
+  if("/aprender/" !== window.location.pathname){
+    check_valid_slug();
+  }
+}
 
 // Inspired from https://stackoverflow.com/a/11582513/185053 , modified for JSLint
 function getURLParameter(name) {
@@ -45,18 +71,19 @@ function determineCurrentVideoParameter() {
   "use strict";
   currentVideo = getURLParameter("p");
   if (!isNumeric(currentVideo)) {
-    window.location = "?tutorial=" + tutorial_slug + "&p=1" + (localPlayer ? "&local=1" : "") + (editMode ? "&editar=1" : "");
+    // Assume we want the first video of that tutorial
+    currentVideo = 1;
   }
   currentVideo = parseInt(currentVideo);
   currentVideo -= 1; //URL Parameter/visible ID is 1-based, while array is 0-based
   // currentVideo == -1 means playing the complete video
   if (currentVideo < -1) {
-    window.location = "?tutorial=" + tutorial_slug + "&p=1" + (localPlayer ? "&local=1" : "") + (editMode ? "&editar=1" : "");
+    window.location = "?p=1" + (localPlayer ? "&local=1" : "") + (editMode ? "&editar=1" : "");
   }
   if (currentVideo > videos.length - 1) {
     // If this video has no full tutorial videos, go back to the latest regular part
     if (typeof videosFullTutorial == 'undefined' || (videosFullTutorial && currentVideo > videos.length + videosFullTutorial.length - 1)) {
-      window.location = "?tutorial=" + tutorial_slug + "&p=1" + (localPlayer ? "&local=1" : "") + (editMode ? "&editar=1" : "");
+      window.location = "?p=1" + (localPlayer ? "&local=1" : "") + (editMode ? "&editar=1" : "");
     }
   }
 }
@@ -65,7 +92,7 @@ function updateUI(updateURL) {
   "use strict";
   if (updateURL) {
     // Change the URL, so that if the user refreshes the page he gets back to this specific part
-    var newURL = "?tutorial=" + tutorial_slug + "&p=" + (currentVideo + 1) + (localPlayer ? "&local=1" : "") + (editMode ? "&editar=1" : "");
+    var newURL = "?p=" + (currentVideo + 1) + (localPlayer ? "&local=1" : "") + (editMode ? "&editar=1" : "");
     window.history.pushState({}, document.title, newURL);
   }
 
@@ -283,12 +310,6 @@ function setUpLocalVideoPlayer() {
 
 function setUpYouTubeVideoPlayer() {
   "use strict";
-  // Load the YouTube JavaScript, per https://stackoverflow.com/a/3973468/185053
-  var script = document.createElement("script");
-  script.async = "async";
-  script.type = "text/javascript";
-  script.src = "https://www.youtube.com/iframe_api";
-  document.body.appendChild(script);
 
   var vidValues = getVideoValues();
   // Based on https://webapps.stackexchange.com/a/103450/161341
@@ -316,12 +337,25 @@ function setUpYouTubeVideoPlayer() {
       "onStateChange": onStateChange
     }
   };
+
+  if (!YouTubeVideoPlayerInitialized) {
+    // Load the YouTube JavaScript, per https://stackoverflow.com/a/3973468/185053
+    var script = document.createElement("script");
+    script.async = "async";
+    script.type = "text/javascript";
+    script.src = "https://www.youtube.com/iframe_api";
+    document.body.appendChild(script);
+    YouTubeVideoPlayerInitialized = true;
+  } else {
+    // The YT player script was already loaded when playing another tutorial
+    // Just re-trigger the creation of the YT player object
+    onYouTubeIframeAPIReady();
+  }
 }
 
-function determineTutorial() {
+function determineTutorial(tutorial) {
   "use strict";
-  // var tutorial_slug = "10000-litros-de-old-parr";
-  tutorial_slug = getURLParameter("tutorial");
+  tutorial_slug = tutorial;
   // TODO: handle invalid tutorial slug
   tutoriales.forEach(function (tuto, i) {
     if (tuto["slug"] === tutorial_slug) {
@@ -348,7 +382,7 @@ function determineEditMode() {
   editMode = (null !== getURLParameter("editar"));
 }
 
-function onYouTubePlayerAPIReady() {
+function onYouTubeIframeAPIReady() {
   "use strict";
   if (!localPlayer) {
     // Play the first video in div
@@ -594,8 +628,8 @@ function createUI() {
   }
 
   if (localPlayer) {
-    // Link to local index page instead of online version on vallenato.fr
-    document.getElementById("aprenderLink").href = "index.html?local=1";
+    // Link to use local video files instead of the YouTube-hosted videos
+    document.getElementById("aprender-link").href = "/aprender/?local=1";
   }
 
   document.getElementById("previousButton").addEventListener("click", previousVideo, false);
@@ -604,28 +638,65 @@ function createUI() {
   document.getElementById("slowPlayback").addEventListener("CheckboxStateChange", updatePlaybackSpeed, false);
   document.addEventListener("keydown", keyPressed, false); // Keyboard shortcuts
 
+  // Hide the aprender page
+  $("#aprender_page").addClass("d-none");
+  // Show the tutorial page
+  $("#tutorial_page").removeClass("d-none");
+
   updateUI(false);
 }
 
-// Perform some initial setup/calculations
-determineTutorial();
-determineLocalOrYouTubePlayer();
-determineEditMode();
-determineCurrentVideoParameter();
-window.onload = function () {
-  "use strict";
+function check_valid_slug() {
+  // Identify which page to display
+  if("/aprender/" === window.location.pathname) {
+    // Go to the /aprender/ page
+    current_page_is_tutorial = false;
+    show_aprender_page();
+    return;
+  }
+
+  tutoriales.some(function (tuto) {
+    if("/aprender/" + tuto["slug"] === window.location.pathname) {
+      if (current_page_is_tutorial) {
+        // Just changing parts within the same tutorial (probably Back or Forward button)
+        determineCurrentVideoParameter();
+        changeVideo(false);
+      } else {
+        // Go to that tutorial's page
+        current_page_is_tutorial = true;
+        show_tutorial_page(window.location.pathname.substring(10));
+      }
+      return true;
+    }
+  });
+}
+
+function show_tutorial_page(tutorial) {
+  // Perform some initial setup/calculations
+  determineTutorial(tutorial);
+  determineLocalOrYouTubePlayer();
+  determineEditMode();
+  determineCurrentVideoParameter();
   createUI();
   if (!localPlayer) {
     setUpYouTubeVideoPlayer();
   } else {
     setUpLocalVideoPlayer();
   }
-};
+}
 
-// Detect Back or Forward button
-window.onpopstate = function () {
-  "use strict";
-  // Get the p parameter directly from the URL
-  determineCurrentVideoParameter();
-  changeVideo(false);
-};
+function show_aprender_page() {
+  // Hide the tutorial page
+  $("#tutorial_page").addClass("d-none");
+  // Show the aprender page
+  $("#aprender_page").removeClass("d-none");
+  // Remove any tutorial player
+  $("#player").html(`<div id="videoPlayer"></div>`);
+  // Update page title
+  document.title = "Aprender a tocar el Acordeón Vallenato - El Vallenatero Francés";
+}
+
+// Detect Back or Forward buttons
+window.onpopstate = check_valid_slug;
+
+main();
