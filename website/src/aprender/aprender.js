@@ -412,6 +412,15 @@ function nextVideo() {
   changeVideo(true);
 }
 
+function fullscreenVideo() {
+  "use strict";
+  var vidply = $('#videoPlayer').get(0);
+  var requestFullScreen = vidply.requestFullScreen || vidply.mozRequestFullScreen || vidply.webkitRequestFullScreen;
+  if (requestFullScreen) {
+    requestFullScreen.bind(vidply)();
+  }
+}
+
 function versionCompletaClicked() {
   "use strict";
   currentVideo = -1;
@@ -634,6 +643,7 @@ function createUI() {
 
   document.getElementById("previousButton").addEventListener("click", previousVideo, false);
   document.getElementById("nextButton").addEventListener("click", nextVideo, false);
+  document.getElementById("fullscreenButton").addEventListener("click", fullscreenVideo, false);
   document.getElementById("versionCompleta").addEventListener("click", versionCompletaClicked, false);
   document.getElementById("slowPlayback").addEventListener("CheckboxStateChange", updatePlaybackSpeed, false);
   document.addEventListener("keydown", keyPressed, false); // Keyboard shortcuts
