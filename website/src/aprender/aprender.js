@@ -647,6 +647,9 @@ function createUI() {
 }
 
 function check_valid_slug() {
+  // Collapse the navbar, if it was expanded on small devices
+  $("#navbarCollapse").collapse('hide');
+
   // Identify which page to display
   if("/aprender/" === window.location.pathname) {
     // Go to the /aprender/ page
