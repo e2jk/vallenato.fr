@@ -295,7 +295,7 @@ def generate_sitemap(sitemap_file, locations, uploaded_videos):
     # Aprender index
     sitemap.add("%s/aprender/" % base_url,
                 changefreq="monthly",
-                priority="1.0")
+                priority="0.9")
 
     # Aprender: individual tutorials
     with open("../website/src/aprender/tutoriales.js") as in_file:
