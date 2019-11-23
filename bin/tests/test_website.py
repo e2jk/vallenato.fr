@@ -257,6 +257,9 @@ class TestGenerateWebsite(unittest.TestCase):
         # The prod files point to the CDN copy of the jQuery library
         self.assertTrue('<script src="https://code.jquery.com/jquery-%s.slim.min.js"\n        integrity="sha384-' % website.JQUERY_VERSION in index_data)
         self.assertTrue('<script src="https://code.jquery.com/jquery-%s.slim.min.js"\n        integrity="sha384-' % website.JQUERY_VERSION in index_aprender_data)
+        # The prod files point to the CDN copy of the Bootstrap-toggle library
+        self.assertTrue('<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@%s/css/bootstrap4-toggle.min.css"\n        integrity="sha384-' % website.BOOTSTRAP_TOGGLE_VERSION in index_aprender_data)
+        self.assertTrue('<script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@%s/js/bootstrap4-toggle.min.js"\n        integrity="sha384-' % website.BOOTSTRAP_TOGGLE_VERSION in index_aprender_data)
 
         # Confirm the local copies of the libraries are not present in the prd folder
         # Only these 6 files/folders should exist in the prd folder

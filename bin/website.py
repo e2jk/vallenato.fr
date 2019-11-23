@@ -43,6 +43,7 @@ SITEMAP_FILE = "../website/prod/sitemap.xml"
 LEAFLET_VERSION = "1.5.1"
 BOOTSTRAP_VERSION = "4.3.1"
 JQUERY_VERSION = "3.3.1"
+BOOTSTRAP_TOGGLE_VERSION = "3.6.1"
 
 
 def get_dumped_uploaded_videos(dump_file):
@@ -178,6 +179,7 @@ def ignored_files_in_prod(adir, filenames):
     if "../website/src" == adir:
         ignored_files = [
             'bootstrap-%s-dist' % BOOTSTRAP_VERSION,
+            'bootstrap4-toggle-%s' % BOOTSTRAP_TOGGLE_VERSION,
             'jquery-%s.slim.min.js' % JQUERY_VERSION,
             'leaflet'
         ]
@@ -253,6 +255,13 @@ def generate_website():
     index_aprender_data = index_aprender_data.replace(
         '<script src="../jquery-%s.slim.min.js"></script>' % JQUERY_VERSION,
         '<script src="https://code.jquery.com/jquery-%s.slim.min.js"\n        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"\n        crossorigin="anonymous"></script>' % JQUERY_VERSION)
+    # Bootstrap-toggle
+    index_aprender_data = index_aprender_data.replace(
+        '<link rel="stylesheet" href="../bootstrap4-toggle-%s/css/bootstrap4-toggle.min.css">' % BOOTSTRAP_TOGGLE_VERSION,
+        '<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@%s/css/bootstrap4-toggle.min.css"\n        integrity="sha384-yakM86Cz9KJ6CeFVbopALOEQGGvyBFdmA4oHMiYuHcd9L59pLkCEFSlr6M9m434E"\n        crossorigin="anonymous">' % BOOTSTRAP_TOGGLE_VERSION)
+    index_aprender_data = index_aprender_data.replace(
+        '<script src="../bootstrap4-toggle-%s/js/bootstrap4-toggle.min.js"></script>' % BOOTSTRAP_TOGGLE_VERSION,
+        '<script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@%s/js/bootstrap4-toggle.min.js"\n        integrity="sha384-Q9RsZ4GMzjlu4FFkJw4No9Hvvm958HqHmXI9nqo5Np2dA/uOVBvKVxAvlBQrDhk4"\n        crossorigin="anonymous"></script>' % BOOTSTRAP_TOGGLE_VERSION)
 
     # Save edited prod files
     with open("%s/index.html" % output_prod_folder, 'w') as file:

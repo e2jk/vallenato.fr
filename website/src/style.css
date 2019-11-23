@@ -53,3 +53,6 @@ body {
 .editInput{
   width: 50px;
 }
+#playbackOptions > div {
+  margin-bottom: .25rem;
+}

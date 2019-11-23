@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
     <link rel="stylesheet" href="../bootstrap-4.3.1-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../bootstrap4-toggle-3.6.1/css/bootstrap4-toggle.min.css">
     <link rel="stylesheet" type="text/css" href="../style.css">
   </head>
   <body class="d-flex flex-column h-100">
@@ -325,9 +326,9 @@
               <div class="list-group mb-2">
                 <button id="versionCompleta" class="list-group-item list-group-item-action">Versión completa</button>
               </div>
-              <div>
-                <label class="optionCheckbox"><input type="checkbox" id="slowPlayback"> Lento</label><br/>
-                <label class="optionCheckbox"><input type="checkbox" id="repeatVideo" checked="checked"> Repetir</label>
+              <div id="playbackOptions">
+                <input id="slowPlayback" type="checkbox" data-toggle="toggle" data-on="Lento" data-off="Velocidad Normal" data-width="100%"><br>
+                <input id="repeatVideo" type="checkbox" checked data-toggle="toggle" data-on="Repetir parte" data-off="Continuar" data-width="100%">
               </div>
             </section>
           </div>
@@ -349,6 +350,7 @@
     <!-- JavaScript by default at the bottom of the body, per https://developers.google.com/apps-script/guides/html/best-practices#load_javascript_last -->
     <script src="../jquery-3.3.1.slim.min.js"></script>
     <script src="../bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>
+    <script src="../bootstrap4-toggle-3.6.1/js/bootstrap4-toggle.min.js"></script>
     <script type = "text/javascript" src="tutoriales.js"></script>
     <script type = "text/javascript" src="aprender.js"></script>
   </body>
