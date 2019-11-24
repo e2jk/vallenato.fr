@@ -367,29 +367,6 @@ class TestDownloadStream(unittest.TestCase):
         pass
 
 
-class TestCreateNewTutorialPage(unittest.TestCase):
-    def test_create_new_tutorial_page_ok(self):
-        tutorial_slug = "blabla-bla"
-        song_title = "Bonita cancion"
-        song_author = "Super cantante"
-        tutorial_id = "oPEirA4pXdg"
-        full_video_id = "q6cUzC6ESZ8"
-        output_folder = "../website/src/aprender/"
-        new_tutorial_page = "%s%s.html" % (output_folder, tutorial_slug)
-        aprender.create_new_tutorial_page(tutorial_slug, song_title, song_author, tutorial_id, full_video_id, new_tutorial_page)
-        # Confirm that a new tutorial page has been created
-        self.assertTrue(os.path.exists("../website/src/aprender/blabla-bla.html"))
-        # Confirm that the content of the new template has been updated
-        with open("../website/src/aprender/blabla-bla.html", 'r') as file :
-            filedata = file.read()
-        self.assertTrue("<title>Bonita cancion - Super cantante</title>" in filedata)
-        self.assertTrue('<span id="nameCurrent">Bonita cancion - Super cantante</span>' in filedata)
-        self.assertTrue('{"id": "oPEirA4pXdg", "start": 0, "end": 999}' in filedata)
-        self.assertTrue('var fullVersion = "q6cUzC6ESZ8";' in filedata)
-        # Delete that new tutorial page
-        os.remove("../website/src/aprender/blabla-bla.html")
-
-
 class TestGenerateNewTutorialInfo(unittest.TestCase):
     def test_generate_new_tutorial_info(self):
         tutorial_slug = "blabla-bla"
@@ -492,15 +469,23 @@ class TestAprender(unittest.TestCase):
         # Run the main --aprender code branch
         args = target.parse_args(['--aprender', "--temp-folder", "--no-download"])
         aprender.aprender(args)
-        # Confirm that a new tutorial page has been created in the temporary folder
-        self.assertTrue(os.path.exists("../website/src/aprender/temp/blabla-bla/blabla-bla.html"))
-        # Confirm that the content of the new template has been updated
-        with open("../website/src/aprender/temp/blabla-bla/blabla-bla.html", 'r') as file :
-            filedata = file.read()
-            self.assertTrue("<title>Bonita cancion - Super cantante</title>" in filedata)
-            self.assertTrue('<span id="nameCurrent">Bonita cancion - Super cantante</span>' in filedata)
-            self.assertTrue('{"id": "oPEirA4pXdg", "start": 0, "end": 999}' in filedata)
-            self.assertTrue('var fullVersion = "q6cUzC6ESZ8";' in filedata)
+        # Confirm that the info of the new template has been added to the templates data file
+  #       #TODO use the actual temp file that was updated
+  #       temp_tutoriales_data_file = aprender.TUTORIALES_DATA_FILE
+  #       expected_new_tutorial_info = """{
+  #   "slug": "blabla-bla",
+  #   "author": "Super cantante",
+  #   "title": "Bonita cancion",
+  #   "videos": [
+  #     {"id": "oPEirA4pXdg", "start": 0, "end": 999}
+  #   ],
+  #   "videos_full_tutorial": [],
+  #   "full_version": "q6cUzC6ESZ8"
+  # }"""
+  #       # Confirm that the list of tutorials has been updated
+  #       with open(temp_tutoriales_data_file, 'r') as file :
+  #           filedata = file.read()
+  #       self.assertTrue(expected_new_tutorial_info in filedata)
         # Confirm that a temporary file with the content to be added to the index page has been created
         with open("../website/src/aprender/temp/blabla-bla/index-dummy.html", 'r') as file :
             filedata = file.read()

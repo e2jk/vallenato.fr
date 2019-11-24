@@ -209,23 +209,6 @@ def download_youtube_video(yt, video_id, videos_output_folder):
 def download_stream(stream, videos_output_folder, video_id):
     stream.download(videos_output_folder, video_id)
 
-def create_new_tutorial_page(tutorial_slug, song_title, song_author, tutorial_id, full_video_id, new_tutorial_page):
-    logging.info("Creating the new tutorial page '%s'." % new_tutorial_page)
-    # Copy the template to a new file
-    shutil.copy("templates/aprender/tutorial.html", new_tutorial_page)
-    # Read in the file
-    with open(new_tutorial_page, 'r') as file :
-        filedata = file.read()
-
-    # Replace the target strings
-    filedata = filedata.replace("[[TITLE]]", "%s - %s" % (song_title, song_author))
-    filedata = filedata.replace("[[TUTORIAL VIDEO ID]]", tutorial_id)
-    filedata = filedata.replace("[[FULL VIDEO ID]]", full_video_id)
-
-    # Save edited file
-    with open(new_tutorial_page, 'w') as file:
-        file.write(filedata)
-
 def generate_new_tutorial_info(tutorial_slug, song_author, song_title, tutorial_id, full_video_id):
     new_tutorial_info = """{
     "slug": "%s",
@@ -311,9 +294,6 @@ def aprender(args):
 
     # The file name for the new tutorial
     new_tutorial_page = "%s%s.html" % (output_folder, tutorial_slug)
-
-    # Create the new tutorial's page
-    create_new_tutorial_page(tutorial_slug, song_title, song_author, tutorial_id, full_video_id, new_tutorial_page)
 
     # Get the info that will be added for the new tutorial
     new_tutorial_info = generate_new_tutorial_info(tutorial_slug, song_author, song_title, tutorial_id, full_video_id)

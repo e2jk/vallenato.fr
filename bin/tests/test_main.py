@@ -159,15 +159,21 @@ class TestInitMain(unittest.TestCase):
         shutil.copy(aprender.TUTORIALES_DATA_FILE, "%s.bak" % aprender.TUTORIALES_DATA_FILE)
         # Run the init(), will run the full --aprender branch
         target.init()
-        # Confirm that a new tutorial page has been created in the temporary folder
-        self.assertTrue(os.path.exists("../website/src/aprender/blabla-bla.html"))
-        # Confirm that the content of the new template has been updated
-        with open("../website/src/aprender/blabla-bla.html", 'r') as file :
+        # Confirm that the info of the new template has been added to the templates data file
+        expected_new_tutorial_info = """{
+    "slug": "blabla-bla",
+    "author": "Super cantante",
+    "title": "Bonita cancion",
+    "videos": [
+      {"id": "oPEirA4pXdg", "start": 0, "end": 999}
+    ],
+    "videos_full_tutorial": [],
+    "full_version": "q6cUzC6ESZ8"
+  }"""
+        # Confirm that the list of tutorials has been updated
+        with open(aprender.TUTORIALES_DATA_FILE, 'r') as file :
             filedata = file.read()
-            self.assertTrue("<title>Bonita cancion - Super cantante</title>" in filedata)
-            self.assertTrue('<span id="nameCurrent">Bonita cancion - Super cantante</span>' in filedata)
-            self.assertTrue('{"id": "oPEirA4pXdg", "start": 0, "end": 999}' in filedata)
-            self.assertTrue('var fullVersion = "q6cUzC6ESZ8";' in filedata)
+        self.assertTrue(expected_new_tutorial_info in filedata)
         # Confirm that a temporary file with the content to be added to the index page has been created
         with open("../website/src/aprender/index.html", 'r') as file :
             filedata = file.read()
@@ -181,8 +187,6 @@ class TestInitMain(unittest.TestCase):
             self.assertTrue('\n              <li>Bonita cancion - Super cantante: <a href="https://www.youtube.com/watch?v=oPEirA4pXdg">Tutorial en YouTube</a> por <a href="https://www.youtube.com/channel/UC_8R235jg1ld6MCMOzz2khQ">El Vallenatero Francés</a></li>' in filedata)
         # Confirm the webbrowser is called to be opened to the new template's page
         mockwbopen.assert_called_once_with("../website/src/aprender/blabla-bla.html", autoraise=True, new=2)
-        # Delete that new tutorial page
-        os.remove("../website/src/aprender/blabla-bla.html")
         # Restore the modified files
         os.remove("../website/src/aprender/index.html")
         shutil.move("../website/src/aprender/index.html.bak", "../website/src/aprender/index.html")
