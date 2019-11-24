@@ -348,5 +348,18 @@ var tutoriales = [
     ],
     "videos_full_tutorial": [],
     "full_version": "zkfcPwUYxQk"
+  },
+  {
+    "slug": "los-sabanales",
+    "author": "Los Corraleros de Majagual",
+    "title": "Los Sabanales",
+    "videos": [
+      {"id": "sUTUjzxd1k4", "start": 25, "end": 44},
+      {"id": "sUTUjzxd1k4", "start": 44, "end": 60}
+    ],
+    "videos_full_tutorial": [
+      {"id": "sUTUjzxd1k4", "start": 60, "end": 82}
+    ],
+    "full_version": "Xwj1S9_l_I0"
   }
 ];
