@@ -18,6 +18,9 @@ var tutorialAuthor;
 var tutorialFullTitle;
 
 function main(){
+  // Populate the list of tutorials
+  populateTutorials();
+
   // Set up click handler for all the links on the page
   $("a").click(function(e) {
     // All links, except home and the YouTube channel links
@@ -39,6 +42,33 @@ function main(){
   if("/aprender/" !== window.location.pathname){
     check_valid_slug();
   }
+}
+
+function populateTutorials() {
+  tutoriales.forEach(function (tuto, i) {
+    var tuto_duration = getDuration(tuto.videos, false);
+    var tuto_string = `<!-- Tutorial ` + (i+1) + ` -->
+      <div class="card mb-3" style="max-width: 17rem;">
+        <div class="card-body">
+          <h5 class="card-title">` + tuto["title"] + (tuto["author"] ? ` - ` + tuto["author"] : "") + `</h5>
+          <a href="` + tuto["slug"] + `" class="stretched-link text-hide">Ver el tutorial</a>
+        </div>
+        <div class="card-footer"><small class="text-muted">` + tuto_duration + `</small></div>
+      </div>\n`;
+    if (0 === (i+1)%2) {
+      tuto_string += `<div class="w-100 d-none d-sm-block d-md-none"><!-- wrap every 2 on sm--></div>`;
+    }
+    if (0 === (i+1)%3) {
+      tuto_string += `<div class="w-100 d-none d-md-block d-lg-none"><!-- wrap every 3 on md--></div>`;
+    }
+    if (0 === (i+1)%4) {
+      tuto_string += `<div class="w-100 d-none d-lg-block d-xl-none"><!-- wrap every 4 on lg--></div>`;
+    }
+    if (0 === (i+1)%5) {
+      tuto_string += `<div class="w-100 d-none d-xl-block"><!-- wrap every 5 on xl--></div>`;
+    }
+    $("#tutoriales").append(tuto_string);
+  });
 }
 
 // Inspired from https://stackoverflow.com/a/11582513/185053 , modified for JSLint
@@ -577,14 +607,19 @@ function saveTimestamps() {
     document.getElementById("outputJS").style.color = "black";
   }, 1500);
   // Update the duration information and print that out to the console
-  var totalDuration = 0;
-  videos.forEach(function (video) {
-    totalDuration += video.end - video.start;
-  });
-  var totDur = "totalDuration: " + totalDuration + "s - " + str_pad_left(Math.floor(totalDuration / 60),"0",2) + "m" + str_pad_left(totalDuration % 60,"0",2) + "s en " +  videos.length + " partes";
+  var totDur = getDuration(videos, true);
   console.log(totDur);
   // Restart playing the current part, to give sensory feedback to the user that something happened
   changeVideo(false);
+}
+
+function getDuration(vids, fullInfo) {
+  var totalDuration = 0;
+  vids.forEach(function (video) {
+    totalDuration += video.end - video.start;
+  });
+  var totDur = (fullInfo ? "totalDuration: " + totalDuration + "s - " : "") + str_pad_left(Math.floor(totalDuration / 60),"0",2) + "m" + str_pad_left(totalDuration % 60,"0",2) + "s en " +  vids.length + " partes";
+  return totDur;
 }
 
 function startButton() {
