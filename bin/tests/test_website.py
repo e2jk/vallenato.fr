@@ -264,7 +264,23 @@ class TestGenerateWebsite(unittest.TestCase):
         # Confirm the local copies of the libraries are not present in the prd folder
         # Only these 6 files/folders should exist in the prd folder
         # (sitemap.xml gets generated in a later step)
-        expected_prd_files = ['aprender', 'data.js', 'index.html', 'robots.txt', 'script.js', 'style.css']
+        expected_prd_files = ['android-chrome-192x192.png',
+                              'android-chrome-512x512.png',
+                              'apple-touch-icon.png',
+                              'aprender',
+                              'browserconfig.xml',
+                              'data.js',
+                              'favicon.ico',
+                              'favicon-16x16.png',
+                              'favicon-32x32.png',
+                              'index.html',
+                              'mstile-150x150.png',
+                              'robots.txt',
+                              'safari-pinned-tab.svg',
+                              'script.js',
+                              'site.webmanifest',
+                              'style.css'
+        ]
         prd_files = os.listdir("../website/prod/")
         self.assertEqual(len(prd_files), len(expected_prd_files))
         for f in expected_prd_files:
