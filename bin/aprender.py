@@ -253,7 +253,7 @@ def index_new_tutorial_link(tutorial_slug, song_title, song_author):
     return """\n              <div class="card mb-3" style="max-width: 17rem;">
                 <div class="card-body">
                   <h5 class="card-title">%s - %s</h5>
-                  <a href="%s.html" class="stretched-link text-hide">Ver el tutorial</a>
+                  <a href="%s" class="stretched-link text-hide">Ver el tutorial</a>
                 </div>
                 <div class="card-footer"><small class="text-muted">NNmNNs en NN partes</small></div>
               </div>""" % (song_title, song_author, tutorial_slug)

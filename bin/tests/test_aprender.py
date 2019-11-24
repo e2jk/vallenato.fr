@@ -459,7 +459,7 @@ class TestUpdateIndexPage(unittest.TestCase):
             self.assertTrue("""              <div class="card mb-3" style="max-width: 17rem;">
                 <div class="card-body">
                   <h5 class="card-title">Bonita cancion - Super cantante</h5>
-                  <a href="blabla-bla.html" class="stretched-link text-hide">Ver el tutorial</a>
+                  <a href="blabla-bla" class="stretched-link text-hide">Ver el tutorial</a>
                 </div>
                 <div class="card-footer"><small class="text-muted">NNmNNs en NN partes</small></div>
               </div>""" in filedata)
@@ -507,7 +507,7 @@ class TestAprender(unittest.TestCase):
             self.assertTrue("""              <div class="card mb-3" style="max-width: 17rem;">
                 <div class="card-body">
                   <h5 class="card-title">Bonita cancion - Super cantante</h5>
-                  <a href="blabla-bla.html" class="stretched-link text-hide">Ver el tutorial</a>
+                  <a href="blabla-bla" class="stretched-link text-hide">Ver el tutorial</a>
                 </div>
                 <div class="card-footer"><small class="text-muted">NNmNNs en NN partes</small></div>
               </div>""" in filedata)
