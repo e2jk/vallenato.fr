@@ -154,8 +154,9 @@ class TestInitMain(unittest.TestCase):
         # This prevents lengthy network operations
         yt_tutorial_video = MagicMock()
         a_gtatac.return_value = ("Bonita cancion", "Super cantante", "El Vallenatero Francés", "UC_8R235jg1ld6MCMOzz2khQ", yt_tutorial_video)
-        # Create a copy of the index.html file that is going to be edited
+        # Create a copy of the index.html and tutoriales data files that are going to be edited
         shutil.copy("../website/src/aprender/index.html", "../website/src/aprender/index.html.bak")
+        shutil.copy(aprender.TUTORIALES_DATA_FILE, "%s.bak" % aprender.TUTORIALES_DATA_FILE)
         # Run the init(), will run the full --aprender branch
         target.init()
         # Confirm that a new tutorial page has been created in the temporary folder
@@ -182,9 +183,11 @@ class TestInitMain(unittest.TestCase):
         mockwbopen.assert_called_once_with("../website/src/aprender/blabla-bla.html", autoraise=True, new=2)
         # Delete that new tutorial page
         os.remove("../website/src/aprender/blabla-bla.html")
-        # Restore the index page
+        # Restore the modified files
         os.remove("../website/src/aprender/index.html")
         shutil.move("../website/src/aprender/index.html.bak", "../website/src/aprender/index.html")
+        os.remove(aprender.TUTORIALES_DATA_FILE)
+        shutil.move("%s.bak" % aprender.TUTORIALES_DATA_FILE, aprender.TUTORIALES_DATA_FILE)
 
     @patch("website.get_uploaded_videos")
     def test_website(self, w_guv):

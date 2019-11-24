@@ -28,6 +28,9 @@ import webbrowser
 from urllib.error import HTTPError
 import json
 
+# File that contains the list of available tutorials
+TUTORIALES_DATA_FILE = "../website/src/aprender/tutoriales.js"
+
 def get_tutorial_info():
     """Retrieve the information of the new tutorial"""
     # What is the YouTube tutorial video?
@@ -109,7 +112,7 @@ def rlinput(prompt, prefill=''):
 
 def get_existing_tutorial_slug():
     # Get the list of existing tutorial slugs
-    with open("../website/src/aprender/tutoriales.js") as in_file:
+    with open(TUTORIALES_DATA_FILE) as in_file:
         # Remove the JS bits to keep only the JSON content
         tutoriales_json_content = (in_file.read()[17:-2])
         tutoriales = json.loads(tutoriales_json_content)
@@ -223,6 +226,29 @@ def create_new_tutorial_page(tutorial_slug, song_title, song_author, tutorial_id
     with open(new_tutorial_page, 'w') as file:
         file.write(filedata)
 
+def generate_new_tutorial_info(tutorial_slug, song_author, song_title, tutorial_id, full_video_id):
+    new_tutorial_info = """{
+    "slug": "%s",
+    "author": "%s",
+    "title": "%s",
+    "videos": [
+      {"id": "%s", "start": 0, "end": 999}
+    ],
+    "videos_full_tutorial": [],
+    "full_version": "%s"
+  }""" % (tutorial_slug, song_author, song_title, tutorial_id, full_video_id)
+    return new_tutorial_info
+
+def update_tutoriales_data_file(tutoriales_data_file, new_tutorial_info):
+    # Read in the tutoriales data file
+    with open(tutoriales_data_file, 'r') as file :
+        filedata = file.read()
+    # Add the new tutorial info to the list of tutorials
+    filedata = filedata.replace("}\n];", "},\n  %s\n];" % new_tutorial_info)
+    # Save edited file
+    with open(tutoriales_data_file, 'w') as file:
+        file.write(filedata)
+
 def index_new_tutorial_link(tutorial_slug, song_title, song_author):
     return """\n              <div class="card mb-3" style="max-width: 17rem;">
                 <div class="card-body">
@@ -289,6 +315,9 @@ def aprender(args):
     # Create the new tutorial's page
     create_new_tutorial_page(tutorial_slug, song_title, song_author, tutorial_id, full_video_id, new_tutorial_page)
 
+    # Get the info that will be added for the new tutorial
+    new_tutorial_info = generate_new_tutorial_info(tutorial_slug, song_author, song_title, tutorial_id, full_video_id)
+
     if args.temp_folder:
         # When creating the new tutorial in a temporary folder for later edition,  do not update the index page
         dummy_index_update(tutorial_slug, song_title, song_author, tutorial_url, tutocreator_channel, tutocreator, output_folder)
@@ -297,6 +326,8 @@ def aprender(args):
     else:
         # Update the index page with the links to the new tutorial and to the tuto's author page
         update_index_page(tutorial_slug, song_title, song_author, tutorial_url, tutocreator_channel, tutocreator)
+        # Add the new tutorial to the list of tutorials
+        update_tutoriales_data_file(TUTORIALES_DATA_FILE, new_tutorial_info)
 
     # Download the videos (both the tutorial and the full video)
     if args.no_download:

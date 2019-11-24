@@ -390,6 +390,58 @@ class TestCreateNewTutorialPage(unittest.TestCase):
         os.remove("../website/src/aprender/blabla-bla.html")
 
 
+class TestGenerateNewTutorialInfo(unittest.TestCase):
+    def test_generate_new_tutorial_info(self):
+        tutorial_slug = "blabla-bla"
+        song_title = "Bonita cancion"
+        song_author = "Super cantante"
+        tutorial_id = "oPEirA4pXdg"
+        full_video_id = "q6cUzC6ESZ8"
+        expected_output = """{
+    "slug": "blabla-bla",
+    "author": "Super cantante",
+    "title": "Bonita cancion",
+    "videos": [
+      {"id": "oPEirA4pXdg", "start": 0, "end": 999}
+    ],
+    "videos_full_tutorial": [],
+    "full_version": "q6cUzC6ESZ8"
+  }"""
+        new_tutorial_info = aprender.generate_new_tutorial_info(tutorial_slug, song_author, song_title, tutorial_id, full_video_id)
+        self.assertEqual(new_tutorial_info, expected_output)
+
+
+class TestUpdateTutorialesDataFile(unittest.TestCase):
+    def test_update_tutoriales_data_file(self):
+        tutorial_slug = "blabla-bla"
+        song_title = "Bonita cancion"
+        song_author = "Super cantante"
+        tutorial_id = "oPEirA4pXdg"
+        full_video_id = "q6cUzC6ESZ8"
+        expected_output = """{
+    "slug": "blabla-bla",
+    "author": "Super cantante",
+    "title": "Bonita cancion",
+    "videos": [
+      {"id": "oPEirA4pXdg", "start": 0, "end": 999}
+    ],
+    "videos_full_tutorial": [],
+    "full_version": "q6cUzC6ESZ8"
+  }"""
+        new_tutorial_info = aprender.generate_new_tutorial_info(tutorial_slug, song_author, song_title, tutorial_id, full_video_id)
+        self.assertEqual(new_tutorial_info, expected_output)
+        # Copy the content of the tutoriales data file to a new temporary file
+        (ignore, temp_tutoriales_data_file) = tempfile.mkstemp()
+        shutil.copy(aprender.TUTORIALES_DATA_FILE, temp_tutoriales_data_file)
+        aprender.update_tutoriales_data_file(temp_tutoriales_data_file, new_tutorial_info)
+        # Confirm that the list of tutorials has been updated
+        with open(temp_tutoriales_data_file, 'r') as file :
+            filedata = file.read()
+        self.assertTrue(new_tutorial_info in filedata)
+        # Delete the temporary file
+        os.remove(temp_tutoriales_data_file)
+
+
 class TestUpdateIndexPage(unittest.TestCase):
     def test_update_index_page_ok(self):
         tutorial_slug = "blabla-bla"
