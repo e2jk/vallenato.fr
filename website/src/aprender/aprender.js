@@ -31,11 +31,22 @@ function main(){
     }
   });
 
-  if (null !== getURLParameter("local")) {
-    // Update tutorials links to use local video files instead of the YouTube-hosted videos
+  var extraUrlParams = null;
+  if (null !== getURLParameter("local") && null !== getURLParameter("editar")) {
+    extraUrlParams = "?local=1&editar=1";
+  } else if (null !== getURLParameter("local")) {
+    extraUrlParams = "?local=1";
+  } else if (null !== getURLParameter("editar")) {
+    extraUrlParams = "?editar=1";
+  }
+  if (null !== extraUrlParams) {
+    // Update links to editar index and tutorials to:
+    // - use local video files instead of the YouTube-hosted videos
+    // - and/or provide editing UI capabilities
     $("#tutoriales > div > div > a").each(function (link, i) {
-      $(this)[0].href += "?local=1";
+      $(this)[0].href += extraUrlParams;
     });
+    document.getElementById("aprender-link").href = "/aprender/" + extraUrlParams;
   }
 
   // Check if we started with another page than the root
@@ -669,11 +680,6 @@ function createUI() {
       partsListFullContent += newPartMarkup(i, true, null, null);
     });
     document.getElementById("partsListFull").innerHTML = partsListFullContent;
-  }
-
-  if (localPlayer) {
-    // Link to use local video files instead of the YouTube-hosted videos
-    document.getElementById("aprender-link").href = "/aprender/?local=1";
   }
 
   document.getElementById("previousButton").addEventListener("click", previousVideo, false);
