@@ -39,7 +39,7 @@ body {
 .close {
   font-size: 2.75rem;
 }
-.vid_card, .country-card {
+.vid_card, .country-card, #videosOriginalesHeader {
   cursor: pointer;
 }
 /*Medium devices (tablets, 768px and up)*/
