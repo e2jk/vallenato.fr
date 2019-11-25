@@ -364,33 +364,31 @@
 <p id="n295" class="pln"><a href="#n295">295</a></p>
 <p id="n296" class="stm run hide_run"><a href="#n296">296</a></p>
 <p id="n297" class="pln"><a href="#n297">297</a></p>
-<p id="n298" class="pln"><a href="#n298">298</a></p>
-<p id="n299" class="stm run hide_run"><a href="#n299">299</a></p>
-<p id="n300" class="pln"><a href="#n300">300</a></p>
-<p id="n301" class="stm run hide_run"><a href="#n301">301</a></p>
-<p id="n302" class="pln"><a href="#n302">302</a></p>
-<p id="n303" class="stm run hide_run"><a href="#n303">303</a></p>
+<p id="n298" class="stm run hide_run"><a href="#n298">298</a></p>
+<p id="n299" class="pln"><a href="#n299">299</a></p>
+<p id="n300" class="stm run hide_run"><a href="#n300">300</a></p>
+<p id="n301" class="pln"><a href="#n301">301</a></p>
+<p id="n302" class="stm run hide_run"><a href="#n302">302</a></p>
+<p id="n303" class="pln"><a href="#n303">303</a></p>
 <p id="n304" class="pln"><a href="#n304">304</a></p>
 <p id="n305" class="stm run hide_run"><a href="#n305">305</a></p>
 <p id="n306" class="pln"><a href="#n306">306</a></p>
-<p id="n307" class="pln"><a href="#n307">307</a></p>
-<p id="n308" class="stm run hide_run"><a href="#n308">308</a></p>
+<p id="n307" class="stm run hide_run"><a href="#n307">307</a></p>
+<p id="n308" class="pln"><a href="#n308">308</a></p>
 <p id="n309" class="pln"><a href="#n309">309</a></p>
 <p id="n310" class="stm run hide_run"><a href="#n310">310</a></p>
-<p id="n311" class="pln"><a href="#n311">311</a></p>
+<p id="n311" class="stm run hide_run"><a href="#n311">311</a></p>
 <p id="n312" class="pln"><a href="#n312">312</a></p>
 <p id="n313" class="stm run hide_run"><a href="#n313">313</a></p>
 <p id="n314" class="stm run hide_run"><a href="#n314">314</a></p>
-<p id="n315" class="pln"><a href="#n315">315</a></p>
+<p id="n315" class="stm run hide_run"><a href="#n315">315</a></p>
 <p id="n316" class="stm run hide_run"><a href="#n316">316</a></p>
 <p id="n317" class="stm run hide_run"><a href="#n317">317</a></p>
-<p id="n318" class="stm run hide_run"><a href="#n318">318</a></p>
-<p id="n319" class="stm run hide_run"><a href="#n319">319</a></p>
+<p id="n318" class="pln"><a href="#n318">318</a></p>
+<p id="n319" class="pln"><a href="#n319">319</a></p>
 <p id="n320" class="stm run hide_run"><a href="#n320">320</a></p>
-<p id="n321" class="pln"><a href="#n321">321</a></p>
-<p id="n322" class="pln"><a href="#n322">322</a></p>
-<p id="n323" class="stm run hide_run"><a href="#n323">323</a></p>
-<p id="n324" class="stm run hide_run"><a href="#n324">324</a></p>
+<p id="n321" class="stm run hide_run"><a href="#n321">321</a></p>
+<p id="n322" class="stm run hide_run"><a href="#n322">322</a></p>
 
             </td>
             <td class="text">
@@ -688,36 +686,34 @@
 <p id="t292" class="pln">    <span class="com"># Determine the output folder (depends on the --temp-folder parameter)</span><span class="strut">&nbsp;</span></p>
 <p id="t293" class="stm run hide_run">    <span class="nam">output_folder</span> <span class="op">=</span> <span class="nam">determine_output_folder</span><span class="op">(</span><span class="nam">args</span><span class="op">.</span><span class="nam">temp_folder</span><span class="op">,</span> <span class="nam">tutorial_slug</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
 <p id="t294" class="pln"><span class="strut">&nbsp;</span></p>
-<p id="t295" class="pln">    <span class="com"># The file name for the new tutorial</span><span class="strut">&nbsp;</span></p>
-<p id="t296" class="stm run hide_run">    <span class="nam">new_tutorial_page</span> <span class="op">=</span> <span class="str">"%s%s.html"</span> <span class="op">%</span> <span class="op">(</span><span class="nam">output_folder</span><span class="op">,</span> <span class="nam">tutorial_slug</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t295" class="pln">    <span class="com"># Get the info that will be added for the new tutorial</span><span class="strut">&nbsp;</span></p>
+<p id="t296" class="stm run hide_run">    <span class="nam">new_tutorial_info</span> <span class="op">=</span> <span class="nam">generate_new_tutorial_info</span><span class="op">(</span><span class="nam">tutorial_slug</span><span class="op">,</span> <span class="nam">song_author</span><span class="op">,</span> <span class="nam">song_title</span><span class="op">,</span> <span class="nam">tutorial_id</span><span class="op">,</span> <span class="nam">full_video_id</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
 <p id="t297" class="pln"><span class="strut">&nbsp;</span></p>
-<p id="t298" class="pln">    <span class="com"># Get the info that will be added for the new tutorial</span><span class="strut">&nbsp;</span></p>
-<p id="t299" class="stm run hide_run">    <span class="nam">new_tutorial_info</span> <span class="op">=</span> <span class="nam">generate_new_tutorial_info</span><span class="op">(</span><span class="nam">tutorial_slug</span><span class="op">,</span> <span class="nam">song_author</span><span class="op">,</span> <span class="nam">song_title</span><span class="op">,</span> <span class="nam">tutorial_id</span><span class="op">,</span> <span class="nam">full_video_id</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
-<p id="t300" class="pln"><span class="strut">&nbsp;</span></p>
-<p id="t301" class="stm run hide_run">    <span class="key">if</span> <span class="nam">args</span><span class="op">.</span><span class="nam">temp_folder</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
-<p id="t302" class="pln">        <span class="com"># When creating the new tutorial in a temporary folder for later edition,  do not update the index page</span><span class="strut">&nbsp;</span></p>
-<p id="t303" class="stm run hide_run">        <span class="nam">dummy_index_update</span><span class="op">(</span><span class="nam">tutorial_slug</span><span class="op">,</span> <span class="nam">song_title</span><span class="op">,</span> <span class="nam">song_author</span><span class="op">,</span> <span class="nam">tutorial_url</span><span class="op">,</span> <span class="nam">tutocreator_channel</span><span class="op">,</span> <span class="nam">tutocreator</span><span class="op">,</span> <span class="nam">output_folder</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
-<p id="t304" class="pln">        <span class="com"># Symlink files so that the new template can be used from the temp folder</span><span class="strut">&nbsp;</span></p>
-<p id="t305" class="stm run hide_run">        <span class="nam">dummy_symlink_files</span><span class="op">(</span><span class="nam">output_folder</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
-<p id="t306" class="pln">    <span class="key">else</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
-<p id="t307" class="pln">        <span class="com"># Update the index page with the links to the new tutorial and to the tuto's author page</span><span class="strut">&nbsp;</span></p>
-<p id="t308" class="stm run hide_run">        <span class="nam">update_index_page</span><span class="op">(</span><span class="nam">tutorial_slug</span><span class="op">,</span> <span class="nam">song_title</span><span class="op">,</span> <span class="nam">song_author</span><span class="op">,</span> <span class="nam">tutorial_url</span><span class="op">,</span> <span class="nam">tutocreator_channel</span><span class="op">,</span> <span class="nam">tutocreator</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
-<p id="t309" class="pln">        <span class="com"># Add the new tutorial to the list of tutorials</span><span class="strut">&nbsp;</span></p>
-<p id="t310" class="stm run hide_run">        <span class="nam">update_tutoriales_data_file</span><span class="op">(</span><span class="nam">TUTORIALES_DATA_FILE</span><span class="op">,</span> <span class="nam">new_tutorial_info</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
-<p id="t311" class="pln"><span class="strut">&nbsp;</span></p>
-<p id="t312" class="pln">    <span class="com"># Download the videos (both the tutorial and the full video)</span><span class="strut">&nbsp;</span></p>
-<p id="t313" class="stm run hide_run">    <span class="key">if</span> <span class="nam">args</span><span class="op">.</span><span class="nam">no_download</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
-<p id="t314" class="stm run hide_run">        <span class="nam">logging</span><span class="op">.</span><span class="nam">info</span><span class="op">(</span><span class="str">"Not downloading the videos from YouTube due to --no-download parameter."</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
-<p id="t315" class="pln">    <span class="key">else</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
-<p id="t316" class="stm run hide_run">        <span class="nam">videos_output_folder</span> <span class="op">=</span> <span class="str">"%svideos/%s/"</span> <span class="op">%</span> <span class="op">(</span><span class="nam">output_folder</span><span class="op">,</span> <span class="nam">tutorial_slug</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
-<p id="t317" class="stm run hide_run">        <span class="key">if</span> <span class="key">not</span> <span class="nam">os</span><span class="op">.</span><span class="nam">path</span><span class="op">.</span><span class="nam">exists</span><span class="op">(</span><span class="nam">videos_output_folder</span><span class="op">)</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
-<p id="t318" class="stm run hide_run">            <span class="nam">logging</span><span class="op">.</span><span class="nam">debug</span><span class="op">(</span><span class="str">"Creating folder '%s'."</span> <span class="op">%</span> <span class="nam">videos_output_folder</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
-<p id="t319" class="stm run hide_run">            <span class="nam">os</span><span class="op">.</span><span class="nam">makedirs</span><span class="op">(</span><span class="nam">videos_output_folder</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
-<p id="t320" class="stm run hide_run">        <span class="nam">download_videos</span><span class="op">(</span><span class="nam">yt_tutorial_video</span><span class="op">,</span> <span class="nam">tutorial_id</span><span class="op">,</span> <span class="nam">full_video_id</span><span class="op">,</span> <span class="nam">videos_output_folder</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
-<p id="t321" class="pln"><span class="strut">&nbsp;</span></p>
-<p id="t322" class="pln">    <span class="com"># Open the new tutorial page in the webbrowser (new tab) for edition</span><span class="strut">&nbsp;</span></p>
-<p id="t323" class="stm run hide_run">    <span class="nam">logging</span><span class="op">.</span><span class="nam">debug</span><span class="op">(</span><span class="str">"Opening new tab in web browser to '%s'"</span> <span class="op">%</span> <span class="nam">new_tutorial_page</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
-<p id="t324" class="stm run hide_run">    <span class="nam">webbrowser</span><span class="op">.</span><span class="nam">open</span><span class="op">(</span><span class="nam">new_tutorial_page</span><span class="op">,</span> <span class="nam">new</span><span class="op">=</span><span class="num">2</span><span class="op">,</span> <span class="nam">autoraise</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t298" class="stm run hide_run">    <span class="key">if</span> <span class="nam">args</span><span class="op">.</span><span class="nam">temp_folder</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
+<p id="t299" class="pln">        <span class="com"># When creating the new tutorial in a temporary folder for later edition,  do not update the index page</span><span class="strut">&nbsp;</span></p>
+<p id="t300" class="stm run hide_run">        <span class="nam">dummy_index_update</span><span class="op">(</span><span class="nam">tutorial_slug</span><span class="op">,</span> <span class="nam">song_title</span><span class="op">,</span> <span class="nam">song_author</span><span class="op">,</span> <span class="nam">tutorial_url</span><span class="op">,</span> <span class="nam">tutocreator_channel</span><span class="op">,</span> <span class="nam">tutocreator</span><span class="op">,</span> <span class="nam">output_folder</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t301" class="pln">        <span class="com"># Symlink files so that the new template can be used from the temp folder</span><span class="strut">&nbsp;</span></p>
+<p id="t302" class="stm run hide_run">        <span class="nam">dummy_symlink_files</span><span class="op">(</span><span class="nam">output_folder</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t303" class="pln">    <span class="key">else</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
+<p id="t304" class="pln">        <span class="com"># Update the index page with the links to the new tutorial and to the tuto's author page</span><span class="strut">&nbsp;</span></p>
+<p id="t305" class="stm run hide_run">        <span class="nam">update_index_page</span><span class="op">(</span><span class="nam">tutorial_slug</span><span class="op">,</span> <span class="nam">song_title</span><span class="op">,</span> <span class="nam">song_author</span><span class="op">,</span> <span class="nam">tutorial_url</span><span class="op">,</span> <span class="nam">tutocreator_channel</span><span class="op">,</span> <span class="nam">tutocreator</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t306" class="pln">        <span class="com"># Add the new tutorial to the list of tutorials</span><span class="strut">&nbsp;</span></p>
+<p id="t307" class="stm run hide_run">        <span class="nam">update_tutoriales_data_file</span><span class="op">(</span><span class="nam">TUTORIALES_DATA_FILE</span><span class="op">,</span> <span class="nam">new_tutorial_info</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t308" class="pln"><span class="strut">&nbsp;</span></p>
+<p id="t309" class="pln">    <span class="com"># Download the videos (both the tutorial and the full video)</span><span class="strut">&nbsp;</span></p>
+<p id="t310" class="stm run hide_run">    <span class="key">if</span> <span class="nam">args</span><span class="op">.</span><span class="nam">no_download</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
+<p id="t311" class="stm run hide_run">        <span class="nam">logging</span><span class="op">.</span><span class="nam">info</span><span class="op">(</span><span class="str">"Not downloading the videos from YouTube due to --no-download parameter."</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t312" class="pln">    <span class="key">else</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
+<p id="t313" class="stm run hide_run">        <span class="nam">videos_output_folder</span> <span class="op">=</span> <span class="str">"%svideos/%s/"</span> <span class="op">%</span> <span class="op">(</span><span class="nam">output_folder</span><span class="op">,</span> <span class="nam">tutorial_slug</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t314" class="stm run hide_run">        <span class="key">if</span> <span class="key">not</span> <span class="nam">os</span><span class="op">.</span><span class="nam">path</span><span class="op">.</span><span class="nam">exists</span><span class="op">(</span><span class="nam">videos_output_folder</span><span class="op">)</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
+<p id="t315" class="stm run hide_run">            <span class="nam">logging</span><span class="op">.</span><span class="nam">debug</span><span class="op">(</span><span class="str">"Creating folder '%s'."</span> <span class="op">%</span> <span class="nam">videos_output_folder</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t316" class="stm run hide_run">            <span class="nam">os</span><span class="op">.</span><span class="nam">makedirs</span><span class="op">(</span><span class="nam">videos_output_folder</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t317" class="stm run hide_run">        <span class="nam">download_videos</span><span class="op">(</span><span class="nam">yt_tutorial_video</span><span class="op">,</span> <span class="nam">tutorial_id</span><span class="op">,</span> <span class="nam">full_video_id</span><span class="op">,</span> <span class="nam">videos_output_folder</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t318" class="pln"><span class="strut">&nbsp;</span></p>
+<p id="t319" class="pln">    <span class="com"># Open the new tutorial page in the webbrowser (new tab) for edition</span><span class="strut">&nbsp;</span></p>
+<p id="t320" class="stm run hide_run">    <span class="nam">new_tutorial_page</span> <span class="op">=</span> <span class="str">"http://localhost:8000/aprender/?new_tutorial=%s"</span> <span class="op">%</span> <span class="nam">tutorial_slug</span><span class="strut">&nbsp;</span></p>
+<p id="t321" class="stm run hide_run">    <span class="nam">logging</span><span class="op">.</span><span class="nam">debug</span><span class="op">(</span><span class="str">"Opening new tab in web browser to '%s'"</span> <span class="op">%</span> <span class="nam">new_tutorial_page</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t322" class="stm run hide_run">    <span class="nam">webbrowser</span><span class="op">.</span><span class="nam">open</span><span class="op">(</span><span class="nam">new_tutorial_page</span><span class="op">,</span> <span class="nam">new</span><span class="op">=</span><span class="num">2</span><span class="op">,</span> <span class="nam">autoraise</span><span class="op">=</span><span class="key">True</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
 
             </td>
         </tr>
@@ -728,7 +724,7 @@
     <div class="content">
         <p>
             <a class="nav" href="index.html">&#xab; index</a> &nbsp; &nbsp; <a class="nav" href="https://coverage.readthedocs.io">coverage.py v4.5.4</a>,
-            created at 2019-11-24 21:12
+            created at 2019-11-25 21:15
         </p>
     </div>
 </div>
