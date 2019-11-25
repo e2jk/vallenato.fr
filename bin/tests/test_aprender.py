@@ -493,7 +493,7 @@ class TestAprender(unittest.TestCase):
         # Delete the temporary folder
         shutil.rmtree("../website/src/aprender/temp/blabla-bla/")
         # Confirm the webbrowser is called to be opened to the new template's page
-        mockwbopen.assert_called_once_with("../website/src/aprender/temp/blabla-bla/blabla-bla.html", autoraise=True, new=2)
+        mockwbopen.assert_called_once_with("http://localhost:8000/aprender/?new_tutorial=blabla-bla", autoraise=True, new=2)
 
     @patch("aprender.get_title_author_tutocreator_and_channel")
     @patch("aprender.YouTube")

@@ -292,9 +292,6 @@ def aprender(args):
     # Determine the output folder (depends on the --temp-folder parameter)
     output_folder = determine_output_folder(args.temp_folder, tutorial_slug)
 
-    # The file name for the new tutorial
-    new_tutorial_page = "%s%s.html" % (output_folder, tutorial_slug)
-
     # Get the info that will be added for the new tutorial
     new_tutorial_info = generate_new_tutorial_info(tutorial_slug, song_author, song_title, tutorial_id, full_video_id)
 
@@ -320,5 +317,6 @@ def aprender(args):
         download_videos(yt_tutorial_video, tutorial_id, full_video_id, videos_output_folder)
 
     # Open the new tutorial page in the webbrowser (new tab) for edition
+    new_tutorial_page = "http://localhost:8000/aprender/?new_tutorial=%s" % tutorial_slug
     logging.debug("Opening new tab in web browser to '%s'" % new_tutorial_page)
     webbrowser.open(new_tutorial_page, new=2, autoraise=True)

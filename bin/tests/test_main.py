@@ -179,7 +179,7 @@ class TestInitMain(unittest.TestCase):
             filedata = file.read()
             self.assertTrue('\n              <li>Bonita cancion - Super cantante: <a href="https://www.youtube.com/watch?v=oPEirA4pXdg">Tutorial en YouTube</a> por <a href="https://www.youtube.com/channel/UC_8R235jg1ld6MCMOzz2khQ">El Vallenatero Francés</a></li>' in filedata)
         # Confirm the webbrowser is called to be opened to the new template's page
-        mockwbopen.assert_called_once_with("../website/src/aprender/blabla-bla.html", autoraise=True, new=2)
+        mockwbopen.assert_called_once_with("http://localhost:8000/aprender/?new_tutorial=blabla-bla", autoraise=True, new=2)
         # Restore the modified files
         os.remove("../website/src/aprender/index.html")
         shutil.move("../website/src/aprender/index.html.bak", "../website/src/aprender/index.html")

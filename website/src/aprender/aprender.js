@@ -52,6 +52,15 @@ function main(){
   // Check if we started with another page than the root
   if("/aprender/" !== window.location.pathname){
     check_valid_slug();
+  } else {
+    // Check if we've just created a new tutorial
+    var new_tutorial = getURLParameter("new_tutorial");
+    if (new_tutorial) {
+      // Open that new tutorial's page in local edit mode
+      history.pushState(null, null, "/aprender/" + new_tutorial + "?local=1&editar=1");
+      current_page_is_tutorial = true;
+      show_tutorial_page(new_tutorial);
+    }
   }
 }
 
