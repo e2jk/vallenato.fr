@@ -79,7 +79,7 @@ function populateMapAndList(mymap){
     if (countries.hasOwnProperty(c)) {
       list_content += `<div class="card">
       <div class="card-header country-card" id="heading` + num_countries + `" data-toggle="collapse" data-target="#collapse` + num_countries + `" aria-expanded="false" aria-controls="collapse` + num_countries + `">
-        <div class="mb-0">` + c + `</div>
+        <div class="mb-0">` + c + `<img src="/flags/` + c + `.png" class="country-flag" alt="Bandera de ` + c + `"></div>
       </div>
       `;
       list_content += `<div id="collapse` + num_countries + `" class="collapse list-group list-group-flush" aria-labelledby="heading` + num_countries + `" data-parent="#list">`;

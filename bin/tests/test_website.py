@@ -273,6 +273,7 @@ class TestGenerateWebsite(unittest.TestCase):
                               'favicon.ico',
                               'favicon-16x16.png',
                               'favicon-32x32.png',
+                              'flags',
                               'index.html',
                               'mstile-150x150.png',
                               'robots.txt',

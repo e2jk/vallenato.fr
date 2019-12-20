@@ -42,6 +42,11 @@ body {
 .vid_card, .country-card, #videosOriginalesHeader {
   cursor: pointer;
 }
+.country-flag{
+  float: right;
+  max-height:25px;
+  max-width:40px;
+}
 /*Medium devices (tablets, 768px and up)*/
 @media (min-width: 768px) {
   .country-card, #list .list-group-item{
