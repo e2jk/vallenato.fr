@@ -361,5 +361,26 @@ var tutoriales = [
       {"id": "sUTUjzxd1k4", "start": 60, "end": 82}
     ],
     "full_version": "Xwj1S9_l_I0"
+  },
+  {
+    "slug": "sin-medir-distancias",
+    "author": "Diomedes Diaz",
+    "title": "Sin Medir Distancias",
+    "videos": [
+      {"id": "CZ5bQLhz5xw", "start": 50, "end": 63},
+      {"id": "CZ5bQLhz5xw", "start": 65, "end": 76},
+      {"id": "CZ5bQLhz5xw", "start": 95, "end": 103},
+      {"id": "CZ5bQLhz5xw", "start": 104, "end": 113},
+      {"id": "CZ5bQLhz5xw", "start": 183, "end": 214},
+      {"id": "CZ5bQLhz5xw", "start": 221, "end": 239},
+      {"id": "CZ5bQLhz5xw", "start": 255, "end": 271},
+      {"id": "CZ5bQLhz5xw", "start": 326, "end": 352}
+    ],
+    "videos_full_tutorial": [
+      {"id": "CZ5bQLhz5xw", "start": 77, "end": 90},
+      {"id": "CZ5bQLhz5xw", "start": 116, "end": 130},
+      {"id": "CZ5bQLhz5xw", "start": 272, "end": 324}
+    ],
+    "full_version": "wXB82_BkAmQ"
   }
 ];
