@@ -676,6 +676,8 @@ function createUI() {
     document.getElementById("saveTimestamps").addEventListener("click", saveTimestamps, false);
     document.getElementById("startButton").addEventListener("click", startButton, false);
     document.getElementById("endButton").addEventListener("click", endButton, false);
+    // Update the link to reload this tutorial's page
+    $("#reloadNewTuto")[0].href = "/aprender/?new_tutorial=" + tutorial_slug;
   }
   var partsList = document.getElementById("partsList");
   var partsListContent = "";
