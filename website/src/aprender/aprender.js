@@ -714,6 +714,10 @@ function check_valid_slug() {
 
   // Identify which page to display
   if("/aprender/" === window.location.pathname) {
+    if("?new_tutorial=" === window.location.search.substring(0, 14)) {
+      // Reload the page if clicked on the Reload page in a tutorial's edit mode
+      window.location.reload(true);
+    }
     // Go to the /aprender/ page
     current_page_is_tutorial = false;
     show_aprender_page();
