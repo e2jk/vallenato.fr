@@ -31,6 +31,10 @@
     "latitude": 8.969049,
     "longitude": -79.535716
   },
+  "Dijon, Francia": {
+    "latitude": 47.321269,
+    "longitude": 5.041394
+  },
   "El Remolino, Nari\u00f1o, Colombia": {
     "latitude": 1.675202,
     "longitude": -77.330858
@@ -42,6 +46,10 @@
   "La Cristalina, Nari\u00f1o, Colombia": {
     "latitude": 1.140297,
     "longitude": -77.233292
+  },
+  "Lamoura, Francia": {
+    "latitude": 46.396229,
+    "longitude": 5.966091
   },
   "Lisboa, Portugal": {
     "latitude": 38.722252,

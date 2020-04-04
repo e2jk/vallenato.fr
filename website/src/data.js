@@ -515,6 +515,100 @@ var locations = {
       }
     ]
   },
+  "Dijon, Francia": {
+    "latitude": 47.321269,
+    "longitude": 5.041394,
+    "slug": "dijon-francia",
+    "videos": [
+      {
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/esa.html\nDijon, Francia, 23/02/2020\nEsa - Binomio de Oro",
+        "id": "z174Dfo035c",
+        "location": "Dijon, Francia",
+        "publishedAt": "2020-02-23T16:48:55.000Z",
+        "slug": "esa-dijon-francia",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "Esa",
+          "Binomio de Oro",
+          "Dijon",
+          "Francia"
+        ],
+        "thumbnail": {
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/z174Dfo035c/mqdefault.jpg",
+          "width": 320
+        },
+        "title": "Esa, desde Dijon, Francia"
+      },
+      {
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/los-caminos-de-la-vida.html\nDijon, Francia, 23/02/2020\nLos Caminos De La Vida - Los Diablitos",
+        "id": "uaKo1FhHOLs",
+        "location": "Dijon, Francia",
+        "publishedAt": "2020-02-23T16:50:59.000Z",
+        "slug": "los-caminos-de-la-vida-dijon-francia",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "Dijon",
+          "Francia",
+          "Acord\u00e9on",
+          "Los Caminos De La Vida",
+          "Los Diablitos"
+        ],
+        "thumbnail": {
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/uaKo1FhHOLs/mqdefault.jpg",
+          "width": 320
+        },
+        "title": "Los Caminos De La Vida, desde Dijon, Francia"
+      },
+      {
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/en-carne-propia.html\nDijon, Francia, 23/02/2020\nEn Carne Propia - Silvio Brito",
+        "id": "jOXNtKJpyXE",
+        "location": "Dijon, Francia",
+        "publishedAt": "2020-02-23T16:43:34.000Z",
+        "slug": "en-carne-propia-dijon-francia",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "Dijon",
+          "Francia",
+          "Acord\u00e9on",
+          "En Carne Propia",
+          "Silvio Brito"
+        ],
+        "thumbnail": {
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/jOXNtKJpyXE/mqdefault.jpg",
+          "width": 320
+        },
+        "title": "En Carne Propia, desde Dijon, Francia"
+      },
+      {
+        "description": "Dijon, Francia, 23/02/2020\nOye Bonita - Diomedes D\u00edaz",
+        "id": "bQ0NwxOouHM",
+        "location": "Dijon, Francia",
+        "publishedAt": "2020-02-23T16:52:51.000Z",
+        "slug": "oye-bonita-dijon-francia",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "Oye Bonita",
+          "Dijon",
+          "Francia",
+          "Diomedes D\u00edaz",
+          "Acord\u00e9on"
+        ],
+        "thumbnail": {
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/bQ0NwxOouHM/mqdefault.jpg",
+          "width": 320
+        },
+        "title": "Oye Bonita, desde Dijon, Francia"
+      }
+    ]
+  },
   "El Remolino, Nari\u00f1o, Colombia": {
     "latitude": 1.675202,
     "longitude": -77.330858,
@@ -756,15 +850,15 @@ var locations = {
     "slug": "la-cristalina-narino-colombia",
     "videos": [
       {
-        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/esa.html\nLa Cristalina, Nari\u00f1o, Colombia, 16/08/2019\nEsa - Binomio de Oro",
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/solo-para-ti.html\nLa Cristalina, Nari\u00f1o, Colombia, 16/08/2019\nSolo Para Ti - Binomio de Oro",
         "id": "98ptD9Xw4Sw",
         "location": "La Cristalina, Nari\u00f1o, Colombia",
         "publishedAt": "2019-08-17T14:20:05.000Z",
-        "slug": "esa-la-cristalina-narino-colombia",
+        "slug": "solo-para-ti-la-cristalina-narino-colombia",
         "tags": [
           "Acorde\u00f3n",
           "Vallenato",
-          "Esa",
+          "Solo Para Ti",
           "Binomio de Oro",
           "La Cristalina",
           "Nari\u00f1o",
@@ -775,7 +869,7 @@ var locations = {
           "url": "https://i.ytimg.com/vi/98ptD9Xw4Sw/mqdefault.jpg",
           "width": 320
         },
-        "title": "Esa, desde La Cristalina, Nari\u00f1o, Colombia"
+        "title": "Solo Para Ti, desde La Cristalina, Nari\u00f1o, Colombia"
       },
       {
         "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/en-carne-propia.html\nLa Cristalina, Nari\u00f1o, Colombia, 16/08/2019\nEn Carne Propia - Silvio Brito",
@@ -909,6 +1003,57 @@ var locations = {
           "width": 320
         },
         "title": "Los Caminos De La Vida, desde La Cristalina, Nari\u00f1o, Colombia"
+      }
+    ]
+  },
+  "Lamoura, Francia": {
+    "latitude": 46.396229,
+    "longitude": 5.966091,
+    "slug": "lamoura-francia",
+    "videos": [
+      {
+        "description": "Lamoura, Francia, 29/02/2020\nOye Bonita - Diomedes D\u00edaz",
+        "id": "Yq6sIkguCTY",
+        "location": "Lamoura, Francia",
+        "publishedAt": "2020-04-04T16:35:25.000Z",
+        "slug": "oye-bonita-lamoura-francia",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "Oye Bonita",
+          "Francia",
+          "Diomedes D\u00edaz",
+          "Acord\u00e9on",
+          "Lamoura"
+        ],
+        "thumbnail": {
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/Yq6sIkguCTY/mqdefault.jpg",
+          "width": 320
+        },
+        "title": "Oye Bonita, desde Lamoura, Francia"
+      },
+      {
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/en-carne-propia.html\nLamoura, Francia, 29/02/2020\nEn Carne Propia - Silvio Brito",
+        "id": "1lTFEE6h-4Q",
+        "location": "Lamoura, Francia",
+        "publishedAt": "2020-04-04T16:38:39.000Z",
+        "slug": "en-carne-propia-lamoura-francia",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "Francia",
+          "Acord\u00e9on",
+          "En Carne Propia",
+          "Silvio Brito",
+          "Lamoura"
+        ],
+        "thumbnail": {
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/1lTFEE6h-4Q/mqdefault.jpg",
+          "width": 320
+        },
+        "title": "En Carne Propia, desde Lamoura, Francia"
       }
     ]
   },
