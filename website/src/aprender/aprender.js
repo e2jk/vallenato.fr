@@ -65,12 +65,15 @@ function main(){
 }
 
 function populateTutorials() {
+  var image_styles = ["triangles", "tiles", "circles", "123"];
   tutoriales.forEach(function (tuto, i) {
     var tuto_duration = getDuration(tuto.videos, false);
+    var tuto_name = tuto["title"] + (tuto["author"] ? ` - ` + tuto["author"] : "");
     var tuto_string = `<!-- Tutorial ` + (i+1) + ` -->
       <div class="card mb-3" style="max-width: 17rem;">
+        <img src="https://generative-placeholders.glitch.me/image?width=200&height=100&style=` + image_styles[i%image_styles.length] + `&img=` + (i+1) + `" class="card-img-top" alt="Random generative art for ` + tuto_name + `">
         <div class="card-body">
-          <h5 class="card-title">` + tuto["title"] + (tuto["author"] ? ` - ` + tuto["author"] : "") + `</h5>
+          <h5 class="card-title">` + tuto_name + `</h5>
           <a href="` + tuto["slug"] + `" class="stretched-link text-hide">Ver el tutorial</a>
         </div>
         <div class="card-footer"><small class="text-muted">` + tuto_duration + `</small></div>
