@@ -750,6 +750,8 @@ function show_tutorial_page(tutorial) {
   determineEditMode();
   determineCurrentVideoParameter();
   createUI();
+  // Go to the top of the page in case we had scrolled down the list of tutorials
+  window.scrollTo(0, 0);
   if (!localPlayer) {
     setUpYouTubeVideoPlayer();
   } else {
