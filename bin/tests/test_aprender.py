@@ -124,12 +124,13 @@ class TestGetTitleAuthorTutocreatorAndChannel(unittest.TestCase):
         mock_raw_input_counter = 0
         mock_raw_input_values = ["ABC", "DEF"]
         # Mock the return value of calling YouTube, to prevent lengthy network operations
-        a_yt().player_config_args = {"player_response": {"videoDetails": {"title": "AAA", "author": "FZ Academia Vallenato", "channelId": "UCWVRD_dZ2wnm1Xf_R5G0D8w"}}}
+        a_yt().title = "AAA"
+        a_yt().author = "FZ Academia Vallenato"
         (song_title, song_author, tutocreator, tutocreator_channel, yt_tutorial_video) = aprender.get_title_author_tutocreator_and_channel("https://www.youtube.com/watch?v=v5xEaLCCNRc")
         self.assertEqual(song_title, "ABC")
         self.assertEqual(song_author, "DEF")
         self.assertEqual(tutocreator, "FZ Academia Vallenato")
-        self.assertEqual(tutocreator_channel, "UCWVRD_dZ2wnm1Xf_R5G0D8w")
+        self.assertEqual(tutocreator_channel, "UPDATE MANUALLY")
 
     @patch("aprender.YouTube")
     def test_get_title_author_tutocreator_and_channel_quit_title(self, a_yt):

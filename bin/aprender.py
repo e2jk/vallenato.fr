@@ -78,25 +78,25 @@ def get_title_author_tutocreator_and_channel(url):
     logging.debug("Downloading information from tutorial video '%s'." % url)
     yt = YouTube(url)
 
-    page_title = yt.player_config_args["player_response"]["videoDetails"]["title"]
-
     # Extract the title
-    song_title = rlinput("Song title ('q' to quit): ", page_title)
+    song_title = rlinput("Song title ('q' to quit): ", yt.title)
     if song_title.lower() == "q":
         print("Exiting...")
         sys.exit(11)
 
     # Extract the author's name
-    song_author = rlinput("Song author ('q' to quit): ", page_title)
+    song_author = rlinput("Song author ('q' to quit): ", yt.title)
     if song_author.lower() == "q":
         print("Exiting...")
         sys.exit(12)
 
     # The name of the creator of the tutorial
-    tutocreator = yt.player_config_args["player_response"]["videoDetails"]["author"]
+    tutocreator = yt.author
 
     # The YouTube channel of the creator of the tutorial
-    tutocreator_channel = yt.player_config_args["player_response"]["videoDetails"]["channelId"]
+    #TODO: this broke when migrating to pytube3
+    tutocreator_channel = "UPDATE MANUALLY"
+    # tutocreator_channel = yt.player_config_args["player_response"]["videoDetails"]["channelId"]
 
     return (song_title, song_author, tutocreator, tutocreator_channel, yt)
 
