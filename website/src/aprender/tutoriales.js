@@ -382,5 +382,32 @@ var tutoriales = [
       {"id": "CZ5bQLhz5xw", "start": 272, "end": 324}
     ],
     "full_version": "wXB82_BkAmQ"
+  },
+  {
+    "slug": "mi-hermano-y-yo",
+    "author": "Los Hermanos Zuleta",
+    "title": "Mi Hermano y Yo",
+    "videos": [
+      {"id": "nmd3UacpBBA", "start": 74, "end": 104},
+      {"id": "nmd3UacpBBA", "start": 117, "end": 151},
+      {"id": "nmd3UacpBBA", "start": 192, "end": 219},
+      {"id": "nmd3UacpBBA", "start": 238, "end": 381},
+      {"id": "nmd3UacpBBA", "start": 417, "end": 437},
+      {"id": "nmd3UacpBBA", "start": 494, "end": 501},
+      {"id": "nmd3UacpBBA", "start": 520, "end": 542},
+      {"id": "nmd3UacpBBA", "start": 561, "end": 583},
+      {"id": "nmd3UacpBBA", "start": 672, "end": 715},
+      {"id": "nmd3UacpBBA", "start": 761, "end": 781},
+      {"id": "nmd3UacpBBA", "start": 794, "end": 806},
+      {"id": "nmd3UacpBBA", "start": 833, "end": 849}
+    ],
+    "videos_full_tutorial": [
+      {"id": "nmd3UacpBBA", "start": 0, "end": 35},
+      {"id": "nmd3UacpBBA", "start": 380, "end": 394},
+      {"id": "nmd3UacpBBA", "start": 502, "end": 509},
+      {"id": "nmd3UacpBBA", "start": 543, "end": 551},
+      {"id": "nmd3UacpBBA", "start": 716, "end": 751}
+    ],
+    "full_version": "X9H4ul5cstg"
   }
 ];
