@@ -114,10 +114,13 @@ def yt_list_my_uploaded_videos(uploads_playlist_id, youtube):
             videos_list_response = videos_list_request.execute()
 
             for video in videos_list_response['items']:
-                # Only keep Public videos not tagged as "no-website" or "Tutorial"
-                if (video['status']['privacyStatus'] != "public" or
-                   "no-website" in video['snippet']['tags'] or
-                   "Tutorial" in video['snippet']['tags']):
+                # Only keep Public videos
+                if video['status']['privacyStatus'] != "public":
+                    continue
+                # Skip videos tagged as "no-website" or "Tutorial"
+                if 'tags' in video['snippet'] and (
+                    "no-website" in video['snippet']['tags'] or
+                    "Tutorial" in video['snippet']['tags']):
                     continue
                 vid = {}
                 vid["id"] = video['id']
