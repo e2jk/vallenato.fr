@@ -171,32 +171,52 @@ var locations = {
       }
     ]
   },
-  "Bruselas, Belgica": {
+  "Bruselas, B\u00e9lgica": {
     "latitude": 50.84554,
     "longitude": 4.35571,
     "slug": "bruselas-belgica",
     "videos": [
       {
-        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/la-guanena.html\nBruselas, Belgica, 08/12/2018\nLa Guane\u00f1a y el Son Sure\u00f1o, m\u00fasica Nari\u00f1ense",
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/la-pollera-colora\nBruselas, B\u00e9lgica, 19/04/2020\nLa Pollera Color\u00e1, Cumbia Colombiana",
+        "id": "QVbiEJdU1GI",
+        "location": "Bruselas, B\u00e9lgica",
+        "publishedAt": "2020-04-19T19:14:38.000Z",
+        "slug": "la-pollera-colora-bruselas-belgica",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "Bruselas",
+          "B\u00e9lgica",
+          "La Pollera Color\u00e1"
+        ],
+        "thumbnail": {
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/QVbiEJdU1GI/mqdefault.jpg",
+          "width": 320
+        },
+        "title": "La Pollera Color\u00e1, desde Bruselas, B\u00e9lgica"
+      },
+      {
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/la-guanena\nBruselas, B\u00e9lgica, 08/12/2018\nLa Guane\u00f1a y el Son Sure\u00f1o, m\u00fasica Nari\u00f1ense",
         "id": "XQ4TpG4gGrQ",
-        "location": "Bruselas, Belgica",
+        "location": "Bruselas, B\u00e9lgica",
         "publishedAt": "2018-12-08T11:08:56.000Z",
         "slug": "la-guanena-navidena-bruselas-belgica",
         "tags": [
           "Acorde\u00f3n",
           "Vallenato",
           "Bruselas",
-          "Belgica",
           "La Guane\u00f1a",
           "M\u00fasica Nari\u00f1ense",
-          "Navidad"
+          "Navidad",
+          "B\u00e9lgica"
         ],
         "thumbnail": {
           "height": 180,
           "url": "https://i.ytimg.com/vi/XQ4TpG4gGrQ/mqdefault.jpg",
           "width": 320
         },
-        "title": "La Guane\u00f1a navide\u00f1a, desde Bruselas, Belgica"
+        "title": "La Guane\u00f1a navide\u00f1a, desde Bruselas, B\u00e9lgica"
       }
     ]
   },
