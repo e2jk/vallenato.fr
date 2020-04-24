@@ -151,7 +151,7 @@ var locations = {
         "description": "Atlanta, Georgia, USA, 04/05/2019\nOye Bonita - Diomedes D\u00edaz",
         "id": "0-0jKQUGSY4",
         "location": "Atlanta, Georgia, USA",
-        "publishedAt": "2019-05-04T17:33:40.000Z",
+        "publishedAt": "2019-05-04T17:33:40Z",
         "slug": "oye-bonita-atlanta-georgia-usa",
         "tags": [
           "Acorde\u00f3n",
@@ -176,6 +176,50 @@ var locations = {
     "longitude": 4.35571,
     "slug": "bruselas-belgica",
     "videos": [
+      {
+        "description": "Un poco de m\u00fasica para los confinados del coronavirus...\n\nPara aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/los-caminos-de-la-vida\nBruselas, B\u00e9lgica, 18/04/2020\nLos Caminos De La Vida - Los Diablitos",
+        "id": "PmGxjqUxHOg",
+        "location": "Bruselas, B\u00e9lgica",
+        "publishedAt": "2020-04-24T21:49:51.000Z",
+        "slug": "los-caminos-de-la-vida-bruselas-belgica",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "Acord\u00e9on",
+          "Los Caminos De La Vida",
+          "Los Diablitos",
+          "Bruselas",
+          "B\u00e9lgica"
+        ],
+        "thumbnail": {
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/PmGxjqUxHOg/mqdefault.jpg",
+          "width": 320
+        },
+        "title": "Los Caminos De La Vida, desde Bruselas, B\u00e9lgica"
+      },
+      {
+        "description": "Un poco de m\u00fasica para los confinados del coronavirus...\n\nPara aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/en-carne-propia\nBruselas, B\u00e9lgica, 18/04/2020\nEn Carne Propia - Silvio Brito",
+        "id": "ykAB3rHX6rA",
+        "location": "Bruselas, B\u00e9lgica",
+        "publishedAt": "2020-04-24T21:01:08.000Z",
+        "slug": "en-carne-propia-bruselas-belgica",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "Acord\u00e9on",
+          "En Carne Propia",
+          "Silvio Brito",
+          "Bruselas",
+          "B\u00e9lgica"
+        ],
+        "thumbnail": {
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/ykAB3rHX6rA/mqdefault.jpg",
+          "width": 320
+        },
+        "title": "En Carne Propia, desde Bruselas, B\u00e9lgica"
+      },
       {
         "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/la-pollera-colora\nBruselas, B\u00e9lgica, 19/04/2020\nLa Pollera Color\u00e1, Cumbia Colombiana",
         "id": "QVbiEJdU1GI",
@@ -562,7 +606,7 @@ var locations = {
         "title": "Esa, desde Dijon, Francia"
       },
       {
-        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/los-caminos-de-la-vida.html\nDijon, Francia, 23/02/2020\nLos Caminos De La Vida - Los Diablitos",
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/los-caminos-de-la-vida\nDijon, Francia, 23/02/2020\nLos Caminos De La Vida - Los Diablitos",
         "id": "uaKo1FhHOLs",
         "location": "Dijon, Francia",
         "publishedAt": "2020-02-23T16:50:59.000Z",
@@ -1054,7 +1098,7 @@ var locations = {
         "title": "Oye Bonita, desde Lamoura, Francia"
       },
       {
-        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/en-carne-propia.html\nLamoura, Francia, 29/02/2020\nEn Carne Propia - Silvio Brito",
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/en-carne-propia\nLamoura, Francia, 29/02/2020\nEn Carne Propia - Silvio Brito",
         "id": "1lTFEE6h-4Q",
         "location": "Lamoura, Francia",
         "publishedAt": "2020-04-04T16:38:39.000Z",
@@ -2023,7 +2067,7 @@ var locations = {
         "description": "3 songs in this video:\n- Oye Bonita - Diomedes D\u00edaz\n- Esa - Binomio de Oro\n- La Creciente - Binomio de Oro\n\nEpic Campus, Verona, Wisconsin, USA, 30/04/2019\n\nPara aprender a tocar estas canciones:\n- https://vallenato.fr/aprender/esa.html\n- https://vallenato.fr/aprender/la-creciente.html",
         "id": "uK4t2nNiySw",
         "location": "Verona, Wisconsin, USA",
-        "publishedAt": "2019-05-01T20:44:20.000Z",
+        "publishedAt": "2019-05-01T20:44:20Z",
         "slug": "vallenato-at-epic-verona-wisconsin-usa",
         "tags": [
           "Acorde\u00f3n",
@@ -2050,7 +2094,7 @@ var locations = {
         "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/esa.html\nEpic Campus, Verona, Wisconsin, USA, 30/04/2019\nEsa - Binomio de Oro",
         "id": "T4UX7dXuMP4",
         "location": "Verona, Wisconsin, USA",
-        "publishedAt": "2019-05-01T18:17:51.000Z",
+        "publishedAt": "2019-05-01T18:17:51Z",
         "slug": "esa-epic-verona-wisconsin-usa",
         "tags": [
           "Acorde\u00f3n",
@@ -2074,7 +2118,7 @@ var locations = {
         "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/la-creciente.html\nEpic Campus, Verona, Wisconsin, USA, 30/04/2019\nLa Creciente - Binomio de Oro",
         "id": "XlPejBsVgu4",
         "location": "Verona, Wisconsin, USA",
-        "publishedAt": "2019-05-01T06:03:02.000Z",
+        "publishedAt": "2019-05-01T06:03:02Z",
         "slug": "la-creciente-epic-verona-wisconsin-usa",
         "tags": [
           "Acorde\u00f3n",
@@ -2098,7 +2142,7 @@ var locations = {
         "description": "Epic Campus, Verona, Wisconsin, USA, 30/04/2019\nOye Bonita - Diomedes D\u00edaz",
         "id": "iEy6Zb8QRGU",
         "location": "Verona, Wisconsin, USA",
-        "publishedAt": "2019-05-01T05:04:01.000Z",
+        "publishedAt": "2019-05-01T05:04:01Z",
         "slug": "oye-bonita-epic-verona-wisconsin-usa",
         "tags": [
           "Acorde\u00f3n",
