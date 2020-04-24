@@ -409,5 +409,18 @@ var tutoriales = [
       {"id": "nmd3UacpBBA", "start": 716, "end": 751}
     ],
     "full_version": "X9H4ul5cstg"
+  },
+  {
+    "slug": "la-pollera-colora",
+    "author": null,
+    "title": "La Pollera Colorá",
+    "videos": [
+      {"id": "j9H6U_4KXkI", "start": 47, "end": 70},
+      {"id": "j9H6U_4KXkI", "start": 80, "end": 91}
+    ],
+    "videos_full_tutorial": [
+      {"id": "j9H6U_4KXkI", "start": 70, "end": 79}
+    ],
+    "full_version": "HPxIupmepr4"
   }
 ];
