@@ -64,8 +64,27 @@ function main(){
   }
 }
 
+function sortTutorialesByAuthor(a, b) {
+  if (a.author == b.author) {
+    // Same author (including null), sort by title (actually by slug)
+    if (a.slug < b.slug) { return -1; }
+    if (a.slug > b.slug) { return 1; }
+  } else if (a.author && b.author) {
+    // Both have authors but different, sort on author
+    if (a.author < b.author) { return -1; }
+    if (a.author > b.author) { return 1; }
+  } else {
+    // Only one has an author, sort that one first
+    if (a.author) { return -1; }
+    if (b.author) { return 1; }
+  }
+  // Safety net, should never be the case
+  return 0;
+}
+
 function populateTutorials() {
   var image_styles = ["triangles", "tiles", "circles", "123"];
+  tutoriales.sort(sortTutorialesByAuthor);
   tutoriales.forEach(function (tuto, i) {
     var tuto_duration = getDuration(tuto.videos, false);
     var tuto_name = tuto["title"] + (tuto["author"] ? ` - ` + tuto["author"] : "");
