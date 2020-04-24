@@ -92,6 +92,9 @@ function populateTutorials() {
     }
     $("#tutoriales").append(tuto_string);
   });
+
+  // Update the number of available tutorials
+  $("#numTutoriales").html(tutoriales.length);
 }
 
 // Inspired from https://stackoverflow.com/a/11582513/185053 , modified for JSLint
