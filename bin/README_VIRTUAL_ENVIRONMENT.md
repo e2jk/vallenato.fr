@@ -6,7 +6,7 @@ Create the environment:
 ```bash
 $ mkdir -p ~/.python-virtual-environment/vallenato_fr
 $ python3 -m venv ~/.python-virtual-environment/vallenato_fr
-$ pip install -r requirements.txt
+$ pip3 install -r requirements.txt
 ```
 
 Activate the virtual environment:
@@ -19,4 +19,8 @@ When done:
 
 Update the dependencies:
 ------------------------
-`$ pip install -r requirements.txt`
+`$ pip3 install -r requirements.txt`
+
+First time creation/update of the dependencies:
+-----------------------------------------------
+`$ pip3 freeze > requirements.txt`
