@@ -5,6 +5,7 @@ bin/client_secret.json
 bin/vallenato.fr-oauth2.json
 bin/data/uploaded_videos_dump.json
 html_dev/coverage/
+startup.sh
 website/prod/
 website/src/aprender/temp/
 website/src/aprender/videos/
