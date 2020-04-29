@@ -45,7 +45,7 @@ class TestParseArgs(unittest.TestCase):
 
     def test_parse_args_aprender_website(self):
         """
-        Test running the script without both mutually exclusive arguments --aprender and --website
+        Test running the script with both mutually exclusive arguments --aprender and --website
         """
         with self.assertRaises(SystemExit) as cm:
             parser = target.parse_args(['--aprender', '--website'])
