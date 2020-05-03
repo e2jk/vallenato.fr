@@ -422,5 +422,20 @@ var tutoriales = [
       {"id": "j9H6U_4KXkI", "start": 70, "end": 79}
     ],
     "full_version": "HPxIupmepr4"
+  },
+  {
+    "slug": "coffin-dance",
+    "author": "Tony Igy",
+    "title": "Coffin Dance (Astronomia)",
+    "videos": [
+      {"id": "tFN-qb4SKok", "start": 230, "end": 242},
+      {"id": "tFN-qb4SKok", "start": 501, "end": 526},
+      {"id": "tFN-qb4SKok", "start": 580, "end": 591},
+      {"id": "tFN-qb4SKok", "start": 640, "end": 645}
+    ],
+    "videos_full_tutorial": [
+      {"id": "tFN-qb4SKok", "start": 659, "end": 683}
+    ],
+    "full_version": "j9V78UbdzWI"
   }
 ];
