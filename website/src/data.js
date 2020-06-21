@@ -829,6 +829,76 @@ var locations = {
       }
     ]
   },
+  "Fagnolle, B\u00e9lgica": {
+    "latitude": 50.10933,
+    "longitude": 4.565377,
+    "slug": "fagnolle-belgica",
+    "videos": [
+      {
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/los-caminos-de-la-vida\nFagnolle, B\u00e9lgica, 20/06/2020\nLos Caminos De La Vida - Los Diablitos",
+        "id": "_tRe0eYCTFM",
+        "location": "Fagnolle, B\u00e9lgica",
+        "publishedAt": "2020-06-21T18:19:27Z",
+        "slug": "los-caminos-de-la-vida-fagnolle-belgica",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "Fagnolle",
+          "B\u00e9lgica",
+          "Los Caminos De La Vida",
+          "Los Diablitos"
+        ],
+        "thumbnail": {
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/_tRe0eYCTFM/mqdefault.jpg",
+          "width": 320
+        },
+        "title": "Los Caminos De La Vida, desde Fagnolle, B\u00e9lgica"
+      },
+      {
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/en-carne-propia\nFagnolle, B\u00e9lgica, 20/06/2020\nEn Carne Propia - Silvio Brito",
+        "id": "jyUZQj5-Tfw",
+        "location": "Fagnolle, B\u00e9lgica",
+        "publishedAt": "2020-06-21T18:19:27Z",
+        "slug": "en-carne-propia-fagnolle-belgica",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "Fagnolle",
+          "B\u00e9lgica",
+          "En Carne Propia",
+          "Silvio Brito"
+        ],
+        "thumbnail": {
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/jyUZQj5-Tfw/mqdefault.jpg",
+          "width": 320
+        },
+        "title": "En Carne Propia, desde Fagnolle, B\u00e9lgica"
+      },
+      {
+        "description": "Fagnolle, B\u00e9lgica, 20/06/2020\nOye Bonita - Diomedes D\u00edaz",
+        "id": "gBjwKaUmuIo",
+        "location": "Fagnolle, B\u00e9lgica",
+        "publishedAt": "2020-06-21T18:19:27Z",
+        "slug": "oye-bonita-fagnolle-belgica",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "Oye Bonita",
+          "Diomedes D\u00edaz",
+          "Fagnolles",
+          "B\u00e9lgica"
+        ],
+        "thumbnail": {
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/gBjwKaUmuIo/mqdefault.jpg",
+          "width": 320
+        },
+        "title": "Oye Bonita, desde Fagnolle, B\u00e9lgica"
+      }
+    ]
+  },
   "Koh Phangan, Tailandia": {
     "latitude": 9.73495,
     "longitude": 100.030571,
