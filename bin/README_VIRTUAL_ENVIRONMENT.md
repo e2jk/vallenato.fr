@@ -4,14 +4,18 @@ Virtual environment setup
 Create the environment:
 -----------------------
 ```bash
-$ mkdir -p ~/.python-virtual-environment/vallenato_fr
-$ python3 -m venv ~/.python-virtual-environment/vallenato_fr
+$ cd devel/vallenato.fr/
+$ mkdir -p .venv-vallenato_fr
+$ python3 -m venv .venv-vallenato_fr
+$ source .venv-vallenato_fr/bin/activate
+$ cd bin/
+$ pip3 install wheel
 $ pip3 install -r requirements.txt
 ```
 
 Activate the virtual environment:
 ---------------------------------
-`$ source ~/.python-virtual-environment/vallenato_fr/bin/activate`
+`$ source ~/devel/vallenato.fr/.venv-vallenato_fr/bin/activate`
 
 When done:
 ----------
