@@ -5,7 +5,7 @@ var locations = {
     "slug": "s-hertogenbosch-paises-bajos",
     "videos": [
       {
-        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/en-carne-propia.html\nOosterplas, 's-Hertogenbosch, Pa\u00edses Bajos, 31/08/2019\nEn Carne Propia - Silvio Brito",
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/en-carne-propia\nOosterplas, 's-Hertogenbosch, Pa\u00edses Bajos, 31/08/2019\nEn Carne Propia - Silvio Brito",
         "id": "Qa_z4L0ZXqo",
         "location": "'s-Hertogenbosch, Pa\u00edses Bajos",
         "publishedAt": "2019-09-21T15:21:06Z",
@@ -27,7 +27,7 @@ var locations = {
         "title": "En Carne Propia, desde el Oosterplas, 's-Hertogenbosch, Pa\u00edses Bajos"
       },
       {
-        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/los-caminos-de-la-vida.html\nOosterplas, 's-Hertogenbosch, Pa\u00edses Bajos, 31/08/2019\nLos Caminos De La Vida - Los Diablitos",
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/los-caminos-de-la-vida\nOosterplas, 's-Hertogenbosch, Pa\u00edses Bajos, 31/08/2019\nLos Caminos De La Vida - Los Diablitos",
         "id": "BqFlTbrWDYk",
         "location": "'s-Hertogenbosch, Pa\u00edses Bajos",
         "publishedAt": "2019-09-21T15:30:55Z",
@@ -439,7 +439,7 @@ var locations = {
     "slug": "cimarrones-narino-colombia",
     "videos": [
       {
-        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/esa.html\nCimarrones, Nari\u00f1o, Colombia, 08/08/2019\nEsa - Binomio de Oro",
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/esa\nCimarrones, Nari\u00f1o, Colombia, 08/08/2019\nEsa - Binomio de Oro",
         "id": "iVO40yK3mdo",
         "location": "Cimarrones, Nari\u00f1o, Colombia",
         "publishedAt": "2019-08-09T15:31:51Z",
@@ -461,7 +461,7 @@ var locations = {
         "title": "Esa, desde Cimarrones, Nari\u00f1o, Colombia"
       },
       {
-        "description": "Para la comadre Meave!\nPara aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/la-creciente.html\nCimarrones, Nari\u00f1o, Colombia, 08/08/2019\nLa Creciente - Binomio de Oro",
+        "description": "Para la comadre Meave!\nPara aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/la-creciente\nCimarrones, Nari\u00f1o, Colombia, 08/08/2019\nLa Creciente - Binomio de Oro",
         "id": "r7Dds5KX3w8",
         "location": "Cimarrones, Nari\u00f1o, Colombia",
         "publishedAt": "2019-08-09T15:31:51Z",
@@ -483,7 +483,7 @@ var locations = {
         "title": "La Creciente, desde Cimarrones, Nari\u00f1o, Colombia"
       },
       {
-        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/los-caminos-de-la-vida.html\nCimarrones, Nari\u00f1o, Colombia, 08/08/2019\nLos Caminos De La Vida - Los Diablitos",
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/los-caminos-de-la-vida\nCimarrones, Nari\u00f1o, Colombia, 08/08/2019\nLos Caminos De La Vida - Los Diablitos",
         "id": "XdeoiYuLbQA",
         "location": "Cimarrones, Nari\u00f1o, Colombia",
         "publishedAt": "2019-08-09T15:24:07Z",
@@ -534,7 +534,7 @@ var locations = {
     "slug": "ciudad-de-panama-panama",
     "videos": [
       {
-        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/los-caminos-de-la-vida.html\nDesde el aeropuerto de Panam\u00e1, 22/08/2019\nLos Caminos De La Vida - Los Diablitos",
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/los-caminos-de-la-vida\nDesde el aeropuerto de Panam\u00e1, 22/08/2019\nLos Caminos De La Vida - Los Diablitos",
         "id": "U-N7MtQ7HV0",
         "location": "Ciudad de Panam\u00e1, Panam\u00e1",
         "publishedAt": "2019-08-24T19:55:40Z",
@@ -583,7 +583,7 @@ var locations = {
     "slug": "dijon-francia",
     "videos": [
       {
-        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/esa.html\nDijon, Francia, 23/02/2020\nEsa - Binomio de Oro",
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/esa\nDijon, Francia, 23/02/2020\nEsa - Binomio de Oro",
         "id": "z174Dfo035c",
         "location": "Dijon, Francia",
         "publishedAt": "2020-02-23T16:48:55Z",
@@ -625,7 +625,7 @@ var locations = {
         "title": "Los Caminos De La Vida, desde Dijon, Francia"
       },
       {
-        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/en-carne-propia.html\nDijon, Francia, 23/02/2020\nEn Carne Propia - Silvio Brito",
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/en-carne-propia\nDijon, Francia, 23/02/2020\nEn Carne Propia - Silvio Brito",
         "id": "jOXNtKJpyXE",
         "location": "Dijon, Francia",
         "publishedAt": "2020-02-23T16:43:34Z",
@@ -1066,7 +1066,7 @@ var locations = {
     "slug": "la-cristalina-narino-colombia",
     "videos": [
       {
-        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/solo-para-ti.html\nLa Cristalina, Nari\u00f1o, Colombia, 16/08/2019\nSolo Para Ti - Binomio de Oro",
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/solo-para-ti\nLa Cristalina, Nari\u00f1o, Colombia, 16/08/2019\nSolo Para Ti - Binomio de Oro",
         "id": "98ptD9Xw4Sw",
         "location": "La Cristalina, Nari\u00f1o, Colombia",
         "publishedAt": "2019-08-17T14:20:05Z",
@@ -1088,7 +1088,7 @@ var locations = {
         "title": "Solo Para Ti, desde La Cristalina, Nari\u00f1o, Colombia"
       },
       {
-        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/en-carne-propia.html\nLa Cristalina, Nari\u00f1o, Colombia, 16/08/2019\nEn Carne Propia - Silvio Brito",
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/en-carne-propia\nLa Cristalina, Nari\u00f1o, Colombia, 16/08/2019\nEn Carne Propia - Silvio Brito",
         "id": "FUHLr2gnYgw",
         "location": "La Cristalina, Nari\u00f1o, Colombia",
         "publishedAt": "2019-08-17T14:19:21Z",
@@ -1110,7 +1110,7 @@ var locations = {
         "title": "En Carne Propia, desde La Cristalina, Nari\u00f1o, Colombia"
       },
       {
-        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/muere-una-flor.html\nLa Cristalina, Nari\u00f1o, Colombia, 10/08/2019\nMuere una Flor - Binomio de Oro",
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/muere-una-flor\nLa Cristalina, Nari\u00f1o, Colombia, 10/08/2019\nMuere una Flor - Binomio de Oro",
         "id": "eEmtEtFgu94",
         "location": "La Cristalina, Nari\u00f1o, Colombia",
         "publishedAt": "2019-08-11T23:25:51Z",
@@ -1132,7 +1132,7 @@ var locations = {
         "title": "Muere una Flor, desde La Cristalina, Nari\u00f1o, Colombia"
       },
       {
-        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/jaime-molina-1.html y https://vallenato.fr/aprender/jaime-molina-2.html\nLa Cristalina, Nari\u00f1o, Colombia, 10/08/2019\nJaime Molina - Carlos Vives",
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/jaime-molina-1 y https://vallenato.fr/aprender/jaime-molina-2\nLa Cristalina, Nari\u00f1o, Colombia, 10/08/2019\nJaime Molina - Carlos Vives",
         "id": "FWTluHE1z5M",
         "location": "La Cristalina, Nari\u00f1o, Colombia",
         "publishedAt": "2019-08-11T23:16:41Z",
@@ -1176,7 +1176,7 @@ var locations = {
         "title": "Oye Bonita, desde La Cristalina, Nari\u00f1o, Colombia"
       },
       {
-        "description": "Para aprender a tocar estas canciones: https://vallenato.fr/aprender/la-guanena.html y https://vallenato.fr/aprender/son-sureno.html\nLa Cristalina, Nari\u00f1o, Colombia, 10/08/2019\nLa Guane\u00f1a y el Son Sure\u00f1o, m\u00fasica Nari\u00f1ense",
+        "description": "Para aprender a tocar estas canciones: https://vallenato.fr/aprender/la-guanena y https://vallenato.fr/aprender/son-sureno\nLa Cristalina, Nari\u00f1o, Colombia, 10/08/2019\nLa Guane\u00f1a y el Son Sure\u00f1o, m\u00fasica Nari\u00f1ense",
         "id": "WFUVbEYQVUM",
         "location": "La Cristalina, Nari\u00f1o, Colombia",
         "publishedAt": "2019-08-11T23:09:40Z",
@@ -1199,7 +1199,7 @@ var locations = {
         "title": "La Guane\u00f1a y el Son Sure\u00f1o, desde La Cristalina, Nari\u00f1o, Colombia"
       },
       {
-        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/los-caminos-de-la-vida.html\nLa Cristalina, Nari\u00f1o, Colombia, 10/08/2019\nLos Caminos De La Vida - Los Diablitos",
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/los-caminos-de-la-vida\nLa Cristalina, Nari\u00f1o, Colombia, 10/08/2019\nLos Caminos De La Vida - Los Diablitos",
         "id": "IU8oteyK5-4",
         "location": "La Cristalina, Nari\u00f1o, Colombia",
         "publishedAt": "2019-08-11T23:09:40Z",
@@ -1402,7 +1402,7 @@ var locations = {
     "slug": "paris-francia",
     "videos": [
       {
-        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/los-caminos-de-la-vida.html\nPar\u00eds, Francia, 29/10/2019\nLos Caminos De La Vida - Los Diablitos",
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/los-caminos-de-la-vida\nPar\u00eds, Francia, 29/10/2019\nLos Caminos De La Vida - Los Diablitos",
         "id": "LpH08IAIcGc",
         "location": "Par\u00eds, Francia",
         "publishedAt": "2019-10-29T20:59:31Z",
@@ -1423,7 +1423,7 @@ var locations = {
         "title": "Los Caminos De La Vida, desde Par\u00eds, Francia"
       },
       {
-        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/en-carne-propia.html\nPar\u00eds, Francia, 29/10/2019\nEn Carne Propia - Silvio Brito",
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/en-carne-propia\nPar\u00eds, Francia, 29/10/2019\nEn Carne Propia - Silvio Brito",
         "id": "YIT1jLm8ASY",
         "location": "Par\u00eds, Francia",
         "publishedAt": "2019-10-29T20:54:03Z",
@@ -1444,7 +1444,7 @@ var locations = {
         "title": "En Carne Propia, desde Par\u00eds, Francia"
       },
       {
-        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/corazon-martirizado.html\nPar\u00eds, Francia, 29/10/2019\nCorazon Martirizado - Los Hermanos Zuleta",
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/corazon-martirizado\nPar\u00eds, Francia, 29/10/2019\nCorazon Martirizado - Los Hermanos Zuleta",
         "id": "zDAoPtmYHUM",
         "location": "Par\u00eds, Francia",
         "publishedAt": "2019-10-29T20:50:25Z",
@@ -2050,7 +2050,7 @@ var locations = {
     "slug": "santa-marta-magdalena-colombia",
     "videos": [
       {
-        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/la-cumbia-del-amor.html\nSanta Marta, Magdalena, Colombia, 21/08/2019\nLa Cumbia del Amor - Lisandro Mesa",
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/la-cumbia-del-amor\nSanta Marta, Magdalena, Colombia, 21/08/2019\nLa Cumbia del Amor - Lisandro Mesa",
         "id": "s05RpOPL22U",
         "location": "Santa Marta, Magdalena, Colombia",
         "publishedAt": "2019-08-24T19:55:41Z",
@@ -2072,7 +2072,7 @@ var locations = {
         "title": "La Cumbia del Amor, desde Santa Marta, Magdalena, Colombia"
       },
       {
-        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/jaime-molina-1.html y https://vallenato.fr/aprender/jaime-molina-2.html\nSanta Marta, Magdalena, Colombia, 21/08/2019\nJaime Molina - Carlos Vives",
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/jaime-molina-1 y https://vallenato.fr/aprender/jaime-molina-2\nSanta Marta, Magdalena, Colombia, 21/08/2019\nJaime Molina - Carlos Vives",
         "id": "oxY864QMbyg",
         "location": "Santa Marta, Magdalena, Colombia",
         "publishedAt": "2019-08-24T19:55:41Z",
@@ -2094,7 +2094,7 @@ var locations = {
         "title": "Jaime Molina, desde Santa Marta, Magdalena, Colombia"
       },
       {
-        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/los-caminos-de-la-vida.html\nSanta Marta, Magdalena, Colombia, 21/08/2019\nLos Caminos De La Vida - Los Diablitos",
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/los-caminos-de-la-vida\nSanta Marta, Magdalena, Colombia, 21/08/2019\nLos Caminos De La Vida - Los Diablitos",
         "id": "oJXULyP_12c",
         "location": "Santa Marta, Magdalena, Colombia",
         "publishedAt": "2019-08-24T19:55:41Z",
@@ -2116,7 +2116,7 @@ var locations = {
         "title": "Los Caminos De La Vida, desde Santa Marta, Magdalena, Colombia"
       },
       {
-        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/en-carne-propia.html\nSanta Marta, Magdalena, Colombia, 21/08/2019\nEn Carne Propia - Silvio Brito",
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/en-carne-propia\nSanta Marta, Magdalena, Colombia, 21/08/2019\nEn Carne Propia - Silvio Brito",
         "id": "c-JA8JsBT_M",
         "location": "Santa Marta, Magdalena, Colombia",
         "publishedAt": "2019-08-24T19:55:41Z",
