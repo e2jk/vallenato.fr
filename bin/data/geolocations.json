@@ -43,6 +43,10 @@
     "latitude": 50.109330,
     "longitude": 4.565377
   },
+  "Gibraltar": {
+    "latitude": 36.140751,
+    "longitude": -5.353585
+  },
   "Koh Phangan, Tailandia": {
     "latitude": 9.73495,
     "longitude": 100.030571
@@ -58,6 +62,10 @@
   "Lisboa, Portugal": {
     "latitude": 38.722252,
     "longitude": -9.139337
+  },
+  "Marbella, Espa\u00f1a": {
+    "latitude": 36.509941,
+    "longitude": -4.886350
   },
   "Niagara Falls, Ontario, Canada": {
     "latitude": 43.084329,

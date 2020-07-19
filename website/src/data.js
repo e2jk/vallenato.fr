@@ -899,6 +899,93 @@ var locations = {
       }
     ]
   },
+  "Gibraltar": {
+    "latitude": 36.140751,
+    "longitude": -5.353585,
+    "slug": "gibraltar",
+    "videos": [
+      {
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/corazon-martirizado\nGibraltar, 28/06/2020\nCorazon Martirizado - Los Hermanos Zuleta",
+        "id": "JCEgZrdJ5RI",
+        "location": "Gibraltar",
+        "publishedAt": "2020-07-19T08:42:41Z",
+        "slug": "corazon-martirizado-gibraltar",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "Corazon Martirizado",
+          "Los Hermanos Zuleta",
+          "Gibraltar"
+        ],
+        "thumbnail": {
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/JCEgZrdJ5RI/mqdefault.jpg",
+          "width": 320
+        },
+        "title": "Corazon Martirizado, desde Gibraltar"
+      },
+      {
+        "description": "Gibraltar, 28/06/2020\nOye Bonita - Diomedes D\u00edaz",
+        "id": "iY-We5Tb7HY",
+        "location": "Gibraltar",
+        "publishedAt": "2020-07-19T08:42:19Z",
+        "slug": "oye-bonita-gibraltar",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "Oye Bonita",
+          "Diomedes D\u00edaz",
+          "Gibraltar"
+        ],
+        "thumbnail": {
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/iY-We5Tb7HY/mqdefault.jpg",
+          "width": 320
+        },
+        "title": "Oye Bonita, desde Gibraltar"
+      },
+      {
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/los-caminos-de-la-vida\nGibraltar, 28/06/2020\nLos Caminos De La Vida - Los Diablitos",
+        "id": "1j78UNLFvfw",
+        "location": "Gibraltar",
+        "publishedAt": "2020-07-19T08:42:28Z",
+        "slug": "los-caminos-de-la-vida-gibraltar",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "Los Caminos De La Vida",
+          "Los Diablitos",
+          "Gibraltar"
+        ],
+        "thumbnail": {
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/1j78UNLFvfw/mqdefault.jpg",
+          "width": 320
+        },
+        "title": "Los Caminos De La Vida, desde Gibraltar"
+      },
+      {
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/en-carne-propia\nGibraltar, 28/06/2020\nEn Carne Propia - Silvio Brito",
+        "id": "WlTzuxJOCno",
+        "location": "Gibraltar",
+        "publishedAt": "2020-07-19T08:42:34Z",
+        "slug": "en-carne-propia-gibraltar",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "En Carne Propia",
+          "Silvio Brito",
+          "Gibraltar"
+        ],
+        "thumbnail": {
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/WlTzuxJOCno/mqdefault.jpg",
+          "width": 320
+        },
+        "title": "En Carne Propia, desde Gibraltar"
+      }
+    ]
+  },
   "Koh Phangan, Tailandia": {
     "latitude": 9.73495,
     "longitude": 100.030571,
@@ -1230,6 +1317,55 @@ var locations = {
           "width": 320
         },
         "title": "Esa, desde Lisboa, Portugal"
+      }
+    ]
+  },
+  "Marbella, Espa\u00f1a": {
+    "latitude": 36.509941,
+    "longitude": -4.88635,
+    "slug": "marbella-espana",
+    "videos": [
+      {
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/en-carne-propia\nMarbella, Espa\u00f1a, 29/06/2020\nEn Carne Propia - Silvio Brito",
+        "id": "gNeWzeVP3_E",
+        "location": "Marbella, Espa\u00f1a",
+        "publishedAt": "2020-07-19T08:42:56Z",
+        "slug": "en-carne-propia-marbella-espana",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "En Carne Propia",
+          "Silvio Brito",
+          "Marbella",
+          "Espa\u00f1a"
+        ],
+        "thumbnail": {
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/gNeWzeVP3_E/mqdefault.jpg",
+          "width": 320
+        },
+        "title": "En Carne Propia, desde Marbella, Espa\u00f1a"
+      },
+      {
+        "description": "Marbella, Espa\u00f1a, 29/06/2020\nOye Bonita - Diomedes D\u00edaz",
+        "id": "dZUv3Gipe_Q",
+        "location": "Marbella, Espa\u00f1a",
+        "publishedAt": "2020-07-19T08:42:48Z",
+        "slug": "oye-bonita-marbella-espana",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "Oye Bonita",
+          "Diomedes D\u00edaz",
+          "Marbella",
+          "Espa\u00f1a"
+        ],
+        "thumbnail": {
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/dZUv3Gipe_Q/mqdefault.jpg",
+          "width": 320
+        },
+        "title": "Oye Bonita, desde Marbella, Espa\u00f1a"
       }
     ]
   },
