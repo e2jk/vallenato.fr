@@ -212,11 +212,14 @@ function show_location_overlay(loc) {
       let vid_thumbnail_url = locations[loc]["videos"][vid].thumbnail.url;
       let vid_description = locations[loc]["videos"][vid].description.replace(/\n/g, "<br/>");
       // Replace URLs in the description with clickable links
-      if (vid_description.includes("Para aprender a tocar esta canción: https://vallenato.fr/aprender/")) {
-        vid_description = vid_description.replace(/Para aprender a tocar esta canción: https:\/\/vallenato.fr(\/aprender\/.*?)<br\/>/, `<a href="$1" onClick="event.stopPropagation();">Aprender a tocar esta canción</a>.<br/>`);
-      }
       if (vid_description.includes("Para aprender a tocar estas canciones: https://vallenato.fr/aprender/")) {
         vid_description = vid_description.replace(/Para aprender a tocar estas canciones: https:\/\/vallenato.fr(\/aprender\/.*?) y https:\/\/vallenato.fr(\/aprender\/.*?)<br\/>/, `Aprender a tocar estas canciones: <a href="$1" onClick="event.stopPropagation();">1</a> y <a href="$2" onClick="event.stopPropagation();">2</a>.<br/>`);
+      }
+      if (vid_description.includes("Para aprender a tocar esta canción: https://vallenato.fr/aprender/")) {
+        vid_description = vid_description.replace(/Para aprender a tocar esta canción: https:\/\/vallenato.fr(\/aprender\/.*?) y https:\/\/vallenato.fr(\/aprender\/.*?)<br\/>/, `Aprender a tocar esta canción: <a href="$1" onClick="event.stopPropagation();">1</a> y <a href="$2" onClick="event.stopPropagation();">2</a>.<br/>`);
+      }
+      if (vid_description.includes("Para aprender a tocar esta canción: https://vallenato.fr/aprender/")) {
+        vid_description = vid_description.replace(/Para aprender a tocar esta canción: https:\/\/vallenato.fr(\/aprender\/.*?)<br\/>/, `<a href="$1" onClick="event.stopPropagation();">Aprender a tocar esta canción</a>.<br/>`);
       }
       let vid_publishedAt = locations[loc]["videos"][vid].publishedAt.substring(0, 10);
       content += `<div id="vid_card_` + vid_id + `" class="card mb-3 vid_card" style="max-width: 17rem;">
