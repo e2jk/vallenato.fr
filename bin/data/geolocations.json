@@ -106,5 +106,9 @@
   "Winterberg, Alemania": {
     "latitude": 51.19335,
     "longitude": 8.53342
+  },
+  "Z\u00farich, Suiza": {
+    "latitude": 47.349751,
+    "longitude": 8.491100
   }
 }

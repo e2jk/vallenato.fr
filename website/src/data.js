@@ -2386,5 +2386,78 @@ var locations = {
         "title": "Oye Bonita, desde Winterberg, Alemania"
       }
     ]
+  },
+  "Z\u00farich, Suiza": {
+    "latitude": 47.349751,
+    "longitude": 8.4911,
+    "slug": "zurich-suiza",
+    "videos": [
+      {
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/los-caminos-de-la-vida\nZ\u00farich, Suiza, 02/08/2020\nLos Caminos De La Vida - Los Diablitos",
+        "id": "0jWPNBgP90Q",
+        "location": "Z\u00farich, Suiza",
+        "publishedAt": "2020-08-03T12:12:27Z",
+        "slug": "los-caminos-de-la-vida-zurich-suiza",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "Los Caminos De La Vida",
+          "Los Diablitos",
+          "Z\u00farich",
+          "Suiza",
+          "Uetliberg"
+        ],
+        "thumbnail": {
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/0jWPNBgP90Q/mqdefault.jpg",
+          "width": 320
+        },
+        "title": "Los Caminos De La Vida, desde Z\u00farich, Suiza"
+      },
+      {
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/en-carne-propia\nZ\u00farich, Suiza, 02/08/2020\nEn Carne Propia - Silvio Brito",
+        "id": "p1f5VaAFj34",
+        "location": "Z\u00farich, Suiza",
+        "publishedAt": "2020-08-03T12:05:36Z",
+        "slug": "en-carne-propia-zurich-suiza",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "En Carne Propia",
+          "Silvio Brito",
+          "Z\u00farich",
+          "Suiza",
+          "Uetliberg"
+        ],
+        "thumbnail": {
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/p1f5VaAFj34/mqdefault.jpg",
+          "width": 320
+        },
+        "title": "En Carne Propia, desde Z\u00farich, Suiza"
+      },
+      {
+        "description": "Z\u00farich, Suiza, 02/08/2020\nOye Bonita - Diomedes D\u00edaz",
+        "id": "VvYX1z5d1wA",
+        "location": "Z\u00farich, Suiza",
+        "publishedAt": "2020-08-03T11:59:33Z",
+        "slug": "oye-bonita-zurich-suiza",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "Oye Bonita",
+          "Diomedes D\u00edaz",
+          "Z\u00farich",
+          "Suiza",
+          "Uetliberg"
+        ],
+        "thumbnail": {
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/VvYX1z5d1wA/mqdefault.jpg",
+          "width": 320
+        },
+        "title": "Oye Bonita, desde Z\u00farich, Suiza"
+      }
+    ]
   }
 };
