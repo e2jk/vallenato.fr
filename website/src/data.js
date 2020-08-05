@@ -2253,6 +2253,97 @@ var locations = {
       }
     ]
   },
+  "Venecia, Italia": {
+    "latitude": 45.433459,
+    "longitude": 12.340074,
+    "slug": "venecia-italia",
+    "videos": [
+      {
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/los-caminos-de-la-vida\nVenecia, Italia, 05/08/2020\nLos Caminos De La Vida - Los Diablitos",
+        "id": "zUEB6xFFWKQ",
+        "location": "Venecia, Italia",
+        "publishedAt": "2020-08-05T19:32:50Z",
+        "slug": "los-caminos-de-la-vida-venecia-italia",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "Venecia",
+          "Italia",
+          "Los Caminos De La Vida",
+          "Los Diablitos"
+        ],
+        "thumbnail": {
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/zUEB6xFFWKQ/mqdefault.jpg",
+          "width": 320
+        },
+        "title": "Los Caminos De La Vida, desde Venecia, Italia"
+      },
+      {
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/esa\nVenecia, Italia, 05/08/2020\nEsa - Binomio de Oro",
+        "id": "B3ZPthjPVi4",
+        "location": "Venecia, Italia",
+        "publishedAt": "2020-08-05T19:30:55Z",
+        "slug": "esa-venecia-italia",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "Venecia",
+          "Italia",
+          "Esa",
+          "Binomio de Oro"
+        ],
+        "thumbnail": {
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/B3ZPthjPVi4/mqdefault.jpg",
+          "width": 320
+        },
+        "title": "Esa, desde Venecia, Italia"
+      },
+      {
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/en-carne-propia\nVenecia, Italia, 05/08/2020\nEn Carne Propia - Silvio Brito",
+        "id": "bU9Sqvf23Ys",
+        "location": "Venecia, Italia",
+        "publishedAt": "2020-08-05T19:28:35Z",
+        "slug": "en-carne-propia-venecia-italia",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "Venecia",
+          "Italia",
+          "En Carne Propia",
+          "Silvio Brito"
+        ],
+        "thumbnail": {
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/bU9Sqvf23Ys/mqdefault.jpg",
+          "width": 320
+        },
+        "title": "En Carne Propia, desde Venecia, Italia"
+      },
+      {
+        "description": "Venecia, Italia, 05/08/2020\nOye Bonita - Diomedes D\u00edaz",
+        "id": "D0_sGhd1LF8",
+        "location": "Venecia, Italia",
+        "publishedAt": "2020-08-05T19:26:10Z",
+        "slug": "oye-bonita-venecia-italia",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "Oye Bonita",
+          "Diomedes D\u00edaz",
+          "Venecia",
+          "Italia"
+        ],
+        "thumbnail": {
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/D0_sGhd1LF8/mqdefault.jpg",
+          "width": 320
+        },
+        "title": "Oye Bonita, desde Venecia, Italia"
+      }
+    ]
+  },
   "Verona, Wisconsin, USA": {
     "latitude": 42.999274,
     "longitude": -89.569005,

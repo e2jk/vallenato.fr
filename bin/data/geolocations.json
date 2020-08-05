@@ -99,6 +99,10 @@
     "latitude": 48.4307953,
     "longitude": 7.1815304
   },
+  "Venecia, Italia": {
+    "latitude": 45.433459,
+    "longitude": 12.340074
+  },
   "Verona, Wisconsin, USA": {
     "latitude": 42.999274,
     "longitude": -89.569005
@@ -109,6 +113,6 @@
   },
   "Z\u00farich, Suiza": {
     "latitude": 47.349751,
-    "longitude": 8.491100
+    "longitude": 8.4911
   }
 }
