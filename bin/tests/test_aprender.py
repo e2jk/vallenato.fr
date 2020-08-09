@@ -13,6 +13,8 @@ import shutil
 import tempfile
 from pytube import YouTube
 import socket
+import io
+import contextlib
 from urllib.error import URLError
 from urllib.error import HTTPError
 from unittest.mock import patch
@@ -84,10 +86,12 @@ class TestGetYoutubeUrl(unittest.TestCase):
         global mock_raw_input_values
         mock_raw_input_counter = 0
         mock_raw_input_values = ["q"]
-        with self.assertRaises(SystemExit) as cm:
+        f = io.StringIO()
+        with self.assertRaises(SystemExit) as cm, contextlib.redirect_stdout(f):
             (video_id, video_url) = aprender.get_youtube_url("")
         the_exception = cm.exception
         self.assertEqual(the_exception.code, 10)
+        self.assertEqual("Exiting...\n", f.getvalue())
 
 
 class TestYoutubeUrlValidation(unittest.TestCase):
@@ -138,10 +142,12 @@ class TestGetTitleAuthorTutocreatorAndChannel(unittest.TestCase):
         global mock_raw_input_values
         mock_raw_input_counter = 0
         mock_raw_input_values = ["q"]
-        with self.assertRaises(SystemExit) as cm:
+        f = io.StringIO()
+        with self.assertRaises(SystemExit) as cm, contextlib.redirect_stdout(f):
             (song_title, song_author, tutocreator, tutocreator_channel, yt_tutorial_video) = aprender.get_title_author_tutocreator_and_channel("https://www.youtube.com/watch?v=v5xEaLCCNRc")
         the_exception = cm.exception
         self.assertEqual(the_exception.code, 11)
+        self.assertEqual("Exiting...\n", f.getvalue())
 
     @patch("aprender.YouTube")
     def test_get_title_author_tutocreator_and_channel_quit_author(self, a_yt):
@@ -149,10 +155,12 @@ class TestGetTitleAuthorTutocreatorAndChannel(unittest.TestCase):
         global mock_raw_input_values
         mock_raw_input_counter = 0
         mock_raw_input_values = ["ABC", "q"]
-        with self.assertRaises(SystemExit) as cm:
+        f = io.StringIO()
+        with self.assertRaises(SystemExit) as cm, contextlib.redirect_stdout(f):
             (song_title, song_author, tutocreator, tutocreator_channel, yt_tutorial_video) = aprender.get_title_author_tutocreator_and_channel("https://www.youtube.com/watch?v=v5xEaLCCNRc")
         the_exception = cm.exception
         self.assertEqual(the_exception.code, 12)
+        self.assertEqual("Exiting...\n", f.getvalue())
 
 
 class TestRlinput(unittest.TestCase):
@@ -196,11 +204,12 @@ class TestGetTutorialSlug(unittest.TestCase):
         global mock_raw_input_values
         mock_raw_input_counter = 0
         mock_raw_input_values = ["q"]
-        with self.assertRaises(SystemExit) as cm:
+        f = io.StringIO()
+        with self.assertRaises(SystemExit) as cm, contextlib.redirect_stdout(f):
             tutorial_slug = aprender.get_tutorial_slug("NOT RELEVANT")
         the_exception = cm.exception
         self.assertEqual(the_exception.code, 13)
-
+        self.assertEqual("Exiting...\n", f.getvalue())
 
     def test_get_tutorial_slug_quit_second_pass(self):
         global mock_raw_input_counter
@@ -208,10 +217,12 @@ class TestGetTutorialSlug(unittest.TestCase):
         mock_raw_input_counter = 0
         mock_raw_input_values = ["muere-una-flor", "q"]
         # We use a slug that already exists, then quit at the second prompt
-        with self.assertRaises(SystemExit) as cm:
+        f = io.StringIO()
+        with self.assertRaises(SystemExit) as cm, contextlib.redirect_stdout(f):
             tutorial_slug = aprender.get_tutorial_slug("NOT RELEVANT")
         the_exception = cm.exception
         self.assertEqual(the_exception.code, 14)
+        self.assertEqual("Exiting...\n", f.getvalue())
 
 
 class TestGetSuggestedTutorialSlug(unittest.TestCase):
@@ -261,10 +272,12 @@ class TestDetermineOutputFolder(unittest.TestCase):
         mock_raw_input_values = ["N"]
         # Make sure the new temporary folder *does* exist
         os.makedirs("../website/src/aprender/temp/blabla-bla/")
-        with self.assertRaises(SystemExit) as cm:
+        f = io.StringIO()
+        with self.assertRaises(SystemExit) as cm, contextlib.redirect_stdout(f):
             output_folder = aprender.determine_output_folder(temp_folder, tutorial_slug)
         the_exception = cm.exception
         self.assertEqual(the_exception.code, 15)
+        self.assertEqual("Exiting...\n", f.getvalue())
         self.assertTrue(os.path.exists("../website/src/aprender/temp/blabla-bla/"))
         # Delete the temporary folder
         shutil.rmtree("../website/src/aprender/temp/blabla-bla/")
@@ -279,10 +292,12 @@ class TestDetermineOutputFolder(unittest.TestCase):
         mock_raw_input_values = ["Continue", "No", "42", "N"]
         # Make sure the new temporary folder *does* exist
         os.makedirs("../website/src/aprender/temp/blabla-bla/")
-        with self.assertRaises(SystemExit) as cm:
+        f = io.StringIO()
+        with self.assertRaises(SystemExit) as cm, contextlib.redirect_stdout(f):
             output_folder = aprender.determine_output_folder(temp_folder, tutorial_slug)
         the_exception = cm.exception
         self.assertEqual(the_exception.code, 15)
+        self.assertEqual("Exiting...\n", f.getvalue())
         self.assertTrue(os.path.exists("../website/src/aprender/temp/blabla-bla/"))
         # Delete the temporary folder
         shutil.rmtree("../website/src/aprender/temp/blabla-bla/")
@@ -355,9 +370,11 @@ class TestDownloadYoutubeVideo(unittest.TestCase):
         yt = MagicMock()
         video_id = "NzpNsbX3uC4"
         videos_output_folder = tempfile.mkdtemp()
-        rv = aprender.download_youtube_video(yt, video_id, videos_output_folder)
+        with self.assertLogs(level='ERROR') as cm:
+            rv = aprender.download_youtube_video(yt, video_id, videos_output_folder)
         # Confirm that an HTTPError was raised
         self.assertFalse(rv)
+        self.assertEqual(cm.output, ['ERROR:root:An HTTP error 403 occurred with reason: Forbidden'])
         # Delete the temporary folder
         shutil.rmtree(videos_output_folder)
 

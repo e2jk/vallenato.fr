@@ -14,6 +14,8 @@ import logging
 import socket
 import json
 import tempfile
+import io
+import contextlib
 from urllib.error import URLError
 from unittest.mock import patch
 from unittest.mock import MagicMock
@@ -34,23 +36,30 @@ def setUpModule():
 
 
 class TestParseArgs(unittest.TestCase):
+    def setUp(self):
+        logging.basicConfig(level=logging.CRITICAL)
+
     def test_parse_args_no_arguments(self):
         """
         Test running the script without one of the required arguments --aprender or --website
         """
-        with self.assertRaises(SystemExit) as cm:
+        f = io.StringIO()
+        with self.assertRaises(SystemExit) as cm, contextlib.redirect_stderr(f):
             parser = target.parse_args([])
         the_exception = cm.exception
         self.assertEqual(the_exception.code, 2)
+        self.assertTrue("error: one of the arguments -a/--aprender -w/--website is required" in f.getvalue())
 
     def test_parse_args_aprender_website(self):
         """
         Test running the script with both mutually exclusive arguments --aprender and --website
         """
-        with self.assertRaises(SystemExit) as cm:
+        f = io.StringIO()
+        with self.assertRaises(SystemExit) as cm, contextlib.redirect_stderr(f):
             parser = target.parse_args(['--aprender', '--website'])
         the_exception = cm.exception
         self.assertEqual(the_exception.code, 2)
+        self.assertTrue("error: argument -w/--website: not allowed with argument -a/--aprender" in f.getvalue())
 
     def test_parse_args_no_download(self):
         """
@@ -70,7 +79,9 @@ class TestParseArgs(unittest.TestCase):
         """
         Test the --debug argument
         """
-        parser = target.parse_args(['--debug', '--aprender'])
+        f = io.StringIO()
+        with contextlib.redirect_stderr(f):
+            parser = target.parse_args(['--debug', '--aprender'])
         self.assertEqual(parser.loglevel, logging.DEBUG)
         self.assertEqual(parser.logging_level, "DEBUG")
 
@@ -78,7 +89,9 @@ class TestParseArgs(unittest.TestCase):
         """
         Test the -d argument
         """
-        parser = target.parse_args(['-d', '--aprender'])
+        f = io.StringIO()
+        with contextlib.redirect_stderr(f):
+            parser = target.parse_args(['-d', '--aprender'])
         self.assertEqual(parser.loglevel, logging.DEBUG)
         self.assertEqual(parser.logging_level, "DEBUG")
 
@@ -103,30 +116,33 @@ class TestParseArgs(unittest.TestCase):
         Test running the script with invalid arguments combination:
         --temp-folder with --website instead of --aprender
         """
-        with self.assertRaises(SystemExit) as cm:
+        with self.assertRaises(SystemExit) as cm1, self.assertLogs(level='CRITICAL') as cm2:
             parser = target.parse_args(['--temp-folder', '--website'])
-        the_exception = cm.exception
+        the_exception = cm1.exception
         self.assertEqual(the_exception.code, 16)
+        self.assertEqual(cm2.output, ['CRITICAL:root:The --temp-folder argument can only be used in conjunction with --aprender. Exiting...'])
 
     def test_parse_args_no_download_website(self):
         """
         Test running the script with invalid arguments combination:
         --no-download with --website instead of --aprender
         """
-        with self.assertRaises(SystemExit) as cm:
+        with self.assertRaises(SystemExit) as cm1, self.assertLogs(level='CRITICAL') as cm2:
             parser = target.parse_args(['--no-download', '--website'])
-        the_exception = cm.exception
+        the_exception = cm1.exception
         self.assertEqual(the_exception.code, 17)
+        self.assertEqual(cm2.output, ['CRITICAL:root:The --no-download argument can only be used in conjunction with --aprender. Exiting...'])
 
     def test_parse_args_dump_uploaded_videos_aprender(self):
         """
         Test running the script with invalid arguments combination:
         --dump-uploaded-videos with --aprender instead of --website
         """
-        with self.assertRaises(SystemExit) as cm:
+        with self.assertRaises(SystemExit) as cm1, self.assertLogs(level='CRITICAL') as cm2:
             parser = target.parse_args(['--dump-uploaded-videos', '--aprender'])
-        the_exception = cm.exception
+        the_exception = cm1.exception
         self.assertEqual(the_exception.code, 18)
+        self.assertEqual(cm2.output, ['CRITICAL:root:The --dump-uploaded-videos argument can only be used in conjunction with --website. Exiting...'])
 
 
 class TestInitMain(unittest.TestCase):

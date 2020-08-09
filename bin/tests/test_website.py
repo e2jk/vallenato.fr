@@ -90,10 +90,11 @@ class TestGetUploadedVideos(unittest.TestCase):
         resp = MagicMock()
         yt_gmul.side_effect = HttpError(resp, b'')
         args = target.parse_args(['--website'])
-        with self.assertRaises(SystemExit) as cm:
+        with self.assertRaises(SystemExit) as cm1, self.assertLogs(level='CRITICAL') as cm2:
             uploaded_videos = website.get_uploaded_videos(args, "tests/data/sample_uploaded_videos_dump_full.json")
-        the_exception = cm.exception
+        the_exception = cm1.exception
         self.assertEqual(the_exception.code, 19)
+        self.assertEqual(cm2.output, ['CRITICAL:root:Exiting...'])
 
     @patch("website.yt_list_my_uploaded_videos")
     @patch("website.yt_get_my_uploads_list")
@@ -137,11 +138,13 @@ class TestIdentifyLocationsNames(unittest.TestCase):
             sample_uploaded_videos = json.load(in_file)
         temp_uploaded_videos_dump_file = "tests/data/temp_uploaded_videos_dump.json"
         self.assertFalse(os.path.exists(temp_uploaded_videos_dump_file))
-        with self.assertRaises(SystemExit) as cm:
+        with self.assertRaises(SystemExit) as cm1, self.assertLogs(level='CRITICAL') as cm2:
             (uploaded_videos, locations) = website.identify_locations_names(sample_uploaded_videos, "tests/data/sample_location_special_cases_partial.json", temp_uploaded_videos_dump_file)
-        the_exception = cm.exception
+        the_exception = cm1.exception
         self.assertEqual(the_exception.code, 20)
         self.assertTrue(os.path.exists(temp_uploaded_videos_dump_file))
+        self.assertEqual(cm2.output, ["CRITICAL:root:No Location found for uK4t2nNiySw, 'Vallenato at Epic, Verona, Wisconsin, USA'",
+                                      "CRITICAL:root:Please add the new/missing location to the file 'tests/data/sample_location_special_cases_partial.json'. Exiting..."])
 
         # Delete the temporary file created by the test
         os.remove(temp_uploaded_videos_dump_file)
@@ -174,8 +177,10 @@ class TestIdentifySingleLocationName(unittest.TestCase):
             special_cases = json.load(in_file)
         self.assertFalse(", desde " in vid["title"])
         self.assertFalse(", cerca de " in vid["title"])
-        location = website.identify_single_location_name(vid, special_cases)
+        with self.assertLogs(level='CRITICAL') as cm:
+            location = website.identify_single_location_name(vid, special_cases)
         self.assertEqual(location, None)
+        self.assertEqual(cm.output, ["CRITICAL:root:No Location found for uK4t2nNiySw, 'Vallenato at Epic, Verona, Wisconsin, USA'"])
 
 
 class TestDetermineGeolocation(unittest.TestCase):
@@ -183,13 +188,38 @@ class TestDetermineGeolocation(unittest.TestCase):
         with open("tests/data/sample_uploaded_videos_dump_full.json") as in_file:
             sample_uploaded_videos = json.load(in_file)
         temp_uploaded_videos_dump_file = "tests/data/sample_uploaded_videos_dump_full.json"
-        (uploaded_videos, locations) = website.identify_locations_names(sample_uploaded_videos, "tests/data/sample_location_special_cases_full.json", temp_uploaded_videos_dump_file)
+        with self.assertLogs(level='INFO') as cm:
+            (uploaded_videos, locations) = website.identify_locations_names(sample_uploaded_videos, "tests/data/sample_location_special_cases_full.json", temp_uploaded_videos_dump_file)
+        self.assertEqual(cm.output, ["INFO:root:Found 22 different location name."])
         # Create a copy of the file that is going to be edited
         shutil.copy("tests/data/sample_geolocations_partial.json", "tests/data/sample_geolocations_partial.json.bak")
-        with self.assertRaises(SystemExit) as cm:
+        with self.assertRaises(SystemExit) as cm1, self.assertLogs(level='CRITICAL') as cm2:
             locations = website.determine_geolocation(locations, "tests/data/sample_geolocations_partial.json")
-        the_exception = cm.exception
+        the_exception = cm1.exception
         self.assertEqual(the_exception.code, 21)
+        expected = ['CRITICAL:root:No geolocation found for París, Francia.',
+            "CRITICAL:root:No geolocation found for 's-Hertogenbosch, Países Bajos.",
+            'CRITICAL:root:No geolocation found for Ciudad de Panamá, Panamá.',
+            'CRITICAL:root:No geolocation found for Santa Marta, Magdalena, Colombia.',
+            'CRITICAL:root:No geolocation found for La Cristalina, Nariño, Colombia.',
+            'CRITICAL:root:No geolocation found for Cimarrones, Nariño, Colombia.',
+            'CRITICAL:root:No geolocation found for Atlanta, Georgia, USA.',
+            'CRITICAL:root:No geolocation found for Verona, Wisconsin, USA.',
+            'CRITICAL:root:No geolocation found for Solbach, Francia.',
+            'CRITICAL:root:No geolocation found for Winterberg, Alemania.',
+            'CRITICAL:root:No geolocation found for Bruselas, Belgica.',
+            'CRITICAL:root:No geolocation found for Niagara Falls, Ontario, Canada.',
+            'CRITICAL:root:No geolocation found for Providencia, Colombia.',
+            'CRITICAL:root:No geolocation found for San Andrés, Colombia.',
+            'CRITICAL:root:No geolocation found for Cali, Valle del Cauca, Colombia.',
+            'CRITICAL:root:No geolocation found for Pasto, Nariño, Colombia.',
+            'CRITICAL:root:No geolocation found for Pasisara, Nariño, Colombia.',
+            'CRITICAL:root:No geolocation found for Lisboa, Portugal.',
+            'CRITICAL:root:No geolocation found for Aroeira, Portugal.',
+            'CRITICAL:root:No geolocation found for El Remolino, Nariño, Colombia.',
+            'CRITICAL:root:No geolocation found for Koh Phangan, Tailandia.',
+            "CRITICAL:root:Please add the 21 new/missing unknown latitude and longitude to the file 'tests/data/sample_geolocations_partial.json'. Exiting..."]
+        self.assertEqual(cm2.output, expected)
         # Restore the file
         os.remove("tests/data/sample_geolocations_partial.json")
         shutil.move("tests/data/sample_geolocations_partial.json.bak", "tests/data/sample_geolocations_partial.json")
@@ -199,7 +229,9 @@ class TestAddVideosToLocationsArray(unittest.TestCase):
     def test_add_videos_to_locations_array(self):
         with open("tests/data/sample_uploaded_videos_dump_full.json") as in_file:
             sample_uploaded_videos = json.load(in_file)
-        (uploaded_videos, ignore) = website.identify_locations_names(sample_uploaded_videos, "tests/data/sample_location_special_cases_full.json", None)
+        with self.assertLogs(level='INFO') as cm:
+            (uploaded_videos, ignore) = website.identify_locations_names(sample_uploaded_videos, "tests/data/sample_location_special_cases_full.json", None)
+        self.assertEqual(cm.output, ["INFO:root:Found 22 different location name."])
         with open("tests/data/sample_geolocations_full.json") as in_file:
             locations = json.load(in_file)
         locations = website.add_videos_to_locations_array(uploaded_videos, locations)
