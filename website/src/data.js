@@ -1320,6 +1320,34 @@ var locations = {
       }
     ]
   },
+  "Liubliana, Eslovenia": {
+    "latitude": 46.05143,
+    "longitude": 14.50597,
+    "slug": "liubliana-eslovenia",
+    "videos": [
+      {
+        "description": "Liubliana, Eslovenia, 07/08/2020\nOye Bonita - Diomedes D\u00edaz",
+        "id": "_JPr0J47NXw",
+        "location": "Liubliana, Eslovenia",
+        "publishedAt": "2020-08-09T14:18:15Z",
+        "slug": "oye-bonita-liubliana-eslovenia",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "Oye Bonita",
+          "Diomedes D\u00edaz",
+          "Liubliana",
+          "Eslovenia"
+        ],
+        "thumbnail": {
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/_JPr0J47NXw/mqdefault.jpg",
+          "width": 320
+        },
+        "title": "Oye Bonita, desde Liubliana, Eslovenia"
+      }
+    ]
+  },
   "Marbella, Espa\u00f1a": {
     "latitude": 36.509941,
     "longitude": -4.88635,
