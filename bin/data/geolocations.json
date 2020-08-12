@@ -47,9 +47,17 @@
     "latitude": 36.140751,
     "longitude": -5.353585
   },
+  "Hvar, Croacia": {
+    "latitude": 43.172996,
+    "longitude": 16.440128
+  },
   "Koh Phangan, Tailandia": {
     "latitude": 9.73495,
     "longitude": 100.030571
+  },
+  "Komi\u017ea, Croacia": {
+    "latitude": 43.042928,
+    "longitude": 16.088795
   },
   "La Cristalina, Nari\u00f1o, Colombia": {
     "latitude": 1.140297,
@@ -64,8 +72,8 @@
     "longitude": -9.139337
   },
   "Liubliana, Eslovenia": {
-    "latitude": 46.051430,
-    "longitude": 14.505970
+    "latitude": 46.05143,
+    "longitude": 14.50597
   },
   "Marbella, Espa\u00f1a": {
     "latitude": 36.509941,
@@ -102,6 +110,10 @@
   "Solbach, Francia": {
     "latitude": 48.4307953,
     "longitude": 7.1815304
+  },
+  "Veli Budicovac, Croacia": {
+    "latitude": 43.02641,
+    "longitude": 16.240778
   },
   "Venecia, Italia": {
     "latitude": 45.433459,

@@ -986,6 +986,76 @@ var locations = {
       }
     ]
   },
+  "Hvar, Croacia": {
+    "latitude": 43.172996,
+    "longitude": 16.440128,
+    "slug": "hvar-croacia",
+    "videos": [
+      {
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/esa\nHvar, Croacia, 10/08/2020\nEsa - Binomio de Oro",
+        "id": "CyRrrp4_TNY",
+        "location": "Hvar, Croacia",
+        "publishedAt": "2020-08-12T10:30:33Z",
+        "slug": "esa-hvar-croacia",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "Esa",
+          "Binomio de Oro",
+          "Hvar",
+          "Croacia"
+        ],
+        "thumbnail": {
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/CyRrrp4_TNY/mqdefault.jpg",
+          "width": 320
+        },
+        "title": "Esa, desde Hvar, Croacia"
+      },
+      {
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/los-caminos-de-la-vida\nHvar, Croacia, 10/08/2020\nLos Caminos De La Vida - Los Diablitos",
+        "id": "3mtKs8jBkFY",
+        "location": "Hvar, Croacia",
+        "publishedAt": "2020-08-12T10:28:45Z",
+        "slug": "los-caminos-de-la-vida-hvar-croacia",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "Los Caminos De La Vida",
+          "Los Diablitos",
+          "Croacia",
+          "Hvar"
+        ],
+        "thumbnail": {
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/3mtKs8jBkFY/mqdefault.jpg",
+          "width": 320
+        },
+        "title": "Los Caminos De La Vida, desde Hvar, Croacia"
+      },
+      {
+        "description": "Hvar, Croacia, 10/08/2020\nOye Bonita - Diomedes D\u00edaz",
+        "id": "wyK6nnhzcvM",
+        "location": "Hvar, Croacia",
+        "publishedAt": "2020-08-12T10:26:46Z",
+        "slug": "oye-bonita-hvar-croacia",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "Oye Bonita",
+          "Diomedes D\u00edaz",
+          "Hvar",
+          "Croacia"
+        ],
+        "thumbnail": {
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/wyK6nnhzcvM/mqdefault.jpg",
+          "width": 320
+        },
+        "title": "Oye Bonita, desde Hvar, Croacia"
+      }
+    ]
+  },
   "Koh Phangan, Tailandia": {
     "latitude": 9.73495,
     "longitude": 100.030571,
@@ -1057,6 +1127,55 @@ var locations = {
           "width": 320
         },
         "title": "Oye Bonita, desde Koh Phangan, Tailandia"
+      }
+    ]
+  },
+  "Komi\u017ea, Croacia": {
+    "latitude": 43.042928,
+    "longitude": 16.088795,
+    "slug": "komiza-croacia",
+    "videos": [
+      {
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/los-caminos-de-la-vida\nKomi\u017ea, Croacia, 10/08/2020\nLos Caminos De La Vida - Los Diablitos",
+        "id": "Z497O-wlmNI",
+        "location": "Komi\u017ea, Croacia",
+        "publishedAt": "2020-08-12T10:20:02Z",
+        "slug": "los-caminos-de-la-vida-komiza-croacia",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "Los Caminos De La Vida",
+          "Los Diablitos",
+          "Komi\u017ea",
+          "Croacia"
+        ],
+        "thumbnail": {
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/Z497O-wlmNI/mqdefault.jpg",
+          "width": 320
+        },
+        "title": "Los Caminos De La Vida, desde Komi\u017ea, Croacia"
+      },
+      {
+        "description": "Komi\u017ea, Croacia, 10/08/2020\nOye Bonita - Diomedes D\u00edaz",
+        "id": "cbbl4Ga20Zk",
+        "location": "Komi\u017ea, Croacia",
+        "publishedAt": "2020-08-12T10:12:49Z",
+        "slug": "oye-bonita-komiza-croacia",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "Oye Bonita",
+          "Diomedes D\u00edaz",
+          "Komi\u017ea",
+          "Croacia"
+        ],
+        "thumbnail": {
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/cbbl4Ga20Zk/mqdefault.jpg",
+          "width": 320
+        },
+        "title": "Oye Bonita, desde Komi\u017ea, Croacia"
       }
     ]
   },
@@ -2278,6 +2397,76 @@ var locations = {
           "width": 320
         },
         "title": "Esa, desde Solbach, Francia"
+      }
+    ]
+  },
+  "Veli Budicovac, Croacia": {
+    "latitude": 43.02641,
+    "longitude": 16.240778,
+    "slug": "veli-budicovac-croacia",
+    "videos": [
+      {
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/corazon-martirizado\nVeli Budicovac, Croacia, 10/08/2020\nCorazon Martirizado - Los Hermanos Zuleta",
+        "id": "tn5Hvqa97VQ",
+        "location": "Veli Budicovac, Croacia",
+        "publishedAt": "2020-08-12T10:26:20Z",
+        "slug": "corazon-martirizado-veli-budicovac-croacia",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "Corazon Martirizado",
+          "Los Hermanos Zuleta",
+          "Veli Budicovac",
+          "Croacia"
+        ],
+        "thumbnail": {
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/tn5Hvqa97VQ/mqdefault.jpg",
+          "width": 320
+        },
+        "title": "Corazon Martirizado, desde Veli Budicovac, Croacia"
+      },
+      {
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/en-carne-propia\nVeli Budicovac, Croacia, 10/08/2020\nEn Carne Propia - Silvio Brito",
+        "id": "i9-EZvUO-pI",
+        "location": "Veli Budicovac, Croacia",
+        "publishedAt": "2020-08-12T10:24:04Z",
+        "slug": "en-carne-propia-veli-budicovac-croacia",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "En Carne Propia",
+          "Silvio Brito",
+          "Veli Budicovac",
+          "Croacia"
+        ],
+        "thumbnail": {
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/i9-EZvUO-pI/mqdefault.jpg",
+          "width": 320
+        },
+        "title": "En Carne Propia, desde Veli Budicovac, Croacia"
+      },
+      {
+        "description": "Veli Budicovac, Croacia, 10/08/2020\nOye Bonita - Diomedes D\u00edaz",
+        "id": "xWCrhWXFi5M",
+        "location": "Veli Budicovac, Croacia",
+        "publishedAt": "2020-08-12T10:21:52Z",
+        "slug": "oye-bonita-veli-budicovac-croacia",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "Oye Bonita",
+          "Diomedes D\u00edaz",
+          "Veli Budicovac",
+          "Croacia"
+        ],
+        "thumbnail": {
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/xWCrhWXFi5M/mqdefault.jpg",
+          "width": 320
+        },
+        "title": "Oye Bonita, desde Veli Budicovac, Croacia"
       }
     ]
   },
