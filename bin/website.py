@@ -23,6 +23,8 @@ import json
 import shutil
 from slugify import slugify
 import sitemap.generator as generator
+import re
+import datetime
 
 from youtube import HttpError
 from youtube import yt_get_authenticated_service
@@ -190,13 +192,57 @@ def ignored_files_in_prod(adir, filenames):
         ]
     return [filename for filename in filenames if filename in ignored_files]
 
-def generate_website():
+def get_stats(locations, uploaded_videos):
+    num_videos = len(uploaded_videos)
+
+    songs = []
+    skipped_titles = ["Vallenato at Epic", "La Guaneña navideña"]
+    for v in uploaded_videos:
+        song = v["title"].split(",")[0]
+        if song not in songs and song not in skipped_titles:
+            songs.append(song)
+    num_songs = len(songs)
+
+    num_places = len(locations)
+
+    countries = []
+    for l in locations:
+        country = l.split(",")[-1]
+        if country not in countries:
+            countries.append(country)
+    num_countries = len(countries)
+
+    navidad_2017 = datetime.date(2017, 12, 25)
+    today = datetime.date.today()
+    years = today.year - navidad_2017.year
+    if today.month  == 12: # December
+        duration_since_navidad_2017 = "%d años" % years
+    elif today.month  == 1: # January
+        duration_since_navidad_2017 = "%d años" % (years - 1)
+    else:
+        duration_since_navidad_2017 = "%d años y %d meses" % (years - 1, today.month)
+
+    stats = "El Vallenatero Francés les presenta %d videos de %d canciones tocadas en %d lugares de %d paises. El empezo a aprender el Acordeón Vallenato en la Navidad 2017 (hace mas o menos %s)." % \
+        (num_videos, num_songs, num_places, num_countries, duration_since_navidad_2017)
+
+    return stats
+
+def generate_website(locations, uploaded_videos):
     input_src_folder = "../website/src"
     output_prod_folder = "../website/prod"
 
     # Delete the previous production output folder (if existing)
     if os.path.exists(output_prod_folder):
         shutil.rmtree(output_prod_folder)
+
+    # Update statistics
+    stats = get_stats(locations, uploaded_videos)
+    index_src_file = "%s/index.html" % input_src_folder
+    with open(index_src_file, 'r') as file :
+        index_data = file.read()
+    index_data = re.sub('<div id="stats">.*</div>', '<div id="stats">%s</div>' % stats, index_data)
+    with open(index_src_file, 'w') as file:
+        file.write(index_data)
 
     # Update the values accordingly for prod
     # Main difference between development (src) and production websites:
@@ -351,7 +397,7 @@ def website(args):
     save_website_data(locations, WEBSITE_DATA_FILE)
 
     # Generate the development and production website files
-    generate_website()
+    generate_website(locations, uploaded_videos)
 
     # Generate the Sitemap
     generate_sitemap(SITEMAP_FILE, locations, uploaded_videos)

@@ -215,8 +215,18 @@ class TestInitMain(unittest.TestCase):
         # Redirect the output to a temporary file
         (ignore, temp_file) = tempfile.mkstemp()
         website.WEBSITE_DATA_FILE = temp_file
+
+        # Create a copy of the index.html file that is going to be edited
+        (ignore, temp_index_file) = tempfile.mkstemp()
+        shutil.copy("../website/src/index.html", temp_index_file)
+
         # Run the init(), will run the full --website branch
         target.init()
+
+        # Restore the index page
+        os.remove("../website/src/index.html")
+        shutil.move(temp_index_file, "../website/src/index.html")
+
         #TODO Assert final script result
         # Delete the temporary file created by the test
         os.remove(temp_file)

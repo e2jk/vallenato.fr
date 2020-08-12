@@ -12,6 +12,8 @@ import os
 import shutil
 import json
 import tempfile
+# import datetime
+from datetime import date
 from youtube import HttpError
 from unittest.mock import patch
 from unittest.mock import MagicMock
@@ -267,9 +269,66 @@ class TestSaveWebsiteData(unittest.TestCase):
         os.remove(temp_file)
 
 
+class TestGetStats(unittest.TestCase):
+    @patch("website.datetime.date")
+    def test_get_stats_august(self, w_dd):
+        w_dd.today.return_value = date(2020, 8, 13)
+        w_dd.side_effect = lambda *args, **kw: date(*args, **kw)
+        with open("tests/data/sample_locations_final_full.json") as in_file:
+            sample_locations = json.load(in_file)
+        with open("tests/data/sample_uploaded_videos_dump_full.json") as in_file:
+            sample_uploaded_videos = json.load(in_file)
+        stats = website.get_stats(sample_locations, sample_uploaded_videos)
+        self.assertEqual(stats, 'El Vallenatero Francés les presenta 84 videos de 13 canciones tocadas en 22 lugares de 10 paises. El empezo a aprender el Acordeón Vallenato en la Navidad 2017 (hace mas o menos 2 años y 8 meses).')
+
+    @patch("website.datetime.date")
+    def test_get_stats_december(self, w_dd):
+        w_dd.today.return_value = date(2020, 12, 13)
+        w_dd.side_effect = lambda *args, **kw: date(*args, **kw)
+        with open("tests/data/sample_locations_final_full.json") as in_file:
+            sample_locations = json.load(in_file)
+        with open("tests/data/sample_uploaded_videos_dump_full.json") as in_file:
+            sample_uploaded_videos = json.load(in_file)
+        stats = website.get_stats(sample_locations, sample_uploaded_videos)
+        self.assertEqual(stats, 'El Vallenatero Francés les presenta 84 videos de 13 canciones tocadas en 22 lugares de 10 paises. El empezo a aprender el Acordeón Vallenato en la Navidad 2017 (hace mas o menos 3 años).')
+
+    @patch("website.datetime.date")
+    def test_get_stats_january(self, w_dd):
+        w_dd.today.return_value = date(2021, 1, 13)
+        w_dd.side_effect = lambda *args, **kw: date(*args, **kw)
+        with open("tests/data/sample_locations_final_full.json") as in_file:
+            sample_locations = json.load(in_file)
+        with open("tests/data/sample_uploaded_videos_dump_full.json") as in_file:
+            sample_uploaded_videos = json.load(in_file)
+        stats = website.get_stats(sample_locations, sample_uploaded_videos)
+        self.assertEqual(stats, 'El Vallenatero Francés les presenta 84 videos de 13 canciones tocadas en 22 lugares de 10 paises. El empezo a aprender el Acordeón Vallenato en la Navidad 2017 (hace mas o menos 3 años).')
+
+
 class TestGenerateWebsite(unittest.TestCase):
-    def test_generate_website(self):
-        website.generate_website()
+    @patch("website.datetime.date")
+    def test_generate_website(self, w_dd):
+        w_dd.today.return_value = date(2020, 8, 13)
+        w_dd.side_effect = lambda *args, **kw: date(*args, **kw)
+        # Create a copy of the index.html file that is going to be edited
+        (ignore, temp_index_file) = tempfile.mkstemp()
+        shutil.copy("../website/src/index.html", temp_index_file)
+
+        with open("tests/data/sample_locations_final_full.json") as in_file:
+            sample_locations = json.load(in_file)
+        with open("tests/data/sample_uploaded_videos_dump_full.json") as in_file:
+            sample_uploaded_videos = json.load(in_file)
+
+        website.generate_website(sample_locations, sample_uploaded_videos)
+
+        # Confirm that the stats on the index page have been updated
+        with open("../website/src/index.html", 'r') as file :
+            filedata = file.read()
+            self.assertTrue('<div id="stats">El Vallenatero Francés les presenta 84 videos de 13 canciones tocadas en 22 lugares de 10 paises. El empezo a aprender el Acordeón Vallenato en la Navidad 2017 (hace mas o menos 2 años y 8 meses).</div>' in filedata)
+        # Restore the index page
+        os.remove("../website/src/index.html")
+        shutil.move(temp_index_file, "../website/src/index.html")
+
+
         # Check prod folder exist
         self.assertTrue(os.path.exists("../website/prod"))
 
@@ -357,7 +416,17 @@ class TestWebsite(unittest.TestCase):
         # Redirect the output to a temporary file
         (ignore, temp_file) = tempfile.mkstemp()
         website.WEBSITE_DATA_FILE = temp_file
+
+        # Create a copy of the index.html file that is going to be edited
+        (ignore, temp_index_file) = tempfile.mkstemp()
+        shutil.copy("../website/src/index.html", temp_index_file)
+
         website.website(None)
+
+        # Restore the index page
+        os.remove("../website/src/index.html")
+        shutil.move(temp_index_file, "../website/src/index.html")
+
         #TODO Assert final script result
         # Delete the temporary file created by the test
         os.remove(temp_file)
