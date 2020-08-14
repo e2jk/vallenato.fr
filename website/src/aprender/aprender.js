@@ -750,7 +750,8 @@ function check_valid_slug() {
   }
 
   tutoriales.some(function (tuto) {
-    if("/aprender/" + tuto["slug"] === window.location.pathname) {
+    var tuto_slug_index = window.location.pathname.indexOf("/aprender/" + tuto["slug"]);
+    if(tuto_slug_index > -1) {
       if (current_page_is_tutorial) {
         // Just changing parts within the same tutorial (probably Back or Forward button)
         determineCurrentVideoParameter();
@@ -758,7 +759,14 @@ function check_valid_slug() {
       } else {
         // Go to that tutorial's page
         current_page_is_tutorial = true;
-        show_tutorial_page(window.location.pathname.substring(10));
+        var tutorial;
+        if (window.location.pathname.endsWith(".html")) {
+          // We're not running from a production webserver with nice URLs
+          tutorial = window.location.pathname.slice(tuto_slug_index+10, -5);
+        } else {
+          tutorial = window.location.pathname.substring(10);
+        }
+        show_tutorial_page(tutorial);
       }
       return true;
     }

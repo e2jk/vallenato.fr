@@ -385,6 +385,24 @@ class TestGenerateWebsite(unittest.TestCase):
         self.assertFalse("TODO" in prd_aprender_videos_files)
         self.assertFalse("blabla-bla" in prd_aprender_videos_files)
 
+        # Confirm the full HTML pages for /aprender tutorials have been created
+        expected_prd_aprender_files = [
+            'videos',
+            'tutoriales.js',
+            'index.html',
+            'aprender.js'
+        ]
+        with open("../website/src/aprender/tutoriales.js") as in_file:
+            # Remove the JS bits to keep only the JSON content
+            tutoriales_json_content = (in_file.read()[17:-2])
+            tutoriales = json.loads(tutoriales_json_content)
+        for t in tutoriales:
+            expected_prd_aprender_files.append("%s.html" % t["slug"])
+        prd_aprender_files = os.listdir("../website/prod/aprender/")
+        self.assertEqual(len(prd_aprender_files), len(expected_prd_aprender_files))
+        for f in expected_prd_aprender_files:
+            self.assertTrue(f in prd_aprender_files)
+
 
 class TestGenerateSitemap(unittest.TestCase):
     def test_generate_sitemap(self):

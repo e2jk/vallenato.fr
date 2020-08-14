@@ -315,6 +315,33 @@ def generate_website(locations, uploaded_videos):
     with open("%s/aprender/index.html" % output_prod_folder, 'w') as file:
         file.write(index_aprender_data)
 
+    # Create full HTML pages for Prod /aprender tutorials
+    with open("../website/src/aprender/tutoriales.js") as in_file:
+        # Remove the JS bits to keep only the JSON content
+        tutoriales_json_content = (in_file.read()[17:-2])
+        tutoriales = json.loads(tutoriales_json_content)
+    for t in tutoriales:
+        output_prod_tutorial_file = "%s/aprender/%s.html" % \
+            (output_prod_folder, t["slug"])
+        shutil.copy("%s/aprender/index.html" % output_prod_folder,
+            output_prod_tutorial_file)
+        with open(output_prod_tutorial_file, 'r') as file :
+            prod_tutorial_file_data = file.read()
+        if t["author"]:
+            tuto_title = "%s - %s" % (t["title"], t["author"])
+        else:
+            tuto_title = t["title"]
+        prod_tutorial_file_data = prod_tutorial_file_data.replace(
+            "<title>Aprender a tocar el Acordeón Vallenato - El Vallenatero Francés</title>",
+            "<title>%s - Aprender a tocar el Acordeón Vallenato</title>" % tuto_title
+        )
+        prod_tutorial_file_data = prod_tutorial_file_data.replace(
+            '<h1 id="tutorialFullTitle">TITLE</h1>',
+            '<h1 id="tutorialFullTitle">%s</h1>' % tuto_title
+        )
+        with open(output_prod_tutorial_file, 'w') as file:
+            file.write(prod_tutorial_file_data)
+
 def generate_sitemap(sitemap_file, locations, uploaded_videos):
     base_url = "https://vallenato.fr"
     sitemap = generator.Sitemap()
