@@ -2059,6 +2059,55 @@ var locations = {
       }
     ]
   },
+  "Rovinj, Croacia": {
+    "latitude": 45.081165,
+    "longitude": 13.638707,
+    "slug": "rovinj-croacia",
+    "videos": [
+      {
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/los-caminos-de-la-vida\nRovinj, Croacia, 14/08/2020\nLos Caminos De La Vida - Los Diablitos",
+        "id": "3EW013dui0I",
+        "location": "Rovinj, Croacia",
+        "publishedAt": "2020-08-15T20:24:01Z",
+        "slug": "los-caminos-de-la-vida-rovinj-croacia",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "Los Caminos De La Vida",
+          "Los Diablitos",
+          "Croacia",
+          "Rovinj"
+        ],
+        "thumbnail": {
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/3EW013dui0I/mqdefault.jpg",
+          "width": 320
+        },
+        "title": "Los Caminos De La Vida, desde Rovinj, Croacia"
+      },
+      {
+        "description": "Rovinj, Croacia, 14/08/2020\nOye Bonita - Diomedes D\u00edaz",
+        "id": "3rnmUN3gL9I",
+        "location": "Rovinj, Croacia",
+        "publishedAt": "2020-08-15T16:05:33Z",
+        "slug": "oye-bonita-rovinj-croacia",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "Oye Bonita",
+          "Diomedes D\u00edaz",
+          "Croacia",
+          "Rovinj"
+        ],
+        "thumbnail": {
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/3rnmUN3gL9I/mqdefault.jpg",
+          "width": 320
+        },
+        "title": "Oye Bonita, desde Rovinj, Croacia"
+      }
+    ]
+  },
   "San Andr\u00e9s, Colombia": {
     "latitude": 12.544912,
     "longitude": -81.716716,
