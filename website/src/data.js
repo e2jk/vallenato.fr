@@ -1467,6 +1467,34 @@ var locations = {
       }
     ]
   },
+  "Longeau-Percey, Francia": {
+    "latitude": 47.76576,
+    "longitude": 5.30987,
+    "slug": "longeau-percey-francia",
+    "videos": [
+      {
+        "description": "Longeau-Percey, Francia, 19/08/2020\nOye Bonita - Diomedes D\u00edaz",
+        "id": "ceqDOprH3qE",
+        "location": "Longeau-Percey, Francia",
+        "publishedAt": "2020-08-21T16:35:09Z",
+        "slug": "oye-bonita-longeau-percey-francia",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "Longeau-Percey",
+          "Francia",
+          "Oye Bonita",
+          "Diomedes D\u00edaz"
+        ],
+        "thumbnail": {
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/ceqDOprH3qE/mqdefault.jpg",
+          "width": 320
+        },
+        "title": "Oye Bonita, desde Longeau-Percey, Francia"
+      }
+    ]
+  },
   "Marbella, Espa\u00f1a": {
     "latitude": 36.509941,
     "longitude": -4.88635,
@@ -2056,6 +2084,55 @@ var locations = {
           "width": 320
         },
         "title": "Esa, desde Providencia, Colombia"
+      }
+    ]
+  },
+  "Pula, Croacia": {
+    "latitude": 44.873344,
+    "longitude": 13.85026,
+    "slug": "pula-croacia",
+    "videos": [
+      {
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/los-caminos-de-la-vida\nPula, Croacia, 16/08/2020\nLos Caminos De La Vida - Los Diablitos",
+        "id": "IJApvPEf--4",
+        "location": "Pula, Croacia",
+        "publishedAt": "2020-08-21T16:31:23Z",
+        "slug": "los-caminos-de-la-vida-pula-croacia",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "Pula",
+          "Croacia",
+          "Los Caminos De La Vida",
+          "Los Diablitos"
+        ],
+        "thumbnail": {
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/IJApvPEf--4/mqdefault.jpg",
+          "width": 320
+        },
+        "title": "Los Caminos De La Vida, desde Pula, Croacia"
+      },
+      {
+        "description": "Pula, Croacia, 16/08/2020\nOye Bonita - Diomedes D\u00edaz",
+        "id": "yS4yYk9YKSA",
+        "location": "Pula, Croacia",
+        "publishedAt": "2020-08-21T16:29:18Z",
+        "slug": "oye-bonita-pula-croacia",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "Pula",
+          "Croacia",
+          "Oye Bonita",
+          "Diomedes D\u00edaz"
+        ],
+        "thumbnail": {
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/yS4yYk9YKSA/mqdefault.jpg",
+          "width": 320
+        },
+        "title": "Oye Bonita, desde Pula, Croacia"
       }
     ]
   },
