@@ -450,5 +450,25 @@ var tutoriales = [
       {"id": "M4vjRjJGtOc", "start": 604, "end": 652}
     ],
     "full_version": "CKw2-Vx8D8Q"
+  },
+  {
+    "slug": "la-zenaida",
+    "author": "Armando Hernandez",
+    "title": "La Zenaida",
+    "videos": [
+      {"id": "WQvMnpRA3CQ", "start": 63, "end": 77},
+      {"id": "WQvMnpRA3CQ", "start": 169, "end": 192},
+      {"id": "WQvMnpRA3CQ", "start": 233, "end": 247},
+      {"id": "WQvMnpRA3CQ", "start": 263, "end": 299},
+      {"id": "WQvMnpRA3CQ", "start": 317, "end": 327},
+      {"id": "WQvMnpRA3CQ", "start": 362, "end": 373},
+      {"id": "WQvMnpRA3CQ", "start": 24, "end": 63}
+    ],
+    "videos_full_tutorial": [
+      {"id": "WQvMnpRA3CQ", "start": 248, "end": 261},
+      {"id": "WQvMnpRA3CQ", "start": 299, "end": 305},
+      {"id": "WQvMnpRA3CQ", "start": 333, "end": 340}
+    ],
+    "full_version": "LUok55C5rns"
   }
 ];
