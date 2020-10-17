@@ -437,5 +437,18 @@ var tutoriales = [
       {"id": "tFN-qb4SKok", "start": 659, "end": 683}
     ],
     "full_version": "j9V78UbdzWI"
+  },
+  {
+    "slug": "alicia-adorada",
+    "author": "Alejandro Duran",
+    "title": "Alicia Adorada",
+    "videos": [
+      {"id": "M4vjRjJGtOc", "start": 308, "end": 338},
+      {"id": "M4vjRjJGtOc", "start": 479, "end": 506}
+    ],
+    "videos_full_tutorial": [
+      {"id": "M4vjRjJGtOc", "start": 604, "end": 652}
+    ],
+    "full_version": "CKw2-Vx8D8Q"
   }
 ];
