@@ -353,7 +353,6 @@ class TestGenerateWebsite(unittest.TestCase):
         self.assertTrue('<script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@%s/js/bootstrap4-toggle.min.js"\n        integrity="sha384-' % website.BOOTSTRAP_TOGGLE_VERSION in index_aprender_data)
 
         # Confirm the local copies of the libraries are not present in the prd folder
-        # Only these 6 files/folders should exist in the prd folder
         # (sitemap.xml gets generated in a later step)
         expected_prd_files = ['android-chrome-192x192.png',
                               'android-chrome-512x512.png',
@@ -373,10 +372,20 @@ class TestGenerateWebsite(unittest.TestCase):
                               'site.webmanifest',
                               'style.css'
         ]
+        with open("../website/src/data.js") as in_file:
+            # Remove the JS bits to keep only the JSON content
+            videos_json_content = (in_file.read()[16:-1])
+            locations = json.loads(videos_json_content)
+        for l in locations:
+            expected_prd_files.append("%s.html" % locations[l]["slug"])
+            for v in locations[l]["videos"]:
+                if v["slug"] not in expected_prd_files:
+                    expected_prd_files.append(v["slug"])
         prd_files = os.listdir("../website/prod/")
         self.assertEqual(len(prd_files), len(expected_prd_files))
         for f in expected_prd_files:
             self.assertTrue(f in prd_files)
+        #TODO: Confirm the title and h2 of one of the created HTML files have been updated
         # Confirm the aprender/temp folder is not copied to the prd folder
         prd_aprender_files = os.listdir("../website/prod/aprender")
         self.assertFalse("temp" in prd_aprender_files)
@@ -402,6 +411,7 @@ class TestGenerateWebsite(unittest.TestCase):
         self.assertEqual(len(prd_aprender_files), len(expected_prd_aprender_files))
         for f in expected_prd_aprender_files:
             self.assertTrue(f in prd_aprender_files)
+        #TODO: Confirm the title and h1 of one of the created HTML files have been updated
 
 
 class TestGenerateSitemap(unittest.TestCase):

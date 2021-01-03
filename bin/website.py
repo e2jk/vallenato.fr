@@ -325,6 +325,7 @@ def generate_website(locations, uploaded_videos):
         # Remove the JS bits to keep only the JSON content
         tutoriales_json_content = (in_file.read()[17:-2])
         tutoriales = json.loads(tutoriales_json_content)
+        num_html_pages_created += len(tutoriales)
     for t in tutoriales:
         output_prod_tutorial_file = "%s/aprender/%s.html" % \
             (output_prod_folder, t["slug"])
@@ -346,6 +347,57 @@ def generate_website(locations, uploaded_videos):
         )
         with open(output_prod_tutorial_file, 'w') as file:
             file.write(prod_tutorial_file_data)
+
+    # Create full HTML pages for Prod / videos
+    with open("../website/src/data.js") as in_file:
+        # Remove the JS bits to keep only the JSON content
+        videos_json_content = (in_file.read()[16:-1])
+        locations = json.loads(videos_json_content)
+        num_html_pages_created += len(locations)
+    for l in locations:
+        # One page for each location
+        output_prod_video_file = "%s/%s.html" % \
+            (output_prod_folder, locations[l]["slug"])
+        shutil.copy("%s/index.html" % output_prod_folder,
+            output_prod_video_file)
+        with open(output_prod_video_file, 'r') as file :
+            prod_video_file_data = file.read()
+        tuto_title = l
+        prod_video_file_data = prod_video_file_data.replace(
+            "<title>El Vallenatero Francés</title>",
+            "<title>%s - El Vallenatero Francés</title>" % tuto_title
+        )
+        prod_video_file_data = prod_video_file_data.replace(
+            '<h2 id="list_location"></h2>',
+            '<h2 id="list_location">%s</h2>' % tuto_title
+        )
+        with open(output_prod_video_file, 'w') as file:
+            file.write(prod_video_file_data)
+
+        num_html_pages_created += len(locations[l]["videos"])
+        for v in locations[l]["videos"]:
+            # One page for each video at that location
+            # Create folder
+            output_folder = "%s/%s" % (output_prod_folder, v["slug"])
+            if not os.path.isdir(output_folder):
+                os.mkdir(output_folder)
+            output_prod_video_file = "%s/%s.html" % \
+                (output_folder, v["id"])
+            shutil.copy("%s/index.html" % output_prod_folder,
+                output_prod_video_file)
+            with open(output_prod_video_file, 'r') as file :
+                prod_video_file_data = file.read()
+            tuto_title = v["title"]
+            prod_video_file_data = prod_video_file_data.replace(
+                "<title>El Vallenatero Francés</title>",
+                "<title>%s - El Vallenatero Francés</title>" % tuto_title
+            )
+            prod_video_file_data = prod_video_file_data.replace(
+                '<h2 id="list_location"></h2>',
+                '<h2 id="list_location">%s</h2>' % tuto_title
+            )
+            with open(output_prod_video_file, 'w') as file:
+                file.write(prod_video_file_data)
 
     logging.debug("Number of production HTML files created: %d" % num_html_pages_created)
 
