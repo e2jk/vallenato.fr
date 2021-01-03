@@ -89,6 +89,7 @@ def get_uploaded_videos(args, dump_file):
     return uploaded_videos
 
 def identify_locations_names(uploaded_videos, location_special_cases_file, dump_file):
+    logging.debug("Identify each video's location name")
     with open(location_special_cases_file) as in_file:
         special_cases = json.load(in_file)
     locations = {}
@@ -103,8 +104,8 @@ def identify_locations_names(uploaded_videos, location_special_cases_file, dump_
         # The script is going to exit, to prevent unnecessary downloading from
         # YouTube again, save the downloaded information regardless of the
         # --dump_uploaded_videos parameter
-        save_uploaded_videos(uploaded_videos, dump_file)
         logging.warning("Dumping the list of uploaded videos from YouTube to the '%s' file, so as not to have to download it again after you have edited the '%s' file." % (dump_file, location_special_cases_file))
+        save_uploaded_videos(uploaded_videos, dump_file)
         logging.critical("Please add the new/missing location to the file '%s'. Exiting..." % location_special_cases_file)
         sys.exit(20)
     logging.info("Found %d different location name." % len(locations))
@@ -170,6 +171,7 @@ def determine_locations_slug(locations):
     return locations
 
 def save_website_data(locations, website_data_file):
+    logging.debug("Save the updated dynamic data")
     json_content = json.dumps(locations, sort_keys=True, indent=2)
     # Make it JS (and not just JSON) for direct use in the HTML document
     js_content = "var locations = %s;" % json_content
@@ -228,6 +230,7 @@ def get_stats(locations, uploaded_videos):
     return stats
 
 def generate_website(locations, uploaded_videos):
+    logging.debug("Generate the production website files")
     input_src_folder = "../website/src"
     output_prod_folder = "../website/prod"
 
@@ -343,6 +346,7 @@ def generate_website(locations, uploaded_videos):
             file.write(prod_tutorial_file_data)
 
 def generate_sitemap(sitemap_file, locations, uploaded_videos):
+    logging.debug("Generate the Sitemap")
     base_url = "https://vallenato.fr"
     sitemap = generator.Sitemap()
 
