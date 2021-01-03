@@ -233,6 +233,8 @@ def generate_website(locations, uploaded_videos):
     logging.debug("Generate the production website files")
     input_src_folder = "../website/src"
     output_prod_folder = "../website/prod"
+    # The 2 index files in / and /aprender
+    num_html_pages_created = 2
 
     # Delete the previous production output folder (if existing)
     if os.path.exists(output_prod_folder):
@@ -344,6 +346,8 @@ def generate_website(locations, uploaded_videos):
         )
         with open(output_prod_tutorial_file, 'w') as file:
             file.write(prod_tutorial_file_data)
+
+    logging.debug("Number of production HTML files created: %d" % num_html_pages_created)
 
 def generate_sitemap(sitemap_file, locations, uploaded_videos):
     logging.debug("Generate the Sitemap")
