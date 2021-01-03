@@ -6,7 +6,7 @@ El Vallenatero Francés
 ### Production-like, with the actual Nginx server configuration:
 
 * Build the Docker image (first two steps listed below)
-* Run ``docker run -it --rm -p 8080:80 -e PUID=1000 -e PGID=1000 --name vallenato.fr -v `pwd`/src/:/config/www/ e2jk/vallenato.fr`` from the `website` folder and access from your browser at http://localhost:8080/
+* Run ``docker run -it --rm -p 8080:80 -e PUID=1000 -e PGID=1000 --name vallenato.fr -v `pwd`/src/:/config/www/ -v `pwd`/nginx-config/development:/config/nginx/site-confs/default e2jk/vallenato.fr`` from the `website` folder and access from your browser at http://localhost:8080/
 
 ### Quick and dirty:
 

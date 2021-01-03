@@ -1,0 +1,25 @@
+# https://vallenato.fr
+server {
+  listen 80 default_server;
+  server_name _;
+  absolute_redirect off;
+
+  root /config/www;
+  index index.html;
+
+  location ~ (\.js|\.css|\.txt|\.xml|\.mp4|\.ico|\.png|\.svg|\.webmanifest) {
+    # Don't try to rewrite "nice URLs" for these files, use the actual file on disk
+    try_files $uri $uri/ =404;
+  }
+
+  location /aprender {
+    # In dev mode, use the index.html file to serve the nice URLs
+    rewrite ^/aprender/.*$ /aprender/index.html break;
+  }
+
+  location / {
+    # Support "nice URLs" for pages in /
+    rewrite ^/.*$ /index.html break;
+    try_files $uri $uri/ =404;
+  }
+}
