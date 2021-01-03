@@ -62,4 +62,4 @@ VOLUME /config
 COPY ./prod /config/www
 
 # The nginx config file
-COPY ./nginx-config/default /config/nginx/site-confs/
+COPY ./nginx-config/production /config/nginx/site-confs/default
