@@ -418,14 +418,14 @@ def generate_sitemap(sitemap_file, locations, uploaded_videos):
                 # Timestamp of the most recently uploaded video
                 lastmod=uploaded_videos[0]["publishedAt"][:10],
                 changefreq="monthly",
-                priority="0.6")
+                priority="0.8")
     for l in locations:
         # Locations
         sitemap.add("%s/%s" % (base_url, locations[l]["slug"]),
                     # Timestamp of the most recently uploaded video at that location
                     lastmod=locations[l]["videos"][0]["publishedAt"][:10],
                     changefreq="yearly",
-                    priority="0.5")
+                    priority="0.6")
         for v in locations[l]["videos"]:
             # Individual videos
             sitemap.add("%s/%s/%s" % (base_url, v["slug"], v["id"]),
@@ -448,7 +448,7 @@ def generate_sitemap(sitemap_file, locations, uploaded_videos):
         tuto_url = "%s/aprender/%s" % (base_url, t["slug"])
         sitemap.add(tuto_url,
                     changefreq="yearly",
-                    priority="0.5")
+                    priority="0.7")
 
     sitemap_xml = sitemap.generate()
 
