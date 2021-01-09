@@ -42,7 +42,7 @@ WEBSITE_DATA_FILE = "../website/src/data.js"
 # Sitemap file
 SITEMAP_FILE = "../website/prod/sitemap.xml"
 # Version of the external libraries
-LEAFLET_VERSION = "1.5.1"
+LEAFLET_VERSION = "1.7.1"
 BOOTSTRAP_VERSION = "4.3.1"
 JQUERY_VERSION = "3.3.1"
 BOOTSTRAP_TOGGLE_VERSION = "3.6.1"
@@ -282,10 +282,10 @@ def generate_website(locations, uploaded_videos):
     # Leaflet
     index_data = index_data.replace(
         '<link rel="stylesheet" href="leaflet/%s/leaflet.css">' % LEAFLET_VERSION,
-        '<link rel="stylesheet" href="https://unpkg.com/leaflet@%s/dist/leaflet.css"\n        integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="\n        crossorigin=""/>' % LEAFLET_VERSION)
+        '<link rel="stylesheet" href="https://unpkg.com/leaflet@%s/dist/leaflet.css"\n        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="\n        crossorigin=""/>' % LEAFLET_VERSION)
     index_data = index_data.replace(
         '<script type = "text/javascript" src="leaflet/%s/leaflet.js"></script>' % LEAFLET_VERSION,
-        '<script src="https://unpkg.com/leaflet@%s/dist/leaflet.js"\n        integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="\n        crossorigin="">\n    </script>' % LEAFLET_VERSION)
+        '<script src="https://unpkg.com/leaflet@%s/dist/leaflet.js"\n        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="\n        crossorigin="">\n    </script>' % LEAFLET_VERSION)
     # Bootstrap
     index_data = index_data.replace(
         '<link rel="stylesheet" href="bootstrap-%s-dist/css/bootstrap.min.css">' % BOOTSTRAP_VERSION,
