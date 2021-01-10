@@ -233,8 +233,8 @@ def generate_website(locations, uploaded_videos):
     logging.debug("Generate the production website files")
     input_src_folder = "../website/src"
     output_prod_folder = "../website/prod"
-    # The 2 index files in / and /aprender
-    num_html_pages_created = 2
+    # The 2 index files in / and /aprender,  404
+    num_html_pages_created = 3
 
     # Delete the previous production output folder (if existing)
     if os.path.exists(output_prod_folder):
@@ -276,6 +276,8 @@ def generate_website(locations, uploaded_videos):
     # Read the prod files
     with open("%s/index.html" % output_prod_folder, 'r') as file :
         index_data = file.read()
+    with open("%s/404.html" % output_prod_folder, 'r') as file :
+        page404_data = file.read()
     with open("%s/aprender/index.html" % output_prod_folder, 'r') as file :
         index_aprender_data = file.read()
     # Replace the target strings
@@ -293,6 +295,12 @@ def generate_website(locations, uploaded_videos):
     index_data = index_data.replace(
         '<script src="bootstrap-%s-dist/js/bootstrap.min.js"></script>' % BOOTSTRAP_VERSION,
         '<script src="https://stackpath.bootstrapcdn.com/bootstrap/%s/js/bootstrap.min.js"\n        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"\n        crossorigin="anonymous"></script>' % BOOTSTRAP_VERSION)
+    page404_data = page404_data.replace(
+        '<link rel="stylesheet" href="bootstrap-%s-dist/css/bootstrap.min.css">' % BOOTSTRAP_VERSION,
+        '<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/%s/css/bootstrap.min.css"\n        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"\n        crossorigin="anonymous">' % BOOTSTRAP_VERSION)
+    page404_data = page404_data.replace(
+        '<script src="bootstrap-%s-dist/js/bootstrap.min.js"></script>' % BOOTSTRAP_VERSION,
+        '<script src="https://stackpath.bootstrapcdn.com/bootstrap/%s/js/bootstrap.min.js"\n        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"\n        crossorigin="anonymous"></script>' % BOOTSTRAP_VERSION)
     index_aprender_data = index_aprender_data.replace(
         '<link rel="stylesheet" href="../bootstrap-%s-dist/css/bootstrap.min.css">' % BOOTSTRAP_VERSION,
         '<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/%s/css/bootstrap.min.css"\n        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"\n        crossorigin="anonymous">' % BOOTSTRAP_VERSION)
@@ -301,6 +309,9 @@ def generate_website(locations, uploaded_videos):
         '<script src="https://stackpath.bootstrapcdn.com/bootstrap/%s/js/bootstrap.min.js"\n        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"\n        crossorigin="anonymous"></script>' % BOOTSTRAP_VERSION)
     # jQuery (for Bootstrap)
     index_data = index_data.replace(
+        '<script src="jquery-%s.slim.min.js"></script>' % JQUERY_VERSION,
+        '<script src="https://code.jquery.com/jquery-%s.slim.min.js"\n        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"\n        crossorigin="anonymous"></script>' % JQUERY_VERSION)
+    page404_data = page404_data.replace(
         '<script src="jquery-%s.slim.min.js"></script>' % JQUERY_VERSION,
         '<script src="https://code.jquery.com/jquery-%s.slim.min.js"\n        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"\n        crossorigin="anonymous"></script>' % JQUERY_VERSION)
     index_aprender_data = index_aprender_data.replace(
@@ -317,6 +328,8 @@ def generate_website(locations, uploaded_videos):
     # Save edited prod files
     with open("%s/index.html" % output_prod_folder, 'w') as file:
         file.write(index_data)
+    with open("%s/404.html" % output_prod_folder, 'w') as file:
+        file.write(page404_data)
     with open("%s/aprender/index.html" % output_prod_folder, 'w') as file:
         file.write(index_aprender_data)
 

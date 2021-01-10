@@ -6,6 +6,7 @@ server {
 
   root /config/www;
   index index.html;
+  error_page 404 /404.html;
 
   location ~ (\.js|\.css|\.txt|\.xml|\.mp4|\.ico|\.png|\.svg|\.webmanifest) {
     # Don't try to rewrite "nice URLs" for these files, use the actual file on disk
