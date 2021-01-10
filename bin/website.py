@@ -324,6 +324,12 @@ def generate_website(locations, uploaded_videos):
     index_aprender_data = index_aprender_data.replace(
         '<script src="../bootstrap4-toggle-%s/js/bootstrap4-toggle.min.js"></script>' % BOOTSTRAP_TOGGLE_VERSION,
         '<script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@%s/js/bootstrap4-toggle.min.js"\n        integrity="sha384-Q9RsZ4GMzjlu4FFkJw4No9Hvvm958HqHmXI9nqo5Np2dA/uOVBvKVxAvlBQrDhk4"\n        crossorigin="anonymous"></script>' % BOOTSTRAP_TOGGLE_VERSION)
+    # Copyright year in the pages' footer
+    a = '<span class="text-muted">&copy; YEAR El Vallenatero Francés</span>'
+    b = '<span class="text-muted">&copy; %d El Vallenatero Francés</span>' % datetime.date.today().year
+    index_data = index_data.replace(a, b)
+    page404_data = page404_data.replace(a, b)
+    index_aprender_data = index_aprender_data.replace(a, b)
 
     # Save edited prod files
     with open("%s/index.html" % output_prod_folder, 'w') as file:

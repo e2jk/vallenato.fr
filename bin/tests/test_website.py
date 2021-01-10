@@ -12,7 +12,6 @@ import os
 import shutil
 import json
 import tempfile
-# import datetime
 from datetime import date
 from youtube import HttpError
 from unittest.mock import patch
@@ -356,6 +355,11 @@ class TestGenerateWebsite(unittest.TestCase):
         # The prod files point to the CDN copy of the Bootstrap-toggle library
         self.assertTrue('<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@%s/css/bootstrap4-toggle.min.css"\n        integrity="sha384-' % website.BOOTSTRAP_TOGGLE_VERSION in index_aprender_data)
         self.assertTrue('<script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@%s/js/bootstrap4-toggle.min.js"\n        integrity="sha384-' % website.BOOTSTRAP_TOGGLE_VERSION in index_aprender_data)
+        # Copyright year in the pages' footer
+        # datetime.date.today is patched to return a date in 2020
+        expected_value = '<span class="text-muted">&copy; 2020 El Vallenatero Francés</span>'
+        for page_data in (index_data, page404_data, index_aprender_data):
+            self.assertTrue(expected_value in page_data)
 
         # Confirm the local copies of the libraries are not present in the prd folder
         # (sitemap.xml gets generated in a later step)
