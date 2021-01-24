@@ -5,28 +5,6 @@ var locations = {
     "slug": "s-hertogenbosch-paises-bajos",
     "videos": [
       {
-        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/en-carne-propia\nOosterplas, 's-Hertogenbosch, Pa\u00edses Bajos, 31/08/2019\nEn Carne Propia - Silvio Brito",
-        "id": "Qa_z4L0ZXqo",
-        "location": "'s-Hertogenbosch, Pa\u00edses Bajos",
-        "publishedAt": "2019-09-21T15:21:06Z",
-        "slug": "en-carne-propia-el-oosterplas-s-hertogenbosch-paises-bajos",
-        "tags": [
-          "Acorde\u00f3n",
-          "Vallenato",
-          "En Carne Propia",
-          "Silvio Brito",
-          "'s-Hertogenbosch",
-          "Pa\u00edses Bajos",
-          "Oosterplas"
-        ],
-        "thumbnail": {
-          "height": 180,
-          "url": "https://i.ytimg.com/vi/Qa_z4L0ZXqo/mqdefault.jpg",
-          "width": 320
-        },
-        "title": "En Carne Propia, desde el Oosterplas, 's-Hertogenbosch, Pa\u00edses Bajos"
-      },
-      {
         "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/los-caminos-de-la-vida\nOosterplas, 's-Hertogenbosch, Pa\u00edses Bajos, 31/08/2019\nLos Caminos De La Vida - Los Diablitos",
         "id": "BqFlTbrWDYk",
         "location": "'s-Hertogenbosch, Pa\u00edses Bajos",
@@ -69,6 +47,28 @@ var locations = {
           "width": 320
         },
         "title": "Oye Bonita, desde el Oosterplas, 's-Hertogenbosch, Pa\u00edses Bajos"
+      },
+      {
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/en-carne-propia\nOosterplas, 's-Hertogenbosch, Pa\u00edses Bajos, 31/08/2019\nEn Carne Propia - Silvio Brito",
+        "id": "Qa_z4L0ZXqo",
+        "location": "'s-Hertogenbosch, Pa\u00edses Bajos",
+        "publishedAt": "2019-09-21T15:21:06Z",
+        "slug": "en-carne-propia-el-oosterplas-s-hertogenbosch-paises-bajos",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "En Carne Propia",
+          "Silvio Brito",
+          "'s-Hertogenbosch",
+          "Pa\u00edses Bajos",
+          "Oosterplas"
+        ],
+        "thumbnail": {
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/Qa_z4L0ZXqo/mqdefault.jpg",
+          "width": 320
+        },
+        "title": "En Carne Propia, desde el Oosterplas, 's-Hertogenbosch, Pa\u00edses Bajos"
       }
     ]
   },
@@ -534,27 +534,6 @@ var locations = {
     "slug": "ciudad-de-panama-panama",
     "videos": [
       {
-        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/los-caminos-de-la-vida\nDesde el aeropuerto de Panam\u00e1, 22/08/2019\nLos Caminos De La Vida - Los Diablitos",
-        "id": "U-N7MtQ7HV0",
-        "location": "Ciudad de Panam\u00e1, Panam\u00e1",
-        "publishedAt": "2019-08-24T19:55:40Z",
-        "slug": "los-caminos-de-la-vida-el-aeropuerto-de-panama",
-        "tags": [
-          "Acorde\u00f3n",
-          "Vallenato",
-          "Aeropuerto",
-          "Panam\u00e1",
-          "Los Caminos De La Vida",
-          "Los Diablitos"
-        ],
-        "thumbnail": {
-          "height": 180,
-          "url": "https://i.ytimg.com/vi/U-N7MtQ7HV0/mqdefault.jpg",
-          "width": 320
-        },
-        "title": "Los Caminos De La Vida, desde el aeropuerto de Panam\u00e1"
-      },
-      {
         "description": "Desde el aeropuerto de Panam\u00e1, 22/08/2019\nOye Bonita - Diomedes D\u00edaz",
         "id": "CyXCWPMDhgY",
         "location": "Ciudad de Panam\u00e1, Panam\u00e1",
@@ -574,6 +553,97 @@ var locations = {
           "width": 320
         },
         "title": "Oye Bonita, desde el aeropuerto de Panam\u00e1"
+      },
+      {
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/los-caminos-de-la-vida\nDesde el aeropuerto de Panam\u00e1, 22/08/2019\nLos Caminos De La Vida - Los Diablitos",
+        "id": "U-N7MtQ7HV0",
+        "location": "Ciudad de Panam\u00e1, Panam\u00e1",
+        "publishedAt": "2019-08-24T19:55:40Z",
+        "slug": "los-caminos-de-la-vida-el-aeropuerto-de-panama",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "Aeropuerto",
+          "Panam\u00e1",
+          "Los Caminos De La Vida",
+          "Los Diablitos"
+        ],
+        "thumbnail": {
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/U-N7MtQ7HV0/mqdefault.jpg",
+          "width": 320
+        },
+        "title": "Los Caminos De La Vida, desde el aeropuerto de Panam\u00e1"
+      }
+    ]
+  },
+  "Couthuin, B\u00e9lgica": {
+    "latitude": 50.53409,
+    "longitude": 5.13241,
+    "slug": "couthuin-belgica",
+    "videos": [
+      {
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/en-carne-propia\nCouthuin, B\u00e9lgica, 24/01/2021\nEn Carne Propia - Silvio Brito",
+        "id": "BBhZRwvFkDo",
+        "location": "Couthuin, B\u00e9lgica",
+        "publishedAt": "2021-01-24T18:45:56Z",
+        "slug": "en-carne-propia-couthuin-belgica",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "B\u00e9lgica",
+          "En Carne Propia",
+          "Silvio Brito",
+          "Couthuin"
+        ],
+        "thumbnail": {
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/BBhZRwvFkDo/mqdefault.jpg",
+          "width": 320
+        },
+        "title": "En Carne Propia, desde Couthuin, B\u00e9lgica"
+      },
+      {
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/los-caminos-de-la-vida\nCouthuin, B\u00e9lgica, 24/01/2021\nLos Caminos De La Vida - Los Diablitos",
+        "id": "JhtKwLUkGgw",
+        "location": "Couthuin, B\u00e9lgica",
+        "publishedAt": "2021-01-24T18:44:18Z",
+        "slug": "los-caminos-de-la-vida-couthuin-belgica",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "B\u00e9lgica",
+          "Couthuin",
+          "Los Caminos De La Vida",
+          "Los Diablitos"
+        ],
+        "thumbnail": {
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/JhtKwLUkGgw/mqdefault.jpg",
+          "width": 320
+        },
+        "title": "Los Caminos De La Vida, desde Couthuin, B\u00e9lgica"
+      },
+      {
+        "description": "Couthuin, B\u00e9lgica, 24/01/2021\nOye Bonita - Diomedes D\u00edaz",
+        "id": "W3edZ-qcBMo",
+        "location": "Couthuin, B\u00e9lgica",
+        "publishedAt": "2021-01-24T18:41:51Z",
+        "slug": "oye-bonita-couthuin-belgica",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "Oye Bonita",
+          "Diomedes D\u00edaz",
+          "B\u00e9lgica",
+          "Couthuin"
+        ],
+        "thumbnail": {
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/W3edZ-qcBMo/mqdefault.jpg",
+          "width": 320
+        },
+        "title": "Oye Bonita, desde Couthuin, B\u00e9lgica"
       }
     ]
   },
@@ -583,25 +653,25 @@ var locations = {
     "slug": "dijon-francia",
     "videos": [
       {
-        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/esa\nDijon, Francia, 23/02/2020\nEsa - Binomio de Oro",
-        "id": "z174Dfo035c",
+        "description": "Dijon, Francia, 23/02/2020\nOye Bonita - Diomedes D\u00edaz",
+        "id": "bQ0NwxOouHM",
         "location": "Dijon, Francia",
-        "publishedAt": "2020-02-23T16:48:55Z",
-        "slug": "esa-dijon-francia",
+        "publishedAt": "2020-02-23T16:52:51Z",
+        "slug": "oye-bonita-dijon-francia",
         "tags": [
           "Acorde\u00f3n",
           "Vallenato",
-          "Esa",
-          "Binomio de Oro",
+          "Oye Bonita",
           "Dijon",
-          "Francia"
+          "Francia",
+          "Diomedes D\u00edaz"
         ],
         "thumbnail": {
           "height": 180,
-          "url": "https://i.ytimg.com/vi/z174Dfo035c/mqdefault.jpg",
+          "url": "https://i.ytimg.com/vi/bQ0NwxOouHM/mqdefault.jpg",
           "width": 320
         },
-        "title": "Esa, desde Dijon, Francia"
+        "title": "Oye Bonita, desde Dijon, Francia"
       },
       {
         "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/los-caminos-de-la-vida\nDijon, Francia, 23/02/2020\nLos Caminos De La Vida - Los Diablitos",
@@ -625,6 +695,27 @@ var locations = {
         "title": "Los Caminos De La Vida, desde Dijon, Francia"
       },
       {
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/esa\nDijon, Francia, 23/02/2020\nEsa - Binomio de Oro",
+        "id": "z174Dfo035c",
+        "location": "Dijon, Francia",
+        "publishedAt": "2020-02-23T16:48:55Z",
+        "slug": "esa-dijon-francia",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "Esa",
+          "Binomio de Oro",
+          "Dijon",
+          "Francia"
+        ],
+        "thumbnail": {
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/z174Dfo035c/mqdefault.jpg",
+          "width": 320
+        },
+        "title": "Esa, desde Dijon, Francia"
+      },
+      {
         "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/en-carne-propia\nDijon, Francia, 23/02/2020\nEn Carne Propia - Silvio Brito",
         "id": "jOXNtKJpyXE",
         "location": "Dijon, Francia",
@@ -644,27 +735,6 @@ var locations = {
           "width": 320
         },
         "title": "En Carne Propia, desde Dijon, Francia"
-      },
-      {
-        "description": "Dijon, Francia, 23/02/2020\nOye Bonita - Diomedes D\u00edaz",
-        "id": "bQ0NwxOouHM",
-        "location": "Dijon, Francia",
-        "publishedAt": "2020-02-23T16:52:51Z",
-        "slug": "oye-bonita-dijon-francia",
-        "tags": [
-          "Acorde\u00f3n",
-          "Vallenato",
-          "Oye Bonita",
-          "Dijon",
-          "Francia",
-          "Diomedes D\u00edaz"
-        ],
-        "thumbnail": {
-          "height": 180,
-          "url": "https://i.ytimg.com/vi/bQ0NwxOouHM/mqdefault.jpg",
-          "width": 320
-        },
-        "title": "Oye Bonita, desde Dijon, Francia"
       }
     ]
   },
@@ -673,6 +743,50 @@ var locations = {
     "longitude": -77.330858,
     "slug": "el-remolino-narino-colombia",
     "videos": [
+      {
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/lleno-de-ti.html\nEl Remolino, Nari\u00f1o, Colombia, 21/08/2017\nLleno de Ti - Binomio de Oro",
+        "id": "4ro6NMfNW6U",
+        "location": "El Remolino, Nari\u00f1o, Colombia",
+        "publishedAt": "2017-08-22T14:26:42Z",
+        "slug": "lleno-de-ti-el-remolino-narino-colombia",
+        "tags": [
+          "Binomio de Oro",
+          "El Remolino",
+          "Nari\u00f1o",
+          "Colombia",
+          "Acorde\u00f3n",
+          "Vallenato",
+          "Lleno de Ti"
+        ],
+        "thumbnail": {
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/4ro6NMfNW6U/mqdefault.jpg",
+          "width": 320
+        },
+        "title": "Lleno de Ti, desde El Remolino, Nari\u00f1o, Colombia"
+      },
+      {
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/la-creciente.html\nEl Remolino, Nari\u00f1o, Colombia, 21/08/2017\nLa Creciente - Binomio de Oro",
+        "id": "DGdmC-3jThE",
+        "location": "El Remolino, Nari\u00f1o, Colombia",
+        "publishedAt": "2017-08-22T14:26:33Z",
+        "slug": "la-creciente-el-remolino-narino-colombia",
+        "tags": [
+          "Binomio de Oro",
+          "El Remolino",
+          "Nari\u00f1o",
+          "Colombia",
+          "Acorde\u00f3n",
+          "Vallenato",
+          "La Creciente"
+        ],
+        "thumbnail": {
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/DGdmC-3jThE/mqdefault.jpg",
+          "width": 320
+        },
+        "title": "La Creciente, desde El Remolino, Nari\u00f1o, Colombia"
+      },
       {
         "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/la-creciente.html\nCerca de El Remolino, Nari\u00f1o, Colombia, 21/08/2017\nLa Creciente - Binomio de Oro",
         "id": "RBU3ZNWFc-I",
@@ -716,50 +830,6 @@ var locations = {
           "width": 320
         },
         "title": "Esa, cerca de El Remolino, Nari\u00f1o, Colombia"
-      },
-      {
-        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/la-creciente.html\nEl Remolino, Nari\u00f1o, Colombia, 21/08/2017\nLa Creciente - Binomio de Oro",
-        "id": "DGdmC-3jThE",
-        "location": "El Remolino, Nari\u00f1o, Colombia",
-        "publishedAt": "2017-08-22T14:26:33Z",
-        "slug": "la-creciente-el-remolino-narino-colombia",
-        "tags": [
-          "Binomio de Oro",
-          "El Remolino",
-          "Nari\u00f1o",
-          "Colombia",
-          "Acorde\u00f3n",
-          "Vallenato",
-          "La Creciente"
-        ],
-        "thumbnail": {
-          "height": 180,
-          "url": "https://i.ytimg.com/vi/DGdmC-3jThE/mqdefault.jpg",
-          "width": 320
-        },
-        "title": "La Creciente, desde El Remolino, Nari\u00f1o, Colombia"
-      },
-      {
-        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/lleno-de-ti.html\nEl Remolino, Nari\u00f1o, Colombia, 21/08/2017\nLleno de Ti - Binomio de Oro",
-        "id": "4ro6NMfNW6U",
-        "location": "El Remolino, Nari\u00f1o, Colombia",
-        "publishedAt": "2017-08-22T14:26:42Z",
-        "slug": "lleno-de-ti-el-remolino-narino-colombia",
-        "tags": [
-          "Binomio de Oro",
-          "El Remolino",
-          "Nari\u00f1o",
-          "Colombia",
-          "Acorde\u00f3n",
-          "Vallenato",
-          "Lleno de Ti"
-        ],
-        "thumbnail": {
-          "height": 180,
-          "url": "https://i.ytimg.com/vi/4ro6NMfNW6U/mqdefault.jpg",
-          "width": 320
-        },
-        "title": "Lleno de Ti, desde El Remolino, Nari\u00f1o, Colombia"
       },
       {
         "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/esa.html\nEl Remolino, Nari\u00f1o, Colombia, 21/08/2017\nEsa - Binomio de Oro",
@@ -856,27 +926,6 @@ var locations = {
         "title": "Los Caminos De La Vida, desde Fagnolle, B\u00e9lgica"
       },
       {
-        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/en-carne-propia\nFagnolle, B\u00e9lgica, 20/06/2020\nEn Carne Propia - Silvio Brito",
-        "id": "jyUZQj5-Tfw",
-        "location": "Fagnolle, B\u00e9lgica",
-        "publishedAt": "2020-06-21T18:19:27Z",
-        "slug": "en-carne-propia-fagnolle-belgica",
-        "tags": [
-          "Acorde\u00f3n",
-          "Vallenato",
-          "Fagnolle",
-          "B\u00e9lgica",
-          "En Carne Propia",
-          "Silvio Brito"
-        ],
-        "thumbnail": {
-          "height": 180,
-          "url": "https://i.ytimg.com/vi/jyUZQj5-Tfw/mqdefault.jpg",
-          "width": 320
-        },
-        "title": "En Carne Propia, desde Fagnolle, B\u00e9lgica"
-      },
-      {
         "description": "Fagnolle, B\u00e9lgica, 20/06/2020\nOye Bonita - Diomedes D\u00edaz",
         "id": "gBjwKaUmuIo",
         "location": "Fagnolle, B\u00e9lgica",
@@ -896,6 +945,27 @@ var locations = {
           "width": 320
         },
         "title": "Oye Bonita, desde Fagnolle, B\u00e9lgica"
+      },
+      {
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/en-carne-propia\nFagnolle, B\u00e9lgica, 20/06/2020\nEn Carne Propia - Silvio Brito",
+        "id": "jyUZQj5-Tfw",
+        "location": "Fagnolle, B\u00e9lgica",
+        "publishedAt": "2020-06-21T18:19:27Z",
+        "slug": "en-carne-propia-fagnolle-belgica",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "Fagnolle",
+          "B\u00e9lgica",
+          "En Carne Propia",
+          "Silvio Brito"
+        ],
+        "thumbnail": {
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/jyUZQj5-Tfw/mqdefault.jpg",
+          "width": 320
+        },
+        "title": "En Carne Propia, desde Fagnolle, B\u00e9lgica"
       }
     ]
   },
@@ -925,24 +995,24 @@ var locations = {
         "title": "Corazon Martirizado, desde Gibraltar"
       },
       {
-        "description": "Gibraltar, 28/06/2020\nOye Bonita - Diomedes D\u00edaz",
-        "id": "iY-We5Tb7HY",
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/en-carne-propia\nGibraltar, 28/06/2020\nEn Carne Propia - Silvio Brito",
+        "id": "WlTzuxJOCno",
         "location": "Gibraltar",
-        "publishedAt": "2020-07-19T08:42:19Z",
-        "slug": "oye-bonita-gibraltar",
+        "publishedAt": "2020-07-19T08:42:34Z",
+        "slug": "en-carne-propia-gibraltar",
         "tags": [
           "Acorde\u00f3n",
           "Vallenato",
-          "Oye Bonita",
-          "Diomedes D\u00edaz",
+          "En Carne Propia",
+          "Silvio Brito",
           "Gibraltar"
         ],
         "thumbnail": {
           "height": 180,
-          "url": "https://i.ytimg.com/vi/iY-We5Tb7HY/mqdefault.jpg",
+          "url": "https://i.ytimg.com/vi/WlTzuxJOCno/mqdefault.jpg",
           "width": 320
         },
-        "title": "Oye Bonita, desde Gibraltar"
+        "title": "En Carne Propia, desde Gibraltar"
       },
       {
         "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/los-caminos-de-la-vida\nGibraltar, 28/06/2020\nLos Caminos De La Vida - Los Diablitos",
@@ -965,24 +1035,24 @@ var locations = {
         "title": "Los Caminos De La Vida, desde Gibraltar"
       },
       {
-        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/en-carne-propia\nGibraltar, 28/06/2020\nEn Carne Propia - Silvio Brito",
-        "id": "WlTzuxJOCno",
+        "description": "Gibraltar, 28/06/2020\nOye Bonita - Diomedes D\u00edaz",
+        "id": "iY-We5Tb7HY",
         "location": "Gibraltar",
-        "publishedAt": "2020-07-19T08:42:34Z",
-        "slug": "en-carne-propia-gibraltar",
+        "publishedAt": "2020-07-19T08:42:19Z",
+        "slug": "oye-bonita-gibraltar",
         "tags": [
           "Acorde\u00f3n",
           "Vallenato",
-          "En Carne Propia",
-          "Silvio Brito",
+          "Oye Bonita",
+          "Diomedes D\u00edaz",
           "Gibraltar"
         ],
         "thumbnail": {
           "height": 180,
-          "url": "https://i.ytimg.com/vi/WlTzuxJOCno/mqdefault.jpg",
+          "url": "https://i.ytimg.com/vi/iY-We5Tb7HY/mqdefault.jpg",
           "width": 320
         },
-        "title": "En Carne Propia, desde Gibraltar"
+        "title": "Oye Bonita, desde Gibraltar"
       }
     ]
   },
@@ -1295,6 +1365,28 @@ var locations = {
         "title": "Oye Bonita, desde La Cristalina, Nari\u00f1o, Colombia"
       },
       {
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/los-caminos-de-la-vida\nLa Cristalina, Nari\u00f1o, Colombia, 10/08/2019\nLos Caminos De La Vida - Los Diablitos",
+        "id": "IU8oteyK5-4",
+        "location": "La Cristalina, Nari\u00f1o, Colombia",
+        "publishedAt": "2019-08-11T23:09:40Z",
+        "slug": "los-caminos-de-la-vida-la-cristalina-narino-colombia",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "Los Caminos De La Vida",
+          "Los Diablitos",
+          "Nari\u00f1o",
+          "Colombia",
+          "La Cristalina"
+        ],
+        "thumbnail": {
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/IU8oteyK5-4/mqdefault.jpg",
+          "width": 320
+        },
+        "title": "Los Caminos De La Vida, desde La Cristalina, Nari\u00f1o, Colombia"
+      },
+      {
         "description": "Para aprender a tocar estas canciones: https://vallenato.fr/aprender/la-guanena y https://vallenato.fr/aprender/son-sureno\nLa Cristalina, Nari\u00f1o, Colombia, 10/08/2019\nLa Guane\u00f1a y el Son Sure\u00f1o, m\u00fasica Nari\u00f1ense",
         "id": "WFUVbEYQVUM",
         "location": "La Cristalina, Nari\u00f1o, Colombia",
@@ -1316,28 +1408,6 @@ var locations = {
           "width": 320
         },
         "title": "La Guane\u00f1a y el Son Sure\u00f1o, desde La Cristalina, Nari\u00f1o, Colombia"
-      },
-      {
-        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/los-caminos-de-la-vida\nLa Cristalina, Nari\u00f1o, Colombia, 10/08/2019\nLos Caminos De La Vida - Los Diablitos",
-        "id": "IU8oteyK5-4",
-        "location": "La Cristalina, Nari\u00f1o, Colombia",
-        "publishedAt": "2019-08-11T23:09:40Z",
-        "slug": "los-caminos-de-la-vida-la-cristalina-narino-colombia",
-        "tags": [
-          "Acorde\u00f3n",
-          "Vallenato",
-          "Los Caminos De La Vida",
-          "Los Diablitos",
-          "Nari\u00f1o",
-          "Colombia",
-          "La Cristalina"
-        ],
-        "thumbnail": {
-          "height": 180,
-          "url": "https://i.ytimg.com/vi/IU8oteyK5-4/mqdefault.jpg",
-          "width": 320
-        },
-        "title": "Los Caminos De La Vida, desde La Cristalina, Nari\u00f1o, Colombia"
       }
     ]
   },
@@ -1346,27 +1416,6 @@ var locations = {
     "longitude": 5.966091,
     "slug": "lamoura-francia",
     "videos": [
-      {
-        "description": "Lamoura, Francia, 29/02/2020\nOye Bonita - Diomedes D\u00edaz",
-        "id": "Yq6sIkguCTY",
-        "location": "Lamoura, Francia",
-        "publishedAt": "2020-04-04T16:35:25Z",
-        "slug": "oye-bonita-lamoura-francia",
-        "tags": [
-          "Acorde\u00f3n",
-          "Vallenato",
-          "Oye Bonita",
-          "Francia",
-          "Diomedes D\u00edaz",
-          "Lamoura"
-        ],
-        "thumbnail": {
-          "height": 180,
-          "url": "https://i.ytimg.com/vi/Yq6sIkguCTY/mqdefault.jpg",
-          "width": 320
-        },
-        "title": "Oye Bonita, desde Lamoura, Francia"
-      },
       {
         "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/en-carne-propia\nLamoura, Francia, 29/02/2020\nEn Carne Propia - Silvio Brito",
         "id": "1lTFEE6h-4Q",
@@ -1387,6 +1436,27 @@ var locations = {
           "width": 320
         },
         "title": "En Carne Propia, desde Lamoura, Francia"
+      },
+      {
+        "description": "Lamoura, Francia, 29/02/2020\nOye Bonita - Diomedes D\u00edaz",
+        "id": "Yq6sIkguCTY",
+        "location": "Lamoura, Francia",
+        "publishedAt": "2020-04-04T16:35:25Z",
+        "slug": "oye-bonita-lamoura-francia",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "Oye Bonita",
+          "Francia",
+          "Diomedes D\u00edaz",
+          "Lamoura"
+        ],
+        "thumbnail": {
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/Yq6sIkguCTY/mqdefault.jpg",
+          "width": 320
+        },
+        "title": "Oye Bonita, desde Lamoura, Francia"
       }
     ]
   },
@@ -1807,92 +1877,6 @@ var locations = {
     "slug": "providencia-colombia",
     "videos": [
       {
-        "description": "Providencia, Colombia, 15/08/2018\nOye Bonita - Diomedes D\u00edaz",
-        "id": "UGPpnz-_HwM",
-        "location": "Providencia, Colombia",
-        "publishedAt": "2018-08-21T19:13:42Z",
-        "slug": "oye-bonita-con-los-guardias-de-seguridad-del-aeropuerto-de-providencia-colombia",
-        "tags": [
-          "Acorde\u00f3n",
-          "Vallenato",
-          "Oye Bonita",
-          "Diomedes D\u00edaz",
-          "Providencia",
-          "Colombia",
-          "Aeropuerto"
-        ],
-        "thumbnail": {
-          "height": 180,
-          "url": "https://i.ytimg.com/vi/UGPpnz-_HwM/mqdefault.jpg",
-          "width": 320
-        },
-        "title": "Oye Bonita, con los guardias de seguridad del aeropuerto de Providencia, Colombia"
-      },
-      {
-        "description": "Providencia, Colombia, 15/08/2018\nOye Bonita - Diomedes D\u00edaz",
-        "id": "gtTJVaDp3A4",
-        "location": "Providencia, Colombia",
-        "publishedAt": "2018-08-21T19:13:42Z",
-        "slug": "oye-bonita-el-aeropuerto-de-providencia-colombia",
-        "tags": [
-          "Acorde\u00f3n",
-          "Vallenato",
-          "Oye Bonita",
-          "Diomedes D\u00edaz",
-          "Providencia",
-          "Colombia",
-          "Aeropuerto"
-        ],
-        "thumbnail": {
-          "height": 180,
-          "url": "https://i.ytimg.com/vi/gtTJVaDp3A4/mqdefault.jpg",
-          "width": 320
-        },
-        "title": "Oye Bonita, desde el aeropuerto de Providencia, Colombia"
-      },
-      {
-        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/solo-para-ti.html\nProvidencia, Colombia, 15/08/2018\nSolo Para Ti - Binomio de Oro",
-        "id": "Y8rUJPyB2lg",
-        "location": "Providencia, Colombia",
-        "publishedAt": "2018-08-21T19:13:42Z",
-        "slug": "solo-para-ti-providencia-colombia",
-        "tags": [
-          "Acorde\u00f3n",
-          "Vallenato",
-          "Binomio de Oro",
-          "Solo Para Ti",
-          "Providencia",
-          "Colombia"
-        ],
-        "thumbnail": {
-          "height": 180,
-          "url": "https://i.ytimg.com/vi/Y8rUJPyB2lg/mqdefault.jpg",
-          "width": 320
-        },
-        "title": "Solo Para Ti, desde Providencia, Colombia"
-      },
-      {
-        "description": "Providencia, Colombia, 15/08/2018\nOye Bonita - Diomedes D\u00edaz",
-        "id": "OIwXOS8YiLo",
-        "location": "Providencia, Colombia",
-        "publishedAt": "2018-08-21T19:13:42Z",
-        "slug": "oye-bonita-providencia-colombia",
-        "tags": [
-          "Acorde\u00f3n",
-          "Vallenato",
-          "Oye Bonita",
-          "Diomedes D\u00edaz",
-          "Providencia",
-          "Colombia"
-        ],
-        "thumbnail": {
-          "height": 180,
-          "url": "https://i.ytimg.com/vi/OIwXOS8YiLo/mqdefault.jpg",
-          "width": 320
-        },
-        "title": "Oye Bonita, desde Providencia, Colombia"
-      },
-      {
         "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/muere-una-flor.html\nProvidencia, Colombia, 15/08/2018\nMuere una Flor - Binomio de Oro",
         "id": "-IsC3zMBs64",
         "location": "Providencia, Colombia",
@@ -1914,46 +1898,26 @@ var locations = {
         "title": "Muere una Flor, desde Providencia, Colombia"
       },
       {
-        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/los-caminos-de-la-vida.html\nProvidencia, Colombia, 15/08/2018\nLos Caminos De La Vida - Los Diablitos",
-        "id": "i9rtpcQ7ijM",
+        "description": "Para aprender a tocar estas canciones: https://vallenato.fr/aprender/la-guanena.html y https://vallenato.fr/aprender/son-sureno.html\nProvidencia, Colombia, 15/08/2018\nLa Guane\u00f1a y el Son Sure\u00f1o, m\u00fasica Nari\u00f1ense",
+        "id": "0miSssIAcLk",
         "location": "Providencia, Colombia",
         "publishedAt": "2018-08-21T19:13:42Z",
-        "slug": "los-caminos-de-la-vida-providencia-colombia",
+        "slug": "la-guanena-y-el-son-sureno-providencia-colombia",
         "tags": [
           "Acorde\u00f3n",
           "Vallenato",
-          "Los Caminos De La Vida",
-          "Los Diablitos",
-          "Providencia",
-          "Colombia"
-        ],
-        "thumbnail": {
-          "height": 180,
-          "url": "https://i.ytimg.com/vi/i9rtpcQ7ijM/mqdefault.jpg",
-          "width": 320
-        },
-        "title": "Los Caminos De La Vida, desde Providencia, Colombia"
-      },
-      {
-        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/lleno-de-ti.html\nProvidencia, Colombia, 15/08/2018\nLleno de Ti - Binomio de Oro",
-        "id": "OmLralQi2co",
-        "location": "Providencia, Colombia",
-        "publishedAt": "2018-08-21T19:13:42Z",
-        "slug": "lleno-de-ti-providencia-colombia",
-        "tags": [
-          "Acorde\u00f3n",
-          "Vallenato",
-          "Providencia",
           "Colombia",
-          "Binomio de Oro",
-          "Lleno de Ti"
+          "La Guane\u00f1a",
+          "Son Sure\u00f1o",
+          "M\u00fasica Nari\u00f1ense",
+          "Providencia"
         ],
         "thumbnail": {
           "height": 180,
-          "url": "https://i.ytimg.com/vi/OmLralQi2co/mqdefault.jpg",
+          "url": "https://i.ytimg.com/vi/0miSssIAcLk/mqdefault.jpg",
           "width": 320
         },
-        "title": "Lleno de Ti, desde Providencia, Colombia"
+        "title": "La Guane\u00f1a y el Son Sure\u00f1o, desde Providencia, Colombia"
       },
       {
         "description": "Para aprender a tocar estas canciones: https://vallenato.fr/aprender/la-guanena.html y https://vallenato.fr/aprender/son-sureno.html\nProvidencia, Colombia, 15/08/2018\nLa Guane\u00f1a y el Son Sure\u00f1o, m\u00fasica Nari\u00f1ense",
@@ -1973,28 +1937,6 @@ var locations = {
         "thumbnail": {
           "height": 180,
           "url": "https://i.ytimg.com/vi/6ew3wWZcl_w/mqdefault.jpg",
-          "width": 320
-        },
-        "title": "La Guane\u00f1a y el Son Sure\u00f1o, desde Providencia, Colombia"
-      },
-      {
-        "description": "Para aprender a tocar estas canciones: https://vallenato.fr/aprender/la-guanena.html y https://vallenato.fr/aprender/son-sureno.html\nProvidencia, Colombia, 15/08/2018\nLa Guane\u00f1a y el Son Sure\u00f1o, m\u00fasica Nari\u00f1ense",
-        "id": "0miSssIAcLk",
-        "location": "Providencia, Colombia",
-        "publishedAt": "2018-08-21T19:13:42Z",
-        "slug": "la-guanena-y-el-son-sureno-providencia-colombia",
-        "tags": [
-          "Acorde\u00f3n",
-          "Vallenato",
-          "Colombia",
-          "La Guane\u00f1a",
-          "Son Sure\u00f1o",
-          "M\u00fasica Nari\u00f1ense",
-          "Providencia"
-        ],
-        "thumbnail": {
-          "height": 180,
-          "url": "https://i.ytimg.com/vi/0miSssIAcLk/mqdefault.jpg",
           "width": 320
         },
         "title": "La Guane\u00f1a y el Son Sure\u00f1o, desde Providencia, Colombia"
@@ -2021,25 +1963,153 @@ var locations = {
         "title": "La Creciente, desde Providencia, Colombia"
       },
       {
-        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/la-creciente.html\nProvidencia, Colombia, 15/08/2018\nLa Creciente - Binomio de Oro",
-        "id": "yyaHLlqC1Nw",
+        "description": "Providencia, Colombia, 15/08/2018\nOye Bonita - Diomedes D\u00edaz",
+        "id": "OIwXOS8YiLo",
         "location": "Providencia, Colombia",
         "publishedAt": "2018-08-21T19:13:42Z",
-        "slug": "la-creciente-providencia-colombia",
+        "slug": "oye-bonita-providencia-colombia",
         "tags": [
           "Acorde\u00f3n",
           "Vallenato",
-          "La Creciente",
+          "Oye Bonita",
+          "Diomedes D\u00edaz",
+          "Providencia",
+          "Colombia"
+        ],
+        "thumbnail": {
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/OIwXOS8YiLo/mqdefault.jpg",
+          "width": 320
+        },
+        "title": "Oye Bonita, desde Providencia, Colombia"
+      },
+      {
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/lleno-de-ti.html\nProvidencia, Colombia, 15/08/2018\nLleno de Ti - Binomio de Oro",
+        "id": "OmLralQi2co",
+        "location": "Providencia, Colombia",
+        "publishedAt": "2018-08-21T19:13:42Z",
+        "slug": "lleno-de-ti-providencia-colombia",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "Providencia",
+          "Colombia",
+          "Binomio de Oro",
+          "Lleno de Ti"
+        ],
+        "thumbnail": {
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/OmLralQi2co/mqdefault.jpg",
+          "width": 320
+        },
+        "title": "Lleno de Ti, desde Providencia, Colombia"
+      },
+      {
+        "description": "Providencia, Colombia, 15/08/2018\nOye Bonita - Diomedes D\u00edaz",
+        "id": "UGPpnz-_HwM",
+        "location": "Providencia, Colombia",
+        "publishedAt": "2018-08-21T19:13:42Z",
+        "slug": "oye-bonita-con-los-guardias-de-seguridad-del-aeropuerto-de-providencia-colombia",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "Oye Bonita",
+          "Diomedes D\u00edaz",
+          "Providencia",
+          "Colombia",
+          "Aeropuerto"
+        ],
+        "thumbnail": {
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/UGPpnz-_HwM/mqdefault.jpg",
+          "width": 320
+        },
+        "title": "Oye Bonita, con los guardias de seguridad del aeropuerto de Providencia, Colombia"
+      },
+      {
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/solo-para-ti.html\nProvidencia, Colombia, 15/08/2018\nSolo Para Ti - Binomio de Oro",
+        "id": "Y8rUJPyB2lg",
+        "location": "Providencia, Colombia",
+        "publishedAt": "2018-08-21T19:13:42Z",
+        "slug": "solo-para-ti-providencia-colombia",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "Binomio de Oro",
+          "Solo Para Ti",
+          "Providencia",
+          "Colombia"
+        ],
+        "thumbnail": {
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/Y8rUJPyB2lg/mqdefault.jpg",
+          "width": 320
+        },
+        "title": "Solo Para Ti, desde Providencia, Colombia"
+      },
+      {
+        "description": "Providencia, Colombia, 15/08/2018\nOye Bonita - Diomedes D\u00edaz",
+        "id": "gtTJVaDp3A4",
+        "location": "Providencia, Colombia",
+        "publishedAt": "2018-08-21T19:13:42Z",
+        "slug": "oye-bonita-el-aeropuerto-de-providencia-colombia",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "Oye Bonita",
+          "Diomedes D\u00edaz",
+          "Providencia",
+          "Colombia",
+          "Aeropuerto"
+        ],
+        "thumbnail": {
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/gtTJVaDp3A4/mqdefault.jpg",
+          "width": 320
+        },
+        "title": "Oye Bonita, desde el aeropuerto de Providencia, Colombia"
+      },
+      {
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/los-caminos-de-la-vida.html\nProvidencia, Colombia, 15/08/2018\nLos Caminos De La Vida - Los Diablitos",
+        "id": "i9rtpcQ7ijM",
+        "location": "Providencia, Colombia",
+        "publishedAt": "2018-08-21T19:13:42Z",
+        "slug": "los-caminos-de-la-vida-providencia-colombia",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "Los Caminos De La Vida",
+          "Los Diablitos",
+          "Providencia",
+          "Colombia"
+        ],
+        "thumbnail": {
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/i9rtpcQ7ijM/mqdefault.jpg",
+          "width": 320
+        },
+        "title": "Los Caminos De La Vida, desde Providencia, Colombia"
+      },
+      {
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/esa.html\nProvidencia, Colombia, 15/08/2018\nEsa - Binomio de Oro",
+        "id": "ujwK6RXsv8A",
+        "location": "Providencia, Colombia",
+        "publishedAt": "2018-08-21T19:13:42Z",
+        "slug": "esa-providencia-colombia",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "Esa",
           "Binomio de Oro",
           "Providencia",
           "Colombia"
         ],
         "thumbnail": {
           "height": 180,
-          "url": "https://i.ytimg.com/vi/yyaHLlqC1Nw/mqdefault.jpg",
+          "url": "https://i.ytimg.com/vi/ujwK6RXsv8A/mqdefault.jpg",
           "width": 320
         },
-        "title": "La Creciente, desde Providencia, Colombia"
+        "title": "Esa, desde Providencia, Colombia"
       },
       {
         "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/tu-cumpleanos.html\nProvidencia, Colombia, 15/08/2018\nTu Cumplea\u00f1os - Diomedes D\u00edaz",
@@ -2065,25 +2135,25 @@ var locations = {
         "title": "Feliz Cumplea\u00f1os de Diomedes D\u00edaz, desde Providencia, Colombia"
       },
       {
-        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/esa.html\nProvidencia, Colombia, 15/08/2018\nEsa - Binomio de Oro",
-        "id": "ujwK6RXsv8A",
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/la-creciente.html\nProvidencia, Colombia, 15/08/2018\nLa Creciente - Binomio de Oro",
+        "id": "yyaHLlqC1Nw",
         "location": "Providencia, Colombia",
         "publishedAt": "2018-08-21T19:13:42Z",
-        "slug": "esa-providencia-colombia",
+        "slug": "la-creciente-providencia-colombia",
         "tags": [
           "Acorde\u00f3n",
           "Vallenato",
-          "Esa",
+          "La Creciente",
           "Binomio de Oro",
           "Providencia",
           "Colombia"
         ],
         "thumbnail": {
           "height": 180,
-          "url": "https://i.ytimg.com/vi/ujwK6RXsv8A/mqdefault.jpg",
+          "url": "https://i.ytimg.com/vi/yyaHLlqC1Nw/mqdefault.jpg",
           "width": 320
         },
-        "title": "Esa, desde Providencia, Colombia"
+        "title": "La Creciente, desde Providencia, Colombia"
       }
     ]
   },
@@ -2323,72 +2393,6 @@ var locations = {
     "slug": "santa-marta-magdalena-colombia",
     "videos": [
       {
-        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/la-cumbia-del-amor\nSanta Marta, Magdalena, Colombia, 21/08/2019\nLa Cumbia del Amor - Lisandro Mesa",
-        "id": "s05RpOPL22U",
-        "location": "Santa Marta, Magdalena, Colombia",
-        "publishedAt": "2019-08-24T19:55:41Z",
-        "slug": "la-cumbia-del-amor-santa-marta-magdalena-colombia",
-        "tags": [
-          "Acorde\u00f3n",
-          "Vallenato",
-          "La Cumbia del Amor",
-          "Lisandro Mesa",
-          "Santa Marta",
-          "Magdalena",
-          "Colombia"
-        ],
-        "thumbnail": {
-          "height": 180,
-          "url": "https://i.ytimg.com/vi/s05RpOPL22U/mqdefault.jpg",
-          "width": 320
-        },
-        "title": "La Cumbia del Amor, desde Santa Marta, Magdalena, Colombia"
-      },
-      {
-        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/jaime-molina-1 y https://vallenato.fr/aprender/jaime-molina-2\nSanta Marta, Magdalena, Colombia, 21/08/2019\nJaime Molina - Carlos Vives",
-        "id": "oxY864QMbyg",
-        "location": "Santa Marta, Magdalena, Colombia",
-        "publishedAt": "2019-08-24T19:55:41Z",
-        "slug": "jaime-molina-santa-marta-magdalena-colombia",
-        "tags": [
-          "Acorde\u00f3n",
-          "Vallenato",
-          "Santa Marta",
-          "Magdalena",
-          "Colombia",
-          "Jaime Molina",
-          "Carlos Vives"
-        ],
-        "thumbnail": {
-          "height": 180,
-          "url": "https://i.ytimg.com/vi/oxY864QMbyg/mqdefault.jpg",
-          "width": 320
-        },
-        "title": "Jaime Molina, desde Santa Marta, Magdalena, Colombia"
-      },
-      {
-        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/los-caminos-de-la-vida\nSanta Marta, Magdalena, Colombia, 21/08/2019\nLos Caminos De La Vida - Los Diablitos",
-        "id": "oJXULyP_12c",
-        "location": "Santa Marta, Magdalena, Colombia",
-        "publishedAt": "2019-08-24T19:55:41Z",
-        "slug": "los-caminos-de-la-vida-santa-marta-magdalena-colombia",
-        "tags": [
-          "Acorde\u00f3n",
-          "Vallenato",
-          "Santa Marta",
-          "Magdalena",
-          "Colombia",
-          "Los Caminos De La Vida",
-          "Los Diablitos"
-        ],
-        "thumbnail": {
-          "height": 180,
-          "url": "https://i.ytimg.com/vi/oJXULyP_12c/mqdefault.jpg",
-          "width": 320
-        },
-        "title": "Los Caminos De La Vida, desde Santa Marta, Magdalena, Colombia"
-      },
-      {
         "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/en-carne-propia\nSanta Marta, Magdalena, Colombia, 21/08/2019\nEn Carne Propia - Silvio Brito",
         "id": "c-JA8JsBT_M",
         "location": "Santa Marta, Magdalena, Colombia",
@@ -2432,6 +2436,72 @@ var locations = {
           "width": 320
         },
         "title": "Oye Bonita, desde Santa Marta, Magdalena, Colombia"
+      },
+      {
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/los-caminos-de-la-vida\nSanta Marta, Magdalena, Colombia, 21/08/2019\nLos Caminos De La Vida - Los Diablitos",
+        "id": "oJXULyP_12c",
+        "location": "Santa Marta, Magdalena, Colombia",
+        "publishedAt": "2019-08-24T19:55:41Z",
+        "slug": "los-caminos-de-la-vida-santa-marta-magdalena-colombia",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "Santa Marta",
+          "Magdalena",
+          "Colombia",
+          "Los Caminos De La Vida",
+          "Los Diablitos"
+        ],
+        "thumbnail": {
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/oJXULyP_12c/mqdefault.jpg",
+          "width": 320
+        },
+        "title": "Los Caminos De La Vida, desde Santa Marta, Magdalena, Colombia"
+      },
+      {
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/jaime-molina-1 y https://vallenato.fr/aprender/jaime-molina-2\nSanta Marta, Magdalena, Colombia, 21/08/2019\nJaime Molina - Carlos Vives",
+        "id": "oxY864QMbyg",
+        "location": "Santa Marta, Magdalena, Colombia",
+        "publishedAt": "2019-08-24T19:55:41Z",
+        "slug": "jaime-molina-santa-marta-magdalena-colombia",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "Santa Marta",
+          "Magdalena",
+          "Colombia",
+          "Jaime Molina",
+          "Carlos Vives"
+        ],
+        "thumbnail": {
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/oxY864QMbyg/mqdefault.jpg",
+          "width": 320
+        },
+        "title": "Jaime Molina, desde Santa Marta, Magdalena, Colombia"
+      },
+      {
+        "description": "Para aprender a tocar esta canci\u00f3n: https://vallenato.fr/aprender/la-cumbia-del-amor\nSanta Marta, Magdalena, Colombia, 21/08/2019\nLa Cumbia del Amor - Lisandro Mesa",
+        "id": "s05RpOPL22U",
+        "location": "Santa Marta, Magdalena, Colombia",
+        "publishedAt": "2019-08-24T19:55:41Z",
+        "slug": "la-cumbia-del-amor-santa-marta-magdalena-colombia",
+        "tags": [
+          "Acorde\u00f3n",
+          "Vallenato",
+          "La Cumbia del Amor",
+          "Lisandro Mesa",
+          "Santa Marta",
+          "Magdalena",
+          "Colombia"
+        ],
+        "thumbnail": {
+          "height": 180,
+          "url": "https://i.ytimg.com/vi/s05RpOPL22U/mqdefault.jpg",
+          "width": 320
+        },
+        "title": "La Cumbia del Amor, desde Santa Marta, Magdalena, Colombia"
       }
     ]
   },
