@@ -1,0 +1,9 @@
+version: '3.4'
+
+services:
+  vallenato.fr:
+    ports:
+      - "8080:80"
+    volumes: 
+      - "./website/src:/config/www"
+      - "./website/nginx-config/development:/config/nginx/site-confs/default"

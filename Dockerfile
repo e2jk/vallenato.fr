@@ -13,6 +13,7 @@
 # And comment all mentions to PHP in ./root/etc/cont-init.d/20-config
 
 FROM ghcr.io/linuxserver/baseimage-alpine:3.14
+LABEL Name=Vallenato.fr
 
 # install packages
 RUN \
@@ -47,7 +48,7 @@ RUN \
 	/etc/periodic/daily/logrotate
 
 # add local files
-COPY root/ /
+COPY website/root/ /
 
 # ports and volumes
 #EXPOSE 80 443
@@ -59,7 +60,7 @@ VOLUME /config
 
 
 # Include the production website files
-COPY ./prod /config/www
+COPY ./website/prod /config/www
 
 # The nginx config file
-COPY ./nginx-config/production /config/nginx/site-confs/default
+COPY ./website/nginx-config/production /config/nginx/site-confs/default

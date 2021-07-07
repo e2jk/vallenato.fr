@@ -1,0 +1,15 @@
+version: '3.4'
+
+services:
+  vallenato.fr:
+    image: e2jk/vallenato.fr
+    container_name: vallenato.fr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=UTC
+    ports:
+      - "80"
+    build:
+      context: .
+      dockerfile: ./Dockerfile
