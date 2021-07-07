@@ -470,5 +470,32 @@ var tutoriales = [
       {"id": "WQvMnpRA3CQ", "start": 333, "end": 340}
     ],
     "full_version": "LUok55C5rns"
+  },
+  {
+    "slug": "penas",
+    "author": "Ulpiano Vergara, Lucho de Sedas",
+    "title": "Penas",
+    "videos": [
+      {"id": "KESEm8jd1U4", "start": 46, "end": 58},
+      {"id": "KESEm8jd1U4", "start": 95, "end": 106},
+      {"id": "KESEm8jd1U4", "start": 158, "end": 196},
+      {"id": "KESEm8jd1U4", "start": 222, "end": 239},
+      {"id": "KESEm8jd1U4", "start": 285, "end": 324},
+      {"id": "KESEm8jd1U4", "start": 340, "end": 353},
+      {"id": "KESEm8jd1U4", "start": 385, "end": 434},
+      {"id": "KESEm8jd1U4", "start": 475, "end": 521},
+      {"id": "KESEm8jd1U4", "start": 624, "end": 645},
+      {"id": "KESEm8jd1U4", "start": 655, "end": 674},
+      {"id": "KESEm8jd1U4", "start": 690, "end": 706}
+    ],
+    "videos_full_tutorial": [
+      {"id": "KESEm8jd1U4", "start": 0, "end": 41},
+      {"id": "KESEm8jd1U4", "start": 199, "end": 222},
+      {"id": "KESEm8jd1U4", "start": 255, "end": 284},
+      {"id": "KESEm8jd1U4", "start": 325, "end": 364},
+      {"id": "KESEm8jd1U4", "start": 371, "end": 383},
+      {"id": "KESEm8jd1U4", "start": 535, "end": 610}
+    ],
+    "full_version": "94UCECTxq5A"
   }
 ];
