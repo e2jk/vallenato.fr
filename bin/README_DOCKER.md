@@ -5,11 +5,11 @@ Build the image:
 ----------------
 From the root of the `vallenato.fr` folder:
 
-`docker build -f bin/Dockerfile  -t e2jk/vallenato.fr_bin --rm .`
+`docker build -f bin/Dockerfile -t e2jk/vallenato.fr_bin --rm .`
 
 To force building without cached intermediate containers:
 
-`docker build -f bin/Dockerfile  -t e2jk/vallenato.fr_bin --rm --no-cache .`
+`docker build -f bin/Dockerfile -t e2jk/vallenato.fr_bin --rm --no-cache .`
 
 Run the script:
 ---------------
