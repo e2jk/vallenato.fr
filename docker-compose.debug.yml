@@ -2,6 +2,7 @@ version: '3.4'
 
 services:
   vallenato.fr:
+    image: e2jk/vallenato.fr
     ports:
       - "8080:80"
     volumes: 
