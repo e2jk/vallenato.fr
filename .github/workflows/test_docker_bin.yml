@@ -1,0 +1,22 @@
+name: Test Docker bin
+
+on:
+  pull_request: {}
+  push:
+    branches: master
+    tags: "*"
+
+jobs:
+  test:
+    name: Run test suite in Docker container
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Build Docker image
+      run: docker build -f bin/Dockerfile -t e2jk/vallenato.fr_bin --rm --no-cache .
+
+    - name: Run tests
+      run: docker run --rm --entrypoint sh e2jk/vallenato.fr_bin:latest test.sh
