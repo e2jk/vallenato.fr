@@ -13,3 +13,11 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfile
+
+  vallenato.fr_bin:
+    image: e2jk/vallenato.fr_bin
+    container_name: vallenato.fr_bin
+    build:
+      context: .
+      dockerfile: ./bin/Dockerfile
+      

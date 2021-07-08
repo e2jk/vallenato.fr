@@ -1,8 +1,6 @@
 website/prod/aprender/videos/
-website/src/
-README.md
+website/src/aprender/videos/
 .venv-vallenato_fr/
-bin/
 html_dev/
 renovate.json
 startup.sh
@@ -31,5 +29,6 @@ upload.sh
 **/node_modules
 **/npm-debug.log
 **/obj
+**/README*
 **/secrets.dev.yaml
 **/values.dev.yaml
