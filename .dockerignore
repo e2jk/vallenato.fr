@@ -21,7 +21,6 @@ upload.sh
 **/*.dbmdl
 **/*.jfm
 **/azds.yaml
-**/bin
 **/charts
 **/docker-compose*
 **/compose*

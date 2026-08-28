@@ -12,7 +12,7 @@
 # * ./root/etc/cont-init.d/30-keygen
 # And comment all mentions to PHP in ./root/etc/cont-init.d/20-config
 
-FROM ghcr.io/linuxserver/baseimage-alpine:3.16
+FROM ghcr.io/linuxserver/baseimage-alpine:3.24@sha256:34c19f3f2345f1d231784e78db95e330ce198c267b10fe8daa88b6bded30636b
 LABEL Name=Vallenato.fr
 
 # install packages

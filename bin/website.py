@@ -42,9 +42,9 @@ WEBSITE_DATA_FILE = "../website/src/data.js"
 # Sitemap file
 SITEMAP_FILE = "../website/prod/sitemap.xml"
 # Version of the external libraries
-LEAFLET_VERSION = "1.7.1"
-BOOTSTRAP_VERSION = "4.3.1"
-JQUERY_VERSION = "3.3.1"
+LEAFLET_VERSION = "1.9.4"
+BOOTSTRAP_VERSION = "4.6.2"
+JQUERY_VERSION = "3.7.1"
 BOOTSTRAP_TOGGLE_VERSION = "3.6.1"
 
 
@@ -284,39 +284,39 @@ def generate_website(locations, uploaded_videos):
     # Leaflet
     index_data = index_data.replace(
         '<link rel="stylesheet" href="leaflet/%s/leaflet.css">' % LEAFLET_VERSION,
-        '<link rel="stylesheet" href="https://unpkg.com/leaflet@%s/dist/leaflet.css"\n        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="\n        crossorigin=""/>' % LEAFLET_VERSION)
+        '<link rel="stylesheet" href="https://unpkg.com/leaflet@%s/dist/leaflet.css"\n        integrity="sha512-Zcn6bjR/8RZbLEpLIeOwNtzREBAJnUKESxces60Mpoj+2okopSAcSUIUOseddDm0cxnGQzxIR7vJgsLZbdLE3w=="\n        crossorigin=""/>' % LEAFLET_VERSION)
     index_data = index_data.replace(
         '<script type = "text/javascript" src="leaflet/%s/leaflet.js"></script>' % LEAFLET_VERSION,
-        '<script src="https://unpkg.com/leaflet@%s/dist/leaflet.js"\n        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="\n        crossorigin="">\n    </script>' % LEAFLET_VERSION)
+        '<script src="https://unpkg.com/leaflet@%s/dist/leaflet.js"\n        integrity="sha512-BwHfrr4c9kmRkLw6iXFdzcdWV/PGkVgiIyIWLLlTSXzWQzxuSg4DiQUCpauz/EWjgk5TYQqX/kvn9pG1NpYfqg=="\n        crossorigin="">\n    </script>' % LEAFLET_VERSION)
     # Bootstrap
     index_data = index_data.replace(
         '<link rel="stylesheet" href="bootstrap-%s-dist/css/bootstrap.min.css">' % BOOTSTRAP_VERSION,
-        '<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/%s/css/bootstrap.min.css"\n        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"\n        crossorigin="anonymous">' % BOOTSTRAP_VERSION)
+        '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@%s/dist/css/bootstrap.min.css"\n        integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"\n        crossorigin="anonymous">' % BOOTSTRAP_VERSION)
     index_data = index_data.replace(
         '<script src="bootstrap-%s-dist/js/bootstrap.min.js"></script>' % BOOTSTRAP_VERSION,
-        '<script src="https://stackpath.bootstrapcdn.com/bootstrap/%s/js/bootstrap.min.js"\n        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"\n        crossorigin="anonymous"></script>' % BOOTSTRAP_VERSION)
+        '<script src="https://cdn.jsdelivr.net/npm/bootstrap@%s/dist/js/bootstrap.min.js"\n        integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+"\n        crossorigin="anonymous"></script>' % BOOTSTRAP_VERSION)
     page404_data = page404_data.replace(
         '<link rel="stylesheet" href="bootstrap-%s-dist/css/bootstrap.min.css">' % BOOTSTRAP_VERSION,
-        '<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/%s/css/bootstrap.min.css"\n        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"\n        crossorigin="anonymous">' % BOOTSTRAP_VERSION)
+        '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@%s/dist/css/bootstrap.min.css"\n        integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"\n        crossorigin="anonymous">' % BOOTSTRAP_VERSION)
     page404_data = page404_data.replace(
         '<script src="bootstrap-%s-dist/js/bootstrap.min.js"></script>' % BOOTSTRAP_VERSION,
-        '<script src="https://stackpath.bootstrapcdn.com/bootstrap/%s/js/bootstrap.min.js"\n        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"\n        crossorigin="anonymous"></script>' % BOOTSTRAP_VERSION)
+        '<script src="https://cdn.jsdelivr.net/npm/bootstrap@%s/dist/js/bootstrap.min.js"\n        integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+"\n        crossorigin="anonymous"></script>' % BOOTSTRAP_VERSION)
     index_aprender_data = index_aprender_data.replace(
         '<link rel="stylesheet" href="../bootstrap-%s-dist/css/bootstrap.min.css">' % BOOTSTRAP_VERSION,
-        '<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/%s/css/bootstrap.min.css"\n        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"\n        crossorigin="anonymous">' % BOOTSTRAP_VERSION)
+        '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@%s/dist/css/bootstrap.min.css"\n        integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"\n        crossorigin="anonymous">' % BOOTSTRAP_VERSION)
     index_aprender_data = index_aprender_data.replace(
         '<script src="../bootstrap-%s-dist/js/bootstrap.min.js"></script>' % BOOTSTRAP_VERSION,
-        '<script src="https://stackpath.bootstrapcdn.com/bootstrap/%s/js/bootstrap.min.js"\n        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"\n        crossorigin="anonymous"></script>' % BOOTSTRAP_VERSION)
+        '<script src="https://cdn.jsdelivr.net/npm/bootstrap@%s/dist/js/bootstrap.min.js"\n        integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+"\n        crossorigin="anonymous"></script>' % BOOTSTRAP_VERSION)
     # jQuery (for Bootstrap)
     index_data = index_data.replace(
         '<script src="jquery-%s.slim.min.js"></script>' % JQUERY_VERSION,
-        '<script src="https://code.jquery.com/jquery-%s.slim.min.js"\n        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"\n        crossorigin="anonymous"></script>' % JQUERY_VERSION)
+        '<script src="https://code.jquery.com/jquery-%s.slim.min.js"\n        integrity="sha384-5AkRS45j4ukf+JbWAfHL8P4onPA9p0KwwP7pUdjSQA3ss9edbJUJc/XcYAiheSSz"\n        crossorigin="anonymous"></script>' % JQUERY_VERSION)
     page404_data = page404_data.replace(
         '<script src="jquery-%s.slim.min.js"></script>' % JQUERY_VERSION,
-        '<script src="https://code.jquery.com/jquery-%s.slim.min.js"\n        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"\n        crossorigin="anonymous"></script>' % JQUERY_VERSION)
+        '<script src="https://code.jquery.com/jquery-%s.slim.min.js"\n        integrity="sha384-5AkRS45j4ukf+JbWAfHL8P4onPA9p0KwwP7pUdjSQA3ss9edbJUJc/XcYAiheSSz"\n        crossorigin="anonymous"></script>' % JQUERY_VERSION)
     index_aprender_data = index_aprender_data.replace(
         '<script src="../jquery-%s.slim.min.js"></script>' % JQUERY_VERSION,
-        '<script src="https://code.jquery.com/jquery-%s.slim.min.js"\n        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"\n        crossorigin="anonymous"></script>' % JQUERY_VERSION)
+        '<script src="https://code.jquery.com/jquery-%s.slim.min.js"\n        integrity="sha384-5AkRS45j4ukf+JbWAfHL8P4onPA9p0KwwP7pUdjSQA3ss9edbJUJc/XcYAiheSSz"\n        crossorigin="anonymous"></script>' % JQUERY_VERSION)
     # Bootstrap-toggle
     index_aprender_data = index_aprender_data.replace(
         '<link rel="stylesheet" href="../bootstrap4-toggle-%s/css/bootstrap4-toggle.min.css">' % BOOTSTRAP_TOGGLE_VERSION,
