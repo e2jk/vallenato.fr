@@ -1,0 +1,79 @@
+name: Auto-PR and auto-merge
+
+# Push to `ship` to land it on master without opening a PR by hand. This
+# workflow does no CI work of its own — it only opens (or reuses) a PR to
+# master and enables GitHub's native auto-merge. The pull_request event that
+# opening the PR generates is what triggers ci.yml's real work: computing
+# the real version, building, running the full test suite against that
+# exact image, and publishing immediately on success (see ci.yml's version
+# job). Once the required checks recorded against the PR's head SHA pass,
+# auto-merge lands it on master on its own — master only ever receives
+# content that's already been fully tested and already published.
+#
+# Adapted from OpenHangar's auto-pr-merge.yml (same logic; that repo's
+# default branch is `main`, this one's is `master`).
+on:
+  push:
+    branches: [ship]
+
+permissions: read-all  # zizmor: ignore[excessive-permissions] intentional: workflow default is read-only, the job below opts into exactly the write scopes it needs
+
+concurrency:
+  group: auto-pr-merge
+  cancel-in-progress: false
+
+jobs:
+  auto-pr:
+    name: Open PR to master and enable auto-merge
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write       # gh pr merge
+      pull-requests: write  # gh pr create / gh pr merge
+    steps:
+      - name: Open PR (if none exists) and enable auto-merge
+        env:
+          # A PR authored by github-actions[bot] (i.e. opened with the
+          # default GITHUB_TOKEN) now needs manual workflow-run approval on
+          # every run — a GitHub-side policy change (rolled out gradually
+          # May-June 2026) that applies even to same-repo, non-fork PRs
+          # like this one. A PAT from a real trusted account sidesteps it:
+          # the PR is then authored by that account, not the bot.
+          #
+          # REQUIRES SETUP: create a fine-grained PAT scoped to just this
+          # repo, with "Pull requests: read/write" + "Contents: read/write"
+          # permissions, and store it as the PAT_AUTO_PR_MERGE repo secret
+          # (Settings -> Secrets and variables -> Actions -> New repository
+          # secret). Without it, this step fails with a 403/permission
+          # error — ship.sh's PR will still open via GitHub's native
+          # Dependabot/Renovate-style flow being unavailable here, so
+          # nothing lands on master until this secret exists.
+          GH_TOKEN: ${{ secrets.PAT_AUTO_PR_MERGE }}
+          GH_REPO: ${{ github.repository }}
+          HEAD_SHA: ${{ github.sha }}
+        run: |
+          pr_number=$(gh pr list --head ship --base master --state open --json number --jq '.[0].number // empty')
+          if [ -z "$pr_number" ]; then
+            title=$(gh api "repos/$GH_REPO/commits/$HEAD_SHA" --jq '.commit.message' | head -1)
+            gh pr create --base master --head ship --title "${title:-ship}" \
+              --body "Auto-opened from \`ship\` — will merge once CI passes."
+            pr_number=$(gh pr list --head ship --base master --state open --json number --jq '.[0].number')
+          fi
+          echo "PR #$pr_number"
+
+          # Right after creation, GitHub hasn't always finished computing the
+          # PR's mergeability yet — `gh pr merge --auto` can transiently fail
+          # with "Pull request is in unstable status" (enablePullRequestAutoMerge)
+          # or "Required status check ... is queued" (mergePullRequest), even
+          # though retrying moments later succeeds once GitHub's backend
+          # settles. Retry instead of failing the whole run over a race
+          # condition on GitHub's side.
+          for attempt in 1 2 3 4 5; do
+            if gh pr merge "$pr_number" --auto --rebase; then
+              exit 0
+            fi
+            echo "Attempt ${attempt}/5 failed — retrying in 10s..."
+            sleep 10
+          done
+          echo "::error::Failed to enable auto-merge on PR #$pr_number after 5 attempts"
+          exit 1
