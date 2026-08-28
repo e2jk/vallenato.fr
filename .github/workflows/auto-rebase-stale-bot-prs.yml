@@ -1,0 +1,99 @@
+name: Auto-rebase stale bot PRs
+
+# Race condition: with a ruleset's strict required-status-checks policy
+# (branches must be up to date before merging), whenever one open PR merges
+# to master, every other open PR instantly falls behind and can no longer
+# merge even though its own checks already passed — it needs a rebase and a
+# fresh check run. Dependabot/Renovate don't reliably self-heal this on
+# their own schedule, so this used to mean manually commenting
+# "@dependabot rebase" or checking Renovate's rebase checkbox. This
+# workflow does that automatically for bot-authored PRs only — never for a
+# human's own PR, which might be failing for reasons that have nothing to
+# do with staleness and shouldn't be endlessly re-triggered on someone
+# else's behalf.
+#
+# Per-bot trigger mechanism (each bot's own documented API-friendly path,
+# there is no unified command):
+#   - Dependabot: a "@dependabot rebase" PR comment.
+#   - Renovate: adding the `rebase` label (rebaseLabel default) to the PR —
+#     Renovate has no comment command; the label is the only way to trigger
+#     a rebase without clicking the PR-body checkbox by hand.
+#
+# Runs on every push to master, not just the cron, specifically for the
+# cascade case: if 3 bot PRs are open together and PR1 merges, PR2 and PR3
+# both go stale at once — this workflow nudges both, but if PR2 then
+# merges before PR3's re-run lands, PR3 goes stale *again*. Reacting to
+# `push: master` catches that immediately instead of waiting for the next
+# cron tick (up to 6h away) each time a merge in the cascade lands. The
+# cron is a safety net for the case a trigger doesn't take (e.g. a bot
+# missed/ignored it) rather than the primary mechanism.
+#
+# Capped at 3 attempts per PR (tracked by counting this workflow's own
+# marker comments already on the PR) so a PR that's stale for a real
+# reason — an actual conflicting change, not just a race — doesn't get
+# retried forever instead of surfacing for a human to look at.
+#
+# Add the `no-auto-rebase` label to a PR to skip it entirely (e.g. a
+# version bump that's known to conflict with another package's pin until
+# that package itself releases a compatible version — see the script for
+# details).
+#
+# NOTE: this only has real effect once a branch-protection ruleset
+# requiring up-to-date branches before merge actually exists on this repo —
+# that's a GitHub repo-settings change, not something committed code can
+# do (see .claude/overnight-autopilot.md's "changing GitHub repository
+# settings" exclusion, mirrored from OpenHangar's own such file). Until
+# that ruleset is configured, this workflow simply has nothing stale to
+# find most of the time — harmless, just inert.
+#
+# Adapted from OpenHangar's auto-rebase-stale-bot-prs.yml (same logic;
+# that repo's default branch is `main`, this one's is `master`).
+
+on:
+  push:
+    branches: [master]
+  schedule:
+    - cron: '0 */6 * * *'
+  workflow_dispatch: {}
+
+permissions: read-all  # zizmor: ignore[excessive-permissions] intentional: workflow default is read-only, the job below opts into exactly the write scopes it needs
+
+concurrency:
+  group: auto-rebase-stale-bot-prs
+  cancel-in-progress: false
+
+jobs:
+  rebase:
+    name: Trigger rebase on stale Dependabot/Renovate PRs
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read        # actions/checkout, to fetch the script file
+      pull-requests: write  # gh pr comment / gh pr edit --add-label
+      issues: write         # gh label create (labels are an Issues-API resource)
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+
+      - name: Ensure the `rebase` and `no-auto-rebase` labels exist
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          gh label create rebase \
+            --color ededed \
+            --description "Ask Renovate to rebase this PR" \
+            2>/dev/null || true
+          gh label create no-auto-rebase \
+            --color d93f0b \
+            --description "Blocked on something external (e.g. an upstream release) -- don't auto-rebase" \
+            2>/dev/null || true
+
+      - name: Rebase stale Dependabot/Renovate PRs (bounded retries)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          MAX_ATTEMPTS: "3"
+          MARKER: "<!-- vallenato-fr-auto-rebase -->"
+        run: bash .github/scripts/auto-rebase-stale-bot-prs.sh
