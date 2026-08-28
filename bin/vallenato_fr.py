@@ -68,6 +68,15 @@ def parse_args(arguments):
         required=False,
         help="Dump the list of uploaded videos from YouTube, so as not to have to download it again",
     )
+    parser.add_argument(
+        "-nf",
+        "--no-fetch",
+        action="store_true",
+        required=False,
+        help="Do not fetch anything from YouTube, rebuild the website from the "
+        "already-committed website/src/data.js instead (e.g. to rebuild the "
+        "production Docker image without live YouTube API credentials)",
+    )
 
     # General arguments (can be used both with --aprender and --website)
     parser.add_argument(
@@ -105,6 +114,16 @@ def parse_args(arguments):
             "The --dump-uploaded-videos argument can only be used in conjunction with --website. Exiting..."
         )
         sys.exit(18)
+    if args.no_fetch and not args.website:
+        logger.critical(
+            "The --no-fetch argument can only be used in conjunction with --website. Exiting..."
+        )
+        sys.exit(22)
+    if args.no_fetch and args.dump_uploaded_videos:
+        logger.critical(
+            "The --no-fetch and --dump-uploaded-videos arguments cannot be used together. Exiting..."
+        )
+        sys.exit(23)
 
     # Configure logging level
     if args.loglevel:

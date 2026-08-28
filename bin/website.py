@@ -208,6 +208,24 @@ def save_website_data(locations, website_data_file):
         out_file.write(js_content)
 
 
+def load_locations_from_website_data_file(website_data_file):
+    # Used by --no-fetch: rebuild the website from what's already committed
+    # to website/src/data.js instead of hitting the YouTube API, e.g. to
+    # build the production Docker image without live OAuth credentials.
+    logger.debug(f"Loading existing locations from {website_data_file} (--no-fetch)")
+    with open(website_data_file) as in_file:
+        # Remove the JS bits to keep only the JSON content
+        return json.loads(in_file.read()[16:-1])
+
+
+def flatten_videos_from_locations(locations):
+    uploaded_videos = []
+    for location in locations.values():
+        uploaded_videos.extend(location["videos"])
+    uploaded_videos.sort(key=lambda v: v["publishedAt"], reverse=True)
+    return uploaded_videos
+
+
 def ignored_files_in_prod(adir, filenames):
     ignored_files = []
     if "../website/src" == adir:
@@ -533,26 +551,36 @@ def generate_sitemap(sitemap_file, locations, uploaded_videos):
 
 
 def website(args):
-    # Retrieve the list of uploaded videos
-    uploaded_videos = get_uploaded_videos(args, UPLOADED_VIDEOS_DUMP_FILE)
-    logger.info(f"There are {len(uploaded_videos)} uploaded videos.")
+    if getattr(args, "no_fetch", False):
+        # Rebuild from the already-committed data instead of hitting the
+        # YouTube API - locations/videos already have their slugs set, so
+        # there's nothing left to do but regenerate the website files.
+        locations = load_locations_from_website_data_file(WEBSITE_DATA_FILE)
+        uploaded_videos = flatten_videos_from_locations(locations)
+        logger.info(
+            f"There are {len(uploaded_videos)} videos loaded from {WEBSITE_DATA_FILE} (--no-fetch)."
+        )
+    else:
+        # Retrieve the list of uploaded videos
+        uploaded_videos = get_uploaded_videos(args, UPLOADED_VIDEOS_DUMP_FILE)
+        logger.info(f"There are {len(uploaded_videos)} uploaded videos.")
 
-    # Identify each video's location
-    (uploaded_videos, locations) = identify_locations_names(
-        uploaded_videos, LOCATION_SPECIAL_CASES_FILE, UPLOADED_VIDEOS_DUMP_FILE
-    )
+        # Identify each video's location
+        (uploaded_videos, locations) = identify_locations_names(
+            uploaded_videos, LOCATION_SPECIAL_CASES_FILE, UPLOADED_VIDEOS_DUMP_FILE
+        )
 
-    # Determine the geolocation of each location
-    locations = determine_geolocation(locations, GEOLOCATIONS_FILE)
+        # Determine the geolocation of each location
+        locations = determine_geolocation(locations, GEOLOCATIONS_FILE)
 
-    # Create a slug for each location (to be used for the website URLs)
-    locations = determine_locations_slug(locations)
+        # Create a slug for each location (to be used for the website URLs)
+        locations = determine_locations_slug(locations)
 
-    # Add the videos in each location array
-    locations = add_videos_to_locations_array(uploaded_videos, locations)
+        # Add the videos in each location array
+        locations = add_videos_to_locations_array(uploaded_videos, locations)
 
-    # Generate the JavaScript data file to be used by the website
-    save_website_data(locations, WEBSITE_DATA_FILE)
+        # Generate the JavaScript data file to be used by the website
+        save_website_data(locations, WEBSITE_DATA_FILE)
 
     # Generate the development and production website files
     generate_website(locations, uploaded_videos)

@@ -167,6 +167,44 @@ class TestParseArgs(unittest.TestCase):
             ],
         )
 
+    def test_parse_args_no_fetch_aprender(self):
+        """
+        Test running the script with invalid arguments combination:
+        --no-fetch with --aprender instead of --website
+        """
+        with (
+            self.assertRaises(SystemExit) as cm1,
+            self.assertLogs(level="CRITICAL") as cm2,
+        ):
+            target.parse_args(["--no-fetch", "--aprender"])
+        the_exception = cm1.exception
+        self.assertEqual(the_exception.code, 22)
+        self.assertEqual(
+            cm2.output,
+            [
+                "CRITICAL:vallenato_fr:The --no-fetch argument can only be used in conjunction with --website. Exiting..."
+            ],
+        )
+
+    def test_parse_args_no_fetch_and_dump_uploaded_videos(self):
+        """
+        Test running the script with invalid arguments combination:
+        --no-fetch together with --dump-uploaded-videos
+        """
+        with (
+            self.assertRaises(SystemExit) as cm1,
+            self.assertLogs(level="CRITICAL") as cm2,
+        ):
+            target.parse_args(["--no-fetch", "--dump-uploaded-videos", "--website"])
+        the_exception = cm1.exception
+        self.assertEqual(the_exception.code, 23)
+        self.assertEqual(
+            cm2.output,
+            [
+                "CRITICAL:vallenato_fr:The --no-fetch and --dump-uploaded-videos arguments cannot be used together. Exiting..."
+            ],
+        )
+
 
 class TestInitMain(unittest.TestCase):
     @patch("aprender.get_title_author_tutocreator_and_channel")

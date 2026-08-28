@@ -363,6 +363,36 @@ class TestSaveWebsiteData(unittest.TestCase):
         os.remove(temp_file)
 
 
+class TestLoadLocationsFromWebsiteDataFile(unittest.TestCase):
+    def test_load_locations_from_website_data_file(self):
+        with open("tests/data/sample_locations_final_full.json") as in_file:
+            sample_locations = json.load(in_file)
+        (_ignore, temp_file) = tempfile.mkstemp()
+        website.save_website_data(sample_locations, temp_file)
+
+        locations = website.load_locations_from_website_data_file(temp_file)
+        self.assertEqual(locations, sample_locations)
+
+        os.remove(temp_file)
+
+
+class TestFlattenVideosFromLocations(unittest.TestCase):
+    def test_flatten_videos_from_locations(self):
+        with open("tests/data/sample_locations_final_full.json") as in_file:
+            sample_locations = json.load(in_file)
+        uploaded_videos = website.flatten_videos_from_locations(sample_locations)
+
+        expected_count = sum(len(loc["videos"]) for loc in sample_locations.values())
+        self.assertEqual(len(uploaded_videos), expected_count)
+        # Sorted most-recent-first
+        published_dates = [v["publishedAt"] for v in uploaded_videos]
+        self.assertEqual(published_dates, sorted(published_dates, reverse=True))
+        # Every video from every location is present, unmodified
+        for loc in sample_locations.values():
+            for v in loc["videos"]:
+                self.assertIn(v, uploaded_videos)
+
+
 class TestGetStats(unittest.TestCase):
     @patch("website.datetime.date")
     def test_get_stats_august(self, w_dd):
@@ -643,6 +673,38 @@ class TestWebsite(unittest.TestCase):
         shutil.move(temp_index_file, "../website/src/index.html")
 
         # TODO Assert final script result
+        # Delete the temporary file created by the test
+        os.remove(temp_file)
+
+    def test_website_no_fetch(self):
+        # Point WEBSITE_DATA_FILE at a temp file pre-populated with existing,
+        # already-processed location data (matching --no-fetch's real usage:
+        # rebuild from what's already committed, don't hit the YouTube API)
+        with open("tests/data/sample_locations_final_full.json") as in_file:
+            sample_locations = json.load(in_file)
+        (_ignore, temp_file) = tempfile.mkstemp()
+        website.save_website_data(sample_locations, temp_file)
+        website.WEBSITE_DATA_FILE = temp_file
+
+        # Create a copy of the index.html file that is going to be edited
+        (_ignore, temp_index_file) = tempfile.mkstemp()
+        shutil.copy("../website/src/index.html", temp_index_file)
+
+        args = target.parse_args(["--website", "--no-fetch"])
+        with self.assertLogs(level="INFO") as cm:
+            website.website(args)
+        expected_count = sum(len(loc["videos"]) for loc in sample_locations.values())
+        self.assertEqual(
+            cm.output,
+            [
+                f"INFO:website:There are {expected_count} videos loaded from {temp_file} (--no-fetch)."
+            ],
+        )
+
+        # Restore the index page
+        os.remove("../website/src/index.html")
+        shutil.move(temp_index_file, "../website/src/index.html")
+
         # Delete the temporary file created by the test
         os.remove(temp_file)
 
