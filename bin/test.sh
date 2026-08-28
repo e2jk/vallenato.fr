@@ -1,2 +1,9 @@
 BASEDIR=$(dirname $0)
-cd ${BASEDIR} && coverage run --include=./*.py --omit=tests/* -m unittest discover && rm -rf ../html_dev/coverage && coverage html --directory=../html_dev/coverage --title="Code test coverage for vallenato.fr" && coverage xml
+cd ${BASEDIR} && rm -rf ../html_dev/coverage && python -m pytest \
+    --cov=. \
+    --cov-report=term-missing \
+    --cov-report=html:../html_dev/coverage \
+    --cov-report=xml:coverage.xml \
+    --cov-config=.coveragerc \
+    --cov-fail-under=100 \
+    --junitxml=test-results.xml

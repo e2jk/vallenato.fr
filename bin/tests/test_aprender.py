@@ -1,7 +1,5 @@
-# Running the tests:
-# $ python3 -m unittest discover --start-directory ./tests/
-# Checking the coverage of the tests:
-# $ coverage run --include=./*.py --omit=tests/* -m unittest discover && rm -rf ../html_dev/coverage && coverage html --directory=../html_dev/coverage --title="Code test coverage for vallenato.fr"
+# Running the tests (with coverage): $ sh test.sh
+# Running just this file:                 $ python3 -m pytest tests/test_aprender.py
 
 import contextlib
 import io

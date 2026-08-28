@@ -5,6 +5,8 @@
 #
 # Not hash-pinned (unlike requirements.txt): none of this runs in the
 # production image, only invoked locally or in CI.
+pytest==9.1.1
+pytest-cov==7.1.0
 ruff==0.16.5
 mypy==2.3.1
 bandit==1.9.4

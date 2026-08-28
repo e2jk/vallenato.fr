@@ -1,0 +1,16 @@
+# tuto_to_js.py: standalone "quick and dirty" one-off migration script (see
+# its own header comment) - top-level code that walks the real filesystem,
+# never imported by anything else in bin/, and not part of the regular
+# --website/--aprender pipeline. Not meaningfully unit-testable without a
+# refactor disproportionate to what it's for; omitted rather than faked.
+[run]
+source = .
+omit =
+    tests/*
+    tuto_to_js.py
+
+[report]
+show_missing = true
+omit =
+    tests/*
+    tuto_to_js.py
