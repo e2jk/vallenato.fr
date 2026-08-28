@@ -1,0 +1,7 @@
+# Ruff config for everything outside bin/ (which has its own pyproject.toml,
+# closer to bin/'s own files and taking precedence there - e.g. its DTZ011
+# ignore is specific to website.py and shouldn't apply here). Currently just
+# scripts/. mypy and bandit are not run against scripts/, matching
+# OpenHangar's own split (mypy/bandit scoped to app/ only there too).
+[tool.ruff]
+target-version = "py312"

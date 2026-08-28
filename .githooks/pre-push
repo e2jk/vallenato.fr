@@ -148,11 +148,15 @@ if $UPDATE_MODE; then
 fi
 
 # ── Ruff (lint + format) ────────────────────────────────────────────────────
+# Covers bin/ (its own pyproject.toml) and scripts/ (the repo-root one) in
+# one invocation — ruff resolves each file's config from its nearest
+# ancestor pyproject.toml on its own, no extra flags needed here.
+SCRIPTS_DIR="$REPO_ROOT/scripts"
 if [ -x "$RUFF" ]; then
   echo "[ruff-lint] Running Ruff linter..."
-  run_step_quiet --detail 'Checked [0-9]+ files?' "ruff-lint"      "$RUFF" check -v "$BIN_DIR" -- "$RUFF" check "$BIN_DIR"
+  run_step_quiet --detail 'Checked [0-9]+ files?' "ruff-lint"      "$RUFF" check -v "$BIN_DIR" "$SCRIPTS_DIR" -- "$RUFF" check "$BIN_DIR" "$SCRIPTS_DIR"
   echo "[ruff-format] Running Ruff formatter check..."
-  run_step_quiet --detail '[0-9]+ files? already formatted' "ruff-format"    "$RUFF" format --check "$BIN_DIR"
+  run_step_quiet --detail '[0-9]+ files? already formatted' "ruff-format"    "$RUFF" format --check "$BIN_DIR" "$SCRIPTS_DIR"
 else
   echo "[ruff] not found in $VENV_DIR — skipping (run: pip install -r bin/requirements-dev.txt)"
 fi
