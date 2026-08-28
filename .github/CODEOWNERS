@@ -1,0 +1,16 @@
+# CODEOWNERS — automatic review requests for sensitive paths.
+# See: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Default owner for everything not matched below
+*                               @e2jk
+
+# ── YouTube OAuth credentials handling ───────────────────────────────────────
+bin/youtube.py                  @e2jk
+
+# ── CI/CD, dependencies, and security tooling ────────────────────────────────
+.github/                        @e2jk
+bin/pyproject.toml              @e2jk
+bin/pytest.ini                  @e2jk
+pyproject.toml                  @e2jk
+.githooks/                      @e2jk
+renovate.json                   @e2jk
