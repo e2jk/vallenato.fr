@@ -13,10 +13,20 @@
 # And comment all mentions to PHP in ./root/etc/cont-init.d/20-config
 
 FROM ghcr.io/linuxserver/baseimage-alpine:3.24@sha256:34c19f3f2345f1d231784e78db95e330ce198c267b10fe8daa88b6bded30636b
-LABEL Name=Vallenato.fr
+LABEL org.opencontainers.image.title="vallenato.fr"
 
 # install packages
+# DL3018: Alpine package versions are already pinned by the base image's
+# own Alpine release (3.24 above); pinning apk versions individually is
+# high-maintenance and old versions get purged from the mirror.
+# SC2016: the single quotes below are intentional -- the nginx variable
+# syntax must reach the config file literally, not get shell-expanded.
+# hadolint ignore=DL3018,SC2016
 RUN \
+ echo "**** drop the community repo -- logrotate/nano/nginx all live in main, and apk refuses to proceed if ANY configured repo's index is unreachable, even for a package that lives entirely in main (the community mirror intermittently serves a corrupt index) ****" && \
+ sed -i "/community/d" /etc/apk/repositories && \
+ echo "**** apply security patches not yet in the pinned base image digest ****" && \
+ apk upgrade --no-cache && \
  echo "**** install build packages ****" && \
  apk add --no-cache \
 #	apache2-utils \

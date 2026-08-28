@@ -309,7 +309,12 @@ def generate_website(locations, uploaded_videos):
     # Create hard links for the videos in the prod folder
     # (hard links can only be created for files, need to recreate the folder structure)
     os.mkdir(f"{output_prod_folder}/aprender/videos")
-    for d in os.listdir(f"{input_src_folder}/aprender/videos"):
+    # website/src/aprender/videos/ is gitignored (and .dockerignore'd) - it
+    # only exists locally once a tutorial's video files have been downloaded
+    # via --aprender. A fresh checkout (or a Docker build context, which
+    # never sends it in) has no such directory yet - nothing to hard-link.
+    videos_src_dir = f"{input_src_folder}/aprender/videos"
+    for d in os.listdir(videos_src_dir) if os.path.isdir(videos_src_dir) else []:
         if d not in ["TODO", "blabla-bla"]:
             # Create a folder for that tutorial's video files
             # TODO: copy folder without content in order to keep the original folder's

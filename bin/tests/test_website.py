@@ -616,6 +616,44 @@ class TestGenerateWebsite(unittest.TestCase):
             self.assertTrue(f in prd_aprender_files)
         # TODO: Confirm the title and h1 of one of the created HTML files have been updated
 
+    @patch("website.datetime.date")
+    def test_generate_website_no_videos_dir(self, w_dd):
+        # website/src/aprender/videos/ is gitignored and .dockerignore'd -
+        # it only exists locally once a tutorial's video files have been
+        # downloaded via --aprender. A fresh checkout (or a Docker build
+        # context, which never sends it in) has no such directory at all -
+        # confirm generate_website() doesn't crash in that case (regression
+        # test: this used to raise FileNotFoundError inside a fresh
+        # `docker build`, since .dockerignore excludes this directory even
+        # when it exists on the host).
+        w_dd.today.return_value = date(2020, 8, 13)
+        w_dd.side_effect = lambda *args, **kw: date(*args, **kw)
+        (_ignore, temp_index_file) = tempfile.mkstemp()
+        shutil.copy("../website/src/index.html", temp_index_file)
+
+        videos_dir = "../website/src/aprender/videos"
+        moved_aside = f"{videos_dir}.test-moved-aside"
+        self.assertTrue(os.path.isdir(videos_dir))
+        shutil.move(videos_dir, moved_aside)
+        self.addCleanup(shutil.move, moved_aside, videos_dir)
+
+        with open("tests/data/sample_locations_final_full.json") as in_file:
+            sample_locations = json.load(in_file)
+        with open("tests/data/sample_uploaded_videos_dump_full.json") as in_file:
+            sample_uploaded_videos = json.load(in_file)
+
+        website.generate_website(sample_locations, sample_uploaded_videos)
+
+        # An empty prod/aprender/videos folder is still created
+        self.assertEqual(
+            os.listdir("../website/prod/aprender/videos"),
+            [],
+        )
+
+        # Restore the index page
+        os.remove("../website/src/index.html")
+        shutil.move(temp_index_file, "../website/src/index.html")
+
 
 class TestGenerateSitemap(unittest.TestCase):
     def test_generate_sitemap(self):

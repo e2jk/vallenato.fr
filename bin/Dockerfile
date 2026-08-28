@@ -9,7 +9,7 @@ ENV PYTHONUNBUFFERED=1
 
 # Install pip requirements
 COPY bin/requirements.txt /app/bin/requirements.txt
-RUN python -m pip install --require-hashes -r /app/bin/requirements.txt
+RUN python -m pip install --no-cache-dir --require-hashes -r /app/bin/requirements.txt
 
 WORKDIR /app/bin
 COPY . /app
