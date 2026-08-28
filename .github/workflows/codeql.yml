@@ -1,0 +1,53 @@
+name: CodeQL
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+  schedule:
+    - cron: '23 9 * * 1'  # Monday 09:23 UTC
+
+permissions: read-all  # zizmor: ignore[excessive-permissions] intentional: workflow default is read-only, the job below opts into exactly the write scopes it needs
+
+concurrency:
+  group: codeql-${{ github.event_name == 'pull_request' && github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  analyze:
+    name: Analyze (${{ matrix.language }})
+    # Runs on every pull_request to master — including the one auto-pr-
+    # merge.yml opens from `ship` — plus push:master (so alerts land on the
+    # Security tab against the real merge commit, per GitHub's ref-scoped
+    # code-scanning model: PR-ref runs only drive inline PR checks and are
+    # discarded when the PR closes) and a weekly scheduled scan as a
+    # baseline. The push:master run does rescan content its PR already
+    # covered, but GitHub dedups alerts by rule+location per ref, so this
+    # doesn't create duplicate alerts — just one extra scan per merge.
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      actions: read           # required by codeql-action to auto-detect languages/workflow context
+      contents: read          # checkout
+      security-events: write  # upload SARIF results to the Security tab
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [python, javascript-typescript, actions]
+
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@5595ccaf912efad79be6eef63a5619ff05969be3 # v4
+        with:
+          languages: ${{ matrix.language }}
+          queries: security-and-quality
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@5595ccaf912efad79be6eef63a5619ff05969be3 # v4
+        with:
+          category: "/language:${{ matrix.language }}"
