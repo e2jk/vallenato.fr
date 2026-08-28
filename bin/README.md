@@ -2,7 +2,7 @@ El Vallenatero Francés - New tutorial script
 ============================================
 
 
-[![Build Status](https://travis-ci.com/e2jk/vallenato.fr.svg?branch=master)](https://travis-ci.com/e2jk/vallenato.fr) - [Code test coverage](https://e2jk.github.io/vallenato.fr/coverage/index.html)
+[![CI](https://github.com/e2jk/vallenato.fr/actions/workflows/ci.yml/badge.svg)](https://github.com/e2jk/vallenato.fr/actions/workflows/ci.yml) - [Code test coverage](https://e2jk.github.io/vallenato.fr/coverage/)
 
 Script to create a new tutorial.
 
