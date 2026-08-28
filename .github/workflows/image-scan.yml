@@ -1,0 +1,54 @@
+name: Published image vulnerability scan
+
+# Trivy only runs against the freshly built image on push (ci.yml). A CVE
+# published in an OS package baked into the image during a quiet period
+# would go unnoticed until the next commit. Scan the already-published
+# :latest images on a schedule instead, so a newly disclosed CVE fails a
+# run (and emails the maintainer) even with no code changes. Daily keeps
+# the worst-case detection gap during a quiet period to ~1 day — the scan
+# itself only takes 30-60s per image, so the extra runs cost effectively
+# nothing.
+
+on:
+  schedule:
+    - cron: '19 5 * * *'   # daily 05:19 UTC — off-peak, distinct from the other scheduled workflows
+  workflow_dispatch: {}     # allow manual runs for testing
+
+permissions: read-all  # zizmor: ignore[excessive-permissions] intentional: workflow default is read-only, the job below opts into exactly the write scopes it needs
+
+concurrency:
+  group: image-scan
+  cancel-in-progress: true
+
+jobs:
+  image-scan:
+    name: Scan published ${{ matrix.name }} image with Trivy
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: site
+            image: vallenato.fr
+          - name: bin
+            image: vallenato.fr_bin
+    permissions:
+      security-events: write  # Trivy SARIF upload
+    steps:
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          image-ref: ghcr.io/e2jk/${{ matrix.image }}:latest
+          format: sarif
+          output: trivy-latest-results.sarif
+          severity: HIGH,CRITICAL
+          ignore-unfixed: 'true'
+          exit-code: '1'
+
+      - name: Upload Trivy results to GitHub Security tab
+        if: always() && hashFiles('trivy-latest-results.sarif') != ''
+        uses: github/codeql-action/upload-sarif@5595ccaf912efad79be6eef63a5619ff05969be3 # v4
+        with:
+          sarif_file: trivy-latest-results.sarif
+          category: trivy-latest-${{ matrix.name }}
