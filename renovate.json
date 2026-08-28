@@ -1,9 +1,28 @@
 {
-  "extends": [
-    "config:base"
-  ],
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+  "minimumReleaseAge": "14 days",
   "automerge": true,
-  "major": {
-    "automerge": false
+  "automergeType": "pr",
+  "platformAutomerge": true,
+  "automergeStrategy": "rebase",
+  "rebaseWhen": "conflicted",
+  "dependencyDashboard": false,
+  "pip_requirements": {
+    "fileMatch": ["(^|/)bin/requirements.*\\.txt$"]
+  },
+  "github-actions": {
+    "enabled": false
+  },
+  "packageRules": [
+    {
+      "matchManagers": ["dockerfile", "docker-compose"],
+      "groupName": "Docker images"
+    }
+  ],
+  "vulnerabilityAlerts": {
+    "labels": ["security"],
+    "schedule": ["at any time"],
+    "minimumReleaseAge": "0 days"
   }
 }
