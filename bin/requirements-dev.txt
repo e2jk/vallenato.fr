@@ -1,0 +1,12 @@
+# Development and tooling dependencies — not needed to run the site
+# generator itself, only for local linting/testing and the pre-push hook.
+# Install into your local venv:
+#   pip install -r bin/requirements-dev.txt
+#
+# Not hash-pinned (unlike requirements.txt): none of this runs in the
+# production image, only invoked locally or in CI.
+ruff==0.16.5
+mypy==2.3.1
+bandit==1.9.4
+pip-audit==2.10.1
+zizmor==1.29.0

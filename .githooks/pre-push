@@ -1,0 +1,252 @@
+#!/usr/bin/env bash
+# Pre-push hook: run Ruff linting/formatting, mypy, bandit, pip-audit, and
+# GitHub Actions workflow linters against bin/ (the site-generator tooling —
+# website/ is static HTML/JS/CSS with no build step to lint here).
+# Adapted from OpenHangar's .githooks/pre-push.
+#
+# Install once per clone:
+#   git config core.hooksPath .githooks
+#
+# Run from time to time to sync local tooling versions to what this repo
+# pins (bin/requirements-dev.txt for pip tools, the ACTIONLINT_VERSION/SHA
+# constants below for actionlint) — git itself never passes these flags, so
+# this is safe to leave in a hook:
+#   bash .githooks/pre-push --update
+
+set -uo pipefail
+
+UPDATE_MODE=false
+for arg in "$@"; do
+  case "$arg" in
+    --update|--install) UPDATE_MODE=true ;;
+  esac
+done
+
+FAILED_STEPS=()
+
+# Colour only when writing to a real terminal — a redirected/piped output
+# (or a CI log, though this hook doesn't run there) gets plain text.
+if [ -t 1 ]; then
+  _GREEN=$'\033[32m'; _RED=$'\033[31m'; _RESET=$'\033[0m'
+else
+  _GREEN=''; _RED=''; _RESET=''
+fi
+
+run_step() {
+  # run_step <label> <cmd> [args...]
+  local label="$1"; shift
+  if "$@"; then
+    :
+  else
+    FAILED_STEPS+=("$label")
+  fi
+}
+
+run_step_quiet() {
+  # run_step_quiet [--detail <pattern> | --detail-literal <string>] <label> <cmd...> [-- <clean-cmd...>]
+  # Like run_step, but for CLI tools whose own success output is noisy,
+  # unprefixed, and inconsistently coloured (ruff/mypy/bandit/zizmor/
+  # actionlint/pip-audit all differ). Captures stdout+stderr; on success it's
+  # discarded in favour of one uniform, green "[label] OK" line — unless:
+  #   --detail <pattern>   appends the last match of <pattern> in the tool's
+  #                         own output.
+  #   --detail-literal <string>
+  #                         appends a value computed by the caller instead of
+  #                         extracted from the wrapped command's own output.
+  # On failure "[label] FAILED" prints in red. If a "-- <clean-cmd...>" tail
+  # is given, that's what runs and prints instead of the raw noisy output.
+  local detail_pattern="" detail=""
+  if [ "$1" = "--detail" ]; then
+    detail_pattern="$2"; shift 2
+  elif [ "$1" = "--detail-literal" ]; then
+    detail="$2"; shift 2
+  fi
+  local label="$1"; shift
+  local cmd=() clean_cmd=() in_clean=false
+  for a in "$@"; do
+    if ! $in_clean && [ "$a" = "--" ]; then
+      in_clean=true
+      continue
+    fi
+    if $in_clean; then clean_cmd+=("$a"); else cmd+=("$a"); fi
+  done
+
+  local output
+  if output="$("${cmd[@]}" 2>&1)"; then
+    if [ -n "$detail_pattern" ]; then
+      detail="$(echo "$output" | grep -oE "$detail_pattern" | tail -1)"
+    fi
+    echo "${_GREEN}[$label] OK${detail:+ — $detail}${_RESET}"
+  else
+    FAILED_STEPS+=("$label")
+    echo "${_RED}[$label] FAILED${_RESET}"
+    if [ "${#clean_cmd[@]}" -gt 0 ]; then
+      output="$("${clean_cmd[@]}" 2>&1)"
+    fi
+    [ -n "$output" ] && echo "$output"
+  fi
+}
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+VENV_DIR="$REPO_ROOT/.venv-vallenato_fr"
+BIN_DIR="$REPO_ROOT/bin"
+PYTHON="$VENV_DIR/bin/python"
+RUFF="$VENV_DIR/bin/ruff"
+MYPY="$VENV_DIR/bin/mypy"
+BANDIT="$VENV_DIR/bin/bandit"
+PIP_AUDIT="$VENV_DIR/bin/pip-audit"
+ZIZMOR="$VENV_DIR/bin/zizmor"
+DEV_TXT="$BIN_DIR/requirements-dev.txt"
+PYPROJECT="$BIN_DIR/pyproject.toml"
+
+# actionlint is a standalone Go binary, not a pip package, and this repo has
+# no CI file (yet) that pins it the way OpenHangar's ci.yml does — so the
+# pin lives here instead. Once the GitHub Actions workflows are revisited,
+# consider moving this to wherever CI ends up pinning it, so there's one
+# source of truth instead of two.
+ACTIONLINT_VERSION="1.7.12"
+ACTIONLINT_SHA256="8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8"
+
+_pinned_pip_version() {
+  # bin/requirements-dev.txt is plain `pkg==version` (not hash-pinned, unlike
+  # bin/requirements.txt), so a simple grep is enough here.
+  grep -E "^$1==" "$DEV_TXT" 2>/dev/null | head -1 | cut -d= -f3
+}
+
+_installed_pip_version() {
+  [ -x "$PYTHON" ] || return
+  "$VENV_DIR/bin/pip" show "$1" 2>/dev/null | awk -F': ' '/^Version:/{print $2}'
+}
+
+if [ ! -x "$PYTHON" ]; then
+  echo "[pre-push] $VENV_DIR not found — skipping checks"
+  echo "[pre-push] See bin/README_VIRTUAL_ENVIRONMENT.md to set it up, then:"
+  echo "[pre-push]   pip install --require-hashes -r bin/requirements.txt"
+  echo "[pre-push]   pip install -r bin/requirements-dev.txt"
+  exit 0
+fi
+
+if $UPDATE_MODE; then
+  echo "[pre-push --update] Syncing local tooling to the versions this repo pins..."
+  echo "[pre-push --update] pip install -r bin/requirements-dev.txt"
+  "$VENV_DIR/bin/pip" install --quiet -r "$DEV_TXT"
+
+  echo "[pre-push --update] Installing actionlint v${ACTIONLINT_VERSION} to ~/.local/bin..."
+  mkdir -p "$HOME/.local/bin"
+  TMP_TGZ="$(mktemp)"
+  if curl -sfL -o "$TMP_TGZ" "https://github.com/rhysd/actionlint/releases/download/v${ACTIONLINT_VERSION}/actionlint_${ACTIONLINT_VERSION}_linux_amd64.tar.gz" \
+     && echo "${ACTIONLINT_SHA256}  ${TMP_TGZ}" | sha256sum -c - >/dev/null 2>&1; then
+    tar xzf "$TMP_TGZ" -C "$HOME/.local/bin" actionlint
+    echo "[pre-push --update] actionlint v${ACTIONLINT_VERSION} installed."
+  else
+    echo "[pre-push --update] WARNING: actionlint download/checksum failed — left untouched."
+  fi
+  rm -f "$TMP_TGZ"
+
+  echo "[pre-push --update] Done. Continuing with the normal checks..."
+  echo ""
+fi
+
+# ── Ruff (lint + format) ────────────────────────────────────────────────────
+if [ -x "$RUFF" ]; then
+  echo "[ruff-lint] Running Ruff linter..."
+  run_step_quiet --detail 'Checked [0-9]+ files?' "ruff-lint"      "$RUFF" check -v "$BIN_DIR" -- "$RUFF" check "$BIN_DIR"
+  echo "[ruff-format] Running Ruff formatter check..."
+  run_step_quiet --detail '[0-9]+ files? already formatted' "ruff-format"    "$RUFF" format --check "$BIN_DIR"
+else
+  echo "[ruff] not found in $VENV_DIR — skipping (run: pip install -r bin/requirements-dev.txt)"
+fi
+
+# ── mypy ──────────────────────────────────────────────────────────────────────
+if [ -x "$MYPY" ]; then
+  echo "[mypy] Running mypy type-checker..."
+  run_step_quiet --detail 'Success: no issues found in [0-9]+ source files?' "mypy"           "$MYPY" --config-file "$PYPROJECT" "$BIN_DIR"
+else
+  echo "[mypy] not found in $VENV_DIR — skipping (run: pip install -r bin/requirements-dev.txt)"
+fi
+
+# ── bandit ────────────────────────────────────────────────────────────────────
+if [ -x "$BANDIT" ]; then
+  echo "[bandit] Running bandit security scan..."
+  run_step_quiet --detail 'Total lines of code: [0-9]+' "bandit"         "$BANDIT" -c "$PYPROJECT" -r "$BIN_DIR" -ll -i
+else
+  echo "[bandit] not found in $VENV_DIR — skipping (run: pip install -r bin/requirements-dev.txt)"
+fi
+
+# ── zizmor ────────────────────────────────────────────────────────────────────
+if [ -x "$ZIZMOR" ]; then
+  echo "[zizmor] Linting GitHub Actions workflows..."
+  run_step_quiet --detail '[0-9]+ ignored' "zizmor" "$ZIZMOR" -q --persona=pedantic --offline "$REPO_ROOT/.github/"
+else
+  echo "[zizmor] not found in $VENV_DIR — skipping (run: pip install -r bin/requirements-dev.txt)"
+fi
+
+# ── actionlint ────────────────────────────────────────────────────────────────
+if command -v actionlint >/dev/null 2>&1; then
+  echo "[actionlint] Linting GitHub Actions workflows..."
+  run_step_quiet --detail 'Found [0-9]+ errors? in [0-9]+ files?' "actionlint"     actionlint -color -verbose "$REPO_ROOT/.github/workflows/"*.yml
+else
+  echo "[actionlint] not found on PATH — skipping (run: bash .githooks/pre-push --update)"
+fi
+
+# ── Coverage (quick check against last run, if recent) ────────────────────────
+COV_XML="$BIN_DIR/coverage.xml"
+COV_MAX_AGE=600  # seconds — ignore reports older than 10 minutes
+if [ -f "$COV_XML" ]; then
+  file_age=$(( $(date +%s) - $(date -r "$COV_XML" +%s) ))
+  if [ "$file_age" -le "$COV_MAX_AGE" ]; then
+    echo "[coverage] Checking coverage from last test run (${file_age}s ago)..."
+    run_step "coverage"     "$PYTHON" - "$COV_XML" <<'COVEOF'
+import sys, xml.etree.ElementTree as ET
+def _color(text, code):
+    return f"\033[{code}m{text}\033[0m" if sys.stdout.isatty() else text
+rate = float(ET.parse(sys.argv[1]).getroot().attrib.get("line-rate", 1))
+pct = round(rate * 100, 2)
+if rate < 1.0:
+    print(_color(f"[coverage] ERROR: coverage is {pct}% — run bin/test.sh and fix gaps before pushing.", "31"))
+    sys.exit(1)
+print(_color(f"[coverage] Coverage OK ({pct}%).", "32"))
+COVEOF
+  else
+    echo "[coverage] Report is ${file_age}s old (> ${COV_MAX_AGE}s) — skipping coverage check."
+  fi
+else
+  echo "[coverage] No bin/coverage.xml found — skipping coverage check (run bin/test.sh first)."
+fi
+
+# ── pip-audit ─────────────────────────────────────────────────────────────────
+if [ -x "$PIP_AUDIT" ]; then
+  echo "[pip-audit] Auditing dependencies for known vulnerabilities..."
+  pkg_count="$("$VENV_DIR/bin/pip" list --format=freeze 2>/dev/null | wc -l | tr -d ' ')"
+  run_step_quiet --detail-literal "${pkg_count} dependencies audited" "pip-audit"     "$PIP_AUDIT" --local
+else
+  echo "[pip-audit] not found in $VENV_DIR — skipping (run: pip install -r bin/requirements-dev.txt)"
+fi
+
+# ── Local tool version drift (non-blocking) ────────────────────────────────────
+STALE_TOOLS=()
+for pkg in ruff mypy bandit pip-audit zizmor; do
+  pinned="$(_pinned_pip_version "$pkg")"
+  installed="$(_installed_pip_version "$pkg")"
+  if [ -n "$pinned" ] && [ -n "$installed" ] && [ "$pinned" != "$installed" ]; then
+    STALE_TOOLS+=("$pkg ($installed -> $pinned)")
+  fi
+done
+if command -v actionlint >/dev/null 2>&1; then
+  al_installed="$(actionlint -version 2>/dev/null | head -1)"
+  if [ -n "$al_installed" ] && [ "$al_installed" != "$ACTIONLINT_VERSION" ]; then
+    STALE_TOOLS+=("actionlint ($al_installed -> $ACTIONLINT_VERSION)")
+  fi
+fi
+if [ "${#STALE_TOOLS[@]}" -gt 0 ]; then
+  echo ""
+  echo "[pre-push] Locally installed tool(s) behind what this repo pins: ${STALE_TOOLS[*]}"
+  echo "[pre-push] Run 'bash .githooks/pre-push --update' to sync."
+fi
+
+# ── Final summary ─────────────────────────────────────────────────────────────
+if [ "${#FAILED_STEPS[@]}" -gt 0 ]; then
+  echo ""
+  echo "${_RED}[pre-push] FAILED steps: ${FAILED_STEPS[*]}${_RESET}"
+  exit 1
+fi

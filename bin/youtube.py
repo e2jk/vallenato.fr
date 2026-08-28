@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 #    This file is part of Vallenato.fr.
 #
 #    Vallenato.fr is free software: you can redistribute it and/or modify
@@ -20,19 +17,18 @@
 #   https://github.com/youtube/api-samples/blob/master/python/my_uploads.py
 #   https://github.com/youtube/api-samples/blob/master/python/upload_video.py
 
-import httplib2
-import os
 import logging
-import sys
+import os
 
 from googleapiclient.discovery import build
-from googleapiclient.errors import HttpError
-from oauth2client.file import Storage
+from googleapiclient.errors import (
+    HttpError,  # noqa: F401 -- re-exported for website.py/tests
+)
 from oauth2client.client import flow_from_clientsecrets
+from oauth2client.file import Storage
 from oauth2client.tools import run_flow
 
-
-
+logger = logging.getLogger(__name__)
 
 # The CLIENT_SECRETS_FILE variable specifies the name of a file that contains
 # the OAuth 2.0 information for this application, including its client_id and
@@ -44,36 +40,42 @@ from oauth2client.tools import run_flow
 #   https://developers.google.com/youtube/v3/guides/authentication
 # For more information about the client_secrets.json file format, see:
 #   https://developers.google.com/api-client-library/python/guide/aaa_client_secrets
-CLIENT_SECRETS_FILE = 'client_secret.json'
+CLIENT_SECRETS_FILE = "client_secret.json"
 
 # This OAuth 2.0 access scope allows an application to view videos and playlists
-SCOPES = ['https://www.googleapis.com/auth/youtube.readonly']
-API_SERVICE_NAME = 'youtube'
-API_VERSION = 'v3'
+SCOPES = ["https://www.googleapis.com/auth/youtube.readonly"]
+API_SERVICE_NAME = "youtube"
+API_VERSION = "v3"
 
 # This variable defines a message to display if the CLIENT_SECRETS_FILE is
 # missing.
-MISSING_CLIENT_SECRETS_MESSAGE = """
+MISSING_CLIENT_SECRETS_MESSAGE = f"""
 WARNING: Please configure OAuth 2.0
 
 To make this sample run you will need to populate the client_secrets.json file
 found at:
-   %s
+   {os.path.abspath(os.path.join(os.path.dirname(__file__), CLIENT_SECRETS_FILE))}
 with information from the APIs Console
 https://console.developers.google.com
 
 For more information about the client_secrets.json file format, please visit:
 https://developers.google.com/api-client-library/python/guide/aaa_client_secrets
-""" % os.path.abspath(os.path.join(os.path.dirname(__file__), CLIENT_SECRETS_FILE))
+"""
+
 
 # Authorize the request and store authorization credentials.
 def yt_get_authenticated_service(args):
-    flow = flow_from_clientsecrets(CLIENT_SECRETS_FILE, scope=SCOPES, message=MISSING_CLIENT_SECRETS_MESSAGE)
+    flow = flow_from_clientsecrets(
+        CLIENT_SECRETS_FILE, scope=SCOPES, message=MISSING_CLIENT_SECRETS_MESSAGE
+    )
     storage = Storage("vallenato.fr-oauth2.json")
     credentials = storage.get()
     if credentials is None or credentials.invalid:
         credentials = run_flow(flow, storage, args)
-    return build(API_SERVICE_NAME, API_VERSION, credentials = credentials, cache_discovery=False)
+    return build(
+        API_SERVICE_NAME, API_VERSION, credentials=credentials, cache_discovery=False
+    )
+
 
 def yt_get_my_uploads_list(youtube):
     return "UU_8R235jg1ld6MCMOzz2khQ"
@@ -90,53 +92,58 @@ def yt_get_my_uploads_list(youtube):
     #     return channel['contentDetails']['relatedPlaylists']['uploads']
     # return None
 
+
 def yt_list_my_uploaded_videos(uploads_playlist_id, youtube):
     uploaded_videos = []
     # Retrieve the list of videos uploaded to the authenticated user's channel.
     playlistitems_list_request = youtube.playlistItems().list(
-        playlistId=uploads_playlist_id,
-        part='contentDetails'
+        playlistId=uploads_playlist_id, part="contentDetails"
     )
 
-    logging.debug('Videos in list %s' % uploads_playlist_id)
+    logger.debug(f"Videos in list {uploads_playlist_id}")
     while playlistitems_list_request:
         playlistitems_list_response = playlistitems_list_request.execute()
 
-        videoIds = ",".join(playlist_item['contentDetails']['videoId'] for playlist_item in playlistitems_list_response['items'])
+        videoIds = ",".join(
+            playlist_item["contentDetails"]["videoId"]
+            for playlist_item in playlistitems_list_response["items"]
+        )
 
         # To get the videos' tags, we need to do an extra query
-        videos_list_request = youtube.videos().list(
-            id=videoIds,
-            part='snippet,status'
-        )
+        videos_list_request = youtube.videos().list(id=videoIds, part="snippet,status")
 
         while videos_list_request:
             videos_list_response = videos_list_request.execute()
 
-            for video in videos_list_response['items']:
+            for video in videos_list_response["items"]:
                 # Only keep Public videos
-                if video['status']['privacyStatus'] != "public":
+                if video["status"]["privacyStatus"] != "public":
                     continue
                 # Skip videos tagged as "no-website" or "Tutorial"
-                if 'tags' in video['snippet'] and (
-                    "no-website" in video['snippet']['tags'] or
-                    "Tutorial" in video['snippet']['tags']):
+                if "tags" in video["snippet"] and (
+                    "no-website" in video["snippet"]["tags"]
+                    or "Tutorial" in video["snippet"]["tags"]
+                ):
                     continue
                 vid = {}
-                vid["id"] = video['id']
-                vid["title"] = video['snippet']['title']
-                vid["description"] = video['snippet']['description']
+                vid["id"] = video["id"]
+                vid["title"] = video["snippet"]["title"]
+                vid["description"] = video["snippet"]["description"]
                 try:
-                    vid["tags"] = video['snippet']['tags']
+                    vid["tags"] = video["snippet"]["tags"]
                 except KeyError:
                     vid["tags"] = []
-                vid["publishedAt"] = video['snippet']['publishedAt']
+                vid["publishedAt"] = video["snippet"]["publishedAt"]
                 # Sizes: default, medium, high, standard, maxres
-                vid["thumbnail"] = video['snippet']['thumbnails']['medium']
+                vid["thumbnail"] = video["snippet"]["thumbnails"]["medium"]
 
                 uploaded_videos.append(vid)
-                logging.debug(vid)
-            videos_list_request = youtube.videos().list_next(videos_list_request, videos_list_response)
+                logger.debug(vid)
+            videos_list_request = youtube.videos().list_next(
+                videos_list_request, videos_list_response
+            )
 
-        playlistitems_list_request = youtube.playlistItems().list_next(playlistitems_list_request, playlistitems_list_response)
+        playlistitems_list_request = youtube.playlistItems().list_next(
+            playlistitems_list_request, playlistitems_list_response
+        )
     return uploaded_videos

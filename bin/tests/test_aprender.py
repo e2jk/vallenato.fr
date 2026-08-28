@@ -1,37 +1,30 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 # Running the tests:
 # $ python3 -m unittest discover --start-directory ./tests/
 # Checking the coverage of the tests:
 # $ coverage run --include=./*.py --omit=tests/* -m unittest discover && rm -rf ../html_dev/coverage && coverage html --directory=../html_dev/coverage --title="Code test coverage for vallenato.fr"
 
-import unittest
-import sys
+import contextlib
+import io
 import os
 import shutil
+import sys
 import tempfile
-from pytube import YouTube
-import socket
-import io
-import contextlib
-from urllib.error import URLError
+import unittest
+from unittest.mock import MagicMock, call, patch
 from urllib.error import HTTPError
-from unittest.mock import patch
-from unittest.mock import MagicMock
-from unittest.mock import call
 
-sys.path.append('.')
+sys.path.append(".")
 target = __import__("vallenato_fr")
 aprender = __import__("aprender")
+
 
 # Used to test manual entry
 def setUpModule():
     def mock_raw_input(s):
         global mock_raw_input_counter
-        global mock_raw_input_values
         mock_raw_input_counter += 1
         return mock_raw_input_values[mock_raw_input_counter - 1]
+
     aprender.input = mock_raw_input
 
 
@@ -44,10 +37,27 @@ class TestGetTutorialInfo(unittest.TestCase):
         mock_raw_input_values = [
             "http://www.youtube.com/watch?v=oPEirA4pXdg",
             "https://www.youtube.com/watch?v=q6cUzC6ESZ8",
-            "blabla-bla"
+            "blabla-bla",
         ]
-        a_gtatac.return_value = ("Bonita cancion", "Super cantante", "El Vallenatero Francés", "UC_8R235jg1ld6MCMOzz2khQ", None)
-        (tutorial_id, tutorial_url, full_video_id, full_video_url, song_title, song_author, tutocreator, tutocreator_channel, yt_tutorial_video, tutorial_slug) = aprender.get_tutorial_info()
+        a_gtatac.return_value = (
+            "Bonita cancion",
+            "Super cantante",
+            "El Vallenatero Francés",
+            "UC_8R235jg1ld6MCMOzz2khQ",
+            None,
+        )
+        (
+            tutorial_id,
+            tutorial_url,
+            full_video_id,
+            full_video_url,
+            song_title,
+            song_author,
+            tutocreator,
+            tutocreator_channel,
+            _yt_tutorial_video,
+            tutorial_slug,
+        ) = aprender.get_tutorial_info()
         self.assertEqual(tutorial_id, "oPEirA4pXdg")
         self.assertEqual(tutorial_url, "https://www.youtube.com/watch?v=oPEirA4pXdg")
         self.assertEqual(full_video_id, "q6cUzC6ESZ8")
@@ -88,7 +98,7 @@ class TestGetYoutubeUrl(unittest.TestCase):
         mock_raw_input_values = ["q"]
         f = io.StringIO()
         with self.assertRaises(SystemExit) as cm, contextlib.redirect_stdout(f):
-            (video_id, video_url) = aprender.get_youtube_url("")
+            (_video_id, _video_url) = aprender.get_youtube_url("")
         the_exception = cm.exception
         self.assertEqual(the_exception.code, 10)
         self.assertEqual("Exiting...\n", f.getvalue())
@@ -99,9 +109,9 @@ class TestYoutubeUrlValidation(unittest.TestCase):
         valid_youtube_urls = [
             "http://www.youtube.com/watch?v=oPEirA4pXdg",
             "http://youtu.be/oPEirA4pXdg",
-            "http://www.youtube.com/embed/oPEirA4pXdg?rel=0\" frameborder=\"0\"",
+            'http://www.youtube.com/embed/oPEirA4pXdg?rel=0" frameborder="0"',
             "https://www.youtube-nocookie.com/v/oPEirA4pXdg?version=3&amp;hl=en_US",
-            "https://www.youtube.com/watch?v=oPEirA4pXdg&list=PLZiwcAOEEWBqhsycvvZnBrz5Sw3yXCyRB&index=2&t=0s"
+            "https://www.youtube.com/watch?v=oPEirA4pXdg&list=PLZiwcAOEEWBqhsycvvZnBrz5Sw3yXCyRB&index=2&t=0s",
         ]
         for url in valid_youtube_urls:
             self.assertTrue(aprender.youtube_url_validation(url))
@@ -114,7 +124,7 @@ class TestYoutubeUrlValidation(unittest.TestCase):
             "http://www.youtube.com/",
             "http://www.youtube.com/?feature=ytca",
             "https://www.youtube.com/channel/UC_8R235jg1ld6MCMOzz2khQ",
-            "oPEirA4pXdgINVALID"
+            "oPEirA4pXdgINVALID",
         ]
         for url in invalid_youtube_urls:
             self.assertFalse(aprender.youtube_url_validation(url))
@@ -130,7 +140,15 @@ class TestGetTitleAuthorTutocreatorAndChannel(unittest.TestCase):
         # Mock the return value of calling YouTube, to prevent lengthy network operations
         a_yt().title = "AAA"
         a_yt().author = "FZ Academia Vallenato"
-        (song_title, song_author, tutocreator, tutocreator_channel, yt_tutorial_video) = aprender.get_title_author_tutocreator_and_channel("https://www.youtube.com/watch?v=v5xEaLCCNRc")
+        (
+            song_title,
+            song_author,
+            tutocreator,
+            tutocreator_channel,
+            _yt_tutorial_video,
+        ) = aprender.get_title_author_tutocreator_and_channel(
+            "https://www.youtube.com/watch?v=v5xEaLCCNRc"
+        )
         self.assertEqual(song_title, "ABC")
         self.assertEqual(song_author, "DEF")
         self.assertEqual(tutocreator, "FZ Academia Vallenato")
@@ -144,7 +162,15 @@ class TestGetTitleAuthorTutocreatorAndChannel(unittest.TestCase):
         mock_raw_input_values = ["q"]
         f = io.StringIO()
         with self.assertRaises(SystemExit) as cm, contextlib.redirect_stdout(f):
-            (song_title, song_author, tutocreator, tutocreator_channel, yt_tutorial_video) = aprender.get_title_author_tutocreator_and_channel("https://www.youtube.com/watch?v=v5xEaLCCNRc")
+            (
+                _song_title,
+                _song_author,
+                _tutocreator,
+                _tutocreator_channel,
+                _yt_tutorial_video,
+            ) = aprender.get_title_author_tutocreator_and_channel(
+                "https://www.youtube.com/watch?v=v5xEaLCCNRc"
+            )
         the_exception = cm.exception
         self.assertEqual(the_exception.code, 11)
         self.assertEqual("Exiting...\n", f.getvalue())
@@ -157,7 +183,15 @@ class TestGetTitleAuthorTutocreatorAndChannel(unittest.TestCase):
         mock_raw_input_values = ["ABC", "q"]
         f = io.StringIO()
         with self.assertRaises(SystemExit) as cm, contextlib.redirect_stdout(f):
-            (song_title, song_author, tutocreator, tutocreator_channel, yt_tutorial_video) = aprender.get_title_author_tutocreator_and_channel("https://www.youtube.com/watch?v=v5xEaLCCNRc")
+            (
+                _song_title,
+                _song_author,
+                _tutocreator,
+                _tutocreator_channel,
+                _yt_tutorial_video,
+            ) = aprender.get_title_author_tutocreator_and_channel(
+                "https://www.youtube.com/watch?v=v5xEaLCCNRc"
+            )
         the_exception = cm.exception
         self.assertEqual(the_exception.code, 12)
         self.assertEqual("Exiting...\n", f.getvalue())
@@ -206,7 +240,7 @@ class TestGetTutorialSlug(unittest.TestCase):
         mock_raw_input_values = ["q"]
         f = io.StringIO()
         with self.assertRaises(SystemExit) as cm, contextlib.redirect_stdout(f):
-            tutorial_slug = aprender.get_tutorial_slug("NOT RELEVANT")
+            aprender.get_tutorial_slug("NOT RELEVANT")
         the_exception = cm.exception
         self.assertEqual(the_exception.code, 13)
         self.assertEqual("Exiting...\n", f.getvalue())
@@ -219,7 +253,7 @@ class TestGetTutorialSlug(unittest.TestCase):
         # We use a slug that already exists, then quit at the second prompt
         f = io.StringIO()
         with self.assertRaises(SystemExit) as cm, contextlib.redirect_stdout(f):
-            tutorial_slug = aprender.get_tutorial_slug("NOT RELEVANT")
+            aprender.get_tutorial_slug("NOT RELEVANT")
         the_exception = cm.exception
         self.assertEqual(the_exception.code, 14)
         self.assertEqual("Exiting...\n", f.getvalue())
@@ -228,18 +262,24 @@ class TestGetTutorialSlug(unittest.TestCase):
 class TestGetSuggestedTutorialSlug(unittest.TestCase):
     def test_get_suggested_tutorial_slug_new(self):
         tutorials_slugs = aprender.get_existing_tutorial_slug()
-        tutorial_slug = aprender.get_suggested_tutorial_slug("blabla bla", tutorials_slugs)
+        tutorial_slug = aprender.get_suggested_tutorial_slug(
+            "blabla bla", tutorials_slugs
+        )
         self.assertEqual(tutorial_slug, "blabla-bla")
 
     def test_get_suggested_tutorial_slug_existing(self):
         tutorials_slugs = aprender.get_existing_tutorial_slug()
-        tutorial_slug = aprender.get_suggested_tutorial_slug("Muere una Flor", tutorials_slugs)
+        tutorial_slug = aprender.get_suggested_tutorial_slug(
+            "Muere una Flor", tutorials_slugs
+        )
         # There is already a tutorial with slug muere-una-flor
         self.assertEqual(tutorial_slug, "muere-una-flor-2")
 
     def test_get_suggested_tutorial_slug_existing_double(self):
         tutorials_slugs = aprender.get_existing_tutorial_slug()
-        tutorial_slug = aprender.get_suggested_tutorial_slug("Jaime Molina", tutorials_slugs)
+        tutorial_slug = aprender.get_suggested_tutorial_slug(
+            "Jaime Molina", tutorials_slugs
+        )
         # There are already two tutorials jaime-molina-1 and jaime-molina-2
         self.assertEqual(tutorial_slug, "jaime-molina-3")
 
@@ -274,7 +314,7 @@ class TestDetermineOutputFolder(unittest.TestCase):
         os.makedirs("../website/src/aprender/temp/blabla-bla/")
         f = io.StringIO()
         with self.assertRaises(SystemExit) as cm, contextlib.redirect_stdout(f):
-            output_folder = aprender.determine_output_folder(temp_folder, tutorial_slug)
+            aprender.determine_output_folder(temp_folder, tutorial_slug)
         the_exception = cm.exception
         self.assertEqual(the_exception.code, 15)
         self.assertEqual("Exiting...\n", f.getvalue())
@@ -294,7 +334,7 @@ class TestDetermineOutputFolder(unittest.TestCase):
         os.makedirs("../website/src/aprender/temp/blabla-bla/")
         f = io.StringIO()
         with self.assertRaises(SystemExit) as cm, contextlib.redirect_stdout(f):
-            output_folder = aprender.determine_output_folder(temp_folder, tutorial_slug)
+            aprender.determine_output_folder(temp_folder, tutorial_slug)
         the_exception = cm.exception
         self.assertEqual(the_exception.code, 15)
         self.assertEqual("Exiting...\n", f.getvalue())
@@ -312,7 +352,9 @@ class TestDetermineOutputFolder(unittest.TestCase):
         # Make sure the new temporary folder *does* exist
         os.makedirs("../website/src/aprender/temp/blabla-bla/")
         # Create a temporary file that should be deleted when the folder is deleted
-        (ignore, temp_file) = tempfile.mkstemp(dir="../website/src/aprender/temp/blabla-bla/")
+        (_ignore, temp_file) = tempfile.mkstemp(
+            dir="../website/src/aprender/temp/blabla-bla/"
+        )
         self.assertTrue(os.path.exists(temp_file))
         output_folder = aprender.determine_output_folder(temp_folder, tutorial_slug)
         self.assertEqual(output_folder, "../website/src/aprender/temp/blabla-bla/")
@@ -331,10 +373,16 @@ class TestDownloadVideos(unittest.TestCase):
         tutorial_id = "KtN7MCg6hlI"
         full_video_id = "eT2Q_Go2BAs"
         videos_output_folder = "/tmp/abc"
-        aprender.download_videos(yt_tutorial_video, tutorial_id, full_video_id, videos_output_folder)
-        self.assertTrue(a_yt.mock_calls == [call('https://www.youtube.com/watch?v=eT2Q_Go2BAs')])
-        expected = [call(yt_tutorial_video, 'KtN7MCg6hlI', '/tmp/abc'),
-                    call(a_yt(), 'eT2Q_Go2BAs', '/tmp/abc')]
+        aprender.download_videos(
+            yt_tutorial_video, tutorial_id, full_video_id, videos_output_folder
+        )
+        self.assertTrue(
+            a_yt.mock_calls == [call("https://www.youtube.com/watch?v=eT2Q_Go2BAs")]
+        )
+        expected = [
+            call(yt_tutorial_video, "KtN7MCg6hlI", "/tmp/abc"),
+            call(a_yt(), "eT2Q_Go2BAs", "/tmp/abc"),
+        ]
         self.assertTrue(a_dyv.mock_calls == expected)
 
 
@@ -346,7 +394,10 @@ class TestDownloadYoutubeVideo(unittest.TestCase):
         rv = aprender.download_youtube_video(yt, video_id, videos_output_folder)
         self.assertTrue(rv)
         self.assertTrue(yt.method_calls == [call.streams.get_by_itag(18)])
-        self.assertTrue(call.streams.get_by_itag().download(videos_output_folder, 'oPEirA4pXdg') in yt.mock_calls)
+        self.assertTrue(
+            call.streams.get_by_itag().download(videos_output_folder, "oPEirA4pXdg")
+            in yt.mock_calls
+        )
         # Delete the temporary folder
         shutil.rmtree(videos_output_folder)
 
@@ -358,8 +409,17 @@ class TestDownloadYoutubeVideo(unittest.TestCase):
         videos_output_folder = tempfile.mkdtemp()
         rv = aprender.download_youtube_video(yt, video_id, videos_output_folder)
         self.assertTrue(rv)
-        self.assertTrue(yt.method_calls == [call.streams.get_by_itag(18), call.streams.filter(file_extension='mp4', progressive=True, res='360p')])
-        self.assertTrue(call.streams.filter().first().download(videos_output_folder, 'oPEirA4pXdg') in yt.mock_calls)
+        self.assertTrue(
+            yt.method_calls
+            == [
+                call.streams.get_by_itag(18),
+                call.streams.filter(file_extension="mp4", progressive=True, res="360p"),
+            ]
+        )
+        self.assertTrue(
+            call.streams.filter().first().download(videos_output_folder, "oPEirA4pXdg")
+            in yt.mock_calls
+        )
         # Delete the temporary folder
         shutil.rmtree(videos_output_folder)
 
@@ -370,11 +430,14 @@ class TestDownloadYoutubeVideo(unittest.TestCase):
         yt = MagicMock()
         video_id = "NzpNsbX3uC4"
         videos_output_folder = tempfile.mkdtemp()
-        with self.assertLogs(level='ERROR') as cm:
+        with self.assertLogs(level="ERROR") as cm:
             rv = aprender.download_youtube_video(yt, video_id, videos_output_folder)
         # Confirm that an HTTPError was raised
         self.assertFalse(rv)
-        self.assertEqual(cm.output, ['ERROR:root:An HTTP error 403 occurred with reason: Forbidden'])
+        self.assertEqual(
+            cm.output,
+            ["ERROR:aprender:An HTTP error 403 occurred with reason: Forbidden"],
+        )
         # Delete the temporary folder
         shutil.rmtree(videos_output_folder)
 
@@ -402,7 +465,9 @@ class TestGenerateNewTutorialInfo(unittest.TestCase):
     "videos_full_tutorial": [],
     "full_version": "q6cUzC6ESZ8"
   }"""
-        new_tutorial_info = aprender.generate_new_tutorial_info(tutorial_slug, song_author, song_title, tutorial_id, full_video_id)
+        new_tutorial_info = aprender.generate_new_tutorial_info(
+            tutorial_slug, song_author, song_title, tutorial_id, full_video_id
+        )
         self.assertEqual(new_tutorial_info, expected_output)
 
 
@@ -423,14 +488,18 @@ class TestUpdateTutorialesDataFile(unittest.TestCase):
     "videos_full_tutorial": [],
     "full_version": "q6cUzC6ESZ8"
   }"""
-        new_tutorial_info = aprender.generate_new_tutorial_info(tutorial_slug, song_author, song_title, tutorial_id, full_video_id)
+        new_tutorial_info = aprender.generate_new_tutorial_info(
+            tutorial_slug, song_author, song_title, tutorial_id, full_video_id
+        )
         self.assertEqual(new_tutorial_info, expected_output)
         # Copy the content of the tutoriales data file to a new temporary file
-        (ignore, temp_tutoriales_data_file) = tempfile.mkstemp()
+        (_ignore, temp_tutoriales_data_file) = tempfile.mkstemp()
         shutil.copy(aprender.TUTORIALES_DATA_FILE, temp_tutoriales_data_file)
-        aprender.update_tutoriales_data_file(temp_tutoriales_data_file, new_tutorial_info)
+        aprender.update_tutoriales_data_file(
+            temp_tutoriales_data_file, new_tutorial_info
+        )
         # Confirm that the list of tutorials has been updated
-        with open(temp_tutoriales_data_file, 'r') as file :
+        with open(temp_tutoriales_data_file, "r") as file:
             filedata = file.read()
         self.assertTrue(new_tutorial_info in filedata)
         # Delete the temporary file
@@ -446,15 +515,31 @@ class TestUpdateIndexPage(unittest.TestCase):
         tutocreator_channel = "UC_8R235jg1ld6MCMOzz2khQ"
         tutocreator = "El Vallenatero Francés"
         # Create a copy of the index.html file that is going to be edited
-        shutil.copy("../website/src/aprender/index.html", "../website/src/aprender/index.html.bak")
-        aprender.update_index_page(tutorial_slug, song_title, song_author, tutorial_url, tutocreator_channel, tutocreator)
+        shutil.copy(
+            "../website/src/aprender/index.html",
+            "../website/src/aprender/index.html.bak",
+        )
+        aprender.update_index_page(
+            tutorial_slug,
+            song_title,
+            song_author,
+            tutorial_url,
+            tutocreator_channel,
+            tutocreator,
+        )
         # Confirm that the index page has been updated
-        with open("../website/src/aprender/index.html", 'r') as file :
+        with open("../website/src/aprender/index.html", "r") as file:
             filedata = file.read()
-            self.assertTrue('</a></li>\n              <li>Bonita cancion - Super cantante: <a href="https://www.youtube.com/watch?v=oPEirA4pXdg">Tutorial en YouTube</a> por <a href="https://www.youtube.com/channel/UC_8R235jg1ld6MCMOzz2khQ">El Vallenatero Francés</a></li>\n            </ul>' in filedata)
+            self.assertTrue(
+                '</a></li>\n              <li>Bonita cancion - Super cantante: <a href="https://www.youtube.com/watch?v=oPEirA4pXdg">Tutorial en YouTube</a> por <a href="https://www.youtube.com/channel/UC_8R235jg1ld6MCMOzz2khQ">El Vallenatero Francés</a></li>\n            </ul>'
+                in filedata
+            )
         # Restore the index page
         os.remove("../website/src/aprender/index.html")
-        shutil.move("../website/src/aprender/index.html.bak", "../website/src/aprender/index.html")
+        shutil.move(
+            "../website/src/aprender/index.html.bak",
+            "../website/src/aprender/index.html",
+        )
 
 
 class TestAprender(unittest.TestCase):
@@ -471,52 +556,72 @@ class TestAprender(unittest.TestCase):
         mock_raw_input_values = [
             "http://www.youtube.com/watch?v=oPEirA4pXdg",
             "https://www.youtube.com/watch?v=q6cUzC6ESZ8",
-            "blabla-bla"
+            "blabla-bla",
         ]
         # Define the expected return value for aprender.get_title_author_tutocreator_and_channel
         # This prevents lengthy network operations
         yt_tutorial_video = MagicMock()
-        a_gtatac.return_value = ("Bonita cancion", "Super cantante", "El Vallenatero Francés", "UC_8R235jg1ld6MCMOzz2khQ", yt_tutorial_video)
+        a_gtatac.return_value = (
+            "Bonita cancion",
+            "Super cantante",
+            "El Vallenatero Francés",
+            "UC_8R235jg1ld6MCMOzz2khQ",
+            yt_tutorial_video,
+        )
         # Run the main --aprender code branch
-        args = target.parse_args(['--aprender', "--temp-folder", "--no-download"])
+        args = target.parse_args(["--aprender", "--temp-folder", "--no-download"])
         aprender.aprender(args)
         # Confirm that the info of the new template has been added to the templates data file
-  #       #TODO use the actual temp file that was updated
-  #       temp_tutoriales_data_file = aprender.TUTORIALES_DATA_FILE
-  #       expected_new_tutorial_info = """{
-  #   "slug": "blabla-bla",
-  #   "author": "Super cantante",
-  #   "title": "Bonita cancion",
-  #   "videos": [
-  #     {"id": "oPEirA4pXdg", "start": 0, "end": 999}
-  #   ],
-  #   "videos_full_tutorial": [],
-  #   "full_version": "q6cUzC6ESZ8"
-  # }"""
-  #       # Confirm that the list of tutorials has been updated
-  #       with open(temp_tutoriales_data_file, 'r') as file :
-  #           filedata = file.read()
-  #       self.assertTrue(expected_new_tutorial_info in filedata)
+        #       #TODO use the actual temp file that was updated
+        #       temp_tutoriales_data_file = aprender.TUTORIALES_DATA_FILE
+        #       expected_new_tutorial_info = """{
+        #   "slug": "blabla-bla",
+        #   "author": "Super cantante",
+        #   "title": "Bonita cancion",
+        #   "videos": [
+        #     {"id": "oPEirA4pXdg", "start": 0, "end": 999}
+        #   ],
+        #   "videos_full_tutorial": [],
+        #   "full_version": "q6cUzC6ESZ8"
+        # }"""
+        #       # Confirm that the list of tutorials has been updated
+        #       with open(temp_tutoriales_data_file, 'r') as file :
+        #           filedata = file.read()
+        #       self.assertTrue(expected_new_tutorial_info in filedata)
         # Confirm that a temporary file with the content to be added to the index page has been created
-        with open("../website/src/aprender/temp/blabla-bla/index-dummy.html", 'r') as file :
+        with open(
+            "../website/src/aprender/temp/blabla-bla/index-dummy.html", "r"
+        ) as file:
             filedata = file.read()
-            self.assertTrue("""              <div class="card mb-3" style="max-width: 17rem;">
+            self.assertTrue(
+                """              <div class="card mb-3" style="max-width: 17rem;">
                 <div class="card-body">
                   <h5 class="card-title">Bonita cancion - Super cantante</h5>
                   <a href="blabla-bla" class="stretched-link text-hide">Ver el tutorial</a>
                 </div>
                 <div class="card-footer"><small class="text-muted">NNmNNs en NN partes</small></div>
-              </div>""" in filedata)
-            self.assertTrue('\n              <li>Bonita cancion - Super cantante: <a href="https://www.youtube.com/watch?v=oPEirA4pXdg">Tutorial en YouTube</a> por <a href="https://www.youtube.com/channel/UC_8R235jg1ld6MCMOzz2khQ">El Vallenatero Francés</a></li>' in filedata)
+              </div>"""
+                in filedata
+            )
+            self.assertTrue(
+                '\n              <li>Bonita cancion - Super cantante: <a href="https://www.youtube.com/watch?v=oPEirA4pXdg">Tutorial en YouTube</a> por <a href="https://www.youtube.com/channel/UC_8R235jg1ld6MCMOzz2khQ">El Vallenatero Francés</a></li>'
+                in filedata
+            )
         # Delete the temporary folder
         shutil.rmtree("../website/src/aprender/temp/blabla-bla/")
         # Confirm the webbrowser is called to be opened to the new template's page
-        mockwbopen.assert_called_once_with("http://localhost:8000/aprender/?new_tutorial=blabla-bla", autoraise=True, new=2)
+        mockwbopen.assert_called_once_with(
+            "http://localhost:8000/aprender/?new_tutorial=blabla-bla",
+            autoraise=True,
+            new=2,
+        )
 
     @patch("aprender.get_title_author_tutocreator_and_channel")
     @patch("aprender.YouTube")
     @patch("webbrowser.open")
-    def test_init_main_aprender_temp_videos_output_folder_doesnt_exist(self, mockwbopen, a_yt, a_gtatac):
+    def test_init_main_aprender_temp_videos_output_folder_doesnt_exist(
+        self, mockwbopen, a_yt, a_gtatac
+    ):
         """
         Test the full --aprender branch, with --temp-folder when the temporary folder to host the downloaded videos doesn't exist yet
         """
@@ -527,18 +632,26 @@ class TestAprender(unittest.TestCase):
         mock_raw_input_values = [
             "http://www.youtube.com/watch?v=oPEirA4pXdg",
             "https://www.youtube.com/watch?v=q6cUzC6ESZ8",
-            "blabla-bla"
+            "blabla-bla",
         ]
         # Define the expected return value for aprender.get_title_author_tutocreator_and_channel
         # This prevents lengthy network operations
         yt_tutorial_video = MagicMock()
-        a_gtatac.return_value = ("Bonita cancion", "Super cantante", "El Vallenatero Francés", "UC_8R235jg1ld6MCMOzz2khQ", yt_tutorial_video)
+        a_gtatac.return_value = (
+            "Bonita cancion",
+            "Super cantante",
+            "El Vallenatero Francés",
+            "UC_8R235jg1ld6MCMOzz2khQ",
+            yt_tutorial_video,
+        )
         # Make sure the temporary folder to host the downloaded videos doesn't exist
-        videos_output_folder = "../website/src/aprender/temp/blabla-bla/videos/blabla-bla"
+        videos_output_folder = (
+            "../website/src/aprender/temp/blabla-bla/videos/blabla-bla"
+        )
         if os.path.exists(videos_output_folder):
             shutil.rmtree(videos_output_folder)
         # Run the main --aprender code branch
-        args = target.parse_args(['--aprender', "--temp-folder"])
+        args = target.parse_args(["--aprender", "--temp-folder"])
         aprender.aprender(args)
         # Confirm that the new temporary folder has been created to host the downloaded videos
         self.assertTrue(os.path.exists(videos_output_folder))
@@ -546,5 +659,5 @@ class TestAprender(unittest.TestCase):
         shutil.rmtree("../website/src/aprender/temp/blabla-bla/")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

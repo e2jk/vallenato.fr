@@ -1,0 +1,19 @@
+[tool.ruff]
+target-version = "py312"
+
+[tool.ruff.lint]
+ignore = [
+    # flake8-datetimez (DTZ*): the two date.today() calls in website.py
+    # compute a human-readable "years since Navidad 2017" stats blurb and
+    # the footer's copyright year — both deliberately mean "today's local
+    # calendar date", not a UTC instant, so a timezone-aware datetime
+    # wouldn't change anything here but would add noise.
+    "DTZ011",
+]
+
+[tool.bandit]
+exclude_dirs = ["tests"]
+
+[tool.mypy]
+python_version = "3.12"
+ignore_missing_imports = true

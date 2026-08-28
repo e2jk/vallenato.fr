@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 #    This file is part of Vallenato.fr.
 #
 #    Vallenato.fr is free software: you can redistribute it and/or modify
@@ -16,20 +13,25 @@
 #    You should have received a copy of the GNU Affero General Public License
 #    along with Vallenato.fr.  If not, see <http://www.gnu.org/licenses/>.
 
+import datetime
+import json
 import logging
 import os
-import sys
-import json
-import shutil
-from slugify import slugify
-import sitemap.generator as generator
 import re
-import datetime
+import shutil
+import sys
 
-from youtube import HttpError
-from youtube import yt_get_authenticated_service
-from youtube import yt_get_my_uploads_list
-from youtube import yt_list_my_uploaded_videos
+from sitemap import generator
+from slugify import slugify
+
+from youtube import (
+    HttpError,
+    yt_get_authenticated_service,
+    yt_get_my_uploads_list,
+    yt_list_my_uploaded_videos,
+)
+
+logger = logging.getLogger(__name__)
 
 # File that can contain the data downloaded from YouTube
 UPLOADED_VIDEOS_DUMP_FILE = "data/uploaded_videos_dump.json"
@@ -56,15 +58,18 @@ def get_dumped_uploaded_videos(dump_file):
             uploaded_videos = json.load(in_file)
     return uploaded_videos
 
+
 def save_uploaded_videos(uploaded_videos, dump_file):
-    with open(dump_file, 'w') as out_file:
+    with open(dump_file, "w") as out_file:
         json.dump(uploaded_videos, out_file, sort_keys=True, indent=2)
 
+
 def determine_videos_slug(uploaded_videos):
-    logging.debug("Determining each video's slug...")
+    logger.debug("Determining each video's slug...")
     for vid in uploaded_videos:
         vid["slug"] = slugify(vid["title"]).replace("-desde-", "-")
     return uploaded_videos
+
 
 def get_uploaded_videos(args, dump_file):
     uploaded_videos = get_dumped_uploaded_videos(dump_file)
@@ -74,13 +79,15 @@ def get_uploaded_videos(args, dump_file):
         try:
             uploads_playlist_id = yt_get_my_uploads_list(youtube)
             if uploads_playlist_id:
-                uploaded_videos = yt_list_my_uploaded_videos(uploads_playlist_id, youtube)
-                logging.debug("Uploaded videos: %s" % uploaded_videos)
+                uploaded_videos = yt_list_my_uploaded_videos(
+                    uploads_playlist_id, youtube
+                )
+                logger.debug(f"Uploaded videos: {uploaded_videos}")
             else:
-                logging.info('There is no uploaded videos playlist for this user.')
+                logger.info("There is no uploaded videos playlist for this user.")
         except HttpError as e:
-            logging.debug('An HTTP error %d occurred:\n%s' % (e.resp.status, e.content))
-            logging.critical("Exiting...")
+            logger.debug(f"An HTTP error {e.resp.status} occurred:\n{e.content}")
+            logger.critical("Exiting...")
             sys.exit(19)
         # Create a slug for each video (to be used for the website URLs)
         uploaded_videos = determine_videos_slug(uploaded_videos)
@@ -88,8 +95,9 @@ def get_uploaded_videos(args, dump_file):
             save_uploaded_videos(uploaded_videos, dump_file)
     return uploaded_videos
 
+
 def identify_locations_names(uploaded_videos, location_special_cases_file, dump_file):
-    logging.debug("Identify each video's location name")
+    logger.debug("Identify each video's location name")
     with open(location_special_cases_file) as in_file:
         special_cases = json.load(in_file)
     locations = {}
@@ -104,95 +112,115 @@ def identify_locations_names(uploaded_videos, location_special_cases_file, dump_
         # The script is going to exit, to prevent unnecessary downloading from
         # YouTube again, save the downloaded information regardless of the
         # --dump_uploaded_videos parameter
-        logging.warning("Dumping the list of uploaded videos from YouTube to the '%s' file, so as not to have to download it again after you have edited the '%s' file." % (dump_file, location_special_cases_file))
+        logger.warning(
+            f"Dumping the list of uploaded videos from YouTube to the '{dump_file}' file, so as not to have to download it again after you have edited the '{location_special_cases_file}' file."
+        )
         save_uploaded_videos(uploaded_videos, dump_file)
-        logging.critical("Please add the new/missing location to the file '%s'. Exiting..." % location_special_cases_file)
+        logger.critical(
+            f"Please add the new/missing location to the file '{location_special_cases_file}'. Exiting..."
+        )
         sys.exit(20)
-    logging.info("Found %d different location name." % len(locations))
+    logger.info(f"Found {len(locations)} different location name.")
     return (uploaded_videos, locations)
+
 
 def identify_single_location_name(vid, special_cases):
     location = None
     if vid["id"] in special_cases:
         location = special_cases[vid["id"]]
-        logging.debug("Video %s, location '%s'" % (vid["id"], location))
+        logger.debug("Video {}, location '{}'".format(vid["id"], location))
     else:
         for search_string in (", desde ", ", cerca de "):
             loc_index = vid["title"].find(search_string)
             if loc_index > 0:
-                location = vid["title"][loc_index + len(search_string):]
-                logging.debug("Video %s, location '%s'" % (vid["id"], location))
+                location = vid["title"][loc_index + len(search_string) :]
+                logger.debug("Video {}, location '{}'".format(vid["id"], location))
                 break
 
     # Each video should now have a location identified. If not, this will end the script.
     if not location:
-        logging.critical("No Location found for %s, '%s'" % (vid["id"], vid["title"]))
+        logger.critical(
+            "No Location found for {}, '{}'".format(vid["id"], vid["title"])
+        )
     return location
 
+
 def determine_geolocation(locations, geolocations_file):
-    logging.debug("Searching geolocation for %d locations..." % len(locations))
+    logger.debug(f"Searching geolocation for {len(locations)} locations...")
     # Load the list of saved geolocations
     with open(geolocations_file) as in_file:
         geolocations = json.load(in_file)
     incomplete_geolocations = 0
     for l in locations:
-        if l in geolocations and geolocations[l]["latitude"] and geolocations[l]["longitude"]:
-            logging.debug("Geolocation found for %s: lat %f, lon %f" % (l, geolocations[l]["latitude"], geolocations[l]["longitude"]))
+        if (
+            l in geolocations
+            and geolocations[l]["latitude"]
+            and geolocations[l]["longitude"]
+        ):
+            logger.debug(
+                "Geolocation found for {}: lat {:f}, lon {:f}".format(
+                    l, geolocations[l]["latitude"], geolocations[l]["longitude"]
+                )
+            )
             locations[l]["latitude"] = geolocations[l]["latitude"]
             locations[l]["longitude"] = geolocations[l]["longitude"]
         else:
-            logging.critical("No geolocation found for %s." % l)
-            #TODO: Search and suggest a geolocation
+            logger.critical(f"No geolocation found for {l}.")
+            # TODO: Search and suggest a geolocation
             geolocations[l] = {"latitude": None, "longitude": None}
             incomplete_geolocations += 1
 
     if incomplete_geolocations > 0:
-        #Save the geolocations_file file with the placeholders for the unknown latitude and longitude
-        with open(geolocations_file, 'w') as out_file:
+        # Save the geolocations_file file with the placeholders for the unknown latitude and longitude
+        with open(geolocations_file, "w") as out_file:
             json.dump(geolocations, out_file, sort_keys=True, indent=2)
-        logging.critical("Please add the %d new/missing unknown latitude and longitude to the file '%s'. Exiting..." % (incomplete_geolocations, geolocations_file))
+        logger.critical(
+            f"Please add the {incomplete_geolocations} new/missing unknown latitude and longitude to the file '{geolocations_file}'. Exiting..."
+        )
         sys.exit(21)
 
-    logging.info("Found geolocation information for the %d locations." % len(locations))
+    logger.info(f"Found geolocation information for the {len(locations)} locations.")
     return locations
 
+
 def add_videos_to_locations_array(uploaded_videos, locations):
-    logging.debug("Adding videos in each location array...")
+    logger.debug("Adding videos in each location array...")
     for vid in uploaded_videos:
         if not "videos" in locations[vid["location"]]:
             locations[vid["location"]]["videos"] = []
         locations[vid["location"]]["videos"].append(vid)
     return locations
 
+
 def determine_locations_slug(locations):
-    logging.debug("Determining each location's slug...")
+    logger.debug("Determining each location's slug...")
     for loc in locations:
         locations[loc]["slug"] = slugify(loc)
     return locations
 
+
 def save_website_data(locations, website_data_file):
-    logging.debug("Save the updated dynamic data")
+    logger.debug("Save the updated dynamic data")
     json_content = json.dumps(locations, sort_keys=True, indent=2)
     # Make it JS (and not just JSON) for direct use in the HTML document
-    js_content = "var locations = %s;" % json_content
-    with open(website_data_file, 'w') as out_file:
+    js_content = f"var locations = {json_content};"
+    with open(website_data_file, "w") as out_file:
         out_file.write(js_content)
+
 
 def ignored_files_in_prod(adir, filenames):
     ignored_files = []
     if "../website/src" == adir:
         ignored_files = [
-            'bootstrap-%s-dist' % BOOTSTRAP_VERSION,
-            'bootstrap4-toggle-%s' % BOOTSTRAP_TOGGLE_VERSION,
-            'jquery-%s.slim.min.js' % JQUERY_VERSION,
-            'leaflet'
+            f"bootstrap-{BOOTSTRAP_VERSION}-dist",
+            f"bootstrap4-toggle-{BOOTSTRAP_TOGGLE_VERSION}",
+            f"jquery-{JQUERY_VERSION}.slim.min.js",
+            "leaflet",
         ]
     if "../website/src/aprender" == adir:
-        ignored_files = [
-            'temp',
-            'videos'
-        ]
+        ignored_files = ["temp", "videos"]
     return [filename for filename in filenames if filename in ignored_files]
+
 
 def get_stats(locations, uploaded_videos):
     num_videos = len(uploaded_videos)
@@ -217,20 +245,20 @@ def get_stats(locations, uploaded_videos):
     navidad_2017 = datetime.date(2017, 12, 25)
     today = datetime.date.today()
     years = today.year - navidad_2017.year
-    if today.month  == 12: # December
-        duration_since_navidad_2017 = "%d años" % years
-    elif today.month  == 1: # January
-        duration_since_navidad_2017 = "%d años" % (years - 1)
+    if today.month == 12:  # December
+        duration_since_navidad_2017 = f"{years} años"
+    elif today.month == 1:  # January
+        duration_since_navidad_2017 = f"{years - 1} años"
     else:
-        duration_since_navidad_2017 = "%d años y %d meses" % (years - 1, today.month)
+        duration_since_navidad_2017 = f"{years - 1} años y {today.month} meses"
 
-    stats = "El Vallenatero Francés les presenta %d videos de %d canciones tocadas en %d lugares de %d paises. El empezo a aprender el Acordeón Vallenato en la Navidad 2017 (hace mas o menos %s)." % \
-        (num_videos, num_songs, num_places, num_countries, duration_since_navidad_2017)
+    stats = f"El Vallenatero Francés les presenta {num_videos} videos de {num_songs} canciones tocadas en {num_places} lugares de {num_countries} paises. El empezo a aprender el Acordeón Vallenato en la Navidad 2017 (hace mas o menos {duration_since_navidad_2017})."
 
     return stats
 
+
 def generate_website(locations, uploaded_videos):
-    logging.debug("Generate the production website files")
+    logger.debug("Generate the production website files")
     input_src_folder = "../website/src"
     output_prod_folder = "../website/prod"
     # The 2 index files in / and /aprender,  404
@@ -242,11 +270,13 @@ def generate_website(locations, uploaded_videos):
 
     # Update statistics
     stats = get_stats(locations, uploaded_videos)
-    index_src_file = "%s/index.html" % input_src_folder
-    with open(index_src_file, 'r') as file :
+    index_src_file = f"{input_src_folder}/index.html"
+    with open(index_src_file, "r") as file:
         index_data = file.read()
-    index_data = re.sub('<div id="stats">.*</div>', '<div id="stats">%s</div>' % stats, index_data)
-    with open(index_src_file, 'w') as file:
+    index_data = re.sub(
+        '<div id="stats">.*</div>', f'<div id="stats">{stats}</div>', index_data
+    )
+    with open(index_src_file, "w") as file:
         file.write(index_data)
 
     # Update the values accordingly for prod
@@ -260,214 +290,233 @@ def generate_website(locations, uploaded_videos):
 
     # Create hard links for the videos in the prod folder
     # (hard links can only be created for files, need to recreate the folder structure)
-    os.mkdir("%s/aprender/videos" % output_prod_folder)
-    for d in os.listdir("%s/aprender/videos" % input_src_folder):
+    os.mkdir(f"{output_prod_folder}/aprender/videos")
+    for d in os.listdir(f"{input_src_folder}/aprender/videos"):
         if d not in ["TODO", "blabla-bla"]:
             # Create a folder for that tutorial's video files
-            #TODO: copy folder without content in order to keep the original folder's
+            # TODO: copy folder without content in order to keep the original folder's
             # creation date, in order to not confuse the rsync upload process
-            os.mkdir("%s/aprender/videos/%s" % (output_prod_folder, d))
-            for f in os.listdir("%s/aprender/videos/%s" % (input_src_folder, d)):
+            os.mkdir(f"{output_prod_folder}/aprender/videos/{d}")
+            for f in os.listdir(f"{input_src_folder}/aprender/videos/{d}"):
                 # Create a hard link to the video file
-                os.link("%s/aprender/videos/%s/%s" % (input_src_folder, d, f),
-                        "%s/aprender/videos/%s/%s" % (output_prod_folder, d, f))
+                os.link(
+                    f"{input_src_folder}/aprender/videos/{d}/{f}",
+                    f"{output_prod_folder}/aprender/videos/{d}/{f}",
+                )
 
     # Update links to leaflet (CDN)
     # Read the prod files
-    with open("%s/index.html" % output_prod_folder, 'r') as file :
+    with open(f"{output_prod_folder}/index.html", "r") as file:
         index_data = file.read()
-    with open("%s/404.html" % output_prod_folder, 'r') as file :
+    with open(f"{output_prod_folder}/404.html", "r") as file:
         page404_data = file.read()
-    with open("%s/aprender/index.html" % output_prod_folder, 'r') as file :
+    with open(f"{output_prod_folder}/aprender/index.html", "r") as file:
         index_aprender_data = file.read()
     # Replace the target strings
     # Leaflet
     index_data = index_data.replace(
-        '<link rel="stylesheet" href="leaflet/%s/leaflet.css">' % LEAFLET_VERSION,
-        '<link rel="stylesheet" href="https://unpkg.com/leaflet@%s/dist/leaflet.css"\n        integrity="sha512-Zcn6bjR/8RZbLEpLIeOwNtzREBAJnUKESxces60Mpoj+2okopSAcSUIUOseddDm0cxnGQzxIR7vJgsLZbdLE3w=="\n        crossorigin=""/>' % LEAFLET_VERSION)
+        f'<link rel="stylesheet" href="leaflet/{LEAFLET_VERSION}/leaflet.css">',
+        f'<link rel="stylesheet" href="https://unpkg.com/leaflet@{LEAFLET_VERSION}/dist/leaflet.css"\n        integrity="sha512-Zcn6bjR/8RZbLEpLIeOwNtzREBAJnUKESxces60Mpoj+2okopSAcSUIUOseddDm0cxnGQzxIR7vJgsLZbdLE3w=="\n        crossorigin=""/>',
+    )
     index_data = index_data.replace(
-        '<script type = "text/javascript" src="leaflet/%s/leaflet.js"></script>' % LEAFLET_VERSION,
-        '<script src="https://unpkg.com/leaflet@%s/dist/leaflet.js"\n        integrity="sha512-BwHfrr4c9kmRkLw6iXFdzcdWV/PGkVgiIyIWLLlTSXzWQzxuSg4DiQUCpauz/EWjgk5TYQqX/kvn9pG1NpYfqg=="\n        crossorigin="">\n    </script>' % LEAFLET_VERSION)
+        f'<script type = "text/javascript" src="leaflet/{LEAFLET_VERSION}/leaflet.js"></script>',
+        f'<script src="https://unpkg.com/leaflet@{LEAFLET_VERSION}/dist/leaflet.js"\n        integrity="sha512-BwHfrr4c9kmRkLw6iXFdzcdWV/PGkVgiIyIWLLlTSXzWQzxuSg4DiQUCpauz/EWjgk5TYQqX/kvn9pG1NpYfqg=="\n        crossorigin="">\n    </script>',
+    )
     # Bootstrap
     index_data = index_data.replace(
-        '<link rel="stylesheet" href="bootstrap-%s-dist/css/bootstrap.min.css">' % BOOTSTRAP_VERSION,
-        '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@%s/dist/css/bootstrap.min.css"\n        integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"\n        crossorigin="anonymous">' % BOOTSTRAP_VERSION)
+        f'<link rel="stylesheet" href="bootstrap-{BOOTSTRAP_VERSION}-dist/css/bootstrap.min.css">',
+        f'<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@{BOOTSTRAP_VERSION}/dist/css/bootstrap.min.css"\n        integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"\n        crossorigin="anonymous">',
+    )
     index_data = index_data.replace(
-        '<script src="bootstrap-%s-dist/js/bootstrap.min.js"></script>' % BOOTSTRAP_VERSION,
-        '<script src="https://cdn.jsdelivr.net/npm/bootstrap@%s/dist/js/bootstrap.min.js"\n        integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+"\n        crossorigin="anonymous"></script>' % BOOTSTRAP_VERSION)
+        f'<script src="bootstrap-{BOOTSTRAP_VERSION}-dist/js/bootstrap.min.js"></script>',
+        f'<script src="https://cdn.jsdelivr.net/npm/bootstrap@{BOOTSTRAP_VERSION}/dist/js/bootstrap.min.js"\n        integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+"\n        crossorigin="anonymous"></script>',
+    )
     page404_data = page404_data.replace(
-        '<link rel="stylesheet" href="bootstrap-%s-dist/css/bootstrap.min.css">' % BOOTSTRAP_VERSION,
-        '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@%s/dist/css/bootstrap.min.css"\n        integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"\n        crossorigin="anonymous">' % BOOTSTRAP_VERSION)
+        f'<link rel="stylesheet" href="bootstrap-{BOOTSTRAP_VERSION}-dist/css/bootstrap.min.css">',
+        f'<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@{BOOTSTRAP_VERSION}/dist/css/bootstrap.min.css"\n        integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"\n        crossorigin="anonymous">',
+    )
     page404_data = page404_data.replace(
-        '<script src="bootstrap-%s-dist/js/bootstrap.min.js"></script>' % BOOTSTRAP_VERSION,
-        '<script src="https://cdn.jsdelivr.net/npm/bootstrap@%s/dist/js/bootstrap.min.js"\n        integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+"\n        crossorigin="anonymous"></script>' % BOOTSTRAP_VERSION)
+        f'<script src="bootstrap-{BOOTSTRAP_VERSION}-dist/js/bootstrap.min.js"></script>',
+        f'<script src="https://cdn.jsdelivr.net/npm/bootstrap@{BOOTSTRAP_VERSION}/dist/js/bootstrap.min.js"\n        integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+"\n        crossorigin="anonymous"></script>',
+    )
     index_aprender_data = index_aprender_data.replace(
-        '<link rel="stylesheet" href="../bootstrap-%s-dist/css/bootstrap.min.css">' % BOOTSTRAP_VERSION,
-        '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@%s/dist/css/bootstrap.min.css"\n        integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"\n        crossorigin="anonymous">' % BOOTSTRAP_VERSION)
+        f'<link rel="stylesheet" href="../bootstrap-{BOOTSTRAP_VERSION}-dist/css/bootstrap.min.css">',
+        f'<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@{BOOTSTRAP_VERSION}/dist/css/bootstrap.min.css"\n        integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"\n        crossorigin="anonymous">',
+    )
     index_aprender_data = index_aprender_data.replace(
-        '<script src="../bootstrap-%s-dist/js/bootstrap.min.js"></script>' % BOOTSTRAP_VERSION,
-        '<script src="https://cdn.jsdelivr.net/npm/bootstrap@%s/dist/js/bootstrap.min.js"\n        integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+"\n        crossorigin="anonymous"></script>' % BOOTSTRAP_VERSION)
+        f'<script src="../bootstrap-{BOOTSTRAP_VERSION}-dist/js/bootstrap.min.js"></script>',
+        f'<script src="https://cdn.jsdelivr.net/npm/bootstrap@{BOOTSTRAP_VERSION}/dist/js/bootstrap.min.js"\n        integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+"\n        crossorigin="anonymous"></script>',
+    )
     # jQuery (for Bootstrap)
     index_data = index_data.replace(
-        '<script src="jquery-%s.slim.min.js"></script>' % JQUERY_VERSION,
-        '<script src="https://code.jquery.com/jquery-%s.slim.min.js"\n        integrity="sha384-5AkRS45j4ukf+JbWAfHL8P4onPA9p0KwwP7pUdjSQA3ss9edbJUJc/XcYAiheSSz"\n        crossorigin="anonymous"></script>' % JQUERY_VERSION)
+        f'<script src="jquery-{JQUERY_VERSION}.slim.min.js"></script>',
+        f'<script src="https://code.jquery.com/jquery-{JQUERY_VERSION}.slim.min.js"\n        integrity="sha384-5AkRS45j4ukf+JbWAfHL8P4onPA9p0KwwP7pUdjSQA3ss9edbJUJc/XcYAiheSSz"\n        crossorigin="anonymous"></script>',
+    )
     page404_data = page404_data.replace(
-        '<script src="jquery-%s.slim.min.js"></script>' % JQUERY_VERSION,
-        '<script src="https://code.jquery.com/jquery-%s.slim.min.js"\n        integrity="sha384-5AkRS45j4ukf+JbWAfHL8P4onPA9p0KwwP7pUdjSQA3ss9edbJUJc/XcYAiheSSz"\n        crossorigin="anonymous"></script>' % JQUERY_VERSION)
+        f'<script src="jquery-{JQUERY_VERSION}.slim.min.js"></script>',
+        f'<script src="https://code.jquery.com/jquery-{JQUERY_VERSION}.slim.min.js"\n        integrity="sha384-5AkRS45j4ukf+JbWAfHL8P4onPA9p0KwwP7pUdjSQA3ss9edbJUJc/XcYAiheSSz"\n        crossorigin="anonymous"></script>',
+    )
     index_aprender_data = index_aprender_data.replace(
-        '<script src="../jquery-%s.slim.min.js"></script>' % JQUERY_VERSION,
-        '<script src="https://code.jquery.com/jquery-%s.slim.min.js"\n        integrity="sha384-5AkRS45j4ukf+JbWAfHL8P4onPA9p0KwwP7pUdjSQA3ss9edbJUJc/XcYAiheSSz"\n        crossorigin="anonymous"></script>' % JQUERY_VERSION)
+        f'<script src="../jquery-{JQUERY_VERSION}.slim.min.js"></script>',
+        f'<script src="https://code.jquery.com/jquery-{JQUERY_VERSION}.slim.min.js"\n        integrity="sha384-5AkRS45j4ukf+JbWAfHL8P4onPA9p0KwwP7pUdjSQA3ss9edbJUJc/XcYAiheSSz"\n        crossorigin="anonymous"></script>',
+    )
     # Bootstrap-toggle
     index_aprender_data = index_aprender_data.replace(
-        '<link rel="stylesheet" href="../bootstrap4-toggle-%s/css/bootstrap4-toggle.min.css">' % BOOTSTRAP_TOGGLE_VERSION,
-        '<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@%s/css/bootstrap4-toggle.min.css"\n        integrity="sha384-yakM86Cz9KJ6CeFVbopALOEQGGvyBFdmA4oHMiYuHcd9L59pLkCEFSlr6M9m434E"\n        crossorigin="anonymous">' % BOOTSTRAP_TOGGLE_VERSION)
+        f'<link rel="stylesheet" href="../bootstrap4-toggle-{BOOTSTRAP_TOGGLE_VERSION}/css/bootstrap4-toggle.min.css">',
+        f'<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@{BOOTSTRAP_TOGGLE_VERSION}/css/bootstrap4-toggle.min.css"\n        integrity="sha384-yakM86Cz9KJ6CeFVbopALOEQGGvyBFdmA4oHMiYuHcd9L59pLkCEFSlr6M9m434E"\n        crossorigin="anonymous">',
+    )
     index_aprender_data = index_aprender_data.replace(
-        '<script src="../bootstrap4-toggle-%s/js/bootstrap4-toggle.min.js"></script>' % BOOTSTRAP_TOGGLE_VERSION,
-        '<script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@%s/js/bootstrap4-toggle.min.js"\n        integrity="sha384-Q9RsZ4GMzjlu4FFkJw4No9Hvvm958HqHmXI9nqo5Np2dA/uOVBvKVxAvlBQrDhk4"\n        crossorigin="anonymous"></script>' % BOOTSTRAP_TOGGLE_VERSION)
+        f'<script src="../bootstrap4-toggle-{BOOTSTRAP_TOGGLE_VERSION}/js/bootstrap4-toggle.min.js"></script>',
+        f'<script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@{BOOTSTRAP_TOGGLE_VERSION}/js/bootstrap4-toggle.min.js"\n        integrity="sha384-Q9RsZ4GMzjlu4FFkJw4No9Hvvm958HqHmXI9nqo5Np2dA/uOVBvKVxAvlBQrDhk4"\n        crossorigin="anonymous"></script>',
+    )
     # Copyright year in the pages' footer
     a = '<span class="text-muted">&copy; YEAR El Vallenatero Francés</span>'
-    b = '<span class="text-muted">&copy; %d El Vallenatero Francés</span>' % datetime.date.today().year
+    b = f'<span class="text-muted">&copy; {datetime.date.today().year} El Vallenatero Francés</span>'
     index_data = index_data.replace(a, b)
     page404_data = page404_data.replace(a, b)
     index_aprender_data = index_aprender_data.replace(a, b)
 
     # Save edited prod files
-    with open("%s/index.html" % output_prod_folder, 'w') as file:
+    with open(f"{output_prod_folder}/index.html", "w") as file:
         file.write(index_data)
-    with open("%s/404.html" % output_prod_folder, 'w') as file:
+    with open(f"{output_prod_folder}/404.html", "w") as file:
         file.write(page404_data)
-    with open("%s/aprender/index.html" % output_prod_folder, 'w') as file:
+    with open(f"{output_prod_folder}/aprender/index.html", "w") as file:
         file.write(index_aprender_data)
 
     # Create full HTML pages for Prod /aprender tutorials
     with open("../website/src/aprender/tutoriales.js") as in_file:
         # Remove the JS bits to keep only the JSON content
-        tutoriales_json_content = (in_file.read()[17:-2])
+        tutoriales_json_content = in_file.read()[17:-2]
         tutoriales = json.loads(tutoriales_json_content)
         num_html_pages_created += len(tutoriales)
     for t in tutoriales:
-        output_prod_tutorial_file = "%s/aprender/%s.html" % \
-            (output_prod_folder, t["slug"])
-        shutil.copy("%s/aprender/index.html" % output_prod_folder,
-            output_prod_tutorial_file)
-        with open(output_prod_tutorial_file, 'r') as file :
+        output_prod_tutorial_file = "{}/aprender/{}.html".format(
+            output_prod_folder, t["slug"]
+        )
+        shutil.copy(
+            f"{output_prod_folder}/aprender/index.html", output_prod_tutorial_file
+        )
+        with open(output_prod_tutorial_file, "r") as file:
             prod_tutorial_file_data = file.read()
         if t["author"]:
-            tuto_title = "%s - %s" % (t["title"], t["author"])
+            tuto_title = "{} - {}".format(t["title"], t["author"])
         else:
             tuto_title = t["title"]
         prod_tutorial_file_data = prod_tutorial_file_data.replace(
             "<title>Aprender a tocar el Acordeón Vallenato - El Vallenatero Francés</title>",
-            "<title>%s - Aprender a tocar el Acordeón Vallenato</title>" % tuto_title
+            f"<title>{tuto_title} - Aprender a tocar el Acordeón Vallenato</title>",
         )
         prod_tutorial_file_data = prod_tutorial_file_data.replace(
             '<h1 id="tutorialFullTitle">TITLE</h1>',
-            '<h1 id="tutorialFullTitle">%s</h1>' % tuto_title
+            f'<h1 id="tutorialFullTitle">{tuto_title}</h1>',
         )
-        with open(output_prod_tutorial_file, 'w') as file:
+        with open(output_prod_tutorial_file, "w") as file:
             file.write(prod_tutorial_file_data)
 
     # Create full HTML pages for Prod / videos
     with open("../website/src/data.js") as in_file:
         # Remove the JS bits to keep only the JSON content
-        videos_json_content = (in_file.read()[16:-1])
+        videos_json_content = in_file.read()[16:-1]
         locations = json.loads(videos_json_content)
         num_html_pages_created += len(locations)
     for l in locations:
         # One page for each location
-        output_prod_video_file = "%s/%s.html" % \
-            (output_prod_folder, locations[l]["slug"])
-        shutil.copy("%s/index.html" % output_prod_folder,
-            output_prod_video_file)
-        with open(output_prod_video_file, 'r') as file :
+        output_prod_video_file = "{}/{}.html".format(
+            output_prod_folder, locations[l]["slug"]
+        )
+        shutil.copy(f"{output_prod_folder}/index.html", output_prod_video_file)
+        with open(output_prod_video_file, "r") as file:
             prod_video_file_data = file.read()
         tuto_title = l
         prod_video_file_data = prod_video_file_data.replace(
             "<title>El Vallenatero Francés</title>",
-            "<title>%s - El Vallenatero Francés</title>" % tuto_title
+            f"<title>{tuto_title} - El Vallenatero Francés</title>",
         )
         prod_video_file_data = prod_video_file_data.replace(
-            '<h2 id="list_location"></h2>',
-            '<h2 id="list_location">%s</h2>' % tuto_title
+            '<h2 id="list_location"></h2>', f'<h2 id="list_location">{tuto_title}</h2>'
         )
-        with open(output_prod_video_file, 'w') as file:
+        with open(output_prod_video_file, "w") as file:
             file.write(prod_video_file_data)
 
         num_html_pages_created += len(locations[l]["videos"])
         for v in locations[l]["videos"]:
             # One page for each video at that location
             # Create folder
-            output_folder = "%s/%s" % (output_prod_folder, v["slug"])
+            output_folder = "{}/{}".format(output_prod_folder, v["slug"])
             if not os.path.isdir(output_folder):
                 os.mkdir(output_folder)
-            output_prod_video_file = "%s/%s.html" % \
-                (output_folder, v["id"])
-            shutil.copy("%s/index.html" % output_prod_folder,
-                output_prod_video_file)
-            with open(output_prod_video_file, 'r') as file :
+            output_prod_video_file = "{}/{}.html".format(output_folder, v["id"])
+            shutil.copy(f"{output_prod_folder}/index.html", output_prod_video_file)
+            with open(output_prod_video_file, "r") as file:
                 prod_video_file_data = file.read()
             tuto_title = v["title"]
             prod_video_file_data = prod_video_file_data.replace(
                 "<title>El Vallenatero Francés</title>",
-                "<title>%s - El Vallenatero Francés</title>" % tuto_title
+                f"<title>{tuto_title} - El Vallenatero Francés</title>",
             )
             prod_video_file_data = prod_video_file_data.replace(
                 '<h2 id="list_location"></h2>',
-                '<h2 id="list_location">%s</h2>' % tuto_title
+                f'<h2 id="list_location">{tuto_title}</h2>',
             )
-            with open(output_prod_video_file, 'w') as file:
+            with open(output_prod_video_file, "w") as file:
                 file.write(prod_video_file_data)
 
-    logging.debug("Number of production HTML files created: %d" % num_html_pages_created)
+    logger.debug(f"Number of production HTML files created: {num_html_pages_created}")
+
 
 def generate_sitemap(sitemap_file, locations, uploaded_videos):
-    logging.debug("Generate the Sitemap")
+    logger.debug("Generate the Sitemap")
     base_url = "https://vallenato.fr"
     sitemap = generator.Sitemap()
 
     # vallenato.fr index
-    sitemap.add(base_url,
-                # Timestamp of the most recently uploaded video
-                lastmod=uploaded_videos[0]["publishedAt"][:10],
-                changefreq="monthly",
-                priority="1.0")
+    sitemap.add(
+        base_url,
+        # Timestamp of the most recently uploaded video
+        lastmod=uploaded_videos[0]["publishedAt"][:10],
+        changefreq="monthly",
+        priority="1.0",
+    )
 
     # Locations and individual videos
-    sitemap.add("%s/mundo-entero" % base_url,
-                # Timestamp of the most recently uploaded video
-                lastmod=uploaded_videos[0]["publishedAt"][:10],
-                changefreq="monthly",
-                priority="0.8")
+    sitemap.add(
+        f"{base_url}/mundo-entero",
+        # Timestamp of the most recently uploaded video
+        lastmod=uploaded_videos[0]["publishedAt"][:10],
+        changefreq="monthly",
+        priority="0.8",
+    )
     for l in locations:
         # Locations
-        sitemap.add("%s/%s" % (base_url, locations[l]["slug"]),
-                    # Timestamp of the most recently uploaded video at that location
-                    lastmod=locations[l]["videos"][0]["publishedAt"][:10],
-                    changefreq="yearly",
-                    priority="0.6")
+        sitemap.add(
+            "{}/{}".format(base_url, locations[l]["slug"]),
+            # Timestamp of the most recently uploaded video at that location
+            lastmod=locations[l]["videos"][0]["publishedAt"][:10],
+            changefreq="yearly",
+            priority="0.6",
+        )
         for v in locations[l]["videos"]:
             # Individual videos
-            sitemap.add("%s/%s/%s" % (base_url, v["slug"], v["id"]),
-                        # Timestamp of that video
-                        lastmod=v["publishedAt"][:10],
-                        changefreq="yearly",
-                        priority="0.5")
+            sitemap.add(
+                "{}/{}/{}".format(base_url, v["slug"], v["id"]),
+                # Timestamp of that video
+                lastmod=v["publishedAt"][:10],
+                changefreq="yearly",
+                priority="0.5",
+            )
 
     # Aprender index
-    sitemap.add("%s/aprender/" % base_url,
-                changefreq="monthly",
-                priority="0.9")
+    sitemap.add(f"{base_url}/aprender/", changefreq="monthly", priority="0.9")
 
     # Aprender: individual tutorials
     with open("../website/src/aprender/tutoriales.js") as in_file:
         # Remove the JS bits to keep only the JSON content
-        tutoriales_json_content = (in_file.read()[17:-2])
+        tutoriales_json_content = in_file.read()[17:-2]
         tutoriales = json.loads(tutoriales_json_content)
     for t in tutoriales:
-        tuto_url = "%s/aprender/%s" % (base_url, t["slug"])
-        sitemap.add(tuto_url,
-                    changefreq="yearly",
-                    priority="0.7")
+        tuto_url = "{}/aprender/{}".format(base_url, t["slug"])
+        sitemap.add(tuto_url, changefreq="yearly", priority="0.7")
 
     sitemap_xml = sitemap.generate()
 
@@ -479,16 +528,19 @@ def generate_sitemap(sitemap_file, locations, uploaded_videos):
     sitemap_xml = sitemap_xml.replace("<changefreq>", "    <changefreq>")
     sitemap_xml = sitemap_xml.replace("<priority>", "    <priority>")
 
-    with open(sitemap_file, 'w') as file:
+    with open(sitemap_file, "w") as file:
         file.write(sitemap_xml)
+
 
 def website(args):
     # Retrieve the list of uploaded videos
     uploaded_videos = get_uploaded_videos(args, UPLOADED_VIDEOS_DUMP_FILE)
-    logging.info("There are %d uploaded videos." % len(uploaded_videos))
+    logger.info(f"There are {len(uploaded_videos)} uploaded videos.")
 
     # Identify each video's location
-    (uploaded_videos, locations) = identify_locations_names(uploaded_videos, LOCATION_SPECIAL_CASES_FILE, UPLOADED_VIDEOS_DUMP_FILE)
+    (uploaded_videos, locations) = identify_locations_names(
+        uploaded_videos, LOCATION_SPECIAL_CASES_FILE, UPLOADED_VIDEOS_DUMP_FILE
+    )
 
     # Determine the geolocation of each location
     locations = determine_geolocation(locations, GEOLOCATIONS_FILE)
