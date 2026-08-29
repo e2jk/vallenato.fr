@@ -362,14 +362,14 @@ class TestDownloadVideos(unittest.TestCase):
         aprender.download_videos(
             yt_tutorial_video, tutorial_id, full_video_id, videos_output_folder
         )
-        self.assertTrue(
-            a_yt.mock_calls == [call("https://www.youtube.com/watch?v=eT2Q_Go2BAs")]
+        self.assertEqual(
+            a_yt.mock_calls, [call("https://www.youtube.com/watch?v=eT2Q_Go2BAs")]
         )
         expected = [
             call(yt_tutorial_video, "KtN7MCg6hlI", "/tmp/abc"),
             call(a_yt(), "eT2Q_Go2BAs", "/tmp/abc"),
         ]
-        self.assertTrue(a_dyv.mock_calls == expected)
+        self.assertEqual(a_dyv.mock_calls, expected)
 
 
 class TestDownloadYoutubeVideo(unittest.TestCase):
@@ -379,10 +379,10 @@ class TestDownloadYoutubeVideo(unittest.TestCase):
         videos_output_folder = tempfile.mkdtemp()
         rv = aprender.download_youtube_video(yt, video_id, videos_output_folder)
         self.assertTrue(rv)
-        self.assertTrue(yt.method_calls == [call.streams.get_by_itag(18)])
-        self.assertTrue(
-            call.streams.get_by_itag().download(videos_output_folder, "oPEirA4pXdg")
-            in yt.mock_calls
+        self.assertEqual(yt.method_calls, [call.streams.get_by_itag(18)])
+        self.assertIn(
+            call.streams.get_by_itag().download(videos_output_folder, "oPEirA4pXdg"),
+            yt.mock_calls,
         )
         # Delete the temporary folder
         shutil.rmtree(videos_output_folder)
@@ -395,16 +395,16 @@ class TestDownloadYoutubeVideo(unittest.TestCase):
         videos_output_folder = tempfile.mkdtemp()
         rv = aprender.download_youtube_video(yt, video_id, videos_output_folder)
         self.assertTrue(rv)
-        self.assertTrue(
-            yt.method_calls
-            == [
+        self.assertEqual(
+            yt.method_calls,
+            [
                 call.streams.get_by_itag(18),
                 call.streams.filter(file_extension="mp4", progressive=True, res="360p"),
-            ]
+            ],
         )
-        self.assertTrue(
-            call.streams.filter().first().download(videos_output_folder, "oPEirA4pXdg")
-            in yt.mock_calls
+        self.assertIn(
+            call.streams.filter().first().download(videos_output_folder, "oPEirA4pXdg"),
+            yt.mock_calls,
         )
         # Delete the temporary folder
         shutil.rmtree(videos_output_folder)
@@ -487,7 +487,7 @@ class TestUpdateTutorialesDataFile(unittest.TestCase):
         # Confirm that the list of tutorials has been updated
         with open(temp_tutoriales_data_file, "r") as file:
             filedata = file.read()
-        self.assertTrue(new_tutorial_info in filedata)
+        self.assertIn(new_tutorial_info, filedata)
         # Delete the temporary file
         os.remove(temp_tutoriales_data_file)
 
@@ -516,9 +516,9 @@ class TestUpdateIndexPage(unittest.TestCase):
         # Confirm that the index page has been updated
         with open("../website/src/aprender/index.html", "r") as file:
             filedata = file.read()
-            self.assertTrue(
-                '</a></li>\n              <li>Bonita cancion - Super cantante: <a href="https://www.youtube.com/watch?v=oPEirA4pXdg">Tutorial en YouTube</a> por <a href="https://www.youtube.com/channel/UC_8R235jg1ld6MCMOzz2khQ">El Vallenatero Francés</a></li>\n            </ul>'
-                in filedata
+            self.assertIn(
+                '</a></li>\n              <li>Bonita cancion - Super cantante: <a href="https://www.youtube.com/watch?v=oPEirA4pXdg">Tutorial en YouTube</a> por <a href="https://www.youtube.com/channel/UC_8R235jg1ld6MCMOzz2khQ">El Vallenatero Francés</a></li>\n            </ul>',
+                filedata,
             )
         # Restore the index page
         os.remove("../website/src/aprender/index.html")
@@ -579,19 +579,19 @@ class TestAprender(unittest.TestCase):
             "../website/src/aprender/temp/blabla-bla/index-dummy.html", "r"
         ) as file:
             filedata = file.read()
-            self.assertTrue(
+            self.assertIn(
                 """              <div class="card mb-3" style="max-width: 17rem;">
                 <div class="card-body">
                   <h5 class="card-title">Bonita cancion - Super cantante</h5>
                   <a href="blabla-bla" class="stretched-link text-hide">Ver el tutorial</a>
                 </div>
                 <div class="card-footer"><small class="text-muted">NNmNNs en NN partes</small></div>
-              </div>"""
-                in filedata
+              </div>""",
+                filedata,
             )
-            self.assertTrue(
-                '\n              <li>Bonita cancion - Super cantante: <a href="https://www.youtube.com/watch?v=oPEirA4pXdg">Tutorial en YouTube</a> por <a href="https://www.youtube.com/channel/UC_8R235jg1ld6MCMOzz2khQ">El Vallenatero Francés</a></li>'
-                in filedata
+            self.assertIn(
+                '\n              <li>Bonita cancion - Super cantante: <a href="https://www.youtube.com/watch?v=oPEirA4pXdg">Tutorial en YouTube</a> por <a href="https://www.youtube.com/channel/UC_8R235jg1ld6MCMOzz2khQ">El Vallenatero Francés</a></li>',
+                filedata,
             )
         # Delete the temporary folder
         shutil.rmtree("../website/src/aprender/temp/blabla-bla/")

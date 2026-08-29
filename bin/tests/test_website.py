@@ -87,9 +87,7 @@ class TestGetUploadedVideos(unittest.TestCase):
         website.get_uploaded_videos(
             args, "tests/data/sample_uploaded_videos_dump_full.json"
         )
-        self.assertTrue(
-            call("UU_8R235jg1ld6MCMOzz2khQ", yt_gas()) in yt_lmuv.mock_calls
-        )
+        self.assertIn(call("UU_8R235jg1ld6MCMOzz2khQ", yt_gas()), yt_lmuv.mock_calls)
 
     @patch("website.yt_get_my_uploads_list")
     @patch("website.yt_get_authenticated_service")
@@ -212,7 +210,7 @@ class TestIdentifySingleLocationName(unittest.TestCase):
             "id": "KASEblFElVM",
             "title": "Oye Bonita, desde Buesaco, Nariño, Colombia",
         }
-        self.assertTrue(", desde " in vid["title"])
+        self.assertIn(", desde ", vid["title"])
         location = website.identify_single_location_name(vid, {})
         self.assertEqual(location, "Buesaco, Nariño, Colombia")
 
@@ -223,8 +221,8 @@ class TestIdentifySingleLocationName(unittest.TestCase):
         )
         with open(location_special_cases_file) as in_file:
             special_cases = json.load(in_file)
-        self.assertFalse(", desde " in vid["title"])
-        self.assertFalse(", cerca de " in vid["title"])
+        self.assertNotIn(", desde ", vid["title"])
+        self.assertNotIn(", cerca de ", vid["title"])
         location = website.identify_single_location_name(vid, special_cases)
         self.assertEqual(location, "Pasto, Nariño, Colombia")
 
@@ -238,8 +236,8 @@ class TestIdentifySingleLocationName(unittest.TestCase):
         )
         with open(location_special_cases_file) as in_file:
             special_cases = json.load(in_file)
-        self.assertFalse(", desde " in vid["title"])
-        self.assertFalse(", cerca de " in vid["title"])
+        self.assertNotIn(", desde ", vid["title"])
+        self.assertNotIn(", cerca de ", vid["title"])
         with self.assertLogs(level="CRITICAL") as cm:
             location = website.identify_single_location_name(vid, special_cases)
         self.assertEqual(location, None)
@@ -465,9 +463,9 @@ class TestGenerateWebsite(unittest.TestCase):
         # Confirm that the stats on the index page have been updated
         with open("../website/src/index.html", "r") as file:
             filedata = file.read()
-            self.assertTrue(
-                '<div id="stats">El Vallenatero Francés les presenta 84 videos de 13 canciones tocadas en 22 lugares de 10 paises. El empezo a aprender el Acordeón Vallenato en la Navidad 2017 (hace mas o menos 2 años y 8 meses).</div>'
-                in filedata
+            self.assertIn(
+                '<div id="stats">El Vallenatero Francés les presenta 84 videos de 13 canciones tocadas en 22 lugares de 10 paises. El empezo a aprender el Acordeón Vallenato en la Navidad 2017 (hace mas o menos 2 años y 8 meses).</div>',
+                filedata,
             )
         # Restore the index page
         os.remove("../website/src/index.html")
@@ -484,60 +482,60 @@ class TestGenerateWebsite(unittest.TestCase):
         with open("../website/prod/aprender/index.html", "r") as file:
             index_aprender_data = file.read()
         # The prod file points to the CDN copy of the leaflet library
-        self.assertTrue(
-            f'<link rel="stylesheet" href="https://unpkg.com/leaflet@{website.LEAFLET_VERSION}/dist/leaflet.css"\n        integrity="sha512-'
-            in index_data
+        self.assertIn(
+            f'<link rel="stylesheet" href="https://unpkg.com/leaflet@{website.LEAFLET_VERSION}/dist/leaflet.css"\n        integrity="sha512-',
+            index_data,
         )
-        self.assertTrue(
-            f'<script src="https://unpkg.com/leaflet@{website.LEAFLET_VERSION}/dist/leaflet.js"\n        integrity="sha512-'
-            in index_data
+        self.assertIn(
+            f'<script src="https://unpkg.com/leaflet@{website.LEAFLET_VERSION}/dist/leaflet.js"\n        integrity="sha512-',
+            index_data,
         )
         # The prod files point to the CDN copy of the Bootstrap library
-        self.assertTrue(
-            f'<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@{website.BOOTSTRAP_VERSION}/dist/css/bootstrap.min.css"\n        integrity="sha384-'
-            in index_data
+        self.assertIn(
+            f'<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@{website.BOOTSTRAP_VERSION}/dist/css/bootstrap.min.css"\n        integrity="sha384-',
+            index_data,
         )
-        self.assertTrue(
-            f'<script src="https://cdn.jsdelivr.net/npm/bootstrap@{website.BOOTSTRAP_VERSION}/dist/js/bootstrap.min.js"\n        integrity="sha384-'
-            in index_data
+        self.assertIn(
+            f'<script src="https://cdn.jsdelivr.net/npm/bootstrap@{website.BOOTSTRAP_VERSION}/dist/js/bootstrap.min.js"\n        integrity="sha384-',
+            index_data,
         )
-        self.assertTrue(
-            f'<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@{website.BOOTSTRAP_VERSION}/dist/css/bootstrap.min.css"\n        integrity="sha384-'
-            in page404_data
+        self.assertIn(
+            f'<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@{website.BOOTSTRAP_VERSION}/dist/css/bootstrap.min.css"\n        integrity="sha384-',
+            page404_data,
         )
-        self.assertTrue(
-            f'<script src="https://cdn.jsdelivr.net/npm/bootstrap@{website.BOOTSTRAP_VERSION}/dist/js/bootstrap.min.js"\n        integrity="sha384-'
-            in page404_data
+        self.assertIn(
+            f'<script src="https://cdn.jsdelivr.net/npm/bootstrap@{website.BOOTSTRAP_VERSION}/dist/js/bootstrap.min.js"\n        integrity="sha384-',
+            page404_data,
         )
-        self.assertTrue(
-            f'<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@{website.BOOTSTRAP_VERSION}/dist/css/bootstrap.min.css"\n        integrity="sha384-'
-            in index_aprender_data
+        self.assertIn(
+            f'<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@{website.BOOTSTRAP_VERSION}/dist/css/bootstrap.min.css"\n        integrity="sha384-',
+            index_aprender_data,
         )
-        self.assertTrue(
-            f'<script src="https://cdn.jsdelivr.net/npm/bootstrap@{website.BOOTSTRAP_VERSION}/dist/js/bootstrap.min.js"\n        integrity="sha384-'
-            in index_aprender_data
+        self.assertIn(
+            f'<script src="https://cdn.jsdelivr.net/npm/bootstrap@{website.BOOTSTRAP_VERSION}/dist/js/bootstrap.min.js"\n        integrity="sha384-',
+            index_aprender_data,
         )
         # The prod files point to the CDN copy of the jQuery library
-        self.assertTrue(
-            f'<script src="https://code.jquery.com/jquery-{website.JQUERY_VERSION}.slim.min.js"\n        integrity="sha384-'
-            in index_data
+        self.assertIn(
+            f'<script src="https://code.jquery.com/jquery-{website.JQUERY_VERSION}.slim.min.js"\n        integrity="sha384-',
+            index_data,
         )
-        self.assertTrue(
-            f'<script src="https://code.jquery.com/jquery-{website.JQUERY_VERSION}.slim.min.js"\n        integrity="sha384-'
-            in page404_data
+        self.assertIn(
+            f'<script src="https://code.jquery.com/jquery-{website.JQUERY_VERSION}.slim.min.js"\n        integrity="sha384-',
+            page404_data,
         )
-        self.assertTrue(
-            f'<script src="https://code.jquery.com/jquery-{website.JQUERY_VERSION}.slim.min.js"\n        integrity="sha384-'
-            in index_aprender_data
+        self.assertIn(
+            f'<script src="https://code.jquery.com/jquery-{website.JQUERY_VERSION}.slim.min.js"\n        integrity="sha384-',
+            index_aprender_data,
         )
         # The prod files point to the CDN copy of the Bootstrap-toggle library
-        self.assertTrue(
-            f'<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@{website.BOOTSTRAP_TOGGLE_VERSION}/css/bootstrap4-toggle.min.css"\n        integrity="sha384-'
-            in index_aprender_data
+        self.assertIn(
+            f'<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@{website.BOOTSTRAP_TOGGLE_VERSION}/css/bootstrap4-toggle.min.css"\n        integrity="sha384-',
+            index_aprender_data,
         )
-        self.assertTrue(
-            f'<script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@{website.BOOTSTRAP_TOGGLE_VERSION}/js/bootstrap4-toggle.min.js"\n        integrity="sha384-'
-            in index_aprender_data
+        self.assertIn(
+            f'<script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@{website.BOOTSTRAP_TOGGLE_VERSION}/js/bootstrap4-toggle.min.js"\n        integrity="sha384-',
+            index_aprender_data,
         )
         # Copyright year in the pages' footer
         # datetime.date.today is patched to return a date in 2020
@@ -545,7 +543,7 @@ class TestGenerateWebsite(unittest.TestCase):
             '<span class="text-muted">&copy; 2020 El Vallenatero Francés</span>'
         )
         for page_data in (index_data, page404_data, index_aprender_data):
-            self.assertTrue(expected_value in page_data)
+            self.assertIn(expected_value, page_data)
 
         # Confirm the local copies of the libraries are not present in the prd folder
         # (sitemap.xml gets generated in a later step)
@@ -581,15 +579,15 @@ class TestGenerateWebsite(unittest.TestCase):
         prd_files = os.listdir("../website/prod/")
         self.assertEqual(len(prd_files), len(expected_prd_files))
         for f in expected_prd_files:
-            self.assertTrue(f in prd_files)
+            self.assertIn(f, prd_files)
         # TODO: Confirm the title and h2 of one of the created HTML files have been updated
         # Confirm the aprender/temp folder is not copied to the prd folder
         prd_aprender_files = os.listdir("../website/prod/aprender")
-        self.assertFalse("temp" in prd_aprender_files)
+        self.assertNotIn("temp", prd_aprender_files)
         # Confirm the aprender/videos folder doesn't contain unwanted directories
         prd_aprender_videos_files = os.listdir("../website/prod/aprender/videos")
-        self.assertFalse("TODO" in prd_aprender_videos_files)
-        self.assertFalse("blabla-bla" in prd_aprender_videos_files)
+        self.assertNotIn("TODO", prd_aprender_videos_files)
+        self.assertNotIn("blabla-bla", prd_aprender_videos_files)
         # Confirm the tutorial video file was hard-linked into prod
         self.assertTrue(
             os.path.exists(
@@ -613,7 +611,7 @@ class TestGenerateWebsite(unittest.TestCase):
         prd_aprender_files = os.listdir("../website/prod/aprender/")
         self.assertEqual(len(prd_aprender_files), len(expected_prd_aprender_files))
         for f in expected_prd_aprender_files:
-            self.assertTrue(f in prd_aprender_files)
+            self.assertIn(f, prd_aprender_files)
         # TODO: Confirm the title and h1 of one of the created HTML files have been updated
 
     @patch("website.datetime.date")
@@ -668,24 +666,22 @@ class TestGenerateSitemap(unittest.TestCase):
         # Check for the presence of some well-known URLs
         with open(website.SITEMAP_FILE) as in_file:
             sitemap_content = in_file.read()
-        self.assertTrue("<loc>https://vallenato.fr</loc>" in sitemap_content)
-        self.assertTrue(
-            "<loc>https://vallenato.fr/mundo-entero</loc>" in sitemap_content
+        self.assertIn("<loc>https://vallenato.fr</loc>", sitemap_content)
+        self.assertIn("<loc>https://vallenato.fr/mundo-entero</loc>", sitemap_content)
+        self.assertIn(
+            "<loc>https://vallenato.fr/buesaco-narino-colombia</loc>", sitemap_content
         )
-        self.assertTrue(
-            "<loc>https://vallenato.fr/buesaco-narino-colombia</loc>" in sitemap_content
+        self.assertIn(
+            "<loc>https://vallenato.fr/oye-bonita-buesaco-narino-colombia/KASEblFElVM</loc>",
+            sitemap_content,
         )
-        self.assertTrue(
-            "<loc>https://vallenato.fr/oye-bonita-buesaco-narino-colombia/KASEblFElVM</loc>"
-            in sitemap_content
+        self.assertIn(
+            "<loc>https://vallenato.fr/oye-bonita-buesaco-narino-colombia/yrWZw-lgGbM</loc>",
+            sitemap_content,
         )
-        self.assertTrue(
-            "<loc>https://vallenato.fr/oye-bonita-buesaco-narino-colombia/yrWZw-lgGbM</loc>"
-            in sitemap_content
-        )
-        self.assertTrue("<loc>https://vallenato.fr/aprender/</loc>" in sitemap_content)
-        self.assertTrue(
-            "<loc>https://vallenato.fr/aprender/la-guanena</loc>" in sitemap_content
+        self.assertIn("<loc>https://vallenato.fr/aprender/</loc>", sitemap_content)
+        self.assertIn(
+            "<loc>https://vallenato.fr/aprender/la-guanena</loc>", sitemap_content
         )
 
 

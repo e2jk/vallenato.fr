@@ -28,13 +28,13 @@ class TestYtGetAuthenticatedService(unittest.TestCase):
                 scope=["https://www.googleapis.com/auth/youtube.readonly"],
             )
         ]
-        self.assertTrue(expected_yt_ffc in yt_ffc.mock_calls)
-        self.assertTrue(call("vallenato.fr-oauth2.json") in yt_S.mock_calls)
+        self.assertIn(expected_yt_ffc, yt_ffc.mock_calls)
+        self.assertIn(call("vallenato.fr-oauth2.json"), yt_S.mock_calls)
         self.assertEqual([call(yt_ffc(), yt_S(), args)], yt_rf.mock_calls)
         expected_yt_b = [
             call("youtube", "v3", cache_discovery=False, credentials=yt_rf())
         ]
-        self.assertTrue(expected_yt_b in yt_b.mock_calls)
+        self.assertIn(expected_yt_b, yt_b.mock_calls)
 
 
 class TestYtGetMyUploadsList(unittest.TestCase):
