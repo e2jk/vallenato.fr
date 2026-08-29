@@ -50,7 +50,7 @@ jobs:
           python -m venv .venv
           .venv/bin/pip install --quiet --require-hashes -r bin/requirements-pip-bootstrap.txt
           .venv/bin/pip install --quiet --require-hashes -r bin/requirements.txt
-          .venv/bin/pip install --quiet -r bin/requirements-dev.txt
+          .venv/bin/pip install --quiet --require-hashes -r bin/requirements-dev.txt
 
       - name: Lint with Ruff
         run: .venv/bin/ruff check bin scripts .github/scripts
