@@ -4,8 +4,8 @@ Open topics only. When an item is done, delete it from this file rather than
 checking it off — this file should always reflect what's left, not history
 (that's what git log is for).
 
-Prerequisite for everything below: the current Docker image/build/CI effort
-needs to land first. This backlog is the plan for the phase after that.
+The Docker image/build/CI prerequisite has landed (see v0.1.0). This backlog
+is the plan for the phase after that.
 
 ## 1. Migrate from the static-site generator to a Flask app
 
