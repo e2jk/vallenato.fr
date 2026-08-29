@@ -157,11 +157,7 @@ def determine_geolocation(locations, geolocations_file):
             and geolocations[l]["latitude"]
             and geolocations[l]["longitude"]
         ):
-            logger.debug(
-                "Geolocation found for {}: lat {:f}, lon {:f}".format(
-                    l, geolocations[l]["latitude"], geolocations[l]["longitude"]
-                )
-            )
+            logger.debug(f"Geolocation found for {l}")
             locations[l]["latitude"] = geolocations[l]["latitude"]
             locations[l]["longitude"] = geolocations[l]["longitude"]
         else:
