@@ -53,7 +53,7 @@ function populateMapAndList(mymap){
       marker.addEventListener("click", function(){ navigate_to_location(loc); });
 
       // Group locations per country
-      c = loc.split(", ").pop(); // That location's country name
+      var c = loc.split(", ").pop(); // That location's country name
       if (!countries.hasOwnProperty(c)) {
         countries[c] = [];
       }
@@ -64,7 +64,7 @@ function populateMapAndList(mymap){
   }
 
   // Sort countries alphabetically
-  countries_sorted = [];
+  var countries_sorted = [];
   for (let c in countries) {
     if (countries.hasOwnProperty(c)) {
       countries_sorted.push(c);
@@ -77,7 +77,7 @@ function populateMapAndList(mymap){
 
   var num_countries = 0;
   for (let i in countries_sorted) {
-    c = countries_sorted[i];
+    var c = countries_sorted[i];
     if (countries.hasOwnProperty(c)) {
       list_content += `<div class="card">
       <div class="card-header country-card" id="heading` + num_countries + `" data-toggle="collapse" data-target="#collapse` + num_countries + `" aria-expanded="false" aria-controls="collapse` + num_countries + `">
@@ -90,11 +90,11 @@ function populateMapAndList(mymap){
       } else {
         for (let l in countries[c]) {
           if (countries[c].hasOwnProperty(l)) {
-            loc = countries[c][l];
+            var loc = countries[c][l];
             // Remove the country name to display the location name
-            loc_parts = loc.split(", ");
+            var loc_parts = loc.split(", ");
             loc_parts.pop();
-            loc_short_name = loc_parts.join(", ");
+            var loc_short_name = loc_parts.join(", ");
             list_content += `<a href="/` + locations[loc]["slug"] + `" class="card-body list-group-item list-group-item-action d-flex justify-content-between align-items-center">` + loc_short_name + `<span class="badge badge-primary badge-pill badge-dark">` + locations[loc].videos.length + `</span><span class="sr-only"> videos</span></a>`;
           }
         }
