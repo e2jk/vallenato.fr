@@ -48,6 +48,7 @@ jobs:
       - name: Set up venv
         run: |
           python -m venv .venv
+          .venv/bin/pip install --quiet --require-hashes -r bin/requirements-pip-bootstrap.txt
           .venv/bin/pip install --quiet --require-hashes -r bin/requirements.txt
           .venv/bin/pip install --quiet -r bin/requirements-dev.txt
 
@@ -310,6 +311,7 @@ jobs:
         if: matrix.name == 'site'
         run: |
           python -m venv .venv
+          .venv/bin/pip install --quiet --require-hashes -r bin/requirements-pip-bootstrap.txt
           .venv/bin/pip install --quiet --require-hashes -r bin/requirements.txt
           cd bin && ../.venv/bin/python vallenato_fr.py --website --no-fetch
 

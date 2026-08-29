@@ -5,13 +5,18 @@ Create the environment:
 -----------------------
 ```bash
 $ cd devel/vallenato.fr/
-$ mkdir -p .venv-vallenato_fr
 $ python3 -m venv .venv-vallenato_fr
 $ source .venv-vallenato_fr/bin/activate
-$ cd bin/
-$ pip3 install wheel
-$ pip3 install -r requirements.txt
+$ pip install --require-hashes -r bin/requirements-pip-bootstrap.txt
+$ pip install --require-hashes -r bin/requirements.txt
+$ pip install -r bin/requirements-dev.txt
 ```
+
+The first `pip install` upgrades pip itself before it's used to install
+anything else - `python -m venv` bundles whatever pip version ships with
+that Python build's `ensurepip`, which isn't necessarily current or free of
+known CVEs. `bin/requirements.txt` is hash-pinned (production runtime
+deps); `bin/requirements-dev.txt` (linting/testing tools) isn't.
 
 Activate the virtual environment:
 ---------------------------------
@@ -23,8 +28,7 @@ When done:
 
 Update the dependencies:
 ------------------------
-`$ pip3 install -r requirements.txt`
+`$ pip install --require-hashes -r bin/requirements.txt && pip install -r bin/requirements-dev.txt`
 
-First time creation/update of the dependencies:
------------------------------------------------
-`$ pip3 freeze > requirements.txt`
+Renovate manages `bin/requirements*.txt` automatically (see the repo root
+`renovate.json`) - manual bumps are only needed between its scheduled runs.
