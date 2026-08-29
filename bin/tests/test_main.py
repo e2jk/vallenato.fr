@@ -41,9 +41,9 @@ class TestParseArgs(unittest.TestCase):
             target.parse_args([])
         the_exception = cm.exception
         self.assertEqual(the_exception.code, 2)
-        self.assertTrue(
-            "error: one of the arguments -a/--aprender -w/--website is required"
-            in f.getvalue()
+        self.assertIn(
+            "error: one of the arguments -a/--aprender -w/--website is required",
+            f.getvalue(),
         )
 
     def test_parse_args_aprender_website(self):
@@ -55,9 +55,9 @@ class TestParseArgs(unittest.TestCase):
             target.parse_args(["--aprender", "--website"])
         the_exception = cm.exception
         self.assertEqual(the_exception.code, 2)
-        self.assertTrue(
-            "error: argument -w/--website: not allowed with argument -a/--aprender"
-            in f.getvalue()
+        self.assertIn(
+            "error: argument -w/--website: not allowed with argument -a/--aprender",
+            f.getvalue(),
         )
 
     def test_parse_args_no_download(self):
@@ -261,13 +261,13 @@ class TestInitMain(unittest.TestCase):
         # Confirm that the list of tutorials has been updated
         with open(aprender.TUTORIALES_DATA_FILE, "r") as file:
             filedata = file.read()
-        self.assertTrue(expected_new_tutorial_info in filedata)
+        self.assertIn(expected_new_tutorial_info, filedata)
         # Confirm that a temporary file with the content to be added to the index page has been created
         with open("../website/src/aprender/index.html", "r") as file:
             filedata = file.read()
-            self.assertTrue(
-                '\n              <li>Bonita cancion - Super cantante: <a href="https://www.youtube.com/watch?v=oPEirA4pXdg">Tutorial en YouTube</a> por <a href="https://www.youtube.com/channel/UC_8R235jg1ld6MCMOzz2khQ">El Vallenatero Francés</a></li>'
-                in filedata
+            self.assertIn(
+                '\n              <li>Bonita cancion - Super cantante: <a href="https://www.youtube.com/watch?v=oPEirA4pXdg">Tutorial en YouTube</a> por <a href="https://www.youtube.com/channel/UC_8R235jg1ld6MCMOzz2khQ">El Vallenatero Francés</a></li>',
+                filedata,
             )
         # Confirm the webbrowser is called to be opened to the new template's page
         mockwbopen.assert_called_once_with(
@@ -323,9 +323,9 @@ class TestLicense(unittest.TestCase):
         with open("LICENSE") as f:
             s = f.read()
             # Confirm it is the GNU Affero General Public License version 3
-            self.assertTrue(
-                "GNU AFFERO GENERAL PUBLIC LICENSE\n                       Version 3"
-                in s
+            self.assertIn(
+                "GNU AFFERO GENERAL PUBLIC LICENSE\n                       Version 3",
+                s,
             )
 
     def test_license_mention(self):
@@ -333,13 +333,14 @@ class TestLicense(unittest.TestCase):
         with open("vallenato_fr.py") as f:
             s = f.read()
             # Confirm it is the GNU Affero General Public License version 3
-            self.assertTrue(
+            self.assertIn(
                 "#    This file is part of Vallenato.fr.\n"
                 "#\n"
                 "#    Vallenato.fr is free software: you can redistribute it and/or modify\n"
                 "#    it under the terms of the GNU Affero General Public License as published by\n"
                 "#    the Free Software Foundation, either version 3 of the License, or\n"
-                "#    (at your option) any later version.\n" in s
+                "#    (at your option) any later version.\n",
+                s,
             )
 
 
