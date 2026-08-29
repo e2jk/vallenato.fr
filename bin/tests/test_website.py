@@ -186,7 +186,7 @@ class TestIdentifyLocationsNames(unittest.TestCase):
             self.assertRaises(SystemExit) as cm1,
             self.assertLogs(level="CRITICAL") as cm2,
         ):
-            (_uploaded_videos, _locations) = website.identify_locations_names(
+            website.identify_locations_names(
                 sample_uploaded_videos,
                 "tests/data/sample_location_special_cases_partial.json",
                 temp_uploaded_videos_dump_file,
@@ -274,7 +274,7 @@ class TestDetermineGeolocation(unittest.TestCase):
             self.assertRaises(SystemExit) as cm1,
             self.assertLogs(level="CRITICAL") as cm2,
         ):
-            locations = website.determine_geolocation(
+            website.determine_geolocation(
                 locations, "tests/data/sample_geolocations_partial.json"
             )
         the_exception = cm1.exception
@@ -397,7 +397,7 @@ class TestGetStats(unittest.TestCase):
     @patch("website.datetime.date")
     def test_get_stats_august(self, w_dd):
         w_dd.today.return_value = date(2020, 8, 13)
-        w_dd.side_effect = lambda *args, **kw: date(*args, **kw)
+        w_dd.side_effect = date
         with open("tests/data/sample_locations_final_full.json") as in_file:
             sample_locations = json.load(in_file)
         with open("tests/data/sample_uploaded_videos_dump_full.json") as in_file:
@@ -411,7 +411,7 @@ class TestGetStats(unittest.TestCase):
     @patch("website.datetime.date")
     def test_get_stats_december(self, w_dd):
         w_dd.today.return_value = date(2020, 12, 13)
-        w_dd.side_effect = lambda *args, **kw: date(*args, **kw)
+        w_dd.side_effect = date
         with open("tests/data/sample_locations_final_full.json") as in_file:
             sample_locations = json.load(in_file)
         with open("tests/data/sample_uploaded_videos_dump_full.json") as in_file:
@@ -425,7 +425,7 @@ class TestGetStats(unittest.TestCase):
     @patch("website.datetime.date")
     def test_get_stats_january(self, w_dd):
         w_dd.today.return_value = date(2021, 1, 13)
-        w_dd.side_effect = lambda *args, **kw: date(*args, **kw)
+        w_dd.side_effect = date
         with open("tests/data/sample_locations_final_full.json") as in_file:
             sample_locations = json.load(in_file)
         with open("tests/data/sample_uploaded_videos_dump_full.json") as in_file:
@@ -441,7 +441,7 @@ class TestGenerateWebsite(unittest.TestCase):
     @patch("website.datetime.date")
     def test_generate_website(self, w_dd):
         w_dd.today.return_value = date(2020, 8, 13)
-        w_dd.side_effect = lambda *args, **kw: date(*args, **kw)
+        w_dd.side_effect = date
         # Create a copy of the index.html file that is going to be edited
         (_ignore, temp_index_file) = tempfile.mkstemp()
         shutil.copy("../website/src/index.html", temp_index_file)
@@ -627,7 +627,7 @@ class TestGenerateWebsite(unittest.TestCase):
         # `docker build`, since .dockerignore excludes this directory even
         # when it exists on the host).
         w_dd.today.return_value = date(2020, 8, 13)
-        w_dd.side_effect = lambda *args, **kw: date(*args, **kw)
+        w_dd.side_effect = date
         (_ignore, temp_index_file) = tempfile.mkstemp()
         shutil.copy("../website/src/index.html", temp_index_file)
 

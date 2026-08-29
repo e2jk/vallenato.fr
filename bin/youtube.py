@@ -21,12 +21,14 @@ import logging
 import os
 
 from googleapiclient.discovery import build
-from googleapiclient.errors import (
-    HttpError,  # noqa: F401 -- re-exported for website.py/tests
-)
+from googleapiclient.errors import HttpError
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.file import Storage
 from oauth2client.tools import run_flow
+
+# HttpError is re-exported for website.py/tests - __all__ marks the import as
+# intentionally used, rather than needing a linter-specific suppression.
+__all__ = ["HttpError"]
 
 logger = logging.getLogger(__name__)
 

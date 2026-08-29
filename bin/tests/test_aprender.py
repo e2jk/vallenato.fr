@@ -96,7 +96,7 @@ class TestGetYoutubeUrl(unittest.TestCase):
         mock_raw_input_values = ["q"]
         f = io.StringIO()
         with self.assertRaises(SystemExit) as cm, contextlib.redirect_stdout(f):
-            (_video_id, _video_url) = aprender.get_youtube_url("")
+            aprender.get_youtube_url("")
         the_exception = cm.exception
         self.assertEqual(the_exception.code, 10)
         self.assertEqual("Exiting...\n", f.getvalue())
@@ -160,13 +160,7 @@ class TestGetTitleAuthorTutocreatorAndChannel(unittest.TestCase):
         mock_raw_input_values = ["q"]
         f = io.StringIO()
         with self.assertRaises(SystemExit) as cm, contextlib.redirect_stdout(f):
-            (
-                _song_title,
-                _song_author,
-                _tutocreator,
-                _tutocreator_channel,
-                _yt_tutorial_video,
-            ) = aprender.get_title_author_tutocreator_and_channel(
+            aprender.get_title_author_tutocreator_and_channel(
                 "https://www.youtube.com/watch?v=v5xEaLCCNRc"
             )
         the_exception = cm.exception
@@ -181,13 +175,7 @@ class TestGetTitleAuthorTutocreatorAndChannel(unittest.TestCase):
         mock_raw_input_values = ["ABC", "q"]
         f = io.StringIO()
         with self.assertRaises(SystemExit) as cm, contextlib.redirect_stdout(f):
-            (
-                _song_title,
-                _song_author,
-                _tutocreator,
-                _tutocreator_channel,
-                _yt_tutorial_video,
-            ) = aprender.get_title_author_tutocreator_and_channel(
+            aprender.get_title_author_tutocreator_and_channel(
                 "https://www.youtube.com/watch?v=v5xEaLCCNRc"
             )
         the_exception = cm.exception
