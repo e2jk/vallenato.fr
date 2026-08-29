@@ -52,3 +52,5 @@ git config core.hooksPath .githooks
 ```
 
 It runs the same lint/type/security checks as CI, locally, before you push.
+
+<!-- CI validation test PR, safe to ignore -->
