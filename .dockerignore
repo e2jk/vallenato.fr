@@ -6,6 +6,13 @@ renovate.json
 startup.sh
 upload.sh
 
+# Dev/test-only, not needed by the bin image's entrypoint (vallenato_fr.py)
+bin/tests/
+bin/requirements-dev.txt
+bin/test.sh
+bin/pytest.ini
+bin/.coveragerc
+
 **/.classpath
 **/.dockerignore
 **/.env
