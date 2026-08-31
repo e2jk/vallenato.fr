@@ -428,6 +428,9 @@ jobs:
           output: trivy-results.sarif
           severity: HIGH,CRITICAL
           ignore-unfixed: 'true'
+          # See .github/workflows/image-scan.yml for why pip's vendored deps
+          # (setuptools, msgpack, ...) are excluded.
+          skip-dirs: '**/pip/_vendor'
           exit-code: '0'
 
       - name: Upload Trivy results to GitHub Security tab
