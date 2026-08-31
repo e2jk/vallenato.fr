@@ -12,8 +12,14 @@ ENV PYTHONUNBUFFERED=1
 # to clear) - upgrade it, hash-pinned, before using it to install anything.
 COPY bin/requirements-pip-bootstrap.txt /app/bin/requirements-pip-bootstrap.txt
 COPY bin/requirements.txt /app/bin/requirements.txt
+# pip itself is only a build-time tool - the entrypoint below never imports
+# or shells out to it. Uninstall it once it's done its job: it also takes its
+# own vendored copies of setuptools/msgpack/etc. with it, so CVEs against
+# those (which track pip's release cadence, not ours) can't show up in a
+# published image that no longer contains them.
 RUN python -m pip install --no-cache-dir --require-hashes -r /app/bin/requirements-pip-bootstrap.txt && \
-    python -m pip install --no-cache-dir --require-hashes -r /app/bin/requirements.txt
+    python -m pip install --no-cache-dir --require-hashes -r /app/bin/requirements.txt && \
+    python -m pip uninstall -y pip
 
 WORKDIR /app/bin
 COPY . /app

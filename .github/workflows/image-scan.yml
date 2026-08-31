@@ -44,14 +44,6 @@ jobs:
           output: trivy-latest-results.sarif
           severity: HIGH,CRITICAL
           ignore-unfixed: 'true'
-          # pip vendors its own copies of setuptools/msgpack/etc. (used
-          # internally for dependency resolution and caching, never imported
-          # by our own code). CVEs against those vendored copies track pip's
-          # own release cadence, not ours - waiting on us to re-pin wouldn't
-          # fix anything, and new ones surface every time setuptools/msgpack
-          # gets a fresh upstream CVE. Skip the whole vendor tree rather than
-          # chase each one individually.
-          skip-dirs: '**/pip/_vendor'
           exit-code: '1'
 
       - name: Upload Trivy results to GitHub Security tab
