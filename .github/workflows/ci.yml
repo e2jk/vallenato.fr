@@ -287,6 +287,7 @@ jobs:
       # static literals from this same file's matrix.include, not
       # attacker-controllable, but env-var indirection is the recommended
       # pattern regardless of trust level, and it's no extra effort here.
+      MATRIX_NAME: ${{ matrix.name }}
       MATRIX_IMAGE: ${{ matrix.image }}
       MATRIX_DOCKERFILE: ${{ matrix.dockerfile }}
     steps:
@@ -332,11 +333,18 @@ jobs:
           if [ "${PUBLISH_NOW}" = "true" ]; then
             CACHE_ARGS+=(--cache-to "type=registry,ref=ghcr.io/e2jk/${MATRIX_IMAGE}:buildcache,mode=max")
           fi
+          BUILD_ARGS=()
+          if [ "${MATRIX_NAME}" = "site" ]; then
+            # Force the Dockerfile's `apk upgrade` layer to actually re-run instead
+            # of replaying a stale registry cache hit forever — see Dockerfile.
+            BUILD_ARGS+=(--build-arg "APK_CACHE_BUST=$(date -u +%F)")
+          fi
           docker buildx build \
             -f "${MATRIX_DOCKERFILE}" \
             -t "${MATRIX_IMAGE}:ci" \
             -t "ghcr.io/e2jk/${MATRIX_IMAGE}:sha-${GIT_SHA}" \
             "${CACHE_ARGS[@]}" \
+            "${BUILD_ARGS[@]}" \
             --load .
 
       - name: Export image as compressed tarball
@@ -429,11 +437,8 @@ jobs:
           severity: HIGH,CRITICAL
           ignore-unfixed: 'true'
           exit-code: '0'
-          # Pin newer than trivy-action's bundled default (v0.70.0): that version crashes
-          # with exit code 1 (instead of a warning) when the vulnerability DB contains a
-          # rejected/malformed CVE entry, which bypasses exit-code above entirely. Fixed
-          # upstream by the time of v0.74.0 (FillInfo logs and continues past the lookup
-          # error). See run https://github.com/e2jk/vallenato.fr/actions/runs/33741231681
+          # Pin newer than trivy-action's bundled default (v0.70.0), which is well behind
+          # current Trivy releases — see image-scan.yml for the same pin and why.
           version: v0.74.0
 
       - name: Upload Trivy results to GitHub Security tab

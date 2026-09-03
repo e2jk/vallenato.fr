@@ -22,7 +22,18 @@ LABEL org.opencontainers.image.title="vallenato.fr"
 # SC2016: the single quotes below are intentional -- the nginx variable
 # syntax must reach the config file literally, not get shell-expanded.
 # hadolint ignore=DL3018,SC2016
+#
+# APK_CACHE_BUST: CI passes the current date here (see ci.yml) so this layer
+# never reuses a stale registry build-cache hit. Without it, `apk upgrade`
+# below is a static command with no changing input, so buildx keeps
+# replaying the exact package set from whenever the cache was first
+# populated -- silently skipping security patches published since, even on
+# an otherwise fresh rebuild. Bit us with CVE-2026-40164/CVE-2026-32316
+# (jq 1.8.1-r0, fixed in 1.8.2-r0 upstream) going undetected across
+# multiple rebuilds. See run https://github.com/e2jk/vallenato.fr/actions/runs/33741231681
+ARG APK_CACHE_BUST=0
 RUN \
+ echo "cache bust: ${APK_CACHE_BUST}" && \
  echo "**** drop the community repo -- logrotate/nano/nginx all live in main, and apk refuses to proceed if ANY configured repo's index is unreachable, even for a package that lives entirely in main (the community mirror intermittently serves a corrupt index) ****" && \
  sed -i "/community/d" /etc/apk/repositories && \
  echo "**** apply security patches not yet in the pinned base image digest ****" && \
