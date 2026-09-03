@@ -45,6 +45,12 @@ jobs:
           severity: HIGH,CRITICAL
           ignore-unfixed: 'true'
           exit-code: '1'
+          # Pin newer than trivy-action's bundled default (v0.70.0): that version crashes
+          # with exit code 1 (instead of a warning) when the vulnerability DB contains a
+          # rejected/malformed CVE entry, indistinguishable from a real finding. Fixed
+          # upstream by the time of v0.74.0 (FillInfo logs and continues past the lookup
+          # error). See run https://github.com/e2jk/vallenato.fr/actions/runs/33741231681
+          version: v0.74.0
 
       - name: Upload Trivy results to GitHub Security tab
         if: always() && hashFiles('trivy-latest-results.sarif') != ''
