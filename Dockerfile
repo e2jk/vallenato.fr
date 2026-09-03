@@ -16,13 +16,6 @@ FROM ghcr.io/linuxserver/baseimage-alpine:3.24@sha256:34c19f3f2345f1d231784e78db
 LABEL org.opencontainers.image.title="vallenato.fr"
 
 # install packages
-# DL3018: Alpine package versions are already pinned by the base image's
-# own Alpine release (3.24 above); pinning apk versions individually is
-# high-maintenance and old versions get purged from the mirror.
-# SC2016: the single quotes below are intentional -- the nginx variable
-# syntax must reach the config file literally, not get shell-expanded.
-# hadolint ignore=DL3018,SC2016
-#
 # APK_CACHE_BUST: CI passes the current date here (see ci.yml) so this layer
 # never reuses a stale registry build-cache hit. Without it, `apk upgrade`
 # below is a static command with no changing input, so buildx keeps
@@ -32,6 +25,12 @@ LABEL org.opencontainers.image.title="vallenato.fr"
 # (jq 1.8.1-r0, fixed in 1.8.2-r0 upstream) going undetected across
 # multiple rebuilds. See run https://github.com/e2jk/vallenato.fr/actions/runs/33741231681
 ARG APK_CACHE_BUST=0
+# DL3018: Alpine package versions are already pinned by the base image's
+# own Alpine release (3.24 above); pinning apk versions individually is
+# high-maintenance and old versions get purged from the mirror.
+# SC2016: the single quotes below are intentional -- the nginx variable
+# syntax must reach the config file literally, not get shell-expanded.
+# hadolint ignore=DL3018,SC2016
 RUN \
  echo "cache bust: ${APK_CACHE_BUST}" && \
  echo "**** drop the community repo -- logrotate/nano/nginx all live in main, and apk refuses to proceed if ANY configured repo's index is unreachable, even for a package that lives entirely in main (the community mirror intermittently serves a corrupt index) ****" && \
