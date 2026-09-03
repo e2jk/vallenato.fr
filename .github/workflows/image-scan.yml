@@ -45,11 +45,11 @@ jobs:
           severity: HIGH,CRITICAL
           ignore-unfixed: 'true'
           exit-code: '1'
-          # Pin newer than trivy-action's bundled default (v0.70.0): that version crashes
-          # with exit code 1 (instead of a warning) when the vulnerability DB contains a
-          # rejected/malformed CVE entry, indistinguishable from a real finding. Fixed
-          # upstream by the time of v0.74.0 (FillInfo logs and continues past the lookup
-          # error). See run https://github.com/e2jk/vallenato.fr/actions/runs/33741231681
+          # Pin newer than trivy-action's bundled default (v0.70.0), which is well behind
+          # current Trivy releases. Not required for correctness — the exit-1 failures
+          # seen on 2026-09-03 were real, fixable HIGH-severity findings (see the
+          # Dockerfile's APK_CACHE_BUST comment), not a Trivy bug — but there's no reason
+          # to run a stale scanner version on a daily security-scan schedule.
           version: v0.74.0
 
       - name: Upload Trivy results to GitHub Security tab
