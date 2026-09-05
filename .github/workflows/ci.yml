@@ -338,6 +338,10 @@ jobs:
             # Force the Dockerfile's `apk upgrade` layer to actually re-run instead
             # of replaying a stale registry cache hit forever — see Dockerfile.
             BUILD_ARGS+=(--build-arg "APK_CACHE_BUST=$(date -u +%F)")
+          elif [ "${MATRIX_NAME}" = "bin" ]; then
+            # Same cache-poisoning issue for the Debian-based bin image's
+            # `apt-get upgrade` layer — see bin/Dockerfile.
+            BUILD_ARGS+=(--build-arg "APT_CACHE_BUST=$(date -u +%F)")
           fi
           docker buildx build \
             -f "${MATRIX_DOCKERFILE}" \
