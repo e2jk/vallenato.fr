@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
-# Pre-push hook: run Ruff linting/formatting, mypy, bandit, pip-audit, and
-# GitHub Actions workflow linters against bin/ (the site-generator tooling —
-# website/ is static HTML/JS/CSS with no build step to lint here).
+# Pre-push hook: run Ruff linting/formatting, mypy, bandit, pip-audit, the
+# pytest suite (with coverage), and GitHub Actions workflow linters against
+# bin/ (the site-generator tooling — website/ is static HTML/JS/CSS with no
+# build step to lint here).
 # Adapted from OpenHangar's .githooks/pre-push.
 #
 # Install once per clone:
@@ -96,6 +97,7 @@ MYPY="$VENV_DIR/bin/mypy"
 BANDIT="$VENV_DIR/bin/bandit"
 PIP_AUDIT="$VENV_DIR/bin/pip-audit"
 ZIZMOR="$VENV_DIR/bin/zizmor"
+PYTEST="$VENV_DIR/bin/pytest"
 DEV_TXT="$BIN_DIR/requirements-dev.txt"
 PYPROJECT="$BIN_DIR/pyproject.toml"
 
@@ -196,13 +198,16 @@ else
   echo "[actionlint] not found on PATH — skipping (run: bash .githooks/pre-push --update)"
 fi
 
-# ── Coverage (quick check against last run, if recent) ────────────────────────
+# ── Tests (pytest via bin/test.sh, pinned to this hook's own venv) ────────────
 COV_XML="$BIN_DIR/coverage.xml"
-COV_MAX_AGE=600  # seconds — ignore reports older than 10 minutes
-if [ -f "$COV_XML" ]; then
-  file_age=$(( $(date +%s) - $(date -r "$COV_XML" +%s) ))
-  if [ "$file_age" -le "$COV_MAX_AGE" ]; then
-    echo "[coverage] Checking coverage from last test run (${file_age}s ago)..."
+if [ -x "$PYTEST" ]; then
+  echo "[tests] Running pytest suite (bin/test.sh)..."
+  # Pin PYTHON so test.sh uses this hook's own venv rather than re-detecting
+  # one on its own (it also accepts ../.venv, matching what CI sets up).
+  run_step_quiet --detail '[0-9]+ passed' "tests"     env PYTHON="$PYTHON" bash "$BIN_DIR/test.sh"
+
+  if [ -f "$COV_XML" ]; then
+    echo "[coverage] Checking coverage from the run above..."
     run_step "coverage"     "$PYTHON" - "$COV_XML" <<'COVEOF'
 import sys, xml.etree.ElementTree as ET
 def _color(text, code):
@@ -210,15 +215,15 @@ def _color(text, code):
 rate = float(ET.parse(sys.argv[1]).getroot().attrib.get("line-rate", 1))
 pct = round(rate * 100, 2)
 if rate < 1.0:
-    print(_color(f"[coverage] ERROR: coverage is {pct}% — run bin/test.sh and fix gaps before pushing.", "31"))
+    print(_color(f"[coverage] ERROR: coverage is {pct}% — fix gaps before pushing.", "31"))
     sys.exit(1)
 print(_color(f"[coverage] Coverage OK ({pct}%).", "32"))
 COVEOF
   else
-    echo "[coverage] Report is ${file_age}s old (> ${COV_MAX_AGE}s) — skipping coverage check."
+    echo "[coverage] bin/coverage.xml not produced by the test run — skipping coverage check."
   fi
 else
-  echo "[coverage] No bin/coverage.xml found — skipping coverage check (run bin/test.sh first)."
+  echo "[tests] pytest not found in $VENV_DIR — skipping (run: pip install --require-hashes -r bin/requirements-dev.txt)"
 fi
 
 # ── pip-audit ─────────────────────────────────────────────────────────────────
@@ -232,7 +237,7 @@ fi
 
 # ── Local tool version drift (non-blocking) ────────────────────────────────────
 STALE_TOOLS=()
-for pkg in ruff mypy bandit pip-audit zizmor; do
+for pkg in ruff mypy bandit pip-audit zizmor pytest pytest-cov; do
   pinned="$(_pinned_pip_version "$pkg")"
   installed="$(_installed_pip_version "$pkg")"
   if [ -n "$pinned" ] && [ -n "$installed" ] && [ "$pinned" != "$installed" ]; then
