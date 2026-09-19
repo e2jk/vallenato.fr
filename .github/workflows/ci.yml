@@ -1,10 +1,23 @@
 name: CI
 
-run-name: ${{ startsWith(github.ref, 'refs/tags/v') && format('Publishing version {0}', github.ref_name) || github.event.pull_request.title || github.event.head_commit.message || github.ref_name }}
+run-name: ${{ startsWith(github.ref, 'refs/tags/v') && format('Publishing version {0}', github.ref_name) || (github.event_name == 'workflow_dispatch' && format('Manual rebuild — {0}', github.event.inputs.reason)) || github.event.pull_request.title || github.event.head_commit.message || github.ref_name }}
 
 on:
   push:
   pull_request:
+  workflow_dispatch:
+    # Rebuild+republish :latest from master's current, unchanged source — no
+    # version bump needed on our side. Exists for cases where a fix landed
+    # in an upstream OS package (apk/apt upgrade picks it up) or a base
+    # image digest, but nothing in this repo's own manifests changed, so no
+    # renovate PR would ever fire to trigger a normal publish.
+    # Triggered by hand, or automatically by image-scan.yml on a failed
+    # scheduled scan (see that workflow) — same entry point either way.
+    inputs:
+      reason:
+        description: 'Why this manual rebuild is needed (e.g. a link to the CVE/scan alert being addressed) — shown in the run name/log, no code change required'
+        required: true
+        type: string
 
 permissions: read-all  # zizmor: ignore[excessive-permissions] intentional: workflow default is read-only, every job opts into exactly the write scopes it needs
 
@@ -113,7 +126,7 @@ jobs:
         # (duplicated here rather than depended-on, for the same
         # no-needs-dependency reason as this job's own if: above).
         if: |
-          startsWith(github.ref, 'refs/tags/v') || (github.event_name == 'pull_request' && (github.head_ref == 'ship' || startsWith(github.head_ref, 'dependabot/') || startsWith(github.head_ref, 'renovate/')))
+          startsWith(github.ref, 'refs/tags/v') || (github.event_name == 'pull_request' && (github.head_ref == 'ship' || startsWith(github.head_ref, 'dependabot/') || startsWith(github.head_ref, 'renovate/'))) || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/master')
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           name: pages-content
@@ -142,7 +155,9 @@ jobs:
     name: Compute build version
     # publish_now = true for a pull_request from ship/a bot branch (the one
     # place content is tested — see this job's if: below) with native
-    # auto-merge armed, or a push to a version tag. Skipped for a push to
+    # auto-merge armed, a push to a version tag, or a manual workflow_dispatch
+    # targeting master (see the on: block above — rebuilds unchanged source,
+    # e.g. to pick up an upstream OS package fix). Skipped for a push to
     # ship/a bot branch or to master — same rationale as lint-and-test's if:.
     if: |
       !(github.event_name == 'push' && (github.ref == 'refs/heads/ship' || startsWith(github.ref, 'refs/heads/dependabot/') || startsWith(github.ref, 'refs/heads/renovate/') || github.ref == 'refs/heads/master'))
@@ -176,6 +191,16 @@ jobs:
               case "${GITHUB_REF}" in
                 refs/tags/v*) PUBLISH_NOW=true ;;
               esac
+              ;;
+            workflow_dispatch)
+              # Only publish when dispatched against master itself — a manual
+              # run against some other branch is just "run CI for this
+              # branch by hand", not a request to release it.
+              if [ "${GITHUB_REF}" = "refs/heads/master" ]; then
+                PUBLISH_NOW=true
+              else
+                echo "Manual run not targeting master (${GITHUB_REF}) — not publishing."
+              fi
               ;;
             pull_request)
               case "${HEAD_REF}" in
@@ -333,15 +358,28 @@ jobs:
           if [ "${PUBLISH_NOW}" = "true" ]; then
             CACHE_ARGS+=(--cache-to "type=registry,ref=ghcr.io/e2jk/${MATRIX_IMAGE}:buildcache,mode=max")
           fi
+          # Daily granularity for ordinary builds — same-day pushes still hit
+          # cache, only the first build of a new UTC day pays for a fresh
+          # apk/apt resolve. A workflow_dispatch (a human re-running CI by
+          # hand, or image-scan.yml's auto-triggered fix rebuild) is always a
+          # deliberate "make sure this is fresh" request, so it gets a
+          # run-unique value instead — otherwise two dispatches on the same
+          # day would share the same stale-or-fresh cache entry, defeating
+          # the one case this exists for.
+          if [ "${GITHUB_EVENT_NAME}" = "workflow_dispatch" ]; then
+            CACHE_BUST="dispatch-${GITHUB_RUN_ID}"
+          else
+            CACHE_BUST="$(date -u +%F)"
+          fi
           BUILD_ARGS=()
           if [ "${MATRIX_NAME}" = "site" ]; then
             # Force the Dockerfile's `apk upgrade` layer to actually re-run instead
             # of replaying a stale registry cache hit forever — see Dockerfile.
-            BUILD_ARGS+=(--build-arg "APK_CACHE_BUST=$(date -u +%F)")
+            BUILD_ARGS+=(--build-arg "APK_CACHE_BUST=${CACHE_BUST}")
           elif [ "${MATRIX_NAME}" = "bin" ]; then
             # Same cache-poisoning issue for the Debian-based bin image's
             # `apt-get upgrade` layer — see bin/Dockerfile.
-            BUILD_ARGS+=(--build-arg "APT_CACHE_BUST=$(date -u +%F)")
+            BUILD_ARGS+=(--build-arg "APT_CACHE_BUST=${CACHE_BUST}")
           fi
           docker buildx build \
             -f "${MATRIX_DOCKERFILE}" \
