@@ -3,11 +3,20 @@ name: Published image vulnerability scan
 # Trivy only runs against the freshly built image on push (ci.yml). A CVE
 # published in an OS package baked into the image during a quiet period
 # would go unnoticed until the next commit. Scan the already-published
-# :latest images on a schedule instead, so a newly disclosed CVE fails a
-# run (and emails the maintainer) even with no code changes. Daily keeps
-# the worst-case detection gap during a quiet period to ~1 day — the scan
-# itself only takes 30-60s per image, so the extra runs cost effectively
-# nothing.
+# :latest images on a schedule instead, so a newly disclosed CVE gets
+# caught (and a rebuild auto-triggered to fix it) even with no code
+# changes. Daily keeps the worst-case detection gap during a quiet period
+# to ~1 day — the scan itself only takes 30-60s per image, so the extra
+# runs cost effectively nothing.
+#
+# A fixable CVE in an unpinned OS package does NOT fail this job (see
+# continue-on-error below) — it's expected, self-healing behaviour (rebuild
+# dispatched, fix lands within minutes), not an incident. A CVE in a
+# hash-pinned direct Python dependency (bin image only) is different: a
+# rebuild installs the exact same pinned version again, so it can't
+# self-heal — that case (and a failure to dispatch the rebuild in the other
+# case) does fail the run and email the maintainer, since only a human
+# bumping the pin actually fixes it.
 
 on:
   schedule:
@@ -34,14 +43,43 @@ jobs:
           - name: bin
             image: vallenato.fr_bin
     permissions:
-      security-events: write  # Trivy SARIF upload
+      contents: read           # checkout (for the pinned-check step)
+      security-events: write   # Trivy SARIF upload
+      actions: write           # dispatch ci.yml's workflow_dispatch on failure, see below
+    env:
+      # Matrix values passed via env instead of interpolated directly into
+      # run: blocks below (zizmor's template-injection audit) — these are
+      # static literals from this same file's matrix.include, not
+      # attacker-controllable, but env-var indirection is the recommended
+      # pattern regardless of trust level, and it's no extra effort here.
+      MATRIX_NAME: ${{ matrix.name }}
+      MATRIX_IMAGE: ${{ matrix.image }}
     steps:
+      # Needed for the "pinned-check" step below (greps bin/requirements*.txt
+      # from the working tree) — checked out unconditionally since it's cheap
+      # and the alternative is threading a conditional through a step that
+      # runs before Trivy's own outcome is known.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+
+      # JSON, not SARIF, is the primary output now — it's the one format that
+      # gives each finding a structured PkgName (SARIF buries it in a
+      # free-text message), and both the SARIF the Security tab needs and
+      # the package-name check below can be derived from it locally with
+      # `trivy convert` (a pure report-format transform, no image re-pull or
+      # re-scan) rather than running Trivy against the image twice.
       - name: Run Trivy vulnerability scanner
+        id: trivy
+        # Self-healing, not a build gate (see "Trigger a rebuild" below) —
+        # don't let a fixable CVE alone red-X this job; only the "did the
+        # auto-remediation itself work" step further down can fail the run.
+        continue-on-error: true
         uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
         with:
           image-ref: ghcr.io/e2jk/${{ matrix.image }}:latest
-          format: sarif
-          output: trivy-latest-results.sarif
+          format: json
+          output: trivy-latest-results.json
           severity: HIGH,CRITICAL
           ignore-unfixed: 'true'
           exit-code: '1'
@@ -52,9 +90,100 @@ jobs:
           # to run a stale scanner version on a daily security-scan schedule.
           version: v0.74.0
 
+      - name: Install Trivy CLI (to convert the JSON report to SARIF)
+        if: always() && hashFiles('trivy-latest-results.json') != ''
+        uses: aquasecurity/setup-trivy@81e514348e19b6112ce2a7e3ecbafe19c1e1f567 # v0.3.1
+        with:
+          # Same Trivy CLI version aquasecurity/trivy-action@v0.36.0 uses
+          # internally (its own default) to scan above — keeps the report
+          # producer and the converter reading the same JSON schema version.
+          version: v0.74.0
+
+      # `trivy convert` reformats an already-saved report — it re-reads the
+      # JSON above and re-serializes it, it does not touch the image or the
+      # network. The severity/ignore-unfixed filters were already applied
+      # when that report was produced, so the SARIF this emits matches
+      # exactly what a direct SARIF-format scan would have produced.
+      - name: Convert the JSON report to SARIF
+        if: always() && hashFiles('trivy-latest-results.json') != ''
+        run: trivy convert --format sarif --output trivy-latest-results.sarif trivy-latest-results.json
+
       - name: Upload Trivy results to GitHub Security tab
         if: always() && hashFiles('trivy-latest-results.sarif') != ''
         uses: github/codeql-action/upload-sarif@cdf488f595d80d6e07e03d4674febd5ab45fa938 # v4
         with:
           sarif_file: trivy-latest-results.sarif
           category: trivy-latest-${{ matrix.name }}
+
+      # "ignore-unfixed: true" above means every finding here has a fix
+      # published upstream *somewhere* — but "somewhere" isn't always this
+      # repo's own build inputs. An unpinned OS package (apk/apt) genuinely
+      # re-resolves to the patched version on a plain rebuild (see the
+      # Dockerfiles' APK_CACHE_BUST / APT_CACHE_BUST comments). A Python
+      # package (bin image only) doesn't: every one is hash-pinned in
+      # bin/requirements.txt + bin/requirements-pip-bootstrap.txt, so
+      # `pip install --require-hashes` installs the exact same vulnerable
+      # version on every rebuild until that pin itself changes.
+      #
+      # Package-name match only — no version-range/ecosystem-graph logic. A
+      # name Trivy reports that isn't spelled identically (case aside) in our
+      # requirements files falls through as "not pinned here" and gets the
+      # plain-rebuild treatment below; that's the same do-nothing outcome as
+      # before this check existed, for a case this simple check can't
+      # recognize — not a regression. The site image installs no Python
+      # packages, so this check is effectively a no-op for it (matched is
+      # always empty), which is the correct behaviour there too.
+      - name: Check whether affected packages are pinned here
+        id: pinned-check
+        if: always() && steps.trivy.outcome == 'failure' && hashFiles('trivy-latest-results.json') != ''
+        run: |
+          grep -ohE '^[A-Za-z0-9._-]+==' bin/requirements.txt bin/requirements-pip-bootstrap.txt \
+            | sed 's/==$//' | tr '[:upper:]' '[:lower:]' | sort -u > pinned-packages.txt
+          jq -r '.Results[]? | .Vulnerabilities[]? | .PkgName // empty' trivy-latest-results.json \
+            | tr '[:upper:]' '[:lower:]' | sort -u > vulnerable-packages.txt
+          matched=$(comm -12 pinned-packages.txt vulnerable-packages.txt | paste -sd, -)
+          if [ -n "$matched" ]; then
+            echo "matched=$matched" >> "$GITHUB_OUTPUT"
+          fi
+
+      # Close the loop instead of just emailing the maintainer: dispatch
+      # ci.yml's manual-rebuild entry point (the same one a human would use
+      # for this) against master. GITHUB_TOKEN can dispatch
+      # workflow_dispatch/repository_dispatch events without special-casing —
+      # GitHub's "actions triggered by GITHUB_TOKEN don't trigger further
+      # workflow runs" loop-prevention rule explicitly excludes those two
+      # event types.
+      #
+      # Both matrix legs (site, bin) run this independently — if both find a
+      # fixable CVE on the same day, both dispatch, but ci.yml's own
+      # concurrency group (keyed on event+ref) cancels the earlier of the two
+      # runs rather than doing the rebuild twice, so this doesn't need its
+      # own dedup logic.
+      #
+      # No continue-on-error here (unlike the scan steps above): if this
+      # dispatch itself fails (e.g. API error), that's the one case this
+      # job should still surface as a failure — a human is needed, since
+      # neither today's nor tomorrow's run will retry it on their own.
+      - name: Trigger a rebuild to pick up the fix
+        if: always() && steps.trivy.outcome == 'failure' && steps.pinned-check.outputs.matched == ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          gh workflow run ci.yml --ref master \
+            -f reason="Automatic: daily image scan (run ${RUN_ID}) found a fixable CVE in ghcr.io/e2jk/${MATRIX_IMAGE}:latest"
+          echo "::notice::Fixable CVE(s) found in ghcr.io/e2jk/${MATRIX_IMAGE}:latest — rebuild triggered to pick up the fix. See the Security tab for details."
+
+      # A rebuild can't fix these — the version is hash-pinned in our own
+      # requirements files, so it won't move on its own. Fail loudly instead
+      # of silently dispatching a rebuild that will just reproduce the same
+      # finding tomorrow; a human needs to bump the pin (Renovate may also
+      # already be on it — check its PRs — but don't assume that).
+      - name: Fail — pinned dependency needs a manual/Renovate version bump
+        if: always() && steps.trivy.outcome == 'failure' && steps.pinned-check.outputs.matched != ''
+        env:
+          MATCHED: ${{ steps.pinned-check.outputs.matched }}
+        run: |
+          echo "::error::Fixable CVE(s) found in package(s) hash-pinned in bin/requirements.txt (${MATCHED}) — a rebuild won't help, the pin(s) need bumping in bin/requirements.txt (and bin/requirements-pip-bootstrap.txt if present there too). See the Security tab for details."
+          exit 1
