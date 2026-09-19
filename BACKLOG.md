@@ -63,3 +63,12 @@ down for a stateless read-only site (no DB, no auth, no socket-proxy needed):
   point at whatever reverse proxy that host already runs).
 - Retire `upload.sh` and the SSH/rsync deploy step once the new container
   is live.
+- Daily auto-pull, mirroring OpenHangar's mechanism (`docs/self-hosting.md`
+  "Upgrades"/"One-click upgrades"): a host cron job runs
+  `docker compose pull && docker compose up -d`, verifying the pulled
+  image's cosign signature (OpenHangar's manual-pull docs show the
+  `cosign verify` invocation to adapt) before recreating the container so
+  the fixable-CVE rebuild path (image-scan.yml) actually reaches the
+  running site, not just the registry. No settings-page trigger needed
+  here (unlike OpenHangar) since this site has no admin backend — cron
+  alone is enough.
