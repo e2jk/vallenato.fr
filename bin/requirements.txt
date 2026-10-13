@@ -506,9 +506,9 @@ google-auth==2.59.0 \
 google-auth-httplib2==0.4.3 \
     --hash=sha256:0ba8d2eeab86e820f23466f57c45d509052db0a5f1bef6ed1cf92e4bb75b847d \
     --hash=sha256:5459dd8da1a31339f51838edaedd0ca1221f5a5c1d292672e7d8ea0816c0d93a
-google-auth-oauthlib==1.4.1 \
-    --hash=sha256:1a83f5f2a8421dedadaa3caf25b3a710dddf85a33a63144be41c2fc79174b106 \
-    --hash=sha256:a1be43ec69fe563ac9b2c4d6fc4334b323b21cbdc59a638b5fa34dd4d5a2a348
+google-auth-oauthlib==1.5.0 \
+    --hash=sha256:71625fdea21c6c03217eb9ff13741c3096e6d257ebca0ad084dbd6e9f4aa4ef4 \
+    --hash=sha256:b351107c7dd9017f426cbb0272ea1bc04f469020fd18f4443c7d40362e0b1510
 googleapis-common-protos==1.75.5 \
     --hash=sha256:c7a866fc34ed29a3b10af627a4b9b1dc2433313ca6e959f0ae4feb132047ed72 \
     --hash=sha256:d7285525c23039db98f2463e6d5a4f9b958b94d497f03a844ece3259c4e72d5d
