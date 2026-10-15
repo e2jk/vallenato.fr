@@ -516,9 +516,9 @@ google-api-python-client==2.201.0 \
 google-auth==2.59.1 \
     --hash=sha256:89c3f931683a482ac97e61df7eb9da5e08a91703f3c752b2377d72cfb7d69e6a \
     --hash=sha256:ce50fc533ac02f489a2b183a0c156672c376ecb2091b1127bc7efba2975fff27
-google-auth-httplib2==0.4.3 \
-    --hash=sha256:0ba8d2eeab86e820f23466f57c45d509052db0a5f1bef6ed1cf92e4bb75b847d \
-    --hash=sha256:5459dd8da1a31339f51838edaedd0ca1221f5a5c1d292672e7d8ea0816c0d93a
+google-auth-httplib2==0.4.4 \
+    --hash=sha256:b931de392c20cfaa351cd789274922bd8cdc001e0e9e96de31b39d71347f8e16 \
+    --hash=sha256:bbe5d7b2401bb3a4017f4720e1e91bd273ab9a2bb60b84e65edbc0de127852da
 google-auth-oauthlib==1.5.0 \
     --hash=sha256:71625fdea21c6c03217eb9ff13741c3096e6d257ebca0ad084dbd6e9f4aa4ef4 \
     --hash=sha256:b351107c7dd9017f426cbb0272ea1bc04f469020fd18f4443c7d40362e0b1510
