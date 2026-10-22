@@ -507,9 +507,9 @@ cryptography==50.0.2 \
     --hash=sha256:f9f6143a8c75945eb960d9eb98905a441394abfa24afaae239d514ffb2586480 \
     --hash=sha256:fa8f5efb344d6908a1ce62f4a24e2e5780f825d6f53f5f50ec5ffacac72936cb \
     --hash=sha256:fdd28f912fccfec1846a94e2e1e8f9b0012f557f0c46fe4f3eb0d7a87afcf90b
-google-api-core==2.41.0 \
-    --hash=sha256:1f3d626b7a8022dda8deef200b845057231ddc7cbf0d999026bdf61ba38d7fdf \
-    --hash=sha256:73e89a86baef6680934adeee6fbd0ceaf20c1393ab229b2f9b34efb23b0fdef3
+google-api-core==2.42.0 \
+    --hash=sha256:82cf5daa2ef1b456d4e29ff1de1a5c2995c7be3ccf4fc608184326e03390c1ee \
+    --hash=sha256:b1bdf4f72dc4f910736ce4ba49038352effbbc309579215107649b22973a1317
 google-api-python-client==2.201.0 \
     --hash=sha256:2d9bf1ba3f12eee8ed3d0f1791ce0605d163432f496baa72d3677faa2cf097d6 \
     --hash=sha256:d5691982abd7287f53cb0b0e0c6a9984d4103cf864ea0a88cb6e4347bbaf70de
