@@ -21,7 +21,16 @@ name: Published image vulnerability scan
 on:
   schedule:
     - cron: '19 5 * * *'   # daily 05:19 UTC — off-peak, distinct from the other scheduled workflows
-  workflow_dispatch: {}     # allow manual runs for testing
+  # Also dispatched by ci.yml's publish-release job right after every
+  # release, so the Security tab (which only tracks refs/heads/master)
+  # reflects the new :latest within minutes — most releases are published
+  # from a pull_request run, whose own scan results never land on master.
+  workflow_dispatch:
+    inputs:
+      release:
+        description: 'Release tag that was just published (set by ci.yml publish-release; leave empty for a manual scan)'
+        required: false
+        default: ''
 
 permissions: read-all  # zizmor: ignore[excessive-permissions] intentional: workflow default is read-only, the job below opts into exactly the write scopes it needs
 
@@ -43,7 +52,7 @@ jobs:
           - name: bin
             image: vallenato.fr_bin
     permissions:
-      contents: read           # checkout (for the pinned-check step)
+      contents: write          # checkout (for the pinned-check step), and dependency snapshot submission (Dependabot alerts), see below
       security-events: write   # Trivy SARIF upload
       actions: write           # dispatch ci.yml's workflow_dispatch on failure, see below
     env:
@@ -104,9 +113,19 @@ jobs:
       # network. The severity/ignore-unfixed filters were already applied
       # when that report was produced, so the SARIF this emits matches
       # exactly what a direct SARIF-format scan would have produced.
+      #
+      # Only OS-package results go into the SARIF (Result.Class ==
+      # "os-pkgs"), matching ci.yml's docker-validate upload: Python
+      # packages are hash-pinned in bin/requirements*.txt and already
+      # reported by pip-audit and OSV-Scanner, so a Trivy copy of each CVE
+      # only tripled every alert. The full JSON (library findings included)
+      # still drives the pinned-package check below.
       - name: Convert the JSON report to SARIF
         if: always() && hashFiles('trivy-latest-results.json') != ''
-        run: trivy convert --format sarif --output trivy-latest-results.sarif trivy-latest-results.json
+        run: |
+          jq '.Results |= ((. // []) | map(select(.Class == "os-pkgs")))' \
+            trivy-latest-results.json > trivy-latest-os-results.json
+          trivy convert --format sarif --output trivy-latest-results.sarif trivy-latest-os-results.json
 
       - name: Upload Trivy results to GitHub Security tab
         if: always() && hashFiles('trivy-latest-results.sarif') != ''
@@ -114,6 +133,29 @@ jobs:
         with:
           sarif_file: trivy-latest-results.sarif
           category: trivy-latest-${{ matrix.name }}
+
+      # Dependabot alerts for the images come from these dependency
+      # snapshots, and Dependabot only reads snapshots filed under the
+      # default branch. ci.yml's publish-images job submits one too, but
+      # under its own run's ref — refs/pull/N/merge for a release published
+      # from a PR — so it never replaced master's. Submitting from here (a
+      # master-ref run) after every release and daily keeps the alerts in
+      # step with :latest.
+      #
+      # The correlator must stay identical to publish-images' own
+      # (CI_publish-images_<name>, see ci.yml): a new snapshot only
+      # supersedes earlier ones with the same correlator.
+      - name: Submit dependency snapshot of the published image
+        if: always()
+        uses: anchore/sbom-action@3ad7283483fc7af8ff2b4ea19663c2d5ca935e26 # v0.24.2
+        with:
+          image: ghcr.io/e2jk/${{ matrix.image }}:latest
+          format: cyclonedx-json
+          output-file: sbom-latest-${{ matrix.name }}.cyclonedx.json
+          upload-artifact: false
+          upload-release-assets: false
+          dependency-snapshot: true
+          dependency-snapshot-correlator: CI_publish-images_${{ matrix.name }}
 
       # "ignore-unfixed: true" above means every finding here has a fix
       # published upstream *somewhere* — but "somewhere" isn't always this
@@ -164,8 +206,11 @@ jobs:
       # dispatch itself fails (e.g. API error), that's the one case this
       # job should still surface as a failure — a human is needed, since
       # neither today's nor tomorrow's run will retry it on their own.
+      # Not after a release (inputs.release set): that :latest was built
+      # minutes ago, so a rebuild would pick up nothing new — and since
+      # every release dispatches this scan again, it could only loop.
       - name: Trigger a rebuild to pick up the fix
-        if: always() && steps.trivy.outcome == 'failure' && steps.pinned-check.outputs.matched == ''
+        if: always() && steps.trivy.outcome == 'failure' && steps.pinned-check.outputs.matched == '' && inputs.release == ''
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_REPO: ${{ github.repository }}

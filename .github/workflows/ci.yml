@@ -22,14 +22,14 @@ on:
 permissions: read-all  # zizmor: ignore[excessive-permissions] intentional: workflow default is read-only, every job opts into exactly the write scopes it needs
 
 # Keyed on event+ref: a newer push/PR-update cancels the previous still-
-# running check for the same branch/PR. Exception: every ship/dependabot/
-# renovate pull_request — the only PRs that publish_now (see the version job)
+# running check for the same branch/PR. Exception: every ship/renovate
+# pull_request — the only PRs that publish_now (see the version job)
 # — shares one 'bot-pipeline' lane for the ENTIRE run, so at most one publish
 # pipeline is ever in flight. Queues (cancel-in-progress: false) rather than
 # cancels. Adapted from OpenHangar's ci.yml concurrency design.
 concurrency:
-  group: ${{ (github.event_name == 'pull_request' && (github.head_ref == 'ship' || startsWith(github.head_ref, 'dependabot/') || startsWith(github.head_ref, 'renovate/'))) && 'bot-pipeline' || format('{0}-{1}', github.event_name, github.ref) }}
-  cancel-in-progress: ${{ !(github.event_name == 'pull_request' && (github.head_ref == 'ship' || startsWith(github.head_ref, 'dependabot/') || startsWith(github.head_ref, 'renovate/'))) }}
+  group: ${{ (github.event_name == 'pull_request' && (github.head_ref == 'ship' || startsWith(github.head_ref, 'renovate/'))) && 'bot-pipeline' || format('{0}-{1}', github.event_name, github.ref) }}
+  cancel-in-progress: ${{ !(github.event_name == 'pull_request' && (github.head_ref == 'ship' || startsWith(github.head_ref, 'renovate/'))) }}
 
 jobs:
   lint-and-test:
@@ -40,7 +40,7 @@ jobs:
     # follows is where this actually runs; a push to master lands content a
     # PR already fully tested and published, so it's a pure no-op.
     if: |
-      !(github.event_name == 'push' && (github.ref == 'refs/heads/ship' || startsWith(github.ref, 'refs/heads/dependabot/') || startsWith(github.ref, 'refs/heads/renovate/') || github.ref == 'refs/heads/master'))
+      !(github.event_name == 'push' && (github.ref == 'refs/heads/ship' || startsWith(github.ref, 'refs/heads/renovate/') || github.ref == 'refs/heads/master'))
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
@@ -126,12 +126,101 @@ jobs:
         # (duplicated here rather than depended-on, for the same
         # no-needs-dependency reason as this job's own if: above).
         if: |
-          startsWith(github.ref, 'refs/tags/v') || (github.event_name == 'pull_request' && (github.head_ref == 'ship' || startsWith(github.head_ref, 'dependabot/') || startsWith(github.head_ref, 'renovate/'))) || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/master')
+          startsWith(github.ref, 'refs/tags/v') || (github.event_name == 'pull_request' && (github.head_ref == 'ship' || startsWith(github.head_ref, 'renovate/'))) || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/master')
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           name: pages-content
           path: _site
           retention-days: 1
+
+  no-op-push:
+    name: No CI work needed (already tested pre-merge)
+    # Mirror image of lint-and-test's skip condition above: runs only for
+    # the push events every other job in this workflow intentionally skips
+    # (a push to master/ship/a bot branch never needs its own CI run, since
+    # the content was already fully tested via the PR that landed it — see
+    # lint-and-test's own if: for the full rationale). Exists purely so the
+    # workflow's overall conclusion is `success` rather than `skipped`:
+    # when every job in a run is skipped, GitHub sets the run's own
+    # conclusion to `skipped`, and the public status badge has no distinct
+    # color for that — it renders `skipped` the same as `failing` (red).
+    # Ported from OpenHangar's ci.yml.
+    if: |
+      github.event_name == 'push' && (github.ref == 'refs/heads/ship' || startsWith(github.ref, 'refs/heads/renovate/') || github.ref == 'refs/heads/master')
+    runs-on: ubuntu-latest
+    timeout-minutes: 1
+    permissions: {}  # just an echo, no token access needed
+    steps:
+      - run: echo "No CI work needed for this push — already tested via the PR that merged it."
+
+  rescan-master-pip-audit:
+    name: Re-scan master (pip-audit) to refresh code-scanning alerts
+    # A GitHub code-scanning alert only auto-closes when a fresh SARIF is
+    # uploaded for the exact ref it's tracked against — a pull_request run's
+    # SARIF is scoped to the PR, never to master. Since lint-and-test (which
+    # normally uploads the pip-audit SARIF) skips push-to-master entirely
+    # (see its own if: above), nothing ever re-uploads a clean one for
+    # refs/heads/master after a fix merges, so a fixed alert can be stuck
+    # "open" forever. Repeats just the pip-audit step from lint-and-test,
+    # standalone and cheap, on every push to master. Same SARIF category
+    # ("pip-audit") as lint-and-test's own upload, so this marks existing
+    # alerts fixed instead of starting a second, never-merged history.
+    # Ported from OpenHangar's ci.yml.
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      security-events: write  # pip-audit SARIF upload
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+          cache-dependency-path: bin/requirements.txt
+
+      - name: Set up venv
+        # Same three files as lint-and-test, so the audit sees the same set.
+        run: |
+          python -m venv .venv
+          .venv/bin/pip install --quiet --require-hashes -r bin/requirements-pip-bootstrap.txt
+          .venv/bin/pip install --quiet --require-hashes -r bin/requirements.txt
+          .venv/bin/pip install --quiet --require-hashes -r bin/requirements-dev.txt
+
+      - name: Audit all dependencies (runtime + transitive)
+        id: pip-audit
+        continue-on-error: true
+        run: .venv/bin/pip-audit --local --format json -o pip-audit.json
+
+      - name: Convert pip-audit JSON to SARIF
+        if: always() && hashFiles('pip-audit.json') != ''
+        run: python3 .github/scripts/pip_audit_to_sarif.py pip-audit.json pip-audit.sarif
+
+      - name: Upload pip-audit results to GitHub Security tab
+        if: always() && hashFiles('pip-audit.sarif') != ''
+        uses: github/codeql-action/upload-sarif@2892aa5e19bbd11bc0cff5427e3b750a04d9e3c2 # v4
+        with:
+          sarif_file: pip-audit.sarif
+          category: pip-audit
+
+  rescan-master-osv:
+    name: Re-scan master (OSV-Scanner) to refresh code-scanning alerts
+    # Same rationale and same trigger as rescan-master-pip-audit above — see
+    # its comment. osv-scan (the job that normally covers this) needs
+    # version, which is itself skipped on push-to-master, so it never runs
+    # for this event either. No needs: here on purpose: this job doesn't
+    # use a version number or publish anything.
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    permissions:
+      actions: read           # required by the reusable workflow to auto-detect context
+      contents: read          # checkout
+      security-events: write  # upload SARIF results to the Security tab
+    uses: google/osv-scanner-action/.github/workflows/osv-scanner-reusable.yml@a345acffa64b0eaede81a3d9aae6141214d9c8fc # v2.6.0
 
   dependency-review:
     name: Dependency review (new/changed dependencies)
@@ -153,14 +242,17 @@ jobs:
 
   version:
     name: Compute build version
-    # publish_now = true for a pull_request from ship/a bot branch (the one
-    # place content is tested — see this job's if: below) with native
-    # auto-merge armed, a push to a version tag, or a manual workflow_dispatch
-    # targeting master (see the on: block above — rebuilds unchanged source,
-    # e.g. to pick up an upstream OS package fix). Skipped for a push to
+    # publish_now = true for a pull_request from ship or a Renovate
+    # security-fix branch (labelled "security") with native auto-merge
+    # armed, a push to a version tag, or a workflow_dispatch targeting
+    # master (see the on: block above — daily-release.yml's daily release
+    # of routine dependency updates, or a rebuild of unchanged source, e.g.
+    # to pick up an upstream OS package fix). A routine Renovate PR is fully
+    # tested but not published on its own: daily-release.yml releases the
+    # day's updates together. Skipped for a push to
     # ship/a bot branch or to master — same rationale as lint-and-test's if:.
     if: |
-      !(github.event_name == 'push' && (github.ref == 'refs/heads/ship' || startsWith(github.ref, 'refs/heads/dependabot/') || startsWith(github.ref, 'refs/heads/renovate/') || github.ref == 'refs/heads/master'))
+      !(github.event_name == 'push' && (github.ref == 'refs/heads/ship' || startsWith(github.ref, 'refs/heads/renovate/') || github.ref == 'refs/heads/master'))
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
@@ -204,12 +296,21 @@ jobs:
               ;;
             pull_request)
               case "${HEAD_REF}" in
-                ship|dependabot/*|renovate/*)
-                  AUTO_MERGE_ARMED=$(gh pr view "${PR_NUMBER}" --json autoMergeRequest --jq '.autoMergeRequest != null')
-                  if [ "${AUTO_MERGE_ARMED}" = "true" ]; then
-                    PUBLISH_NOW=true
-                  else
+                ship|renovate/*)
+                  # A routine Renovate update doesn't publish at all: several
+                  # land every day, and daily-release.yml releases them
+                  # together once a day instead of one release each. Only
+                  # Renovate's security-fix PR (labelled "security", see
+                  # vulnerabilityAlerts in renovate.json) still publishes
+                  # straight away — a CVE fix shouldn't wait for the batch.
+                  read -r AUTO_MERGE_ARMED IS_SECURITY < <(gh pr view "${PR_NUMBER}" --json autoMergeRequest,labels \
+                    --jq '"\(.autoMergeRequest != null) \([.labels[].name] | index("security") != null)"')
+                  if [ "${AUTO_MERGE_ARMED}" != "true" ]; then
                     echo "Auto-merge is not armed on this PR — not publishing."
+                  elif [ "${HEAD_REF}" != "ship" ] && [ "${IS_SECURITY}" != "true" ]; then
+                    echo "Routine dependency update — released with the next daily release, not on its own."
+                  else
+                    PUBLISH_NOW=true
                   fi
                   ;;
               esac
@@ -229,7 +330,15 @@ jobs:
 
             for attempt in 1 2 3 4 5; do
               LAST_TAG=$(git tag --list 'v[0-9]*' --sort=-version:refname | head -1)
-              if [ -n "$LAST_TAG" ] && [ -z "$(git log "${LAST_TAG}..HEAD" --oneline -- bin/)" ]; then
+              # Compared by content, not commit history: a tag is its
+              # release PR's own commit, which the rebase merge re-creates
+              # on master under a new SHA — so "${LAST_TAG}..HEAD" would list
+              # that already-released commit again, and any bin/ change it
+              # carried made the next dependency-only release a minor bump.
+              # bin/requirements*.txt is excluded so a dependency-only
+              # release is a patch, like OpenHangar's (whose pins live
+              # outside app/).
+              if [ -n "$LAST_TAG" ] && git diff --quiet "${LAST_TAG}" HEAD -- bin/ ':(exclude)bin/requirements*.txt'; then
                 BUMP="patch"
               else
                 BUMP="minor"
@@ -476,6 +585,11 @@ jobs:
           image-ref: ${{ matrix.image }}:ci
           format: sarif
           output: trivy-results.sarif
+          # OS packages only in the Security tab: every Python package in
+          # the bin image is hash-pinned in bin/requirements*.txt, which
+          # pip-audit and OSV-Scanner already report on — uploading Trivy's
+          # own copy of the same CVEs turned each one into three alerts.
+          vuln-type: os
           severity: HIGH,CRITICAL
           ignore-unfixed: 'true'
           exit-code: '0'
@@ -484,7 +598,14 @@ jobs:
           version: v0.74.0
 
       - name: Upload Trivy results to GitHub Security tab
-        if: always() && hashFiles('trivy-results.sarif') != ''
+        # Never for refs/heads/master (a workflow_dispatch release build):
+        # master's Trivy state is owned by image-scan.yml, which scans the
+        # actually-published :latest — daily, and right after every
+        # release via publish-release's "Refresh the Security tab" step.
+        # Alerts are tracked per (workflow, job, category), so a second
+        # writer on master kept its own last results open until it happened
+        # to run again, even after a release from a PR run had fixed them.
+        if: always() && hashFiles('trivy-results.sarif') != '' && github.ref != 'refs/heads/master'
         uses: github/codeql-action/upload-sarif@2892aa5e19bbd11bc0cff5427e3b750a04d9e3c2 # v4
         with:
           sarif_file: trivy-results.sarif
@@ -583,6 +704,14 @@ jobs:
           output-file: sbom-${{ matrix.name }}-${{ github.sha }}.cyclonedx.json
           upload-artifact: false
           dependency-snapshot: true
+          # One correlator per image: sbom-action's default is
+          # "<workflow>_<job>" ("CI_publish-images") for both matrix legs, so
+          # each image's snapshot superseded the other's. image-scan.yml
+          # submits under the same per-image value, so its master-ref
+          # snapshots supersede these. The input isn't declared in
+          # sbom-action's action.yml (the runner logs an "Unexpected input"
+          # warning), but its code reads it via getInput.
+          dependency-snapshot-correlator: CI_publish-images_${{ matrix.name }}
 
       - name: Sign SBOM with cosign (Sigstore bundle)
         run: |
@@ -628,6 +757,8 @@ jobs:
       contents: write  # gh release create
       pages: write     # deploy-pages
       id-token: write  # OIDC token for deploy-pages
+      pull-requests: read  # this run's own PR title and commits, for the release notes
+      actions: write       # dispatch image-scan.yml to refresh the Security tab after release
     environment:
       name: github-pages
       url: ${{ steps.deploy.outputs.page_url }}
@@ -651,7 +782,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO: ${{ github.repository }}
-          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
           PR_AUTHOR: ${{ github.event.pull_request.user.login }}
           PR_URL: ${{ github.event.pull_request.html_url }}
         run: |
@@ -674,14 +805,30 @@ jobs:
           # triggered this very run is still open at this exact moment —
           # publish happens before merge, by design. Add its own line
           # manually, right before the "Full Changelog" footer.
+          # A ship PR usually batches several commits under one title (see
+          # auto-pr-merge.yml), so each commit gets its own sub-bullet. The
+          # title is read now rather than from the event payload: that
+          # workflow may have updated it since this run started.
           if [ "${GITHUB_EVENT_NAME}" = "pull_request" ]; then
-            SELF_LINE="* ${PR_TITLE} by @${PR_AUTHOR} in ${PR_URL}"
-            awk -v line="$SELF_LINE" '
-              /^\*\*Full Changelog\*\*/ && !inserted { print line; inserted=1 }
-              { print }
-              END { if (!inserted) print line }
-            ' /tmp/auto-notes.md > /tmp/auto-notes-with-self.md
-            mv /tmp/auto-notes-with-self.md /tmp/auto-notes.md
+            PR_TITLE=$(gh pr view "${PR_NUMBER}" --repo "${REPO}" --json title --jq .title)
+            {
+              echo "* ${PR_TITLE} by @${PR_AUTHOR} in ${PR_URL}"
+              SUBJECTS=$(gh pr view "${PR_NUMBER}" --repo "${REPO}" --json commits --jq '.commits[].messageHeadline')
+              if [ "$(printf '%s\n' "${SUBJECTS}" | grep -c .)" -gt 1 ]; then
+                printf '%s\n' "${SUBJECTS}" | sed 's/^/  * /'
+              fi
+            } > /tmp/self-lines.md
+            # Into the "What's Changed" list (created if no merged PR
+            # started one), not after the blank lines that end it.
+            python3 - <<'PY'
+          notes = open("/tmp/auto-notes.md").read()
+          lines = open("/tmp/self-lines.md").read().rstrip("\n")
+          head, footer, tail = notes.partition("**Full Changelog**")
+          head = head.rstrip("\n")
+          if "## What's Changed" not in head:
+              head = (head + "\n\n" if head else "") + "## What's Changed"
+          open("/tmp/auto-notes.md", "w").write(f"{head}\n{lines}\n\n{footer}{tail}")
+          PY
           fi
           {
             # shellcheck disable=SC2016  # backticks are literal markdown code-fences, not command substitution
@@ -697,6 +844,31 @@ jobs:
             "sbom-bin-${GIT_SHA}.cyclonedx.json#SBOM (bin image, CycloneDX JSON)" \
             "sbom-bin-${GIT_SHA}.cyclonedx.json.sigstore.json#SBOM signature (bin image, Sigstore)" \
             "sbom-bin-${GIT_SHA}.cyclonedx.json.intoto.jsonl#SBOM provenance (bin image, SLSA)"
+
+      # Bring the Security tab in sync with the release just published.
+      # Code-scanning and Dependabot alerts are tracked per git ref, and
+      # only refs/heads/master counts for the Security tab — but most
+      # releases are published from a pull_request run (ship, or a
+      # Renovate security fix), whose Trivy SARIF and dependency snapshot
+      # are filed under refs/pull/N/merge. Without this, a CVE fixed by a
+      # release stayed "open" on master until the next daily image scan.
+      # image-scan.yml runs on master, scans the new :latest images and
+      # refreshes both master-scoped results; release= tells it not to
+      # dispatch a rebuild (it's reporting on a build that just happened,
+      # so a rebuild could only loop).
+      #
+      # Best-effort: the release already exists by now, and failing here
+      # would red-X a ship PR (blocking its auto-merge) over a Security-tab
+      # refresh the daily scan catches up on anyway. --ref master also
+      # means master's copy of image-scan.yml runs, so a PR that changes
+      # that file (e.g. the one introducing release=) gets the previous
+      # version's behaviour for its own release. Ported from OpenHangar.
+      - name: Refresh the Security tab for this release
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+        run: gh workflow run image-scan.yml --ref master -f release="v${VERSION}"
 
       - name: Download site content artifact
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
