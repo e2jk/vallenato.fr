@@ -1,22 +1,53 @@
 #!/usr/bin/env bash
 # .github/scripts/auto-rebase-stale-bot-prs.sh
 #
-# Finds open Dependabot/Renovate PRs against master that have fallen behind
-# (or hit a conflict) and asks each bot to rebase, via its own
-# API-friendly path (see .github/workflows/auto-rebase-stale-bot-prs.yml
-# for the full "why" — a ruleset's strict required-status-checks policy
-# means any PR merge makes every other open PR stale at once).
+# Finds open Renovate PRs against master that have fallen behind, hit a
+# conflict, are sitting on a stale CI run from before the base advanced,
+# or whose CI run never started at all (a GitHub-side scheduling hiccup
+# on the shared bot-pipeline lane -- see the dedicated check near the top
+# of the main body below), and recovers them, via Renovate's own
+# API-friendly rebase path where applicable (see
+# .github/workflows/auto-rebase-stale-bot-prs.yml for the full "why" —
+# the ruleset's strict required-status-checks policy means any PR merge
+# makes every other open PR stale at once).
 #
 # Every PR this script looks at is logged — number, author login, and
-# mergeStateStatus, plus whether it matched a known bot login and whether
-# it counted as stale — even the ones skipped. A naive version could filter
-# non-matching/non-stale PRs out of a jq pipeline before anything was ever
-# logged, so if gh CLI ever starts reporting bot authors as
-# "app/renovate"/"app/dependabot" instead of the classic
-# "renovate[bot]"/"dependabot[bot]" (gh CLI >=2.98 does this), a workflow
-# built that way would silently match nothing on every run — no error, no
-# output, just quiet inaction. This script exists so that failure mode is
-# visible instead of silent.
+# mergeStateStatus, plus whether it matched the Renovate bot login and
+# whether it counted as stale — even the ones skipped. A previous version
+# filtered non-matching/non-stale PRs out of a jq pipeline before anything
+# was ever logged, so when gh CLI 2.98 started reporting the bot author as
+# "app/renovate" instead of the classic "renovate[bot]", the workflow
+# silently matched nothing on every run — no error, no output, just quiet
+# inaction. This script exists so that failure mode is visible instead of
+# silent.
+#
+# Treats mergeStateStatus=UNKNOWN and BLOCKED the same as BEHIND/DIRTY
+# (worth a nudge), not "not stale":
+#
+# - UNKNOWN isn't a real merge state -- it's GitHub's "still computing, ask
+#   again later" placeholder, returned while it recomputes mergeability
+#   after a base-branch push. This workflow's own push:master trigger fires
+#   at exactly that moment for every *other* open PR, so under a merge
+#   cascade (several bot PRs landing within minutes of each other) it can
+#   read UNKNOWN for everyone, every time, and skip the whole batch.
+# - BLOCKED is what UNKNOWN settles into once GitHub finishes that
+#   computation, for a PR whose merge-preview is already clean against the
+#   current base but whose *last CI run* predates that base and never got
+#   re-triggered (no new commit landed on the PR branch itself, so neither
+#   Renovate's own rebaseWhen:conflicted nor this script's BEHIND/DIRTY
+#   check ever fires for it). Confirmed for real on OpenHangar PR #302 after
+#   PR #313/#315 landed: its merge-commit already carried the fixed pins,
+#   but its CI run still showed the pre-fix failure from before main
+#   advanced.
+#
+# Either way the only backstop left, without this, is the 6h cron, which
+# needs to catch a lull where GitHub's computation has actually settled
+# *and* nothing else is making other PRs newly stale in the meantime. A
+# false-positive nudge here (asking Renovate to rebase a PR that turns out
+# not to need it, or that's genuinely still failing for an unrelated
+# reason) is a bounded cost, not an unbounded one -- same MAX_ATTEMPTS
+# tolerance this script already relies on elsewhere: a truly broken PR
+# just burns its 3 attempts and then gets left for a human, same as today.
 #
 # Requires GH_TOKEN and GH_REPO in the environment, same as any other gh
 # CLI invocation — safe to run locally with a personal token to debug.
@@ -43,28 +74,112 @@ MARKER="${MARKER:-<!-- vallenato-fr-auto-rebase -->}"
 # Known bot-login spellings. gh CLI >=2.98 reports GitHub App PR authors as
 # "app/<slug>" instead of the classic "<slug>[bot]" — match both so this
 # keeps working regardless of which gh version the runner ships.
-is_dependabot() {
-  [ "$1" = "dependabot[bot]" ] || [ "$1" = "app/dependabot" ]
-}
 is_renovate() {
   [ "$1" = "renovate[bot]" ] || [ "$1" = "app/renovate" ]
 }
 
 echo "Listing open PRs against master..."
-prs_json=$(gh pr list --state open --base master --limit 100 --json number,author,mergeStateStatus,labels)
+prs_json=$(gh pr list --state open --base master --limit 100 --json number,author,mergeStateStatus,labels,headRefName)
 pr_count=$(echo "$prs_json" | jq 'length')
 echo "Found $pr_count open PR(s) targeting master."
 echo
 
-echo "$prs_json" | jq -c '.[]' | while read -r pr; do
+# Before looking at staleness at all: recover a pull_request CI run for a
+# ship/renovate branch that never actually started. Those branches are
+# all forced into ci.yml's single 'bot-pipeline' concurrency lane
+# (cancel-in-progress: false, so a new run queues rather than cancelling
+# an older one) -- observed in practice to occasionally get stuck
+# `pending` with zero jobs ever dispatched, sometimes for hours, even
+# with nothing else contending for the lane. Looks like a GitHub Actions
+# platform-side scheduling hiccup on this lane, not a bug in this repo's
+# own YAML -- but it still means auto-merge never gets anything to act
+# on, and neither Renovate's own schedule nor the mergeStateStatus checks
+# below can tell "stuck" apart from "legitimately still running".
+STUCK_MINUTES="${STUCK_MINUTES:-15}"
+
+echo "Checking for a stuck pull_request CI run on a ship/renovate branch..."
+lane_busy=$(gh run list --workflow=ci.yml --status in_progress --limit 20 --json headBranch |
+  jq '[.[] | select(.headBranch == "ship" or (.headBranch | startswith("renovate/")))] | length')
+
+recovered=false
+
+if [ "$lane_busy" -gt 0 ]; then
+  echo "bot-pipeline lane has $lane_busy run(s) genuinely in progress -- nothing stuck to recover."
+else
+  stuck=$(gh run list --workflow=ci.yml --status pending --limit 20 \
+            --json databaseId,headBranch,event,createdAt |
+    jq --argjson mins "$STUCK_MINUTES" '
+      [.[] | select(.event == "pull_request"
+                     and (.headBranch == "ship" or (.headBranch | startswith("renovate/")))
+                     and ((now - (.createdAt | fromdateiso8601)) > ($mins * 60)))] | .[0] // empty')
+
+  if [ -n "$stuck" ]; then
+    stuck_id=$(echo "$stuck" | jq -r '.databaseId')
+    stuck_branch=$(echo "$stuck" | jq -r '.headBranch')
+    job_count=$(gh run view "$stuck_id" --json jobs --jq '.jobs | length')
+
+    if [ "$job_count" -eq 0 ]; then
+      number=$(echo "$prs_json" | jq -r --arg b "$stuck_branch" '.[] | select(.headRefName == $b) | .number')
+      if [ -n "$number" ]; then
+        echo "PR #$number (branch $stuck_branch): CI run $stuck_id has sat pending with 0 jobs for over ${STUCK_MINUTES}m -- recovering."
+        gh run cancel "$stuck_id" || echo "::warning::Failed to cancel run $stuck_id"
+        # Close/reopen rather than the rebase label below: this PR may
+        # already be perfectly up to date, in which case asking Renovate
+        # to rebase it would be a true no-op (no new commit, no fresh
+        # pull_request event). Closing/reopening always produces a fresh
+        # 'reopened' event regardless of git state.
+        if gh pr close "$number" --comment "Closing/reopening to clear a stuck CI run -- run $stuck_id sat pending with no jobs ever dispatched, a GitHub Actions scheduling hiccup, not a real failure."; then
+          sleep 2
+          gh pr reopen "$number" || echo "::warning::Failed to reopen PR #$number"
+          recovered=true
+        else
+          echo "::warning::Failed to close PR #$number"
+        fi
+      else
+        echo "::warning::Could not map branch $stuck_branch back to an open PR -- skipping."
+      fi
+    else
+      echo "Run $stuck_id on $stuck_branch has $job_count job(s) already -- not actually stuck, leaving it."
+    fi
+  else
+    echo "No run has been stuck for more than ${STUCK_MINUTES}m -- nothing to recover."
+  fi
+fi
+
+echo
+
+if [ "$recovered" = "true" ]; then
+  echo "Recovered a stuck run this invocation -- skipping the staleness pass below (same one-nudge-per-run discipline)."
+  echo
+  echo "Done — checked $pr_count PR(s)."
+  exit 0
+fi
+
+# Nudges at most one PR per run, not every stale one -- labelling several
+# bot PRs with `rebase` in the same breath makes Renovate force-push all
+# of them within the same minute or two, and they then queue up behind
+# each other in ci.yml's single 'bot-pipeline' concurrency lane with their
+# merge-ref locked in at synchronize time, not refreshed while queued --
+# by the time one several slots back actually runs, master has usually
+# moved again, wasting that attempt. Observed for real in OpenHangar after #313/#315
+# landed: all 7 then-stale PRs got rebased together and were already
+# BEHIND again minutes later. The normal push:master trigger re-invokes this
+# script as soon as *that* one PR's turn resolves (merge or 3 exhausted
+# attempts), pacing nudges to the actual merge cadence.
+#
+# `shuf` randomizes which stale PR gets that one slot, rather than always
+# the first in list order -- a PR that's stale for a real, unrelated
+# reason (its own bump genuinely breaks something) would otherwise
+# monopolize every run until it burns all 3 attempts, leaving any PR that
+# *would* merge cleanly stuck behind it. Random choice means a broken PR
+# competes for a slot like everyone else instead of blocking the line.
+echo "$prs_json" | jq -c '.[]' | shuf | while read -r pr; do
   number=$(echo "$pr" | jq -r '.number')
   login=$(echo "$pr" | jq -r '.author.login')
   status=$(echo "$pr" | jq -r '.mergeStateStatus')
   has_skip_label=$(echo "$pr" | jq -r '[.labels[].name] | any(. == "no-auto-rebase")')
 
-  if is_dependabot "$login"; then
-    bot="dependabot"
-  elif is_renovate "$login"; then
+  if is_renovate "$login"; then
     bot="renovate"
   else
     echo "PR #$number: author '$login' does not match a known bot login — skipping."
@@ -76,7 +191,7 @@ echo "$prs_json" | jq -c '.[]' | while read -r pr; do
     continue
   fi
 
-  if [ "$status" != "BEHIND" ] && [ "$status" != "DIRTY" ]; then
+  if [ "$status" != "BEHIND" ] && [ "$status" != "DIRTY" ] && [ "$status" != "UNKNOWN" ] && [ "$status" != "BLOCKED" ]; then
     echo "PR #$number ($bot, author '$login'): mergeStateStatus=$status — not stale, skipping."
     continue
   fi
@@ -93,21 +208,20 @@ echo "$prs_json" | jq -c '.[]' | while read -r pr; do
   echo "PR #$number ($bot): mergeStateStatus=$status, triggering rebase, attempt $next_attempt/$MAX_ATTEMPTS"
   note="Auto-rebase attempt $next_attempt/$MAX_ATTEMPTS -- this PR fell behind master (or hit a conflict) after another PR merged."
 
-  if [ "$bot" = "dependabot" ]; then
-    body=$(printf '@dependabot rebase\n\n%s\n%s\n' "$note" "$MARKER")
-    if ! gh pr comment "$number" --body "$body"; then
-      echo "::warning::Failed to comment on PR #$number"
-    fi
-  else
-    if ! gh pr edit "$number" --add-label rebase; then
-      echo "::warning::Failed to label PR #$number"
-      continue
-    fi
-    body=$(printf 'Added the rebase label to ask Renovate to rebase this PR.\n\n%s\n%s\n' "$note" "$MARKER")
-    if ! gh pr comment "$number" --body "$body"; then
-      echo "::warning::Failed to comment on PR #$number"
-    fi
+  if ! gh pr edit "$number" --add-label rebase; then
+    echo "::warning::Failed to label PR #$number"
+    continue
   fi
+  body=$(printf 'Added the rebase label to ask Renovate to rebase this PR.\n\n%s\n%s\n' "$note" "$MARKER")
+  if ! gh pr comment "$number" --body "$body"; then
+    echo "::warning::Failed to comment on PR #$number"
+  fi
+
+  # One nudge per run -- see the comment above this loop for why. Any
+  # other stale PR is left for this script's next invocation (the very
+  # next push to master, or the 6h cron at the latest).
+  echo "Nudged PR #$number this run -- leaving any other stale PR for next time."
+  break
 done
 
 echo
