@@ -9,7 +9,7 @@
   "rebaseWhen": "conflicted",
   "dependencyDashboard": false,
   "pip_requirements": {
-    "fileMatch": ["(^|/)bin/requirements.*\\.txt$"]
+    "managerFilePatterns": ["/(^|/)bin/requirements.*\\.txt$/"]
   },
   "github-actions": {
     "enabled": false
