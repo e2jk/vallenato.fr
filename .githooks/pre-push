@@ -132,6 +132,12 @@ fi
 
 if $UPDATE_MODE; then
   echo "[pre-push --update] Syncing local tooling to the versions this repo pins..."
+  # Unlike OpenHangar (whose dev.txt chains -r down to runtime.txt),
+  # bin/requirements-dev.txt doesn't include bin/requirements.txt — install
+  # both, or the runtime pins drift and pip-audit --local below flags
+  # vulnerabilities that the repo itself has already fixed.
+  echo "[pre-push --update] pip install --require-hashes -r bin/requirements.txt"
+  "$VENV_DIR/bin/pip" install --quiet --require-hashes -r "$BIN_DIR/requirements.txt"
   echo "[pre-push --update] pip install --require-hashes -r bin/requirements-dev.txt"
   "$VENV_DIR/bin/pip" install --quiet --require-hashes -r "$DEV_TXT"
 
