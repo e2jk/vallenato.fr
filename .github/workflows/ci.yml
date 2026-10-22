@@ -496,6 +496,11 @@ jobs:
           image-ref: ${{ matrix.image }}:ci
           format: sarif
           output: trivy-results.sarif
+          # OS packages only in the Security tab: every Python package in
+          # the bin image is hash-pinned in bin/requirements*.txt, which
+          # pip-audit and OSV-Scanner already report on — uploading Trivy's
+          # own copy of the same CVEs turned each one into three alerts.
+          vuln-type: os
           severity: HIGH,CRITICAL
           ignore-unfixed: 'true'
           exit-code: '0'
