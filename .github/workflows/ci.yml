@@ -598,7 +598,14 @@ jobs:
           version: v0.74.0
 
       - name: Upload Trivy results to GitHub Security tab
-        if: always() && hashFiles('trivy-results.sarif') != ''
+        # Never for refs/heads/master (a workflow_dispatch release build):
+        # master's Trivy state is owned by image-scan.yml, which scans the
+        # actually-published :latest — daily, and right after every
+        # release via publish-release's "Refresh the Security tab" step.
+        # Alerts are tracked per (workflow, job, category), so a second
+        # writer on master kept its own last results open until it happened
+        # to run again, even after a release from a PR run had fixed them.
+        if: always() && hashFiles('trivy-results.sarif') != '' && github.ref != 'refs/heads/master'
         uses: github/codeql-action/upload-sarif@2892aa5e19bbd11bc0cff5427e3b750a04d9e3c2 # v4
         with:
           sarif_file: trivy-results.sarif
@@ -697,6 +704,14 @@ jobs:
           output-file: sbom-${{ matrix.name }}-${{ github.sha }}.cyclonedx.json
           upload-artifact: false
           dependency-snapshot: true
+          # One correlator per image: sbom-action's default is
+          # "<workflow>_<job>" ("CI_publish-images") for both matrix legs, so
+          # each image's snapshot superseded the other's. image-scan.yml
+          # submits under the same per-image value, so its master-ref
+          # snapshots supersede these. The input isn't declared in
+          # sbom-action's action.yml (the runner logs an "Unexpected input"
+          # warning), but its code reads it via getInput.
+          dependency-snapshot-correlator: CI_publish-images_${{ matrix.name }}
 
       - name: Sign SBOM with cosign (Sigstore bundle)
         run: |
@@ -743,6 +758,7 @@ jobs:
       pages: write     # deploy-pages
       id-token: write  # OIDC token for deploy-pages
       pull-requests: read  # this run's own PR title and commits, for the release notes
+      actions: write       # dispatch image-scan.yml to refresh the Security tab after release
     environment:
       name: github-pages
       url: ${{ steps.deploy.outputs.page_url }}
@@ -828,6 +844,31 @@ jobs:
             "sbom-bin-${GIT_SHA}.cyclonedx.json#SBOM (bin image, CycloneDX JSON)" \
             "sbom-bin-${GIT_SHA}.cyclonedx.json.sigstore.json#SBOM signature (bin image, Sigstore)" \
             "sbom-bin-${GIT_SHA}.cyclonedx.json.intoto.jsonl#SBOM provenance (bin image, SLSA)"
+
+      # Bring the Security tab in sync with the release just published.
+      # Code-scanning and Dependabot alerts are tracked per git ref, and
+      # only refs/heads/master counts for the Security tab — but most
+      # releases are published from a pull_request run (ship, or a
+      # Renovate security fix), whose Trivy SARIF and dependency snapshot
+      # are filed under refs/pull/N/merge. Without this, a CVE fixed by a
+      # release stayed "open" on master until the next daily image scan.
+      # image-scan.yml runs on master, scans the new :latest images and
+      # refreshes both master-scoped results; release= tells it not to
+      # dispatch a rebuild (it's reporting on a build that just happened,
+      # so a rebuild could only loop).
+      #
+      # Best-effort: the release already exists by now, and failing here
+      # would red-X a ship PR (blocking its auto-merge) over a Security-tab
+      # refresh the daily scan catches up on anyway. --ref master also
+      # means master's copy of image-scan.yml runs, so a PR that changes
+      # that file (e.g. the one introducing release=) gets the previous
+      # version's behaviour for its own release. Ported from OpenHangar.
+      - name: Refresh the Security tab for this release
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+        run: gh workflow run image-scan.yml --ref master -f release="v${VERSION}"
 
       - name: Download site content artifact
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
