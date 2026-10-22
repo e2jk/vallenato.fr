@@ -595,7 +595,7 @@ jobs:
           exit-code: '0'
           # Pin newer than trivy-action's bundled default (v0.70.0), which is well behind
           # current Trivy releases — see image-scan.yml for the same pin and why.
-          version: v0.74.0
+          version: v0.75.0
 
       - name: Upload Trivy results to GitHub Security tab
         # Never for refs/heads/master (a workflow_dispatch release build):
