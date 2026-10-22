@@ -153,11 +153,14 @@ jobs:
 
   version:
     name: Compute build version
-    # publish_now = true for a pull_request from ship/a bot branch (the one
-    # place content is tested — see this job's if: below) with native
-    # auto-merge armed, a push to a version tag, or a manual workflow_dispatch
-    # targeting master (see the on: block above — rebuilds unchanged source,
-    # e.g. to pick up an upstream OS package fix). Skipped for a push to
+    # publish_now = true for a pull_request from ship or a Renovate
+    # security-fix branch (labelled "security") with native auto-merge
+    # armed, a push to a version tag, or a workflow_dispatch targeting
+    # master (see the on: block above — daily-release.yml's daily release
+    # of routine dependency updates, or a rebuild of unchanged source, e.g.
+    # to pick up an upstream OS package fix). A routine Renovate PR is fully
+    # tested but not published on its own: daily-release.yml releases the
+    # day's updates together. Skipped for a push to
     # ship/a bot branch or to master — same rationale as lint-and-test's if:.
     if: |
       !(github.event_name == 'push' && (github.ref == 'refs/heads/ship' || startsWith(github.ref, 'refs/heads/renovate/') || github.ref == 'refs/heads/master'))
@@ -205,11 +208,20 @@ jobs:
             pull_request)
               case "${HEAD_REF}" in
                 ship|renovate/*)
-                  AUTO_MERGE_ARMED=$(gh pr view "${PR_NUMBER}" --json autoMergeRequest --jq '.autoMergeRequest != null')
-                  if [ "${AUTO_MERGE_ARMED}" = "true" ]; then
-                    PUBLISH_NOW=true
-                  else
+                  # A routine Renovate update doesn't publish at all: several
+                  # land every day, and daily-release.yml releases them
+                  # together once a day instead of one release each. Only
+                  # Renovate's security-fix PR (labelled "security", see
+                  # vulnerabilityAlerts in renovate.json) still publishes
+                  # straight away — a CVE fix shouldn't wait for the batch.
+                  read -r AUTO_MERGE_ARMED IS_SECURITY < <(gh pr view "${PR_NUMBER}" --json autoMergeRequest,labels \
+                    --jq '"\(.autoMergeRequest != null) \([.labels[].name] | index("security") != null)"')
+                  if [ "${AUTO_MERGE_ARMED}" != "true" ]; then
                     echo "Auto-merge is not armed on this PR — not publishing."
+                  elif [ "${HEAD_REF}" != "ship" ] && [ "${IS_SECURITY}" != "true" ]; then
+                    echo "Routine dependency update — released with the next daily release, not on its own."
+                  else
+                    PUBLISH_NOW=true
                   fi
                   ;;
               esac
@@ -229,7 +241,15 @@ jobs:
 
             for attempt in 1 2 3 4 5; do
               LAST_TAG=$(git tag --list 'v[0-9]*' --sort=-version:refname | head -1)
-              if [ -n "$LAST_TAG" ] && [ -z "$(git log "${LAST_TAG}..HEAD" --oneline -- bin/)" ]; then
+              # Compared by content, not commit history: a tag is its
+              # release PR's own commit, which the rebase merge re-creates
+              # on master under a new SHA — so "${LAST_TAG}..HEAD" would list
+              # that already-released commit again, and any bin/ change it
+              # carried made the next dependency-only release a minor bump.
+              # bin/requirements*.txt is excluded so a dependency-only
+              # release is a patch, like OpenHangar's (whose pins live
+              # outside app/).
+              if [ -n "$LAST_TAG" ] && git diff --quiet "${LAST_TAG}" HEAD -- bin/ ':(exclude)bin/requirements*.txt'; then
                 BUMP="patch"
               else
                 BUMP="minor"
