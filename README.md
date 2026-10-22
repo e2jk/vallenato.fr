@@ -40,10 +40,8 @@ secret (see that workflow's own comments for why and how to create one).
 External contributors should keep using the normal fork-and-PR flow
 straight into `master`, which `ship.sh` has no part in.
 
-Dependency updates are split between [Renovate](renovate.json) (pip,
-Docker) and [Dependabot](.github/dependabot.yml) (GitHub Actions only -
-the two are configured not to compete for the same ecosystem). Both
-auto-merge once CI passes.
+Dependency updates (pip, Docker, GitHub Actions) are handled by
+[Renovate](renovate.json), which auto-merges them once CI passes.
 
 Before pushing, install the pre-push hook once per clone:
 

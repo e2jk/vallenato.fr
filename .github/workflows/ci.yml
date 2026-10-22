@@ -22,14 +22,14 @@ on:
 permissions: read-all  # zizmor: ignore[excessive-permissions] intentional: workflow default is read-only, every job opts into exactly the write scopes it needs
 
 # Keyed on event+ref: a newer push/PR-update cancels the previous still-
-# running check for the same branch/PR. Exception: every ship/dependabot/
-# renovate pull_request — the only PRs that publish_now (see the version job)
+# running check for the same branch/PR. Exception: every ship/renovate
+# pull_request — the only PRs that publish_now (see the version job)
 # — shares one 'bot-pipeline' lane for the ENTIRE run, so at most one publish
 # pipeline is ever in flight. Queues (cancel-in-progress: false) rather than
 # cancels. Adapted from OpenHangar's ci.yml concurrency design.
 concurrency:
-  group: ${{ (github.event_name == 'pull_request' && (github.head_ref == 'ship' || startsWith(github.head_ref, 'dependabot/') || startsWith(github.head_ref, 'renovate/'))) && 'bot-pipeline' || format('{0}-{1}', github.event_name, github.ref) }}
-  cancel-in-progress: ${{ !(github.event_name == 'pull_request' && (github.head_ref == 'ship' || startsWith(github.head_ref, 'dependabot/') || startsWith(github.head_ref, 'renovate/'))) }}
+  group: ${{ (github.event_name == 'pull_request' && (github.head_ref == 'ship' || startsWith(github.head_ref, 'renovate/'))) && 'bot-pipeline' || format('{0}-{1}', github.event_name, github.ref) }}
+  cancel-in-progress: ${{ !(github.event_name == 'pull_request' && (github.head_ref == 'ship' || startsWith(github.head_ref, 'renovate/'))) }}
 
 jobs:
   lint-and-test:
@@ -40,7 +40,7 @@ jobs:
     # follows is where this actually runs; a push to master lands content a
     # PR already fully tested and published, so it's a pure no-op.
     if: |
-      !(github.event_name == 'push' && (github.ref == 'refs/heads/ship' || startsWith(github.ref, 'refs/heads/dependabot/') || startsWith(github.ref, 'refs/heads/renovate/') || github.ref == 'refs/heads/master'))
+      !(github.event_name == 'push' && (github.ref == 'refs/heads/ship' || startsWith(github.ref, 'refs/heads/renovate/') || github.ref == 'refs/heads/master'))
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
@@ -126,7 +126,7 @@ jobs:
         # (duplicated here rather than depended-on, for the same
         # no-needs-dependency reason as this job's own if: above).
         if: |
-          startsWith(github.ref, 'refs/tags/v') || (github.event_name == 'pull_request' && (github.head_ref == 'ship' || startsWith(github.head_ref, 'dependabot/') || startsWith(github.head_ref, 'renovate/'))) || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/master')
+          startsWith(github.ref, 'refs/tags/v') || (github.event_name == 'pull_request' && (github.head_ref == 'ship' || startsWith(github.head_ref, 'renovate/'))) || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/master')
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           name: pages-content
@@ -160,7 +160,7 @@ jobs:
     # e.g. to pick up an upstream OS package fix). Skipped for a push to
     # ship/a bot branch or to master — same rationale as lint-and-test's if:.
     if: |
-      !(github.event_name == 'push' && (github.ref == 'refs/heads/ship' || startsWith(github.ref, 'refs/heads/dependabot/') || startsWith(github.ref, 'refs/heads/renovate/') || github.ref == 'refs/heads/master'))
+      !(github.event_name == 'push' && (github.ref == 'refs/heads/ship' || startsWith(github.ref, 'refs/heads/renovate/') || github.ref == 'refs/heads/master'))
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
@@ -204,7 +204,7 @@ jobs:
               ;;
             pull_request)
               case "${HEAD_REF}" in
-                ship|dependabot/*|renovate/*)
+                ship|renovate/*)
                   AUTO_MERGE_ARMED=$(gh pr view "${PR_NUMBER}" --json autoMergeRequest --jq '.autoMergeRequest != null')
                   if [ "${AUTO_MERGE_ARMED}" = "true" ]; then
                     PUBLISH_NOW=true
