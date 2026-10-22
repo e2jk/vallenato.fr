@@ -20,9 +20,12 @@
       "groupName": "Docker images"
     }
   ],
+  "osvVulnerabilityAlerts": true,
   "vulnerabilityAlerts": {
     "labels": ["security"],
     "schedule": ["at any time"],
-    "minimumReleaseAge": "0 days"
+    "minimumReleaseAge": "0 days",
+    "groupName": "security patches",
+    "description": "osvVulnerabilityAlerts: GitHub's Dependabot alerts never flagged certifi GHSA-6q48-6c7w-9gw2 here, so Renovate (which reads them by default) opened no fix while minimumReleaseAge held back the normal bump and the CI vulnerability scans blocked every other PR. Querying OSV directly closes that gap. groupName: bundle all advised fixes into one PR, since the CI scan checks the whole tree."
   }
 }
