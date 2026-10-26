@@ -220,7 +220,7 @@ jobs:
       actions: read           # required by the reusable workflow to auto-detect context
       contents: read          # checkout
       security-events: write  # upload SARIF results to the Security tab
-    uses: google/osv-scanner-action/.github/workflows/osv-scanner-reusable.yml@a345acffa64b0eaede81a3d9aae6141214d9c8fc # v2.6.0
+    uses: google/osv-scanner-action/.github/workflows/osv-scanner-reusable.yml@b1d267aea5211fa648d9d442fa64b90dbdcbdd36 # v2.7.0
 
   dependency-review:
     name: Dependency review (new/changed dependencies)
@@ -387,7 +387,7 @@ jobs:
       actions: read           # required by the reusable workflow to auto-detect context
       contents: read          # checkout
       security-events: write  # upload SARIF results to the Security tab
-    uses: google/osv-scanner-action/.github/workflows/osv-scanner-reusable.yml@a345acffa64b0eaede81a3d9aae6141214d9c8fc # v2.6.0
+    uses: google/osv-scanner-action/.github/workflows/osv-scanner-reusable.yml@b1d267aea5211fa648d9d442fa64b90dbdcbdd36 # v2.7.0
 
   docker-build:
     name: Build ${{ matrix.name }} image
