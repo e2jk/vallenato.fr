@@ -97,7 +97,7 @@ jobs:
           # seen on 2026-09-03 were real, fixable HIGH-severity findings (see the
           # Dockerfile's APK_CACHE_BUST comment), not a Trivy bug — but there's no reason
           # to run a stale scanner version on a daily security-scan schedule.
-          version: v0.75.0
+          version: v0.76.0
 
       - name: Install Trivy CLI (to convert the JSON report to SARIF)
         if: always() && hashFiles('trivy-latest-results.json') != ''
@@ -106,7 +106,7 @@ jobs:
           # Same Trivy CLI version aquasecurity/trivy-action@v0.36.0 uses
           # internally (its own default) to scan above — keeps the report
           # producer and the converter reading the same JSON schema version.
-          version: v0.75.0
+          version: v0.76.0
 
       # `trivy convert` reformats an already-saved report — it re-reads the
       # JSON above and re-serializes it, it does not touch the image or the
