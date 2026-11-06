@@ -520,9 +520,9 @@ google-auth-httplib2==0.4.4 \
 google-auth-oauthlib==1.5.0 \
     --hash=sha256:71625fdea21c6c03217eb9ff13741c3096e6d257ebca0ad084dbd6e9f4aa4ef4 \
     --hash=sha256:b351107c7dd9017f426cbb0272ea1bc04f469020fd18f4443c7d40362e0b1510
-googleapis-common-protos==1.75.5 \
-    --hash=sha256:c7a866fc34ed29a3b10af627a4b9b1dc2433313ca6e959f0ae4feb132047ed72 \
-    --hash=sha256:d7285525c23039db98f2463e6d5a4f9b958b94d497f03a844ece3259c4e72d5d
+googleapis-common-protos==1.76.0 \
+    --hash=sha256:59e13344a9f3651aa201a03e2bee815a3bf43a4baf1f9ff8a9b62a840ce25fac \
+    --hash=sha256:71db0e44a1d4c2dd024ebad44ca67129cc1e2892e4861df466764749d5ef8642
 httplib2==0.32.0 \
     --hash=sha256:48a0ef30a42db65d8f3399045e1d09ab0ba66e3b9efc360d07f80ea55d286025 \
     --hash=sha256:dc6705cacdf3fb0a2aba7629fa33c90fd93e30035db0c157325826be177e4816
